@@ -28,7 +28,7 @@ include('../include/head.php'); ?>
       </div>
       <form method="post" action="forgot_verification.php">
         <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
-          <input type="email" name="email" placeholder="Email" required aria-describedby="emailHelp" class="form-control input_field">
+          <input type="email" name="email" placeholder="Votre email" required aria-describedby="emailHelp" class="form-control input_field">
 
           <div class="d-flex flex-column pt-3">
             <input type="Submit" class="btn btn-primary" value="Réinitialiser mon mot de passe">
