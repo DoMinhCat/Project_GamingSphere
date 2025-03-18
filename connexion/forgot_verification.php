@@ -1,5 +1,11 @@
-<?php
-if (isset($_POST['email']) && !empty($_POST['email']))
-    echo '<p>Oki</p>';
-    header('forgot_mdp.php');
-?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>forgotmdp</title>
+</head>
+<body>
+    <h1>TEST</h1>
+</body>
+</html>
