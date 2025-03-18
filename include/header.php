@@ -1,0 +1,87 @@
+<?php
+$this_page = basename($_SERVER['PHP_SELF']);
+?>
+<header>
+  <nav class="navbar nav-underline navbar-expand-xl bg-body-tertiary my-navbar" style="padding-top: 0.2rem; padding-bottom:0.4rem;">
+    <div class=" container container-fluid" style="padding: 0.5rem">
+      <a href=<?= ($this_page == 'index.php') ? 'connexion/login.php' : '../connexion/login.php' ?>>
+        <img src="<?= ($this_page == 'index.php') ? 'include/LOGO ENTIER 40px.png' : '../include/LOGO ENTIER 40px.png' ?>" alt="Logo" class="col-2 image-fluid" style="height: 30px; width: auto;">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link lato16 <?= ($this_page == 'index.php') ? 'active' : '' ?>"
+            href=<?= ($this_page == 'index.php') ? 'index.php' : '../index.php' ?>
+            style="color: white; margin-right:1.5rem; margin-left:1.5rem;">
+            Accueil
+            <a class="nav-link lato16 <?= ($this_page == 'magasin_main.php') ? 'active' : '' ?>"
+              href=<?= ($this_page == 'index.php') ? 'magasin/magasin_main.php' : '../magasin/magasin_main.php' ?>
+              style="color: white;margin-right:1.5rem;">
+              Magasin
+            </a>
+            <a class="nav-link lato16 <?= ($this_page == 'tournois_main.php') ? 'active' : '' ?>"
+              href=<?= ($this_page == 'index.php') ? 'tournois/tournois_main.php' : '../tournois/tournois_main.php' ?>
+              style="color: white;margin-right:1.5rem;">
+              Tournois
+            </a>
+            <a class="nav-link lato16 <?= ($this_page == 'communaute_main.php') ? 'active' : '' ?>"
+              href=<?= ($this_page == 'index.php') ? 'communaute/communaute_main.php' : '../communaute/communaute_main.php' ?>
+              style="color: white;margin-right:1.5rem;">
+              Communauté
+            </a>
+            <a class="nav-link lato16 <?= ($this_page == 'actualite_main.php') ? 'active' : '' ?>"
+              href=<?= ($this_page == 'index.php') ? 'actualite/actualite_main.php' : '../actualite/actualite_main.php' ?>
+              style="color: white;margin-right:1.5rem;">
+              Actualités
+            </a>
+            <a class="nav-link lato16 <?= ($this_page == 'forum_main.php') ? 'active' : '' ?>"
+              href=<?= ($this_page == 'index.php') ? 'forum/forum_main.php' : '../forum/forum_main.php' ?>
+              style="color: white;">
+              Forum
+            </a>
+        </div>
+
+        <div class="d-flex ms-auto align-items-center">
+          <form method="get"
+            action=<?= ($this_page == 'index.php') ? 'include/search.php' : '../include/search.php' ?> class="d-flex" role="search">
+            <input class="form-control me-2 input_field" style="border:0px;width:100%" type="search" placeholder="Rechercher" aria-label="Search">
+          </form>
+          <div style="padding-right: 15px; padding-left: 15px;">
+            <a href="message.php" class="btn btn-outline-dark">
+              <i class="bi bi-chat-dots-fill"></i>
+            </a>
+          </div>
+          <div style="padding-right: 15px;">
+            <a href="panier.php" class="btn btn-outline-dark">
+              <i class="bi bi-cart-fill"></i>
+            </a>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" style="padding:0;">
+              <li><a class="dropdown-item btn btn-sm py-3" type="button"
+                  href=<?php
+                        if ($this_page == 'login.php' || $this_page == 'inscription.php') {
+                          echo 'login.php';
+                        } elseif ($this_page == 'index.php') {
+                          if (isset($_SESSION['email'])) echo 'connexion/mon_compte.php';
+                          else echo 'connexion/login.php';
+                        } else {
+                          if (isset($_SESSION['email'])) echo '../connexion/mon_compte.php';
+                          else echo '../connexion/login.php';
+                        }
+                        ?>>Mon compte</a></li>
+              <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
+              <li><button class="dropdown-item btn btn-sm py-3" type="button">abcdef</button></li>
+              <li><button class="dropdown-item btn btn-sm py-3" type="button">Deconnexion</button></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
