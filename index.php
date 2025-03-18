@@ -2,6 +2,7 @@
 <html lang="fr">
 <?php
 $title = 'Acceuil';
+include('include/database.php');
 include('include/head.php')
 ?>
 
@@ -162,19 +163,28 @@ include('include/head.php')
             </div>
         </div>
 
+
+<?php
+        $stmt = $bdd->query("SELECT nom, prix, image FROM jeu");
+$games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
         <div id="bande_sepe"></div>
-        <h3 class="montserrat-titre40 tournament_title mt-3">MAGASIN</h3>
-        <div class="row row-cols-1 row-cols-md-6 g-2 p-2 text-center">
-            <div class="col">
+<h3 class="montserrat-titre40 tournament_title mt-3">MAGASIN</h3>
+<div class="row row-cols-1 row-cols-md-6 g-2 p-2 text-center">
+    <?php foreach ($games as $game): ?>
+        <div class="col">
             <div class="card">
-                <img src="" class="card-img-top" alt="">
+                <img src="back-office/uploads/<?php echo htmlspecialchars($game['image']); ?>" class="card-img-top" alt="Image du jeu">
                 <div class="card-body">
-                <h5 class="card-title">Nom du jeu</h5>
-                <p class="card-text">PRIX</p>
-                <i class="bi bi-bag-plus"></i>
+                    <h5 class="card-title"><?php echo htmlspecialchars($game['nom']); ?></h5>
+                    <p class="card-text"><?php echo htmlspecialchars($game['prix']); ?> €</p>
+                    <i class="bi bi-bag-plus"></i>
                 </div>
             </div>
-            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+
             <div class="col">
             <div class="card">
                 <img src="" class="card-img-top" alt="">
