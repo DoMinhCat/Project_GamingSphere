@@ -13,7 +13,6 @@
         $code_postal = trim($_POST['code_postal']);
         $date = date('Y-m-d H:i:s');
 
-
         if (strlen($mot_de_passe) < 8) {
             header("Location: inscription.php?error=password_length&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
             exit();
@@ -52,8 +51,8 @@
         }
         $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_DEFAULT);
         try {
-            $stmt = $bdd->prepare("INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, pseudo, date_inscription, ville, rue, code_postal) 
-                                    VALUES (:nom, :prenom, :email, :mot_de_passe, :pseudo, :date_inscription, :ville, :rue, :code_postal)");
+            $stmt = $bdd->prepare("INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, pseudo, date_inscription, ville, rue, code_postal, status_ENUM) 
+                                    VALUES (:nom, :prenom, :email, :mot_de_passe, :pseudo, :date_inscription, :ville, :rue, :code_postal, :status_enum)");
             $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
             $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
@@ -63,6 +62,8 @@
             $stmt->bindParam(':ville', $ville, PDO::PARAM_STR);
             $stmt->bindParam(':rue', $rue, PDO::PARAM_STR);
             $stmt->bindParam(':code_postal', $code_postal, PDO::PARAM_STR);
+            $status_enum = 'Client'; 
+            $stmt->bindParam(':status_enum', $status_enum, PDO::PARAM_STR);
 
             $stmt->execute();
             session_start();
