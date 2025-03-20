@@ -1,4 +1,5 @@
     <?php
+    session_start();
     date_default_timezone_set('Europe/Paris');
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -12,6 +13,21 @@
         $region = trim($_POST['region']);
         $code_postal = trim($_POST['code_postal']);
         $date = date('Y-m-d H:i:s');
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!isset($_POST['captcha_answer']) || !isset($_SESSION['captcha_answer'])) {
+                header("Location: inscription.php?error=captcha_missing");
+                exit();
+            }
+            $user_answer = trim(strtolower($_POST['captcha_answer']));
+            $correct_answer = trim(strtolower($_SESSION['captcha_answer']));
+            if ($user_answer !== $correct_answer) {
+                header("Location: inscription.php?error=captcha_invalid");
+                exit();
+            }
+            unset($_SESSION['captcha_answer']);
+        }
+        
 
         if (strlen($mot_de_passe) < 8) {
             header("Location: inscription.php?error=password_length&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));

@@ -3,7 +3,10 @@
 
   <?
   $title = 'S\'inscrire';
-  include('../include/head.php'); ?>
+  include('../include/head.php');
+session_start();
+
+ ?>
 
   <body>
     <?php include('../include/header.php'); ?>
@@ -112,7 +115,25 @@
         }
         ?>
       </div>
-      <div class="col-12">
+      <div class="col-md-12">
+      <label for="captcha_question" class="form-label">CAPTCHA</label>
+      <?php
+        $questions = [
+            "Combien font 3 + 5 ?" => 8,
+            "Quelle été la couleur du cheval blanc d'Henry V ? (en un mot)" => "blanc",
+            "Quelle est la couleur du ciel (en un mot) ?" => "bleu",
+            "Combien font 10 - 4 ?" => 6,
+        ];
+        $question_keys = array_keys($questions);
+        $random_question = $question_keys[array_rand($question_keys)];
+        $_SESSION['captcha_answer'] = strtolower(trim($questions[$random_question]));
+        ?>
+        <input type="hidden" name="captcha_question" value="<?= htmlspecialchars($random_question) ?>">
+        <p><?= htmlspecialchars($random_question) ?></p>
+        <input type="text" id="captcha_answer" name="captcha_answer" class="form-control f-inscription" required>
+        <?php if ($error == 'captcha_invalid') : ?>
+    <div class="invalid-feedback">La réponse au CAPTCHA est incorrecte.</div>
+<?php endif; ?>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="1" id="checkbox_inscrire" required>
           <label class="form-check-label" for="checkbox_inscrire">
@@ -123,6 +144,8 @@
       <div class="col-12 d-flex justify-content-end">
         <button class="btn btn-lg my-btn" type="submit">Créer mon compte</button>
       </div>
+      
+      
     </form>
     </main>
     <?php
