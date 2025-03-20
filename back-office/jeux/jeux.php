@@ -1,6 +1,7 @@
 <?php 
 
 include('../../include/database.php');
+include ('../navbar.php');
 
 $stmt = $bdd->query("SELECT id_jeu, catégorie, date_sortie, image, nom, note_jeu, plateforme, prix, type, éditeur FROM jeu");
 $games = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -1,5 +1,6 @@
 <?php
 include('../../include/database.php');
+include ('../navbar.php'); 
 $user_id = $_GET['id'];
 
 $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs WHERE id_utilisateurs = ?");

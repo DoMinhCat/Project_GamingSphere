@@ -1,6 +1,7 @@
 <?php 
 
 include('../../include/database.php');
+include ('../navbar.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     $category = $_POST['category'];

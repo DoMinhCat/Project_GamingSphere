@@ -44,6 +44,7 @@ if ($result) {
         writeLogLine($_POST['email'], true);
     
         if (isset($result['status_ENUm']) && trim(strtolower($result['status_ENUm'])) === 'admin') {
+            $_SESSION['admin'] = true;
             header('location: ../back-office/index.php');
             exit;
         } else {

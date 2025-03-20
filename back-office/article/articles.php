@@ -1,3 +1,8 @@
+<?php 
+include ('../navbar.php');
+include ('../../include/database.php')
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

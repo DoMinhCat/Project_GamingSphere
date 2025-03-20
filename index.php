@@ -169,75 +169,27 @@ include('include/head.php')
         $stmt = $bdd->query("SELECT nom, prix, image FROM jeu");
 $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-        <div id="bande_sepe"></div>
-<h3 class="montserrat-titre40 tournament_title mt-3">MAGASIN</h3>
-<div class="row row-cols-1 row-cols-md-6 g-2 p-2 text-center">
-    <?php foreach ($games as $game): ?>
-        <div class="col">
-            <div class="card">
-                <img src="back-office/uploads/<?php echo htmlspecialchars($game['image']); ?>" class="card-img-top" alt="Image du jeu">
-                <div class="card-body">
-                    <h5 class="card-title"><?php echo htmlspecialchars($game['nom']); ?></h5>
-                    <p class="card-text"><?php echo htmlspecialchars($game['prix']); ?> €</p>
-                    <i class="bi bi-bag-plus"></i>
-                </div>
+<div id="bande_sepe"></div>
+<h3 class="montserrat-titre40 tournament_title">MAGASIN</h3>
+<h2 class="montserrat-titre32 title_selling_item_index">Meilleurs Ventes</h2>
+<div class="d-flex flex-row flex-wrap justify-content-start g-2 sell_card_index">
+    <?php 
+    $max_cards = 6;
+    $count = 0;
+    foreach ($games as $game): 
+        if ($count >= $max_cards) break;
+        $count++;
+    ?>
+        <div class="card" style="width: 18rem;">
+            <img src="back-office/uploads/<?php echo htmlspecialchars($game['image']); ?>" class="card-img-top img_sell_index" alt="Image du jeu">
+            <div class="card-body d-flex flex-column align-items-center">
+                <h5 class="card-title text-center"><?php echo htmlspecialchars($game['nom']); ?></h5>
+                <p class="card-text text-center"><?php echo htmlspecialchars($game['prix']); ?> €</p>
+                <i class="bi bi-bag-plus mt-auto"></i>
             </div>
         </div>
     <?php endforeach; ?>
 </div>
-
-            <div class="col">
-            <div class="card">
-                <img src="" class="card-img-top" alt="">
-                <div class="card-body">
-                <h5 class="card-title">Nom du jeu</h5>
-                <p class="card-text">PRIX</p>
-                <i class="bi bi-bag-plus"></i>
-                </div>
-            </div>
-            </div>
-            <div class="col">
-            <div class="card">
-                <img src="" class="card-img-top" alt="">
-                <div class="card-body">
-                <h5 class="card-title">Nom du jeu</h5>
-                <p class="card-text">PRIX</p>
-                <i class="bi bi-bag-plus"></i>
-                </div>
-            </div>
-            </div>
-            <div class="col">
-            <div class="card">
-                <img src="" class="card-img-top" alt="">
-                <div class="card-body">
-                <h5 class="card-title">Nom du jeu</h5>
-                <p class="card-text">PRIX</p>
-                <i class="bi bi-bag-plus"></i>
-                </div>
-            </div>
-            </div>
-            <div class="col">
-            <div class="card">
-                <img src="include/img/fortnite-tournaments.webp" class="card-img-top" alt="">
-                <div class="card-body">
-                <h5 class="card-title">Nom du jeu</h5>
-                <p class="card-text">PRIX</p>
-                <i class="bi bi-bag-plus"></i>
-                </div>
-            </div>
-            </div>
-            <div class="col">
-            <div class="card">
-                <img src="include/background_login.png" class="card-img-top" alt="">
-                <div class="card-body">
-                <h5 class="card-title">Nom du jeu</h5>
-                <p class="card-text">PRIX</p>
-                <i class="bi bi-bag-plus"></i>
-                </div>
-            </div>
-            </div>
-        </div>
-
     </main>
     <?php include('include/footer.php'); ?>
 </body>

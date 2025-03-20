@@ -2,6 +2,7 @@
 <?php 
 session_start();
 include('../../include/database.php');
+include ('../navbar.php');
 $q_connect = new PDO('mysql:host=localhost:3307;dbname=gamingsphère', 'root', 'root');
 $q_connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

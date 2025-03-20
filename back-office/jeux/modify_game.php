@@ -1,5 +1,6 @@
 <?php 
 include('../../include/database.php');
+include ('../navbar.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameId'])) {
     $gameId = $_POST['gameId'];

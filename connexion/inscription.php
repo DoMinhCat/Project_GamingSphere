@@ -116,7 +116,7 @@ session_start();
         ?>
       </div>
       <div class="col-md-12">
-      <label for="captcha_question" class="form-label">CAPTCHA</label>
+      <label for="captcha_question"class="form-label" id=captcha>CAPTCHA</label>
       <?php
         $questions = [
             "Combien font 3 + 5 ?" => 8,
