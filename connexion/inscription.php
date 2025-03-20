@@ -127,13 +127,12 @@ session_start();
         $question_keys = array_keys($questions);
         $random_question = $question_keys[array_rand($question_keys)];
         $_SESSION['captcha_answer'] = strtolower(trim($questions[$random_question]));
-        ?>
-        <input type="hidden" name="captcha_question" value="<?= htmlspecialchars($random_question) ?>">
+        ?>  
         <p><?= htmlspecialchars($random_question) ?></p>
-        <input type="text" id="captcha_answer" name="captcha_answer" class="form-control f-inscription" required>
-        <?php if ($error == 'captcha_invalid') : ?>
-    <div class="invalid-feedback">La réponse au CAPTCHA est incorrecte.</div>
-<?php endif; ?>
+        <input type="text" id="captcha_answer" name="captcha_answer" class="form-control f-inscription <?php echo ($error == 'captcha_invalid') ? 'is-invalid' : ''; ?>" required>
+        <?php if ($error == 'captcha_invalid') {
+     echo '<div class="invalid-feedback">La réponse au CAPTCHA est incorrecte.</div>';
+     } ?>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="1" id="checkbox_inscrire" required>
           <label class="form-check-label" for="checkbox_inscrire">
