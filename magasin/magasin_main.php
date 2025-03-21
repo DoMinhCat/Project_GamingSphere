@@ -1,7 +1,7 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
-<?
+<?php
 $title = 'Magasin';
 include('../include/head.php')
 ?>

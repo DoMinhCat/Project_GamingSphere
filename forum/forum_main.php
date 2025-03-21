@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?
+<?php
 $title = 'Forum';
 include('../include/head.php')
 ?>
