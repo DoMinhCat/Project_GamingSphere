@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?
+<?php
 $title = 'Tournois';
 include('../include/head.php')
 ?>

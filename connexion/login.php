@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<?
+<?php
 $title = 'Se connecter';
 include('../include/head.php')
 ?>
