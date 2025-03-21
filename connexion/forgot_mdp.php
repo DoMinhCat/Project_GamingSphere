@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<?
+<?php
 $title = 'Mot de passe oublié';
 include('../include/head.php'); ?>
 
