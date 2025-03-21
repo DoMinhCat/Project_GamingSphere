@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,5 +17,4 @@ include('../include/head.php')
     include("../include/footer.php");
     ?>
 </body>
-
 </html>

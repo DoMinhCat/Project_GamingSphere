@@ -1,7 +1,7 @@
-<?php 
+<?php
 
 include('../../include/database.php');
-include ('../navbar.php');
+include('../navbar.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     $category = $_POST['category'];
@@ -13,44 +13,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     $gameType = $_POST['gameType'];
     $gamePublisher = $_POST['gamePublisher'];
 
-    
+
     if (isset($_FILES['gameImage']) && $_FILES['gameImage']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/PA/back-office/uploads/";
-        
-     
+
+
         $filename = preg_replace("/[^a-zA-Z0-9\._-]/", "_", $_FILES['gameImage']['name']);
         $imagePath = $uploadDir . $filename;
-    
+
         if (move_uploaded_file($_FILES['gameImage']['tmp_name'], $imagePath)) {
             echo "Fichier déplacé avec succès : " . $imagePath;
-            $imagePath = $filename; 
+            $imagePath = $filename;
         } else {
             echo "Erreur lors du déplacement du fichier.";
-            $imagePath = null; 
+            $imagePath = null;
         }
     }
-    
+
 
     $stmt = $bdd->prepare("INSERT INTO jeu (catégorie, date_sortie, nom, note_jeu, plateforme, prix, type, éditeur, image) 
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$category, $releaseDate, $gameName, $gameRating, $platform, $gamePrice, $gameType, $gamePublisher, $imagePath]);
-    echo "<div class='alert alert-success text-center'>Jeu ajouté avec succès !</div>";    header("Location: jeux.php?message=success");
+    echo "<div class='alert alert-success text-center'>Jeu ajouté avec succès !</div>";
+    header("Location: jeux.php?message=success");
     exit();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des jeux</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-4">
         <h1 class="text-center mb-3" style="font-size: 1.5rem;">Ajouter un jeu</h1>
-        
+
         <form action="" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
             <div class="mb-2">
                 <label for="category" class="form-label">Catégorie :</label>
@@ -96,4 +99,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

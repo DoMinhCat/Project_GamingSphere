@@ -1,3 +1,4 @@
+
     <?php
     session_start();
     date_default_timezone_set('Europe/Paris');
@@ -27,7 +28,7 @@
             }
             unset($_SESSION['captcha_answer']);
         }
-        
+
 
         if (strlen($mot_de_passe) < 8) {
             header("Location: inscription.php?error=password_length&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
@@ -89,7 +90,7 @@
             $stmt->bindParam(':ville', $ville, PDO::PARAM_STR);
             $stmt->bindParam(':rue', $rue, PDO::PARAM_STR);
             $stmt->bindParam(':code_postal', $code_postal, PDO::PARAM_STR);
-            $status_enum = 'Client'; 
+            $status_enum = 'Client';
             $stmt->bindParam(':status_enum', $status_enum, PDO::PARAM_STR);
 
             $stmt->execute();
@@ -104,3 +105,4 @@
             exit();
         }
     }
+    ?>
