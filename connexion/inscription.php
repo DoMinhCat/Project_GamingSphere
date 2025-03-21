@@ -5,6 +5,7 @@
   $title = 'S\'inscrire';
   include('../include/head.php');
 session_start();
+$error = isset($_GET['error']) ? $_GET['error'] : "";
 
  ?>
 
@@ -34,10 +35,13 @@ session_start();
       <div class="col-md-4">
         <label for="pseudo_inscrire" class="form-label">Pseudo</label>
         <div class="input-group">
-          <span class="input-group-text" id="inputGroupPrepend2">@</span>
-          <input type="text" class="form-control f-inscription" id="pseudo_inscrire" aria-describedby="inputGroupPrepend2" name="pseudo" required
-            value="<?php echo isset($_GET['pseudo']) ? htmlspecialchars($_GET['pseudo']) : ''; ?>">
-        </div>
+    <span class="input-group-text" id="inputGroupPrepend2">@</span>
+    <input type="text" class="form-control f-inscription <?php echo ($error == 'pseudo_exists') ? 'is-invalid' : ''; ?>" id="pseudo_inscrire" aria-describedby="inputGroupPrepend2" name="pseudo" required
+        value="<?php echo isset($_GET['pseudo']) ? htmlspecialchars($_GET['pseudo']) : ''; ?>">
+<?php if ($error == 'pseudo_exists') : ?>
+    <div class="invalid-feedback">Ce pseudo est déjà associé à un compte.</div>
+<?php endif; ?>
+</div>
       </div>
       <div class="col-md-6">
         <?php

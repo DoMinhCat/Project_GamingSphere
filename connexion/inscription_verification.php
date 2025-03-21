@@ -56,7 +56,7 @@
         }
 
         include('../include/database.php');
-        $stmt = $bdd->prepare("SELECT COUNT(*) FROM utilisateurs WHERE email = :email");
+        $stmt = $bdd->prepare("SELECT COUNT(email) FROM utilisateurs WHERE email = :email");
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
         $email_count = $stmt->fetchColumn();
@@ -65,6 +65,17 @@
             header("Location: inscription.php?error=email_exists");
             exit();
         }
+
+        $stmt = $bdd->prepare("SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo");
+        $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
+        $stmt->execute();
+        $psuedo_count = $stmt->fetchColumn();
+
+        if ($psuedo_count > 0) {
+            header("Location: inscription.php?error=pseudo_exists");
+            exit();
+        }
+
         $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_DEFAULT);
         try {
             $stmt = $bdd->prepare("INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, pseudo, date_inscription, ville, rue, code_postal, status_ENUM) 
