@@ -62,4 +62,3 @@ if ($result) {
     header('location: login.php?message=Identifiants incorrects');
     exit;
 }
-?>
