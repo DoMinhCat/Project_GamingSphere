@@ -1,7 +1,7 @@
   <!DOCTYPE html>
   <html lang="fr">
 
-  <?
+  <?php
   $title = 'S\'inscrire';
   include('../include/head.php'); ?>
 
