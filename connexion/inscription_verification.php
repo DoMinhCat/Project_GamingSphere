@@ -90,7 +90,7 @@
             $stmt->bindParam(':rue', $rue, PDO::PARAM_STR);
             $stmt->bindParam(':code_postal', $code_postal, PDO::PARAM_STR);
             $status_enum = 'Client';
-            $stmt->bindParam(':status_enum', $status_enum, PDO::PARAM_STR);
+            $stmt->bindParam(':status_ENUm', $status_ENUm, PDO::PARAM_STR);
 
             $stmt->execute();
             session_start();
@@ -101,6 +101,7 @@
             exit();
         } catch (PDOException $e) {
             header("Location: inscription.php?error=insert_failed");
+                
             exit();
         }
     }
