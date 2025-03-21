@@ -1,3 +1,4 @@
+<<<<<<< HEAD
   <!DOCTYPE html>
   <html lang="fr">
 
@@ -153,3 +154,138 @@ session_start();
   </body>
 
   </html>
+=======
+  <!DOCTYPE html>
+  <html lang="fr">
+
+  <?php
+  $title = 'S\'inscrire';
+  include('../include/head.php'); ?>
+
+  <body>
+    <?php include('../include/header.php'); ?>
+
+    <h1 class="montserrat-titre40 my_inscription"
+      style=" margin-top: 3rem;
+      text-decoration-line: underline;
+      text-decoration-thickness: 5px;
+      text-underline-offset: 0.5rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;">
+      Inscription</h1>
+    <form class="row g-3 m-f" method="post" action="inscription_verification.php">
+      <div class="col-md-4">
+        <label for="prenom_inscrire" class="form-label">Prénom</label>
+        <input type="text" id="prenom_inscrire" name="prenom" required class="form-control f-inscription"
+          value="<?php echo isset($_GET['prenom']) ? htmlspecialchars($_GET['prenom']) : ''; ?>">
+      </div>
+      <div class="col-md-4">
+        <label for="nom_inscrire" class="form-label">Nom</label>
+        <input type="text" class="form-control f-inscription" id="nom_inscrire" name="nom" required
+          value="<?php echo isset($_GET['nom']) ? htmlspecialchars($_GET['nom']) : ''; ?>">
+      </div>
+      <div class="col-md-4">
+        <label for="pseudo_inscrire" class="form-label">Pseudo</label>
+        <div class="input-group">
+          <span class="input-group-text" id="inputGroupPrepend2">@</span>
+          <input type="text" class="form-control f-inscription" id="pseudo_inscrire" aria-describedby="inputGroupPrepend2" name="pseudo" required
+            value="<?php echo isset($_GET['pseudo']) ? htmlspecialchars($_GET['pseudo']) : ''; ?>">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <?php
+        $error = isset($_GET['error']) ? $_GET['error'] : "";
+        ?>
+        <label for="email_inscrire" class="form-label">E-mail</label>
+        <input type="email" name="email" placeholder="email@exemple.com"
+          class="form-control f-inscription <?php echo ($error == 'email_exists') ? 'is-invalid' : ''; ?>"
+          value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>"
+          id="email_inscrire" required>
+        <?php if ($error == 'email_exists') : ?>
+          <div class="invalid-feedback">Cet e-mail est déjà associé à un compte.</div>
+        <?php endif; ?>
+      </div>
+
+      <div class="col-md-6">
+        <?php
+        $error = isset($_GET['error']) ? $_GET['error'] : "";
+        ?>
+        <label for="mdp_inscrire" class="form-label">Mot de passe</label>
+        <input type="password" class="form-control f-inscription <?php echo ($error == 'password_length' || $error == 'password_special_char' || $error == 'password_number') ? 'is-invalid' : ''; ?>" aria-describedby="passwordHelpBlock"
+          id="mdp_inscrire" name="mot_de_passe" placeholder="Plus que 8 caractères, inclure un caractère spécial et un chiffre." required>
+        <?php
+        if ($error == 'password_length') {
+          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale et 1 chiffre</div>';
+        } elseif ($error == 'password_special_char') {
+          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale et 1 chiffre</div>';
+        } elseif ($error == 'password_number') {
+          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale et 1 chiffre</div>';
+        }
+        ?>
+
+      </div>
+      <div class="col-md-3">
+        <label for="ville_inscrire" class="form-label">Ville</label>
+        <input
+          type="text" name="ville"
+          class="form-control f-inscription" id="ville_inscrire" required
+          value="<?php echo isset($_GET['ville']) ? htmlspecialchars($_GET['ville']) : ''; ?>">
+      </div>
+      <div class="col-md-3">
+        <label for="rue_inscrire" class="form-label">Rue</label>
+        <input
+          type="text" name="rue"
+          class="form-control f-inscription" id="rue_inscrire" required
+          value="<?php echo isset($_GET['rue']) ? htmlspecialchars($_GET['rue']) : ''; ?>">
+      </div>
+      <div class="col-3">
+        <label for="region_inscrire" class="form-label">Région</label>
+        <select class="form-select f-inscription" name="region"
+          id="region_inscrire" required
+          value="<?php echo isset($_GET['region']) ? htmlspecialchars($_GET['region']) : ''; ?>">
+          <option selected disabled value="">Choisir...</option>
+          <option>Auvergne-Rhône-Alpes</option>
+          <option>Bourgogne-Franche-Comté</option>
+          <option>Bretagne</option>
+          <option>Centre-Val de Loire</option>
+          <option>Corse</option>
+          <option>Grand-Est</option>
+          <option>Hauts-De-France</option>
+          <option>Île-de-France</option>
+          <option>Normandie</option>
+          <option>Nouvelle-Aquitaine</option>
+          <option>Occitanie</option>
+          <option>Pays de la Loire</option>
+          <option>Provence-Alpes-Côte d'Azur (PACA)</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="cp_inscrire" class="form-label">Code postal</label>
+        <input type="text" name="code_postal" class="form-control <?php echo ($error == 'invalid_cp') ? 'is-invalid' : ''; ?>" value="<?php echo isset($_GET['code_postal']) ? htmlspecialchars($_GET['code_postal']) : ''; ?>">
+        <?php
+        if ($error == 'invalid_cp') {
+          echo '<div class="invalid-feedback">Un code postal ne peut contenir que des chiffres</div>';
+        }
+        ?>
+      </div>
+      <div class="col-12">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="1" id="checkbox_inscrire" required>
+          <label class="form-check-label" for="checkbox_inscrire">
+            Accepter les conditions générales d'utilisations
+          </label>
+        </div>
+      </div>
+      <div class="col-12 d-flex justify-content-end">
+        <button class="btn btn-lg my-btn" type="submit">Créer mon compte</button>
+      </div>
+    </form>
+    </main>
+    <?php
+    include("../include/footer.php");
+    ?>
+  </body>
+
+  </html>
+>>>>>>> 084327abe52abe59871cc635c307ef2b601c5a28
