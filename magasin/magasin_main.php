@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <?
 $title = 'Magasin';
 include('../include/head.php')

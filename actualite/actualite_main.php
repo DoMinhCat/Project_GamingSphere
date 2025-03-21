@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?
+<?php
 $title = 'Actualités';
 include('../include/head.php')
 ?>
