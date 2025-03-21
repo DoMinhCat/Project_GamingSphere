@@ -1,0 +1,5 @@
+[21-Mar-2025 20:00:57 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error: 1364 Field 'id_jeu' doesn't have a default value in /var/www/PA/back-office/jeux/add_game.php:42
+Stack trace:
+#0 /var/www/PA/back-office/jeux/add_game.php(42): PDOStatement->execute()
+#1 {main}
+  thrown in /var/www/PA/back-office/jeux/add_game.php on line 42

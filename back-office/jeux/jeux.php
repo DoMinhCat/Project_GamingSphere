@@ -1,7 +1,5 @@
 <?php 
-
 include('../../include/database.php');
-include ('../navbar.php');
 
 $stmt = $bdd->query("SELECT id_jeu, catégorie, date_sortie, image, nom, note_jeu, plateforme, prix, type, éditeur FROM jeu");
 $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -16,6 +14,7 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Liste des jeux</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<?php include ('../navbar.php');?>
 <body>
     <div class="container mt-4">
         <h1 class="text-center mb-3" style="font-size: 1.5rem;">Liste des jeux</h1>
