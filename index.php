@@ -185,6 +185,7 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="card-body d-flex flex-column align-items-center">
                 <h5 class="card-title text-center"><?php echo htmlspecialchars($game['nom']); ?></h5>
                 <p class="card-text text-center"><?php echo htmlspecialchars($game['prix']); ?> €</p>
+                <p>Ajouter au panier</p>
                 <i class="bi bi-bag-plus mt-auto"></i>
             </div>
         </div>
