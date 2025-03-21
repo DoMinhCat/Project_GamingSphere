@@ -1,4 +1,7 @@
 <?php
+require '/var/etc/PA/PHPMailer/src/PHPMailer.php';
+require '/var/etc/PA/PHPMailer/src/SMTP.php';
+require '/var/etc/PA/PHPMailer/src/Exception.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -23,9 +26,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
         $subject = "Demande de réinitialisation de mot de passe";
         $message = "Veuillez suivre le lien ci-dessous afin de réinitialiser votre mot de passe:\n\n" . $reset_link;
 
-        require '/var/etc/PA/PHPMailer/src/PHPMailer.php';
-        require '/var/etc/PA/PHPMailer/src/SMTP.php';
-        require '/var/etc/PA/PHPMailer/src/Exception.php';
+
 
         $mail = new PHPMailer(true);
         try {
