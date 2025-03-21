@@ -99,9 +99,7 @@
             $_SESSION['user_pseudo'] = $pseudo;
             header("Location: ../index.php?success=1&pseudo=" . urlencode($pseudo));
             exit();
-        } catch (PDOException $e) {
-            header("Location: inscription.php?error=insert_failed");
-                
-            exit();
+        }  catch (PDOException $e) {
+            die("Erreur lors de l'insertion : " . $e->getMessage());
         }
     }
