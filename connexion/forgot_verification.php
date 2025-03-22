@@ -20,7 +20,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
         $reset_token = bin2hex(random_bytes(32));
         $expires = date("Y-m-d H:i:s", strtotime("+15 minutes"));
 
-        $stmt = $pdo->prepare("UPDATE utilisateurs SET reset_mdp_token = :token, token_expiry = :expiry WHERE email = :email");
+        $stmt = $bdd->prepare("UPDATE utilisateurs SET reset_mdp_token = :token, token_expiry = :expiry WHERE email = :email");
         $stmt->execute(['token' => $reset_token, 'expiry' => $expires, 'email' => $email]);
 
         $reset_link = "http://213.32.90.110/connexion/forgot_mdp.php?token=" . $reset_token;
