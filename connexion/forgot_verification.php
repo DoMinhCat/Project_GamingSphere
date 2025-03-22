@@ -34,10 +34,11 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'mdo1@myges.fr';
-            $mail->Password = 'THuog05#789';
+            $mail->Username = 'do.minh.cat@gmail.com';
+            $mail->Password = 'lsvp dvxf tnix zear';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
+
             $mail->setFrom('mdo1@myges.fr', 'Minh Cat');
             $mail->addAddress($email);
             $mail->Subject = $subject;
