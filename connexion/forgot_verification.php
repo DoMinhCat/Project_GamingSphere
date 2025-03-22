@@ -1,11 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-require '/var/etc/PA/PHPMailer/src/PHPMailer.php';
-require '/var/etc/PA/PHPMailer/src/SMTP.php';
-require '/var/etc/PA/PHPMailer/src/Exception.php';
+require '/var/www/PA/PHPMailer/src/PHPMailer.php';
+require '/var/www/PA/PHPMailer/src/SMTP.php';
+require '/var/www/PA/PHPMailer/src/Exception.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
