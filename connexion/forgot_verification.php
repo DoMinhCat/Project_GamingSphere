@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require '/var/etc/PA/PHPMailer/src/PHPMailer.php';
 require '/var/etc/PA/PHPMailer/src/SMTP.php';
 require '/var/etc/PA/PHPMailer/src/Exception.php';
@@ -54,8 +58,4 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
     }
 }
 
-if (isset($_POST['email']) && !empty($_POST['email'])) {
-    echo '<h1>Email reçu</h1>';
-    header('forgot_mdp.php');
-    exit();
-}
+
