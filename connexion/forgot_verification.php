@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <?php
 
 require '/var/www/PA/PHPMailer/src/PHPMailer.php';
@@ -23,7 +24,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
         $stmt = $bdd->prepare("UPDATE utilisateurs SET reset_mdp_token = :token, token_expiry = :expiry WHERE email = :email");
         $stmt->execute(['token' => $reset_token, 'expiry' => $expires, 'email' => $email]);
 
-        $reset_link = "http://213.32.90.110/connexion/forgot_mdp.php?token=" . $reset_token;
+        $reset_link = "http://213.32.90.110/connexion/reset_mdp.php?token=" . $reset_token;
         $subject = "Demande de réinitialisation de mot de passe";
         $message = "Veuillez suivre le lien ci-dessous afin de réinitialiser votre mot de passe:\n\n" . $reset_link;
 

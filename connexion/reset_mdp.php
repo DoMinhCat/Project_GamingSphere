@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="fr">
-
 <?php
-$title = 'Mot de passe oublié';
-include('../include/head.php'); ?>
+$title = 'Réinitilisation de mot de passe';
+//include('../include/database.php');
+include('../include/head.php')
+?>
 
 <body>
   <?php
@@ -13,11 +15,9 @@ include('../include/head.php'); ?>
 
   <div class="d-flex justify-content-center">
     <div class="col-8 col-sm-7 col-md-6 col-lg-7 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
-      <div class="pb-1">
-        <h1 class="mb-0">Mot de passe oublié ?</h1>
+      <div class="pb-3">
+        <h1 class="mb-0">Réinitialisation de mot de passe</h1>
       </div>
-
-      <span class="lato16">Entrez votre email et nous vous enverrons un email pour réinitialiser votre mot de passe</span>
 
       <div class="lato24 pt-1">
         <?php
@@ -28,10 +28,12 @@ include('../include/head.php'); ?>
       </div>
       <form method="post" action="forgot_verification.php">
         <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
-          <input type="email" name="email" placeholder="Votre email" required aria-describedby="emailHelp" class="form-control input_field">
+          <input type="text" name="mdp" placeholder="Votre nouveau mot de passe" required class="form-control input_field">
+
+          <input type="text" name="confirm_mdp" placeholder="Veuillez confirmer votre mot de passe" required class="form-control input_field">
 
           <div class="d-flex flex-column pt-3">
-            <input type="Submit" class="btn btn-primary" value="Envoyer le lien de connexion">
+            <input type="Submit" class="btn btn-primary" value="Réinitialiser mon mot de passe">
 
           </div>
         </div>
