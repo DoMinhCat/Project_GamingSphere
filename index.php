@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    $success = isset($_GET['success']) ? $_GET['success'] : "";
+    $user_pseudo = isset($_GET['user_pseudo']) ? htmlspecialchars($_GET['user_pseudo']) : "";
+    $pseudo = isset($_GET['pseudo']) ? htmlspecialchars($_GET['pseudo']) : "";
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <?php
@@ -9,14 +15,7 @@ include('include/head.php')
 
 <body>
     <?php include('include/header.php') ?>
-    <?php
-    session_start();
-    $success = isset($_GET['success']) ? $_GET['success'] : "";
-    $user_pseudo = isset($_GET['user_pseudo']) ? htmlspecialchars($_GET['user_pseudo']) : "";
-    $pseudo = isset($_GET['pseudo']) ? htmlspecialchars($_GET['pseudo']) : "";
-    ?>
-
-
+    
     <?php if ($success == '1' || $success == 'connected') : ?>
         <div class="feedback text-center mb-4 mt-4" style="background-color: #f5f0e1; color:#1E3D59;">
             <?php

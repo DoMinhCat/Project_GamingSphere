@@ -12,7 +12,7 @@ include('../include/database.php');
 if (isset($_POST['email']) && !empty($_POST['email'])) {
     $email = trim($_POST['email']);
 
-    $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE email = :email");
+    $stmt = $bdd->prepare("SELECT * FROM utilisateurs WHERE email = :email");
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
