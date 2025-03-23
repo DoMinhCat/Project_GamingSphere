@@ -49,11 +49,19 @@ $this_page = basename($_SERVER['PHP_SELF']);
         </div>
 
         <div class="d-flex ms-auto align-items-center">
-          <form method="get"
-            action=<?= ($this_page == 'index.php') ? 'include/search.php' : '../include/search.php' ?> class="d-flex" role="search">
-            <input class="form-control me-2 input_field" style="border:0px;width:100%" type="search" placeholder="Rechercher" aria-label="Search">
-          </form>
-          <div style="padding-right: 15px; padding-left: 15px;">
+        <form id="globalSearchForm" method="POST" action="/PA/include/search.php" class="d-flex align-items-center">
+          <div class="input-group">
+            <input type="text" id="query" name="query" class="form-control" placeholder="Rechercher..." required>
+            <select name="category" id="category" class="form-select">
+              <option value="">Tous</option>
+              <option value="users">Utilisateurs</option>
+              <option value="articles">Articles</option>
+              <option value="games">Jeux</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+          </div>
+        </form>
+                <div style="padding-right: 15px; padding-left: 15px;">
             <a href="message.php" class="btn btn-outline-dark">
               <i class="bi bi-chat-dots-fill"></i>
             </a>
@@ -68,17 +76,18 @@ $this_page = basename($_SERVER['PHP_SELF']);
               <i class="bi bi-person-circle"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end" style="padding:0;">
-              <li><a class="dropdown-item btn btn-sm py-3" type="button"
-                  href=<?php
-$base_path = ($this_page == 'index.php') ? 'connexion/' : '../connexion/';
-if ($this_page == 'login.php' || $this_page == 'inscription.php') {
-    $href = 'login.php';
-} else {
-    $href = isset($_SESSION['user_email']) ? $base_path . 'mon_compte.php' : $base_path . 'login.php';
-}
-echo htmlspecialchars($href, ENT_QUOTES, 'UTF-8');
-?>
->Mon compte</a></li>
+            <li>
+  <?php
+    
+     if (isset($_SESSION['user_email'])) {
+         $href = 'mon_compte.php';  
+         $display_name = $_SESSION['user_pseudo']; 
+     } else {
+         $href = $base_path . 'login.php'; 
+         $display_name = 'Mon compte';
+     }
+  ?>
+</li>
               <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
               <li><button class="dropdown-item btn btn-sm py-3" type="button">abcdef</button></li>
               <li><button class="dropdown-item btn btn-sm py-3" type="button">Deconnexion</button></li>
