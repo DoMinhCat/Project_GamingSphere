@@ -2,8 +2,7 @@
   margin: 0;
   padding: 0;
 }
-html,
-body {
+html{
   overflow-x: hidden;
   width: 100%;
 }
@@ -11,6 +10,8 @@ main {
   flex-grow: 1;
 }
 body {
+  overflow-x: hidden;
+  width: 100%;
   max-width: 100vw;
   max-height: 100vh;
   display: flex;

@@ -13,11 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $bdd->prepare("UPDATE utilisateurs SET mot_de_passe = :mdp, reset_token = NULL, token_expiry = NULL WHERE reset_mdp_token = :token");
         $stmt->execute(['password' => $new_password, 'token' => $token]);
 
-        header('forgot_mdp.php?message="Votre mot de passe a été réinitialisé"');
+        header('Location: forgot_mdp.php?success=1');
         exit();
     }
     else{
-        header('reset_mdp_err.php');
+        header('Location: reset_mdp_err.php');
         exit();
     }
 
