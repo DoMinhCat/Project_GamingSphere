@@ -4,7 +4,7 @@ if (!isset($_GET['token']) || empty($_GET['token'])) {
   die("Token invalid");
 }
 $token = $_GET['token'];
-//include('../include/database.php');
+include('../include/database.php');
 
 $stmt = $bdd->prepare("SELECT * FROM utilisateurs WHERE reset_mdp_token = :token AND token_expiry > NOW()");
 $stmt->execute(['token' => $token]);
