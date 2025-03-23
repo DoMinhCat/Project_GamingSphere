@@ -1,4 +1,9 @@
 <?php
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 $this_page = basename($_SERVER['PHP_SELF']);
 ?>
 <header>
@@ -65,16 +70,15 @@ $this_page = basename($_SERVER['PHP_SELF']);
             <ul class="dropdown-menu dropdown-menu-end" style="padding:0;">
               <li><a class="dropdown-item btn btn-sm py-3" type="button"
                   href=<?php
-                        if ($this_page == 'login.php' || $this_page == 'inscription.php') {
-                          echo 'login.php';
-                        } elseif ($this_page == 'index.php') {
-                          if (isset($_SESSION['email'])) echo 'connexion/mon_compte.php';
-                          else echo 'connexion/login.php';
-                        } else {
-                          if (isset($_SESSION['email'])) echo '../connexion/mon_compte.php';
-                          else echo '../connexion/login.php';
-                        }
-                        ?>>Mon compte</a></li>
+$base_path = ($this_page == 'index.php') ? 'connexion/' : '../connexion/';
+if ($this_page == 'login.php' || $this_page == 'inscription.php') {
+    $href = 'login.php';
+} else {
+    $href = isset($_SESSION['user_email']) ? $base_path . 'mon_compte.php' : $base_path . 'login.php';
+}
+echo htmlspecialchars($href, ENT_QUOTES, 'UTF-8');
+?>
+>Mon compte</a></li>
               <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
               <li><button class="dropdown-item btn btn-sm py-3" type="button">abcdef</button></li>
               <li><button class="dropdown-item btn btn-sm py-3" type="button">Deconnexion</button></li>
