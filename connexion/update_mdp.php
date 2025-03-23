@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
     else{
-        header('forgot_mdp.php?message="Token invalid ou expiré"');
+        header('reset_mdp_err.php');
         exit();
     }
 

@@ -1,7 +1,8 @@
 
 <?php
 if (!isset($_GET['token']) || empty($_GET['token'])) {
-  die("Token invalid");
+  header('reset_mdp_err.php');
+  exit();
 }
 $token = $_GET['token'];
 include('../include/database.php');
@@ -11,7 +12,8 @@ $stmt->execute(['token' => $token]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if(!$user){
-  die("Token invalid ou expiré");
+  header('reset_mdp_err.php');
+  exit();
 }
 ?>
 
@@ -41,12 +43,12 @@ include('../include/head.php')
         }
         ?>
       </div>
-      <form method="post" action="forgot_verification.php">
+      <form method="post" action="update_mdp.php">
         <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
           <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
-          <input type="text" name="mdp" placeholder="Votre nouveau mot de passe" required class="form-control input_field">
+          <input type="password" name="mdp" placeholder="Votre nouveau mot de passe" required class="form-control input_field">
 
-          <input type="text" name="confirm_mdp" placeholder="Veuillez confirmer votre mot de passe" required class="form-control input_field">
+          <input type="password" name="confirm_mdp" placeholder="Veuillez confirmer votre mot de passe" required class="form-control input_field">
 
           <div class="d-flex flex-column pt-3">
             <input type="Submit" class="btn btn-primary" value="Réinitialiser mon mot de passe">
