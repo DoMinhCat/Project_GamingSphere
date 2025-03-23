@@ -2,7 +2,6 @@
 <?php 
 session_start();
 include('../../include/database.php');
-include ('../navbar.php');
 
 
 ?>
@@ -12,6 +11,7 @@ include ('../navbar.php');
     <title>Gestions des utilisateurs</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<?php include('../navbar.php');?>
 <body>
 <main class="container mt-5">
 <?php
