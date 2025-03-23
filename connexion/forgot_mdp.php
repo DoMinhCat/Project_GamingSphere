@@ -32,7 +32,7 @@ include('../include/head.php');
             <div class="lato24 pt-1">
               <?php
               if (isset($_GET['message']) && !empty($_GET['message'])) {
-                echo '<p>' . htmlspecialchars($_GET['message']) . '</p>';
+                echo '<p class="m-0">' . htmlspecialchars($_GET['message']) . '</p>';
               }
               ?>
             </div>

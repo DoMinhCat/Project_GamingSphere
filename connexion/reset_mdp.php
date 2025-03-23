@@ -46,7 +46,7 @@ include('../include/head.php')
       <form method="post" action="update_mdp.php">
         <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
           <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
-          <input type="password" name="mdp" placeholder="Votre nouveau mot de passe" required class="form-control input_field">
+          <input type="password" name="new_mdp" placeholder="Votre nouveau mot de passe" required class="form-control input_field">
 
           <input type="password" name="confirm_mdp" placeholder="Veuillez confirmer votre mot de passe" required class="form-control input_field">
 
