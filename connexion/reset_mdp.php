@@ -1,7 +1,7 @@
 
 <?php
 if (!isset($_GET['token']) || empty($_GET['token'])) {
-  header('reset_mdp_err.php');
+  header('Location: reset_mdp_err.php');
   exit();
 }
 $token = $_GET['token'];
@@ -12,7 +12,7 @@ $stmt->execute(['token' => $token]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if(!$user){
-  header('reset_mdp_err.php');
+  header('Location: reset_mdp_err.php');
   exit();
 }
 ?>
