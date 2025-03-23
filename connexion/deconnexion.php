@@ -1,7 +1,8 @@
-=<?php
+<?php
 session_start();
 session_destroy();
 setcookie('email', '', time() - 60);
-header('location: /index.php');
+echo "Session détruite. Redirection en cours...";
+header('Location: ../index.php');
 exit;
 ?>
