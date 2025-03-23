@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['token']) && !empty($_POST['token']) && isset($_POST['new_mdp']) && !empty($_POST['new_mdp']) && isset($_POST['confirm_mdp']) && !empty($_POST['confirm_mdp'])) {
         
         if ($_POST['new_mdp'] !== $_POST['confirm_mdp']) {
-            header('Location: forgot_mdp.php?message=Les mots de passe ne correspondent pas.');
+            header('Location: reset_mdp.php?token='. $reset_token. '&message=' . urlencode("Les mots de passe ne correspondent pas"));
             exit();
         }
         
