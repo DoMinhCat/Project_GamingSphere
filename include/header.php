@@ -77,17 +77,17 @@ $this_page = basename($_SERVER['PHP_SELF']);
             </button>
             <ul class="dropdown-menu dropdown-menu-end" style="padding:0;">
             <li>
-  <?php
-    
-     if (isset($_SESSION['user_email'])) {
-         $href = 'mon_compte.php';  
-         $display_name = $_SESSION['user_pseudo']; 
-     } else {
-         $href = $base_path . 'login.php'; 
-         $display_name = 'Mon compte';
-     }
-  ?>
-</li>
+                <?php
+                  if (isset($_SESSION['user_email'])) {
+                      $href = ($this_page == 'index.php') ? 'profil/my_account.php' : '../profil/my_account.php';  
+                      $display_name = $_SESSION['user_pseudo']; 
+                  } else {
+                      $href = ($this_page == 'index.php') ? 'connexion/login.php' : '../connexion/login.php'; 
+                      $display_name = 'Mon compte';
+                  }
+                ?>
+                <a href="<?= $href ?>" class="dropdown-item btn btn-sm py-3"><?= htmlspecialchars($display_name) ?></a>
+            </li>
               <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
               <li><button class="dropdown-item btn btn-sm py-3" type="button">abcdef</button></li>
               <li><button class="dropdown-item btn btn-sm py-3" type="button">Deconnexion</button></li>

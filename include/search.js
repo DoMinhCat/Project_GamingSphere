@@ -16,15 +16,12 @@ document
     try {
       const response = await fetch("/search.php", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `query=${encodeURIComponent(query)}`,
       });
 
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
-      }
 
       const data = await response.json();
       renderResults(data, resultDiv);
@@ -36,8 +33,6 @@ document
   });
 
 function renderResults(data, resultDiv) {
-  resultDiv.innerHTML = "";
-
   const sections = [
     { key: "users", title: "Pseudos", renderItem: (item) => item.username },
     {
@@ -52,19 +47,16 @@ function renderResults(data, resultDiv) {
     },
   ];
 
-  let hasResults = false;
-
-  sections.forEach(({ key, title, renderItem }) => {
-    if (data[key] && data[key].length > 0) {
-      hasResults = true;
+  const resultsHTML = sections
+    .map(({ key, title, renderItem }) => {
+      if (!data[key] || data[key].length === 0) return "";
       const itemsHTML = data[key]
-        .map((item) => `<li>${renderItem(item)}</li>`)
+        .map(renderItem)
+        .map((item) => `<li>${item}</li>`)
         .join("");
-      resultDiv.innerHTML += `<h3>${title} :</h3><ul>${itemsHTML}</ul>`;
-    }
-  });
+      return `<h3>${title} :</h3><ul>${itemsHTML}</ul>`;
+    })
+    .join("");
 
-  if (!hasResults) {
-    resultDiv.innerHTML = "<p>Aucun résultat trouvé.</p>";
-  }
+  resultDiv.innerHTML = resultsHTML || "<p>Aucun résultat trouvé.</p>";
 }

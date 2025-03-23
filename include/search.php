@@ -53,46 +53,56 @@ include('header.php');
 
         <?php if ($users): ?>
             <div class="section mb-4">
-                <h3 class="search-title">Utilisateurs</h3>
-                <ul class="list-group">
-                    <?php foreach ($users as $user): ?>
-                        <li class="list-group-item"><?php echo htmlspecialchars($user['pseudo']); ?></li>
-                    <?php endforeach; ?>
-                </ul>
+            <h3 class="search-title">Utilisateurs</h3>
+            <ul class="list-group">
+                <?php foreach ($users as $user): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <?php echo htmlspecialchars($user['pseudo']); ?>
+                    <a href="/PA/profil/profil.php?user=<?php echo urlencode($user['pseudo']); ?>" class="btn btn-primary btn-sm">Voir le profil</a>
+                </li>
+                <?php endforeach; ?>
+            </ul>
             </div>
         <?php endif; ?>
 
 
         <?php if ($articles): ?>
             <div class="section mb-4">
-                <h3 class="search-title">Articles</h3>
-                <ul class="list-group">
-                    <?php foreach ($articles as $article): ?>
-                        <li class="list-group-item"><?php echo htmlspecialchars($article['titre']); ?></li>
-                    <?php endforeach; ?>
-                </ul>
+            <h3 class="search-title">Articles</h3>
+            <ul class="list-group">
+                <?php foreach ($articles as $article): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <?php echo htmlspecialchars($article['titre']); ?>
+                    <a href="article.php?title=<?php echo urlencode($article['titre']); ?>" class="btn btn-primary btn-sm">Lire l'article</a>
+                </li>
+                <?php endforeach; ?>
+            </ul>
             </div>
         <?php endif; ?>
 
 
         <?php if ($games): ?>
             <div class="section mb-4">
-                <h3 class="search-title">Jeux</h3>
-                <ul class="list-group">
-                    <?php foreach ($games as $game): ?>
-                        <li class="list-group-item"><?php echo htmlspecialchars($game['nom']); ?></li>
-                    <?php endforeach; ?>
-                </ul>
+            <h3 class="search-title">Jeux</h3>
+            <ul class="list-group">
+                <?php foreach ($games as $game): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <?php echo htmlspecialchars($game['nom']); ?>
+                    <a href="game.php?name=<?php echo urlencode($game['nom']); ?>" class="btn btn-primary btn-sm">Voir le jeu</a>
+                </li>
+                <?php endforeach; ?>
+            </ul>
             </div>
         <?php endif; ?>
+
 
         <?php if (empty($users) && empty($articles) && empty($games)): ?>
             <div class="alert alert-info" role="alert">
-                Aucun résultat trouvé pour votre recherche.
+            Aucun résultat trouvé pour votre recherche.
             </div>
         <?php endif; ?>
-    </div>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+    </html>
