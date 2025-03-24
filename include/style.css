@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
 }
-html{
+html {
   overflow-x: hidden;
   width: 100%;
 }
@@ -318,6 +318,46 @@ h1 {
   object-fit: contain;
   height: 150px;
   width: 100%;
+}
+
+.nav_profil {
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.under_nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  text-align: center;
+}
+
+.under_nav .nav-link {
+  padding: 15px 25px; 
+  margin: 0 15px; 
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%; 
+  padding: 0; 
+}
+
+.navbar-nav .nav-item {
+  margin: 0 20px; /
+}
+
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+.section-title {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
 }
 
 .dark {

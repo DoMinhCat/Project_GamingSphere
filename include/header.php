@@ -1,9 +1,29 @@
 <?php
+include('/MAMP/htdocs/PA/include/database.php');
+include('/MAMP/htdocs/PA/include/head.php');
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+if (isset($_SESSION['user_id'])) {
+  try {
+      $stmt = $bdd->prepare("SELECT u.pseudo, r.date_début
+                             FROM relations r
+                             JOIN utilisateurs u ON u.id_utilisateurs = r.user_id1
+                             WHERE r.user_id2 = ? AND r.status = 'pending'");
+      $stmt->execute([$_SESSION['user_id']]);
+      $friendRequests = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      
+      $notificationCount = count($friendRequests);
+  } catch (PDOException $e) {
+      $notificationCount = 0;
+  }
+} else {
+  $notificationCount = 0;
+}
 ?>
 <header>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <nav class="navbar nav-underline navbar-expand-xl bg-body-tertiary my-navbar" style="padding-top: 0.2rem; padding-bottom:0.4rem;">
     <div class="container container-fluid" style="padding: 0.5rem">
       <a href=<?= ($this_page == 'index.php') ? 'connexion/login.php' : '../connexion/login.php' ?>>
@@ -35,7 +55,8 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <div class="d-flex ms-auto align-items-center">
-          <form id="globalSearchForm" method="POST" action="http://213.32.90.110/include/search.php" class="d-flex align-items-center">
+
+          <form id="globalSearchForm" method="POST" action="/PA/include/search.php" class="d-flex align-items-center me-3">
             <div class="input-group">
               <input type="text" id="query" name="query" class="form-control" placeholder="Rechercher..." required>
               <select name="category" id="category" class="form-select">
@@ -44,48 +65,81 @@ if (session_status() === PHP_SESSION_NONE) {
                 <option value="articles">Articles</option>
                 <option value="games">Jeux</option>
               </select>
-              <button type="submit" class="btn btn-primary">Rechercher</button>
             </div>
           </form>
-          <div style="padding-right: 15px; padding-left: 15px;">
-            <a href="message.php" class="btn btn-outline-dark">
+          <div class="d-flex align-items-center">
+            <a href="message.php" class="btn btn-outline-dark d-flex align-items-center me-3">
               <i class="bi bi-chat-dots-fill"></i>
-            </a>
-          </div>
-          <div style="padding-right: 15px;">
-            <a href="panier.php" class="btn btn-outline-dark">
+            </a> 
+            <a href="panier.php" class="btn btn-outline-dark d-flex align-items-center me-3">
               <i class="bi bi-cart-fill"></i>
             </a>
-          </div>
-          <div class="dropdown">
-            <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-person-circle"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end" style="padding:0;">
-              <li>
-                <?php
-                if (isset($_SESSION['user_email'])) {
-                  $href = ($this_page == 'index.php') ? 'profil/my_account.php' : '../profil/my_account.php';  
-                  $display_name = $_SESSION['user_pseudo']; 
-                } else {
-                  $href = ($this_page == 'index.php') ? 'connexion/login.php' : '../connexion/login.php'; 
-                  $display_name = 'Mon compte';
-                }
-                ?>
-                <a href="<?= $href ?>" class="dropdown-item btn btn-sm py-3"><?php echo htmlspecialchars($display_name) ?></a>
-              </li>
-              <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
-              <li><a href="http://213.32.90.110/connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">Deconnexion</a></li>
-            </ul>
+              <?php if (isset($_SESSION['user_email'])) : ?>
+            <div class="dropdown me-3">
+              <button class="btn btn-outline-dark position-relative d-flex align-items-center" id="notification-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-bell-fill"></i>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notification-count" style="display: <?= $notificationCount > 0 ? 'inline' : 'none'; ?>;">
+                <?= $notificationCount ?>
+                  </span>
+              </button>
+                <ul class="dropdown-menu dropdown-menu-end" id="notification-menu" style="padding: 0; max-height: 300px; overflow-y: auto;">
+              <?php if ($notificationCount > 0): ?>
+              <?php foreach ($friendRequests as $request): ?>
+                  <li class="dropdown-item d-flex justify-content-between align-items-center">
+                    <a href="profil.php?user=<?= urlencode($request['pseudo']) ?>" class="text-dark">
+                        <strong>Demande d'ami</strong> de <?= htmlspecialchars($request['pseudo']) ?> - <?= date('d/m/Y', strtotime($request['date_début'])) ?>
+                    </a>
+                      <div class="btn-group">
+                        <form action="/PA/profil/accept_friend_request.php" method="POST" style="display: inline;">
+                          <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
+                          <button type="submit" class="btn btn-success btn-sm" title="Accepter">
+                            <i class="bi bi-check-circle-fill"></i>
+                          </button>
+                        </form>
+                        <form action="/PA/profil/reject_friend_request.php" method="POST" style="display: inline;">
+                            <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
+                            <button type="submit" class="btn btn-danger btn-sm" title="Refuser">
+                                <i class="bi bi-x-circle-fill"></i>
+                            </button>
+                        </form>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <li class="dropdown-item text-center text-muted">Aucune notification</li>
+            <?php endif; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+            <div class="dropdown">
+              <button class="btn btn-outline-dark dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" style="padding:0;">
+                <li>
+                  <?php
+                  if (isset($_SESSION['user_email'])) {
+                    $href = ($this_page == 'index.php') ? '/PA/profil/my_account.php/' : '../profil/my_account.php';  
+                    $display_name = $_SESSION['user_pseudo']; 
+                  } else {
+                    $href = ($this_page == 'index.php') ? '/PA/connexion/login.php/' : '../connexion/login.php'; 
+                    $display_name = 'Mon compte';
+                  }
+                  ?>
+                  <a href="<?= $href ?>" class="dropdown-item btn btn-sm py-3"><?php echo htmlspecialchars($display_name) ?></a>
+                </li>
+                <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
+                <li><a href="/PA/connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">Déconnexion</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      </div>
     </div>
     <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
-            <a href="http://213.32.90.110/back-office/index.php"  class="btn btn-warning me-3 ml-4 mr-4" style="background-color: #ffc107; color: #212529; border-radius: 25px; font-weight: bold; padding: 0.5rem 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-              <i class="bi bi-gear-fill"></i> Back-Office
-            </a>
-          <?php endif; ?>
+      <a href="/PA/back-office/index.php"  class="btn btn-warning me-3 ml-4 mr-4" style="background-color: #ffc107; color: #212529; border-radius: 25px; font-weight: bold; padding: 0.5rem 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <i class="bi bi-gear-fill"></i> Back-Office
+      </a>
+    <?php endif; ?>
   </nav>
 </header>

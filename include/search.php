@@ -61,7 +61,7 @@ include('header.php');
                 <?php foreach ($users as $user): ?>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <?php echo htmlspecialchars($user['pseudo']); ?>
-                    <a href="http://213.32.90.110/profil/profil.php?user=<?php echo urlencode($user['pseudo']); ?>" class="btn btn-primary btn-sm">Voir le profil</a>
+                    <a href="/PA/profil/profil.php?user=<?php echo urlencode($user['pseudo']); ?>" class="btn btn-primary btn-sm">Voir le profil</a>
                 </li>
                 <?php endforeach; ?>
             </ul>

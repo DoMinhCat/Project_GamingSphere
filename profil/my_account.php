@@ -70,9 +70,32 @@ try {
 include('../include/head.php');
 include('../include/header.php'); 
 ?>
+<nav class="navbar navbar-expand-lg navbar-light bg-light nav_profil">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav under_nav">
+        <li class="nav-item">
+          <a class="nav-link" href="friends_list.php">Liste des amis</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="tournaments_list.php">Mes tournois</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="order_history.php">Historique des commandes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/PA/connexion/deconnexion.php">Se déconnecter</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 <body>
 <div class="container mt-4">
-    <!-- Carte principale -->
+
     <div class="card shadow-sm p-4 connexion_box">
         <h3 class="card-title montserrat-titre40">Mon compte</h3>
         <hr>
@@ -104,7 +127,6 @@ include('../include/header.php');
             <?php endif; ?>
         </div>
 
-        <!-- Carte pour les informations personnelles -->
         <div class="card shadow-sm p-3 mb-4">
             <h4 class="card-title montserrat-titre40">Informations personnelles</h4>
             <hr>
@@ -115,7 +137,7 @@ include('../include/header.php');
             <p class="montserrat-titre32"><strong>Date d'inscription :</strong> <?php echo htmlspecialchars($user['date_inscription']); ?></p>
         </div>
 
-        <!-- Carte pour l'adresse -->
+
         <div class="card shadow-sm p-3">
             <h4 class="card-title montserrat-titre40">Adresse</h4>
             <hr>
@@ -134,7 +156,6 @@ include('../include/header.php');
     </div>
 </div>
 
-<!-- Modale Bootstrap pour la suppression du compte -->
 <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
