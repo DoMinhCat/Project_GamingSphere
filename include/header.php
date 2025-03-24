@@ -1,6 +1,5 @@
 <?php
 include('/MAMP/htdocs/PA/include/database.php');
-include('/MAMP/htdocs/PA/include/head.php');
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -22,8 +21,6 @@ if (isset($_SESSION['user_id'])) {
 }
 ?>
 <header>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <nav class="navbar nav-underline navbar-expand-xl bg-body-tertiary my-navbar" style="padding-top: 0.2rem; padding-bottom:0.4rem;">
     <div class="container container-fluid" style="padding: 0.5rem">
       <a href=<?= ($this_page == 'index.php') ? 'connexion/login.php' : '../connexion/login.php' ?>>
@@ -111,6 +108,7 @@ if (isset($_SESSION['user_id'])) {
         </ul>
     </div>
 <?php endif; ?>
+
             <div class="dropdown">
               <button class="btn btn-outline-dark dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person-circle"></i>
@@ -119,10 +117,10 @@ if (isset($_SESSION['user_id'])) {
                 <li>
                   <?php
                   if (isset($_SESSION['user_email'])) {
-                    $href = ($this_page == 'index.php') ? '/PA/profil/my_account.php/' : '../profil/my_account.php';  
+                    $href = ($this_page == 'index.php') ? 'profil/my_account.php' : '../profil/my_account.php';  
                     $display_name = $_SESSION['user_pseudo']; 
                   } else {
-                    $href = ($this_page == 'index.php') ? '/PA/connexion/login.php/' : '../connexion/login.php'; 
+                    $href = ($this_page == 'index.php') ? 'connexion/login.php' : '../connexion/login.php'; 
                     $display_name = 'Mon compte';
                   }
                   ?>
