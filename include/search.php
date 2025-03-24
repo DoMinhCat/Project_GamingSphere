@@ -11,8 +11,11 @@ $users = $articles = $games = [];
 try {
   
     if ($category == 'users' || empty($category)) {
-        $stmtUsers = $bdd->prepare("SELECT pseudo FROM utilisateurs WHERE pseudo LIKE ?");
-        $stmtUsers->execute(['%' . $query . '%']);
+        $stmtUsers = $bdd->prepare("
+            SELECT pseudo, nom, prenom 
+            FROM utilisateurs 
+            WHERE pseudo LIKE ? OR nom LIKE ? OR prenom LIKE ?");
+        $stmtUsers->execute(['%' . $query . '%', '%' . $query . '%', '%' . $query . '%']);
         $users = $stmtUsers->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -58,7 +61,7 @@ include('header.php');
                 <?php foreach ($users as $user): ?>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <?php echo htmlspecialchars($user['pseudo']); ?>
-                    <a href="/PA/profil/profil.php?user=<?php echo urlencode($user['pseudo']); ?>" class="btn btn-primary btn-sm">Voir le profil</a>
+                    <a href="http://213.32.90.110/profil/profil.php?user=<?php echo urlencode($user['pseudo']); ?>" class="btn btn-primary btn-sm">Voir le profil</a>
                 </li>
                 <?php endforeach; ?>
             </ul>

@@ -35,7 +35,7 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <div class="d-flex ms-auto align-items-center">
-          <form id="globalSearchForm" method="POST" action="/PA/include/search.php" class="d-flex align-items-center">
+          <form id="globalSearchForm" method="POST" action="http://213.32.90.110/include/search.php" class="d-flex align-items-center">
             <div class="input-group">
               <input type="text" id="query" name="query" class="form-control" placeholder="Rechercher..." required>
               <select name="category" id="category" class="form-select">
@@ -72,10 +72,10 @@ if (session_status() === PHP_SESSION_NONE) {
                   $display_name = 'Mon compte';
                 }
                 ?>
-                <a href="<?= $href ?>" class="dropdown-item btn btn-sm py-3"><?= htmlspecialchars($display_name) ?></a>
+                <a href="<?= $href ?>" class="dropdown-item btn btn-sm py-3"><?php echo htmlspecialchars($display_name) ?></a>
               </li>
               <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
-              <li><a href="/PA/connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">Deconnexion</a></li>
+              <li><a href="http://213.32.90.110/connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">Deconnexion</a></li>
             </ul>
           </div>
         </div>
@@ -83,7 +83,7 @@ if (session_status() === PHP_SESSION_NONE) {
       </div>
     </div>
     <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
-            <a href="/PA/back-office/index.php" class="btn btn-warning me-3 ml-4 mr-4" style="background-color: #ffc107; color: #212529; border-radius: 25px; font-weight: bold; padding: 0.5rem 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <a href="http://213.32.90.110/back-office/index.php"  class="btn btn-warning me-3 ml-4 mr-4" style="background-color: #ffc107; color: #212529; border-radius: 25px; font-weight: bold; padding: 0.5rem 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
               <i class="bi bi-gear-fill"></i> Back-Office
             </a>
           <?php endif; ?>
