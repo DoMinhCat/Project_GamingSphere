@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>Cependant, si vous n'avez pas demandé cette réinitialisation, nous vous recommandons de modifier immédiatement votre mot de passe pour sécuriser votre compte. Vous pouvez le faire en suivant ce lien :</p>
                 <p><a href='http://213.32.90.110/connexion/forgot_mdp.php'>Cliquez ici pour modifier votre mot de passe</a></p>
                 <p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
-                <p><strong>Cordialement,</strong><br>L'équipe de Gaming Sphère</p>";
+                <p>Cordialement,<br>L'équipe de Gaming Sphère</p>";
 
                 $mail = new PHPMailer(true);
                 try {
