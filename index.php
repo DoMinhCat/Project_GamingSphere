@@ -11,7 +11,6 @@ $title = 'Acceuil';
 include('include/database.php');
 include('include/head.php')
 ?>
-<script src="include/carousel.js"></script>
 
 <body>
     <?php include('include/header.php') ?>

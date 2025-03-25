@@ -39,7 +39,7 @@ include('../include/head.php')
       <div class="lato24">
         <?php
         if (isset($_GET['message']) && !empty($_GET['message'])) {
-          echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
+          echo '<p class="m-0 py-2 text-warning">' . htmlspecialchars($_GET['message']) . '</p>';
         }
         ?>
       </div>

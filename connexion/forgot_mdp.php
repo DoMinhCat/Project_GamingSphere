@@ -75,15 +75,17 @@ include('../include/head.php');
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="send_emailLabel">
           <?php 
+          if (isset($_GET['return'])) {
           if($_GET['return']=='success') echo 'Email envoyé avec succès';
-          elseif($_GET['return']=='not_found') echo 'Adresse email non trouvée'
+          elseif($_GET['return']=='not_found') echo 'Adresse email non trouvée';}
           ?></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
       <?php 
+      if (isset($_GET['return'])) {
           if($_GET['return']=='success') echo 'Suivez le lien envoyé à votre email pour réinitialiser votre mot de passe';
-          elseif($_GET['return']=='not_found') echo 'Veuillezsaisir l\'adresse e-mail associée à votre compte'
+          elseif($_GET['return']=='not_found') echo 'Veuillezsaisir l\'adresse e-mail associée à votre compte';}
       ?>
       </div>
       <div class="modal-footer">
@@ -95,13 +97,13 @@ include('../include/head.php');
 
 <script>
   const urlParams = new URLSearchParams(window.location.search);
-  const success = urlParams.get('success');
+  const success = urlParams.get('return');
 
   if (success) {
-    var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+    var modal = new bootstrap.Modal(document.getElementById('send_email'), {
       keyboard: false
     })
-    myModal.show(); 
+    modal.show(); 
   }
 </script>
 

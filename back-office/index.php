@@ -1,4 +1,10 @@
-<?php session_start(); ?>
+<?php session_start(); 
+if (!isset($_SESSION['admin']) || empty($_SESSION['admin']) || $_SESSION['admin'] !== true) {
+    echo "<div class='alert alert-danger'>Accès refusé. Vous n'êtes pas administrateur.</div>";
+    exit();
+}
+else{
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -56,3 +62,4 @@
 </div>
 </body>
 </html>
+<?php } ?>
