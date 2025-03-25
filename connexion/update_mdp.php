@@ -39,13 +39,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header('Location: forgot_mdp.php?success=1');
                 exit();
             } else {
-                header('Location: reset_mdp_err.php');
+                header('Location: reset_mdp_err.php?message=' .urlencode("Echec de la mise à jour du mot de passe"));
                 exit();
             }
 
         } catch (PDOException $e) {
             error_log($e->getMessage());
-            header('Location: forgot_mdp.php');
+            header('Location: forgot_mdp.php?message=' . urldecode("Peut pas connecter à BDD"));
             exit();
         }
     } else {
