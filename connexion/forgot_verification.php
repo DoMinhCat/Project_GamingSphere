@@ -1,18 +1,19 @@
 <meta charset="UTF-8">
 <?php
 
+require '../vendor/autoload.php';
 require '/var/www/PA/PHPMailer/src/PHPMailer.php';
 require '/var/www/PA/PHPMailer/src/SMTP.php';
 require '/var/www/PA/PHPMailer/src/Exception.php';
-require '../vendor/autoload.php'; 
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
 
 include('../include/database.php');
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load(); 
+$dotenv = Dotenv::createImmutable('/var/www/PA');
+$dotenv->load();
 
 if (isset($_POST['email']) && !empty($_POST['email'])) {
     $email = trim($_POST['email']);
@@ -51,8 +52,8 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = $_ENV['SMTP_USERNAME']; 
-            $mail->Password = $_ENV['SMTP_PASSWORD']; 
+            $mail->Username = $_ENV['SMTP_USERNAME'];
+            $mail->Password = $_ENV['SMTP_PASSWORD'];
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 

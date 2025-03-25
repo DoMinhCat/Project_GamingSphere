@@ -4,12 +4,17 @@
 require '/var/www/PA/PHPMailer/src/PHPMailer.php';
 require '/var/www/PA/PHPMailer/src/SMTP.php';
 require '/var/www/PA/PHPMailer/src/Exception.php';
-require '../vendor/autoload.php'; 
+require '../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
+
 
 include('../include/database.php');
+
+$dotenv = Dotenv::createImmutable('/var/www/PA');
+$dotenv->load();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($_POST['token']) && !empty($_POST['new_mdp']) && !empty($_POST['confirm_mdp'])) {
@@ -85,8 +90,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
-                    $mail->Username = $_ENV['SMTP_USERNAME']; 
-                    $mail->Password = $_ENV['SMTP_PASSWORD']; 
+                    $mail->Username = $_ENV['SMTP_USERNAME'];
+                    $mail->Password = $_ENV['SMTP_PASSWORD'];
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
 

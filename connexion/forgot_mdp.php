@@ -3,7 +3,7 @@
 
 <?php
 $title = 'Mot de passe oublié';
-include('../include/head.php'); 
+include('../include/head.php');
 ?>
 
 <body>
@@ -22,12 +22,12 @@ include('../include/head.php');
         <span class="lato16">Entrez votre email et nous vous enverrons un email pour réinitialiser votre mot de passe</span>
 
         <div class="lato24">
-              <?php
-              if (isset($_GET['message']) && !empty($_GET['message'])) {
-                echo '<p class="m-0 py-3">' . htmlspecialchars($_GET['message']) . '</p>';
-              }
-              ?>
-            </div>
+          <?php
+          if (isset($_GET['message']) && !empty($_GET['message'])) {
+            echo '<p class="m-0 py-3">' . htmlspecialchars($_GET['message']) . '</p>';
+          }
+          ?>
+        </div>
 
         <form method="post" action="forgot_verification.php">
           <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
@@ -70,42 +70,55 @@ include('../include/head.php');
   ?>
 
   <div class="modal fade" id="send_email" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="send_emailLabel">
-          <?php 
-          if (isset($_GET['return'])) {
-          if($_GET['return']=='success') echo 'Email envoyé avec succès';
-          elseif($_GET['return']=='not_found') echo 'Adresse email non trouvée';}
-          ?></h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      <?php 
-      if (isset($_GET['return'])) {
-          if($_GET['return']=='success') echo 'Suivez le lien envoyé à votre email pour réinitialiser votre mot de passe';
-          elseif($_GET['return']=='not_found') echo 'Veuillezsaisir l\'adresse e-mail associée à votre compte';}
-      ?>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="send_emailLabel">
+            <?php
+            if (isset($_GET['return'])) {
+              if ($_GET['return'] == 'success') {
+                echo 'Email envoyé avec succès';
+              } elseif ($_GET['return'] == 'not_found') {
+                echo 'Adresse email non trouvée';
+              } elseif ($_GET['return'] == 'already_requested') {
+                echo 'Demande déjà effectuée';
+              }
+            }
+            ?>
+          </h1>
+
+          <div class="modal-body">
+            <?php
+            if (isset($_GET['return'])) {
+              if ($_GET['return'] == 'success') {
+                echo 'Suivez le lien envoyé à votre email pour réinitialiser votre mot de passe';
+              } elseif ($_GET['return'] == 'not_found') {
+                echo 'Veuillez saisir l\'adresse e-mail associée à votre compte';
+              } elseif ($_GET['return'] == 'already_requested') {
+                echo 'Une demande de réinitialisation de mot de passe a déjà été envoyée. Veuillez vérifier votre boîte de réception.';
+              }
+            }
+            ?>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const success = urlParams.get('return');
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const returnParam = urlParams.get('return');
 
-  if (success) {
-    var modal = new bootstrap.Modal(document.getElementById('send_email'), {
-      keyboard: false
-    })
-    modal.show(); 
-  }
-</script>
+      if (returnParam) {
+        var modal = new bootstrap.Modal(document.getElementById('send_email'), {
+          keyboard: false
+        });
+        modal.show();
+      }
+    </script>
 
 </body>
+
 </html>
