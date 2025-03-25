@@ -121,13 +121,13 @@ if (isset($_SESSION['user_id'])) {
                     $display_name = $_SESSION['user_pseudo']; 
                   } else {
                     $href = ($this_page == 'index.php') ? 'connexion/login.php' : '../connexion/login.php'; 
-                    $display_name = 'Mon compte';
+                    $display_name = 'Se connecter';
                   }
                   ?>
                   <a href="<?= $href ?>" class="dropdown-item btn btn-sm py-3"><?php echo htmlspecialchars($display_name) ?></a>
                 </li>
                 <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
-                <li><a href="../connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">Déconnexion</a></li>
+                <li><a href="../connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">Se déconnecter</a></li>
               </ul>
             </div>
           </div>

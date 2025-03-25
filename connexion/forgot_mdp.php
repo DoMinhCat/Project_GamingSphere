@@ -92,5 +92,18 @@ include('../include/head.php');
     </div>
   </div>
 </div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const success = urlParams.get('success');
+
+  if (success) {
+    var myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+      keyboard: false
+    })
+    myModal.show(); 
+  }
+</script>
+
 </body>
 </html>
