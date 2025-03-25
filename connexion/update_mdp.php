@@ -1,4 +1,10 @@
     <?php
+    require '/var/www/PA/PHPMailer/src/PHPMailer.php';
+    require '/var/www/PA/PHPMailer/src/SMTP.php';
+    require '/var/www/PA/PHPMailer/src/Exception.php';
+    
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
     include('../include/database.php');
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -54,14 +60,48 @@
                         array_pop($last_passwords); 
                     }
 
+                    $stmt = $bdd->prepare("SELECT pseudo FROM utilisateurs WHERE reset_mdp_token = :token");
+                    $stmt->execute(['token' => $token]);
+                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if($user) $pseudo = $user['pseudo'];
+
                     $stmt = $bdd->prepare("UPDATE utilisateurs SET mot_de_passe = :mdp, reset_mdp_token = NULL, token_expiry = NULL, last3_mdp = :last_mdp WHERE reset_mdp_token = :token");
                     $stmt->execute(['mdp' => $new_password, 'token' => $token, 'last_mdp' => json_encode($last_passwords) ]);
 
-                    header('Location: forgot_mdp.php?success=1');
-                    exit();
+                    $subject = "Confirmation de réinitialisation de votre mot de passe";
+                    $message = "Bonjour $pseudo,\n
+                    Nous vous confirmons que votre mot de passe a été réinitialisé avec succès. Si vous êtes à l'origine de cette modification, aucune action supplémentaire n'est requise.\n
+                    
+                    Cependant, si vous n'avez pas demandé cette réinitialisation, nous vous recommandons de modifier immédiatement votre mot de passe pour sécuriser votre compte. Vous pouvez le faire en suivant ce lien :\n\n
+                    http://213.32.90.110/connexion/forgot_mdp.php" ;
+
+                    $mail = new PHPMailer(true);
+                    try {
+                        $mail->isSMTP();
+                        $mail->Host = 'smtp.gmail.com';
+                        $mail->SMTPAuth = true;
+                        $mail->Username = 'do.minh.cat@gmail.com';
+                        $mail->Password = 'lsvp dvxf tnix zear';
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                        $mail->Port = 587;
+
+                        $mail->CharSet = 'UTF-8'; 
+                        $mail->Encoding = 'base64'; 
+
+                        $mail->setFrom('do.minh.cat@gmail.com', 'Minh Cat');
+                        $mail->addAddress($email);
+                        $mail->Subject = $subject;
+                        $mail->Body = $message;
+                        $mail->send();
+                        header('Location: forgot_mdp.php?success=1');
+                        exit();
+                    } catch (Exception $e) {
+                        header('Location: forgot_mdp.php?message=Erreur d\'envoi de l\'email: ' . urlencode($mail->ErrorInfo));
+                        exit();
+                    }
                 } else {
                     header('Location: reset_mdp_err.php?message=' .urlencode("Echec de la mise à jour du mot de passe"));
-                    exit();
+                    exit();                    
                 }
 
             } catch (PDOException $e) {

@@ -62,15 +62,15 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
         $error = isset($_GET['error']) ? $_GET['error'] : "";
         ?>
         <label for="mdp_inscrire" class="form-label">Mot de passe</label>
-        <input type="password" class="form-control f-inscription <?php echo ($error == 'password_length' || $error == 'password_special_char' || $error == 'password_number') ? 'is-invalid' : ''; ?>" aria-describedby="passwordHelpBlock"
-          id="mdp_inscrire" name="mot_de_passe" placeholder="Plus que 8 caractères, inclure un caractère spécial et un chiffre." required>
+        <input type="password" class="form-control f-inscription <?php echo ($error == 'password_length' || $error == 'password_special_char' || $error == 'password_number' || $error == 'password_upper') ? 'is-invalid' : ''; ?>" aria-describedby="passwordHelpBlock"
+          id="mdp_inscrire" name="mot_de_passe" placeholder="Plus que 8 caractères, un caractère spécial, une lettre majuscule et un chiffre." required>
         <?php
         if ($error == 'password_length') {
-          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale et 1 chiffre</div>';
+          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale, 1 lettre majuscule et 1 chiffre</div>';
         } elseif ($error == 'password_special_char') {
-          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale et 1 chiffre</div>';
+          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale, 1 lettre majuscule et 1 chiffre</div>';
         } elseif ($error == 'password_number') {
-          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale et 1 chiffre</div>';
+          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale, 1 lettre majuscule et 1 chiffre</div>';
         }
         ?>
 

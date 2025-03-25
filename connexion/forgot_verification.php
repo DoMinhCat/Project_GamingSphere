@@ -40,19 +40,22 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            $mail->setFrom('mdo1@myges.fr', 'Minh Cat');
+            $mail->CharSet = 'UTF-8'; 
+            $mail->Encoding = 'base64'; 
+
+            $mail->setFrom('do.minh.cat@gmail.com', 'Minh Cat');
             $mail->addAddress($email);
             $mail->Subject = $subject;
             $mail->Body = $message;
             $mail->send();
-            header('Location: forgot_mdp.php?message=Email envoyé avec succès');
+            header('Location: forgot_mdp.php?return=success');
             exit();
         } catch (Exception $e) {
             header('Location: forgot_mdp.php?message=Erreur d\'envoi de l\'email: ' . urlencode($mail->ErrorInfo));
             exit();
         }
     } else {
-        header('Location: forgot_mdp.php?message=Adresse email non trouvée');
+        header('Location: forgot_mdp.php?return=not_found');
         exit();
     }
 }

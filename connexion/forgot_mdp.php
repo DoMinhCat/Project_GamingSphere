@@ -68,5 +68,29 @@ include('../include/head.php');
   <?php
   include("../include/footer.php");
   ?>
+
+  <div class="modal fade" id="send_email" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="send_emailLabel">
+          <?php 
+          if($_GET['return']=='success') echo 'Email envoyé avec succès';
+          elseif($_GET['return']=='not_found') echo 'Adresse email non trouvée'
+          ?></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <?php 
+          if($_GET['return']=='success') echo 'Suivez le lien envoyé à votre email pour réinitialiser votre mot de passe';
+          elseif($_GET['return']=='not_found') echo 'Veuillezsaisir l\'adresse e-mail associée à votre compte'
+      ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
