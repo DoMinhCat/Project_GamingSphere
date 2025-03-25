@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $last_passwords = json_decode($user['last_passwords'], true) ?? [];
 
                 foreach ($last_passwords as $old_password) {
-                    if (password_verify($_POST['new_mdp'], $old_password)) {
+                    if (password_verify($new_password, $old_password)) {
                         header('Location: reset_mdp.php?token=' . $token . '&message=' . urlencode("Vous ne pouvez pas réutiliser un ancien mot de passe!"));
                         exit();
                     }

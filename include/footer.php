@@ -1,4 +1,3 @@
-<footer>
 <footer class="py-4" style="background-color: #1E3D59">
     <div class="container">
         <div class="row row-cols-1 row-cols-md-4 d-flex justify-content-between">
@@ -43,3 +42,4 @@
             © MMP 
         </div>
     </div>
+</footer>

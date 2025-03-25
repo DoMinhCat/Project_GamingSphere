@@ -21,10 +21,10 @@ include('../include/head.php');
 
         <span class="lato16">Entrez votre email et nous vous enverrons un email pour réinitialiser votre mot de passe</span>
 
-        <div class="lato24 py-3">
+        <div class="lato24">
               <?php
               if (isset($_GET['message']) && !empty($_GET['message'])) {
-                echo '<p class="m-0">' . htmlspecialchars($_GET['message']) . '</p>';
+                echo '<p class="m-0 py-3">' . htmlspecialchars($_GET['message']) . '</p>';
               }
               ?>
             </div>
