@@ -106,18 +106,19 @@ include('../include/head.php');
         </div>
       </div>
     </div>
+  </div>
 
-    <script>
-      const urlParams = new URLSearchParams(window.location.search);
-      const returnParam = urlParams.get('return');
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const returnParam = urlParams.get('return');
 
-      if (returnParam) {
-        var modal = new bootstrap.Modal(document.getElementById('send_email'), {
-          keyboard: false
-        });
-        modal.show();
-      }
-    </script>
+    if (returnParam) {
+      var modal = new bootstrap.Modal(document.getElementById('send_email'), {
+        keyboard: false
+      });
+      modal.show();
+    }
+  </script>
 
 </body>
 
