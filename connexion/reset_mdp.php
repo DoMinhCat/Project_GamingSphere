@@ -36,7 +36,7 @@ include('../include/head.php')
         <h1 class="mb-0">Réinitialisation de mot de passe</h1>
       </div>
 
-      <div class="lato24 py-3">
+      <div class="lato24 py-2">
         <?php
         if (isset($_GET['message']) && !empty($_GET['message'])) {
           echo '<p>' . htmlspecialchars($_GET['message']) . '</p>';
@@ -48,9 +48,9 @@ include('../include/head.php')
         <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
           <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
 
-          <label class="form-label text-start lato24">Votre nouveau mot de passe</label>
+          <label class="form-label text-start lato24  ">Votre nouveau mot de passe</label>
           <input type="password" name="new_mdp" required class="form-control input_field">
-          <div id="mdp_help" class="form-text">Votre mot de passe doit avoir au moins 8 caractères, un chiffre et un caractère spécial</div>
+          <div id="mdp_help" class="form-text">Votre mot de passe doit contenir au moins 8 caractères, une lettre majuscule, un chiffre, un symbole spécial et ne peut pas être l'un des 3 mots de passe les plus récents</div>
 
           <label class="form-label text-start lato24">Confirmation de votre nouveau mot de passe</label>
           <input type="password" name="confirm_mdp" required class="form-control input_field">
