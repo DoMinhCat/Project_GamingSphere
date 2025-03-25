@@ -1,8 +1,8 @@
 <?php
     session_start();
-    $success = isset($_GET['success']) ? $_GET['success'] : "";
-    $user_pseudo = isset($_GET['user_pseudo']) ? htmlspecialchars($_GET['user_pseudo']) : "";
-    $pseudo = isset($_GET['pseudo']) ? htmlspecialchars($_GET['pseudo']) : "";
+    $success = $_GET['success'] ?? "";
+    $user_pseudo = htmlspecialchars($_GET['user_pseudo'] ?? "");
+    $pseudo = htmlspecialchars($_GET['pseudo'] ?? "");
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -69,15 +69,6 @@ include('include/head.php')
                 </button>
             </div>
         </div>
-
-        <?php if (!empty($search_results)): ?>
-            <ul>
-                <?php foreach ($search_results as $result): ?>
-                    <li><?php echo htmlspecialchars($result['pseudo']); ?></li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-
         <div id="bande_sepe"></div>
         <h3 class="montserrat-titre40 tournament_title mt-3">TOURNOIS EN COURS</h3>
         <div class="b_l">
