@@ -95,7 +95,7 @@ include('../include/head.php');
               } elseif ($_GET['return'] == 'not_found') {
                 echo 'Veuillez saisir l\'adresse e-mail associée à votre compte';
               } elseif ($_GET['return'] == 'already_requested') {
-                echo 'Une demande de réinitialisation de mot de passe a déjà été envoyée. Veuillez vérifier votre boîte de réception.';
+                echo 'Une demande de réinitialisation de mot de passe a déjà été envoyée. Veuillez vérifier votre boîte mail';
               }
             }
             ?>
