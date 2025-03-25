@@ -256,12 +256,20 @@ h1 {
 .tournament_title {
   text-align: left;
   margin-left: 7%;
-  text-decoration-line: underline;
-  text-decoration-thickness: 0.234375rem;
+  text-decoration-line: underline,#1E3D59;
+  text-decoration-thickness: 0.1rem;
   text-underline-offset: 0.234375rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
+  color: #1E3D59;
 }
+.tournament_title:hover {
+  color: #2f608e ;
+} 
+.dark .tournament_title:hover {
+  color: #d0ccbf ;
+} 
+
 .title_selling_item_index {
   text-align: left;
   margin-left: 10%;

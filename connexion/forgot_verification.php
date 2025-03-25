@@ -46,7 +46,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
         <p><a href='$reset_link'>Cliquez ici</a> pour définir un nouveau mot de passe.</p>
         <p>Ce lien est valable pour <strong>15 minutes</strong>.</p>
         <p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>
-        <p><strong>Cordialement,</strong><br>L'équipe de Gaming Sphère</p>
+        <p>Cordialement,<br>L'équipe de Gaming Sphère</p>
         ";
 
         $mail = new PHPMailer(true);

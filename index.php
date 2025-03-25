@@ -69,7 +69,7 @@ include('include/head.php')
             </div>
         </div>
         <div id="bande_sepe"></div>
-        <a href="tournois/tournois_main.php">
+        <a href="tournois/tournois_main.php" style="text-decoration: none;">
             <h3 class="montserrat-titre40 tournament_title mt-3">TOURNOIS EN COURS</h3>
         </a>
         <div class="b_l">
@@ -161,7 +161,7 @@ include('include/head.php')
         $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
         <div id="bande_sepe"></div>
-        <a href="magasin/magasin_main.php">
+        <a href="magasin/magasin_main.php" style="text-decoration: none;">
             <h3 class="montserrat-titre40 tournament_title">MAGASIN</h3>
         </a>
         <h2 class="montserrat-titre32 title_selling_item_index">Meilleurs Ventes</h2>
