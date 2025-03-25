@@ -118,7 +118,7 @@ if (isset($_SESSION['user_id'])) {
                   <?php
                   if (isset($_SESSION['user_email'])) {
                     $href = ($this_page == 'index.php') ? 'profil/my_account.php' : '../profil/my_account.php';  
-                    $display_name = $_SESSION['user_pseudo']; 
+                    $display_name = 'Mon compte - ' . $_SESSION['user_pseudo']; 
                   } else {
                     $href = ($this_page == 'index.php') ? 'connexion/login.php' : '../connexion/login.php'; 
                     $display_name = 'Se connecter';

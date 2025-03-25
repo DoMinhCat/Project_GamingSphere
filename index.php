@@ -1,8 +1,8 @@
 <?php
-    session_start();
-    $success = $_GET['success'] ?? "";
-    $user_pseudo = htmlspecialchars($_GET['user_pseudo'] ?? "");
-    $pseudo = htmlspecialchars($_GET['pseudo'] ?? "");
+session_start();
+$success = $_GET['success'] ?? "";
+$user_pseudo = htmlspecialchars($_GET['user_pseudo'] ?? "");
+$pseudo = htmlspecialchars($_GET['pseudo'] ?? "");
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -14,7 +14,7 @@ include('include/head.php')
 
 <body>
     <?php include('include/header.php') ?>
-    
+
     <?php if ($success == '1' || $success == 'connected') : ?>
         <div class="feedback text-center mb-4 mt-4" style="background-color: #f5f0e1; color:#1E3D59;">
             <?php
@@ -69,7 +69,9 @@ include('include/head.php')
             </div>
         </div>
         <div id="bande_sepe"></div>
-        <h3 class="montserrat-titre40 tournament_title mt-3">TOURNOIS EN COURS</h3>
+        <a href="tournois/tournois_main.php">
+            <h3 class="montserrat-titre40 tournament_title mt-3">TOURNOIS EN COURS</h3>
+        </a>
         <div class="b_l">
             <div class="row justify-content-center">
                 <div class="col-md-5 mb-5">
@@ -154,37 +156,39 @@ include('include/head.php')
         </div>
 
 
-<?php
+        <?php
         $stmt = $bdd->query("SELECT nom, prix, image FROM jeu");
-$games = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
-<div id="bande_sepe"></div>
-<h3 class="montserrat-titre40 tournament_title">MAGASIN</h3>
-<h2 class="montserrat-titre32 title_selling_item_index">Meilleurs Ventes</h2>
-<div class="d-flex flex-row flex-wrap justify-content-start g-2 sell_card_index">
-    <?php 
-    $max_cards = 6;
-    $count = 0;
-    foreach ($games as $game): 
-        if ($count >= $max_cards) break;
-        $count++;
-    ?>
-        <div class="card" style="width: 18rem;">
-            <img src="back-office/uploads/<?php echo htmlspecialchars($game['image']); ?>" class="card-img-top img_sell_index" alt="Image du jeu">
-            <div class="card-body d-flex flex-column align-items-center">
-                <h5 class="card-title text-center"><?php echo htmlspecialchars($game['nom']); ?></h5>
-                <p class="card-text text-center"><?php echo htmlspecialchars($game['prix']); ?> €</p>
-                <p>Ajouter au panier</p>
-                <button type="button" class="btn btn-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5"></path>
-  <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"></path>
-</svg>
-              </button>
-            </div>
+        $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        ?>
+        <div id="bande_sepe"></div>
+        <a href="magasin/magasin_main.php">
+            <h3 class="montserrat-titre40 tournament_title">MAGASIN</h3>
+        </a>
+        <h2 class="montserrat-titre32 title_selling_item_index">Meilleurs Ventes</h2>
+        <div class="d-flex flex-row flex-wrap justify-content-start g-2 sell_card_index">
+            <?php
+            $max_cards = 6;
+            $count = 0;
+            foreach ($games as $game):
+                if ($count >= $max_cards) break;
+                $count++;
+            ?>
+                <div class="card" style="width: 18rem;">
+                    <img src="back-office/uploads/<?php echo htmlspecialchars($game['image']); ?>" class="card-img-top img_sell_index" alt="Image du jeu">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <h5 class="card-title text-center"><?php echo htmlspecialchars($game['nom']); ?></h5>
+                        <p class="card-text text-center"><?php echo htmlspecialchars($game['prix']); ?> €</p>
+                        <p>Ajouter au panier</p>
+                        <button type="button" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5"></path>
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
-    <?php endforeach; ?>
-</div>
     </main>
     <?php include('include/footer.php'); ?>
 </body>
