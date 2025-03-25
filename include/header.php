@@ -1,5 +1,5 @@
 <?php
-include('/MAMP/htdocs/PA/include/database.php');
+include('../include/database.php');
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -53,7 +53,7 @@ if (isset($_SESSION['user_id'])) {
 
         <div class="d-flex ms-auto align-items-center">
 
-          <form id="globalSearchForm" method="POST" action="/PA/include/search.php" class="d-flex align-items-center me-3">
+          <form id="globalSearchForm" method="POST" action="/include/search.php" class="d-flex align-items-center me-3">
             <div class="input-group">
               <input type="text" id="query" name="query" class="form-control" placeholder="Rechercher..." required>
               <select name="category" id="category" class="form-select">
@@ -87,13 +87,13 @@ if (isset($_SESSION['user_id'])) {
                         <strong>Demande d'ami</strong> de <?= htmlspecialchars($request['pseudo']) ?> - <?= date('d/m/Y', strtotime($request['date_début'])) ?>
                     </a>
                       <div class="btn-group">
-                        <form action="/PA/profil/accept_friend_request.php" method="POST" style="display: inline;">
+                        <form action="http://213.32.90.110/profil/accept_friend_request.php" method="POST" style="display: inline;">
                           <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
                           <button type="submit" class="btn btn-success btn-sm" title="Accepter">
                             <i class="bi bi-check-circle-fill"></i>
                           </button>
                         </form>
-                        <form action="/PA/profil/reject_friend_request.php" method="POST" style="display: inline;">
+                        <form action="http://213.32.90.110/profil/reject_friend_request.php" method="POST" style="display: inline;">
                             <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
                             <button type="submit" class="btn btn-danger btn-sm" title="Refuser">
                                 <i class="bi bi-x-circle-fill"></i>
@@ -127,7 +127,7 @@ if (isset($_SESSION['user_id'])) {
                   <a href="<?= $href ?>" class="dropdown-item btn btn-sm py-3"><?php echo htmlspecialchars($display_name) ?></a>
                 </li>
                 <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
-                <li><a href="/PA/connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">Déconnexion</a></li>
+                <li><a href="../connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">Déconnexion</a></li>
               </ul>
             </div>
           </div>
@@ -135,7 +135,7 @@ if (isset($_SESSION['user_id'])) {
       </div>
     </div>
     <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
-      <a href="/PA/back-office/index.php"  class="btn btn-warning me-3 ml-4 mr-4" style="background-color: #ffc107; color: #212529; border-radius: 25px; font-weight: bold; padding: 0.5rem 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+      <a href="http://213.32.90.110/back-office/index.php"  class="btn btn-warning me-3 ml-4 mr-4" style="background-color: #ffc107; color: #212529; border-radius: 25px; font-weight: bold; padding: 0.5rem 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <i class="bi bi-gear-fill"></i> Back-Office
       </a>
     <?php endif; ?>
