@@ -16,13 +16,13 @@
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!isset($_POST['captcha_answer']) || !isset($_SESSION['captcha_answer'])) {
-                header("Location: inscription.php?error=captcha_missing");
+                header("Location: inscription.php?error=captcha_missing&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
                 exit();
             }
             $user_answer = trim(strtolower($_POST['captcha_answer']));
             $correct_answer = trim(strtolower($_SESSION['captcha_answer']));
             if ($user_answer !== $correct_answer) {
-                header("Location: inscription.php?error=captcha_invalid");
+                header("Location: inscription.php?error=captcha_invalid&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
                 exit();
             }
             unset($_SESSION['captcha_answer']);
