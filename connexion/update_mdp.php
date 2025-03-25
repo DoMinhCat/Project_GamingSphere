@@ -3,28 +3,30 @@ include('../include/database.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['token']) && !empty($_POST['token']) && isset($_POST['new_mdp']) && !empty($_POST['new_mdp']) && isset($_POST['confirm_mdp']) && !empty($_POST['confirm_mdp'])) {
-        
+
+        $token = $_POST['token'];
+
         if ($_POST['new_mdp'] !== $_POST['confirm_mdp']) {
-            header('Location: reset_mdp.php?token='. $reset_token. '&message=' . urlencode("Veuillez reconfirmer votre mot de passe"));
+            header('Location: reset_mdp.php?token='. $token. '&message=' . urlencode("Veuillez reconfirmer votre mot de passe"));
             exit();
         }
 
         if (!preg_match('/[\W_]/', ($_POST['new_mdp']))) {
-            header('Location: reset_mdp.php?token='. $reset_token. '&messsage=' .urldecode("Votre mot de passe doit avoir au moins un caractère spéciale"));
+            header('Location: reset_mdp.php?token='. $token. '&messsage=' .urldecode("Votre mot de passe doit avoir au moins un token spéciale"));
             exit();
         }
 
         if  (strlen($_POST['new_mdp']) < 8) {
-            header('Location: reset_mdp.php?token='. $reset_token. '&messsage=' .urldecode("Votre mot de passe doit avoir au moins 8 caractères"));
+            header('Location: reset_mdp.php?token='. $token. '&messsage=' .urldecode("Votre mot de passe doit avoir au moins 8 caractères"));
             exit();
         }
 
         if  (!preg_match('/\d/', $_POST['new_mdp'])) {
-            header('Location: reset_mdp.php?token='. $reset_token. '&messsage=' .urldecode("Votre mot de passe doit avoir au moins un chiffre"));
+            header('Location: reset_mdp.php?token='. $token. '&messsage=' .urldecode("Votre mot de passe doit avoir au moins un chiffre"));
             exit();
         }
         
-        $token = $_POST['token'];
+        
         $new_password = password_hash($_POST['new_mdp'], PASSWORD_DEFAULT); 
         
         try {
@@ -52,5 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location: forgot_mdp.php?message=' . urlencode("Veuillez remplir tous les champs demandés"));
         exit();
     }
+} else{
+    header('Location: forgot_mdp.php?message=' . urlencode("Ce lien n'est pas disponible"));
+        exit();
 }
 ?>
