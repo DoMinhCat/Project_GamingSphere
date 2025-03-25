@@ -36,10 +36,10 @@ include('../include/head.php')
         <h1 class="mb-0">Réinitialisation de mot de passe</h1>
       </div>
 
-      <div class="lato24 py-2">
+      <div class="lato24">
         <?php
         if (isset($_GET['message']) && !empty($_GET['message'])) {
-          echo '<p>' . htmlspecialchars($_GET['message']) . '</p>';
+          echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
         }
         ?>
       </div>

@@ -26,7 +26,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
 
         $reset_link = "http://213.32.90.110/connexion/reset_mdp.php?token=" . $reset_token;
         $subject = "Demande de réinitialisation de mot de passe";
-        $message = "Veuillez suivre le lien ci-dessous afin de réinitialiser votre mot de passe:\n\n" . $reset_link;
+        $message = "Veuillez suivre le lien ci-dessous afin de réinitialiser votre mot de passe (expire dans 15 minutes):\n\n" . $reset_link;
 
 
 
