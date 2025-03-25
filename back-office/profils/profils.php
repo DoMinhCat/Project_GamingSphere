@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<?php 
+<?php
 session_start();
 include('../../include/database.php');
+include ('../navbar.php');
 
 
 ?>
@@ -15,8 +16,9 @@ include('../../include/database.php');
 <body>
 <main class="container mt-5">
 <?php
-if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) {
-    try {
+
+if (isset($_SESSION['admin']) && $_SESSION['admin'] == true && isset($bdd)) {
+try {
         $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs");
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
