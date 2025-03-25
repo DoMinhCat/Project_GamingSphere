@@ -90,15 +90,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
-                    $mail->Username = $_ENV['SMTP_USERNAME'];
-                    $mail->Password = $_ENV['SMTP_PASSWORD'];
+                    $mail->Username = $_ENV['SMTP_USER'];
+                    $mail->Password = $_ENV['SMTP_PASS'];
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
 
                     $mail->CharSet = 'UTF-8';
                     $mail->Encoding = 'base64';
 
-                    $mail->setFrom($_ENV['SMTP_USERNAME'], 'Gaming Sphère');
+                    $mail->setFrom($_ENV['SMTP_USER'], 'Gaming Sphère');
                     $mail->addAddress($email);
                     $mail->Subject = $subject;
                     $mail->isHTML(true);
