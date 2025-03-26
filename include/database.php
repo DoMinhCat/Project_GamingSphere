@@ -1,7 +1,7 @@
 <?php
 try {
     if ($_SERVER['HTTP_HOST'] === 'localhost') {
-        $bdd = new PDO("mysql:host=localhost;port=3306;dbname=gamingsphere;charset=utf8", "root", "root");
+        $bdd = new PDO("mysql:host=localhost;port=3306;dbname=gamingsphère;charset=utf8", "root", "root");
     } else {
         $bdd = new PDO("mysql:host=localhost;port=3306;dbname=gamingsphere;charset=utf8", "root", "odissey");
     }
