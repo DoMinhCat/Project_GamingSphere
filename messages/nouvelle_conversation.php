@@ -1,0 +1,71 @@
+<?php
+session_start();
+include('../include/database.php');
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: profil.php?error=not_logged_in');
+    exit;
+}
+
+$userId = $_SESSION['user_id'];
+
+try {
+    $stmt = $bdd->prepare("
+        SELECT u.id_utilisateurs, u.pseudo, u.photo_profil
+        FROM relations r
+        JOIN utilisateurs u ON (u.id_utilisateurs = r.user_id1 OR u.id_utilisateurs = r.user_id2)
+        WHERE (r.user_id1 = ? OR r.user_id2 = ?)
+          AND r.ami = 1
+          AND u.id_utilisateurs != ?
+    ");
+    $stmt->execute([$userId, $userId, $userId]);
+    $friends = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Erreur : " . htmlspecialchars($e->getMessage());
+    exit;
+}
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $friendId = $_POST['friend_id'];
+   
+    try {
+        $stmt = $bdd->prepare("INSERT INTO messages (expediteur_id, destinataire_id, contenu, date_envoi) VALUES (?, ?, ?, NOW())");
+    } catch (PDOException $e) {
+        echo "Erreur : " . htmlspecialchars($e->getMessage());
+        exit;
+    }
+    header('Location: conversation.php?user=' . $friendId);
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<?php $title = 'Nouvelle Conversation'; include('../include/head.php'); ?>
+<body>
+<?php include('../include/header.php'); ?>
+<div class="container my-4">
+    <h2 class="mb-4 text-center">Choisir un ami pour démarrer une conversation</h2>
+    <?php if (count($friends) > 0): ?>
+        <form method="POST" action="nouvelle_conversation.php">
+            <div class="list-group">
+                <?php foreach ($friends as $friend): ?>
+                    <label class="list-group-item d-flex align-items-center">
+                        <input type="radio" name="friend_id" value="<?= htmlspecialchars($friend['id_utilisateurs']) ?>" required class="form-check-input me-2">
+                        <img src="/PA/profil/<?= htmlspecialchars($friend['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Profil" class="rounded-circle me-3" width="50" height="50">
+                        <span><?= htmlspecialchars($friend['pseudo']) ?></span>
+                    </label>
+                <?php endforeach; ?>
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Démarrer la conversation</button>
+            </div>
+        </form>
+    <?php else: ?>
+        <div class="alert alert-info text-center">Vous n'avez aucun ami pour démarrer une conversation.</div>
+    <?php endif; ?>
+</div>
+<?php include('../include/footer.php'); ?>
+</body>
+</html>
