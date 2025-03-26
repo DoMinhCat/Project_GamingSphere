@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("theme-btn");
-  const body = document.body;
+  const body = document.getElementsByTagNamebody;
 
   if (localStorage.getItem("theme") === "dark") {
     body.classList.add("dark");
