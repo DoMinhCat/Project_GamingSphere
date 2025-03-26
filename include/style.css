@@ -446,3 +446,9 @@ h1 {
 .dark #mdp_help{
   color: #F5F0E1;
 }
+.dark footer{
+background-color: #1E3D59 !important;
+}
+footer{
+  background-color: #ff6e40 !important;
+  }

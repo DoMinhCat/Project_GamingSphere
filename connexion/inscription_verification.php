@@ -81,6 +81,13 @@
             exit();
         }
 
+
+
+
+
+
+
+        //Cette partie devra etre apres la confirmation d'email / à deplacer
         $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_DEFAULT);
         try {
             $stmt = $bdd->prepare("INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, pseudo, date_inscription, ville, rue, code_postal, status_ENUm) 
@@ -104,7 +111,7 @@
             $_SESSION['user_pseudo'] = $pseudo;
             header("Location: ../index.php?success=1&pseudo=" . urlencode($pseudo));
             exit();
-        }  catch (PDOException $e) {
+        } catch (PDOException $e) {
             die("Erreur lors de l'insertion : " . $e->getMessage());
         }
     }
