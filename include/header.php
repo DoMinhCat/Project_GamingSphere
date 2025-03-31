@@ -85,7 +85,7 @@ if (isset($_SESSION['user_id'])) {
           </form>
           <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
-              <a href="messages/messagerie.php" class="btn btn-outline-dark d-flex align-items-center me-3 position-relative">
+              <a href=<?= ($this_page == 'index.php') ? 'messages/messagerie.php' : '../messages/messagerie.php' ?> class="btn btn-outline-dark d-flex align-items-center me-3 position-relative">
                 <i class="bi bi-chat-dots-fill"></i>
                 <?php if (isset($_SESSION['user_email']) && ($notificationCountMessages > 0)): ?>
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.75rem;">

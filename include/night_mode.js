@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     body.classList.add("dark");
   }
 
-  updateButtonText();
+  setTimeout(updateButtonText, 0);
 
   toggleBtn?.addEventListener("click", () => {
     const isDark = body.classList.toggle("dark");
