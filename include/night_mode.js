@@ -3,9 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
 
   function updateButtonText() {
-    toggleBtn.textContent = body.classList.contains("dark")
-      ? "Désactiver le mode nuit"
-      : "Activer le mode nuit";
+    if (body.classList.contains("dark")) {
+      toggleBtn.textContent = "Désactiver le mode nuit";
+    } else {
+      toggleBtn.textContent = "Activer le mode nuit";
+    }
   }
 
   if (localStorage.getItem("theme") === "dark") {
