@@ -42,8 +42,8 @@ if (isset($_SESSION['user_id'])) {
 <header style="background-color: #ff6e40 !important;">
   <nav class="navbar nav-underline navbar-expand-xl bg-body-tertiary my-navbar" style="padding-top: 0.2rem; padding-bottom:0.4rem;">
     <div class="container container-fluid" style="padding: 0.5rem">
-      <a href="<?= ($this_page == 'index.php') ? '/PA/index.php' : '../index.php' ?>">
-        <img src="<?= ($this_page == 'index.php') ? '/PA/include/LOGO ENTIER 40px.png' : '../include/LOGO ENTIER 40px.png' ?>" alt="Logo" class="col-2 image-fluid" style="height: 30px; width: auto;">
+      <a href="<?= ($this_page == 'index.php') ? 'index.php' : '../index.php' ?>">
+        <img src="<?= ($this_page == 'index.php') ? 'include/LOGO ENTIER 40px.png' : '../include/LOGO ENTIER 40px.png' ?>" alt="Logo" class="col-2 image-fluid" style="height: 30px; width: auto;">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
