@@ -375,11 +375,12 @@ h1 {
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
-body.dark .message_box {
+.dark .message_box {
   background-color: #2f608e !important;
 }
 
-body.dark {
+.dark 
+body{
   background-color: #121212;
   color: #f1f1f1;
 }
@@ -413,6 +414,9 @@ body.dark {
 .message.sent .message-bubble {
   background-color: #ffc13b !important;
   color: white;
+}
+.dark .message.sent .message-bubble{
+  background-color: #2f608e !important;
 }
 .message.received .message-bubble {
   background-color: #e5e5ea;
