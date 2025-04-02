@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameId'])) {
     $gamePrice = $_POST['gamePrice'];
     $gameType = $_POST['gameType'];
     $gamePublisher = $_POST['gamePublisher'];
+    $gameDescription = $_POST['gameDescription'];
 
     $imagePath = null;
 
@@ -44,7 +45,7 @@ if (file_exists($filepath)) {
     }
 
     $query = "UPDATE jeu SET 
-              nom = ?, catégorie = ?, date_sortie = ?, note_jeu = ?, plateforme = ?, prix = ?, type = ?, éditeur = ? ";
+              nom = ?, catégorie = ?, date_sortie = ?, note_jeu = ?, plateforme = ?, prix = ?, type = ?, éditeur = ?, description = ?;";
 
     if ($imagePath) {
         $query .= ", image = ?";
@@ -60,7 +61,8 @@ if (file_exists($filepath)) {
         $platform,
         $gamePrice,
         $gameType,
-        $gamePublisher
+        $gamePublisher,
+        $gameDescription,
     ];
 
     if ($imagePath) {
@@ -104,61 +106,70 @@ if (isset($_GET['id'])) {
 <body>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Modifier le jeu</h2>
-        <form action="modify_game.php" method="POST" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
-            <input type="hidden" name="gameId" value="<?php echo htmlspecialchars($game['id_jeu']); ?>">
+        <?php if (isset($game)): ?>
+    <form action="modify_game.php" method="POST" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
+        <input type="hidden" name="gameId" value="<?php echo htmlspecialchars($game['id_jeu'] ?? ''); ?>">
 
-            <div class="mb-3">
-                <label for="gameName" class="form-label">Nom du jeu</label>
-                <input type="text" class="form-control" id="gameName" name="gameName" value="<?php echo htmlspecialchars($game['nom']); ?>" required>
-            </div>
+        <div class="mb-3">
+            <label for="gameName" class="form-label">Nom du jeu</label>
+            <input type="text" class="form-control" id="gameName" name="gameName" value="<?php echo htmlspecialchars($game['nom'] ?? ''); ?>" required>
+        </div>
 
-            <div class="mb-3">
-                <label for="category" class="form-label">Catégorie</label>
-                <input type="text" class="form-control" id="category" name="category" value="<?php echo htmlspecialchars($game['catégorie']); ?>" required>
-            </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Catégorie</label>
+            <input type="text" class="form-control" id="category" name="category" value="<?php echo htmlspecialchars($game['catégorie'] ?? ''); ?>" required>
+        </div>
 
-            <div class="mb-3">
-                <label for="releaseDate" class="form-label">Date de sortie</label>
-                <input type="date" class="form-control" id="releaseDate" name="releaseDate" value="<?php echo htmlspecialchars($game['date_sortie']); ?>" required>
-            </div>
+        <div class="mb-3">
+            <label for="releaseDate" class="form-label">Date de sortie</label>
+            <input type="date" class="form-control" id="releaseDate" name="releaseDate" value="<?php echo htmlspecialchars($game['date_sortie'] ?? ''); ?>" required>
+        </div>
 
-            <div class="mb-3">
-                <label for="gameRating" class="form-label">Note du jeu</label>
-                <input type="number" step="0.1" class="form-control" id="gameRating" name="gameRating" value="<?php echo htmlspecialchars($game['note_jeu']); ?>" required>
-            </div>
+        <div class="mb-3">
+            <label for="gameRating" class="form-label">Note du jeu</label>
+            <input type="number" step="0.1" class="form-control" id="gameRating" name="gameRating" value="<?php echo htmlspecialchars($game['note_jeu'] ?? ''); ?>" required>
+        </div>
 
-            <div class="mb-3">
-                <label for="platform" class="form-label">Plateforme</label>
-                <input type="text" class="form-control" id="platform" name="platform" value="<?php echo htmlspecialchars($game['plateforme']); ?>" required>
-            </div>
+        <div class="mb-3">
+            <label for="platform" class="form-label">Plateforme</label>
+            <input type="text" class="form-control" id="platform" name="platform" value="<?php echo htmlspecialchars($game['plateforme'] ?? ''); ?>" required>
+        </div>
 
-            <div class="mb-3">
-                <label for="gamePrice" class="form-label">Prix</label>
-                <input type="number" step="0.01" class="form-control" id="gamePrice" name="gamePrice" value="<?php echo htmlspecialchars($game['prix']); ?>" required>
-            </div>
+        <div class="mb-3">
+            <label for="gamePrice" class="form-label">Prix</label>
+            <input type="number" step="0.01" class="form-control" id="gamePrice" name="gamePrice" value="<?php echo htmlspecialchars($game['prix'] ?? ''); ?>" required>
+        </div>
 
-            <div class="mb-3">
-                <label for="gameType" class="form-label">Type</label>
-                <input type="text" class="form-control" id="gameType" name="gameType" value="<?php echo htmlspecialchars($game['type']); ?>" required>
-            </div>
+        <div class="mb-3">
+            <label for="gameType" class="form-label">Type</label>
+            <input type="text" class="form-control" id="gameType" name="gameType" value="<?php echo htmlspecialchars($game['type'] ?? ''); ?>" required>
+        </div>
 
-            <div class="mb-3">
-                <label for="gamePublisher" class="form-label">Éditeur</label>
-                <input type="text" class="form-control" id="gamePublisher" name="gamePublisher" value="<?php echo htmlspecialchars($game['éditeur']); ?>" required>
-            </div>
+        <div class="mb-3">
+            <label for="gamePublisher" class="form-label">Éditeur</label>
+            <input type="text" class="form-control" id="gamePublisher" name="gamePublisher" value="<?php echo htmlspecialchars($game['éditeur'] ?? ''); ?>" required>
+        </div>
 
-            <div class="mb-3">
-                <label for="gameImage" class="form-label">Image du jeu</label>
-                <input type="file" class="form-control" id="gameImage" name="gameImage">
-                <?php if (!empty($game['image'])): ?>
-                    <p class="mt-2">Image actuelle : <img src="../uploads/<?php echo htmlspecialchars($game['image']); ?>" alt="Image du jeu" class="img-thumbnail" style="max-width: 100%;"></p>
-                <?php endif; ?>
-            </div>
+        <div class="mb-2">
+            <label for="gameDescription" class="form-label">Description:</label>
+            <input type="text" id="gameDescription" name="gameDescription" class="form-control" value="<?php echo htmlspecialchars($game['description'] ?? ''); ?>" required>
+        </div>
 
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Modifier le jeu</button>
-            </div>
-        </form>
+        <div class="mb-3">
+            <label for="gameImage" class="form-label">Image du jeu</label>
+            <input type="file" class="form-control" id="gameImage" name="gameImage">
+            <?php if (!empty($game['image'])): ?>
+                <p class="mt-2">Image actuelle : <img src="../uploads/<?php echo htmlspecialchars($game['image']); ?>" alt="Image du jeu" class="img-thumbnail" style="max-width: 100%;"></p>
+            <?php endif; ?>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Modifier le jeu</button>
+        </div>
+    </form>
+<?php else: ?>
+    <div class="alert alert-danger text-center">Aucune donnée pour ce jeu.</div>
+<?php endif; ?>
     </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
