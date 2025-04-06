@@ -7,9 +7,9 @@ function resetTimer() {
     const path = window.location.pathname;
     const page = path.substring(path.lastIndexOf("/") + 1);
     if (page === "index.php") {
-      window.location.href = "../connexion/session_timeout.php";
-    } else {
       window.location.href = "connexion/session_timeout.php";
+    } else {
+      window.location.href = "../connexion/session_timeout.php";
     }
   }, timeoutDuration);
 }
