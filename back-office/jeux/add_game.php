@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     $gamePrice = $_POST['gamePrice'];
     $gameType = $_POST['gameType'];
     $gamePublisher = $_POST['gamePublisher'];
+    $gameDescription = $_POST['gameDescription'];
 
 
     if (isset($_FILES['gameImage']) && $_FILES['gameImage']['error'] === UPLOAD_ERR_OK) {
@@ -31,9 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     }
 
 
-    $stmt = $bdd->prepare("INSERT INTO jeu (catégorie, date_sortie, nom, note_jeu, plateforme, prix, type, éditeur, image)
-                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$category, $releaseDate, $gameName, $gameRating, $platform, $gamePrice, $gameType, $gamePublisher, $imagePath]);
+ 
+    $stmt = $bdd->prepare("INSERT INTO jeu (catégorie, date_sortie, nom, note_jeu, plateforme, prix, type, éditeur, image, description)
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$category, $releaseDate, $gameName, $gameRating, $platform, $gamePrice, $gameType, $gamePublisher, $imagePath, $gameDescription]);
     echo "<div class='alert alert-success text-center'>Jeu ajouté avec succès !</div>";
     header("Location: jeux.php?message=success");
     exit();
@@ -89,6 +91,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
             <div class="mb-2">
                 <label for="gameImage" class="form-label">Image du jeu :</label>
                 <input type="file" id="gameImage" name="gameImage" class="form-control" accept="image/*" required>
+            </div>
+            <div class="mb-2">
+                <label for="gameDescription" class="form-label">Description:</label>
+                <input type="text" id="gameDescription" name="gameDescription" class="form-control" required>
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Ajouter le jeu</button>
