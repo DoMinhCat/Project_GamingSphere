@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 include('../include/database.php');
@@ -7,7 +6,7 @@ $pseudo = $_GET['user'] ?? '';
 
 if (empty($pseudo)) {
     echo "Aucun utilisateur spécifié.";
-    exit;
+    exit();
 }
 
 if (isset($_SESSION['user_pseudo']) && $_SESSION['user_pseudo'] === $pseudo) {
@@ -34,57 +33,58 @@ try {
 <html lang="fr">
 <?php $title = "Profil de " . htmlspecialchars($pseudo);
 include('../include/head.php');
-include('../include/header.php'); 
+include('../include/header.php');
 ?>
-<body>
-<?php if (isset($_GET['error'])): ?>
-    <div class="alert alert-danger" role="alert">
-        <?php
-        switch ($_GET['error']) {
-            case 'not_logged_in':
-                echo "Vous devez être connecté pour ajouter un ami.";
-                break;
-            case 'no_user_specified':
-                echo "Aucun utilisateur spécifié.";
-                break;
-            case 'user_not_found':
-                echo "Utilisateur introuvable.";
-                break;
-            case 'already_friends':
-                echo "Vous êtes déjà amis avec cet utilisateur.";
-                break;
-            case 'request_pending':
-                echo "Une demande d'ami est déjà en attente.";
-                break;
-            case 'relation_exists':
-                echo "Une relation existe déjà avec cet utilisateur.";
-                break;
-            case 'database_error':
-                echo "Une erreur est survenue lors de la connexion à la base de données.";
-                break;
-            default:
-                echo "Une erreur inconnue est survenue.";
-                break;
-        }
-        ?>
-    </div>
-<?php endif; ?>
 
-<?php if (isset($_GET['success'])): ?>
-    <div class="alert alert-success" role="alert">
-    <?php
-switch ($_GET['success']) {
-    case 'friend_request_sent':
-        echo "La demande d'ami a été envoyée avec succès.";
-        break;
-    default:
-        $friendPseudo = isset($_GET['user']) ? htmlspecialchars($_GET['user']) : 'votre ami';
-        echo "Vous êtes amis avec \"" . $friendPseudo . "\"";
-        break;
-}
-?>
-    </div>
-<?php endif; ?>
+<body>
+    <?php if (isset($_GET['error'])): ?>
+        <div class="alert alert-danger" role="alert">
+            <?php
+            switch ($_GET['error']) {
+                case 'not_logged_in':
+                    echo "Vous devez être connecté pour ajouter un ami.";
+                    break;
+                case 'no_user_specified':
+                    echo "Aucun utilisateur spécifié.";
+                    break;
+                case 'user_not_found':
+                    echo "Utilisateur introuvable.";
+                    break;
+                case 'already_friends':
+                    echo "Vous êtes déjà amis avec cet utilisateur.";
+                    break;
+                case 'request_pending':
+                    echo "Une demande d'ami est déjà en attente.";
+                    break;
+                case 'relation_exists':
+                    echo "Une relation existe déjà avec cet utilisateur.";
+                    break;
+                case 'database_error':
+                    echo "Une erreur est survenue lors de la connexion à la base de données.";
+                    break;
+                default:
+                    echo "Une erreur inconnue est survenue.";
+                    break;
+            }
+            ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['success'])): ?>
+        <div class="alert alert-success" role="alert">
+            <?php
+            switch ($_GET['success']) {
+                case 'friend_request_sent':
+                    echo "La demande d'ami a été envoyée avec succès.";
+                    break;
+                default:
+                    $friendPseudo = isset($_GET['user']) ? htmlspecialchars($_GET['user']) : 'votre ami';
+                    echo "Vous êtes amis avec \"" . $friendPseudo . "\"";
+                    break;
+            }
+            ?>
+        </div>
+    <?php endif; ?>
     <div class="container mt-4">
         <?php if (!empty($user['photo_profil'])): ?>
             <div class="text-center mb-3">
