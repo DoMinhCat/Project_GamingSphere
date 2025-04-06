@@ -15,15 +15,14 @@ if (!isset($bdd)) {
     die("Erreur de connexion à la base de données");
 }
 
-// Récupérer la catégorie depuis l’URL
 if (!isset($_GET['categorie']) || empty($_GET['categorie'])) {
     die("Catégorie non précisée.");
 }
 $categorie_nom = $_GET['categorie'];
 
-$messageErreur = ""; // par défaut, aucune erreur
+$messageErreur = "";
 
-// Gestion de l'envoi du formulaire
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $titre = trim($_POST['titre']);
     $contenu = trim($_POST['contenu']);
@@ -45,69 +44,69 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <body>
-<?php include("../include/header.php"); ?>
+    <?php include("../include/header.php"); ?>
 
-<div class="container my-5">
-    <h2 class="mb-4">Créer un nouveau sujet dans : <?= htmlspecialchars($categorie_nom) ?></h2>
+    <div class="container my-5">
+        <h2 class="mb-4">Créer un nouveau sujet dans : <?= htmlspecialchars($categorie_nom) ?></h2>
 
-    <?php if (!empty($messageErreur)): ?>
-        <div class="alert alert-danger"><?= htmlspecialchars($messageErreur) ?></div>
-    <?php endif; ?>
+        <?php if (!empty($messageErreur)): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($messageErreur) ?></div>
+        <?php endif; ?>
 
-    <form method="post">
-        <div class="mb-3">
-            <label for="titre" class="form-label">Titre du sujet</label>
-            <input type="text" class="form-control" id="titre" name="titre" maxlength="150" required oninput="updateCounter()">
-            <div class="d-flex justify-content-between">
-                <small class="text-muted">Maximum 150 caractères</small>
-                <small id="counter" class="text-muted">0 / 150</small>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="contenu" class="form-label">Message</label>
-            <textarea class="form-control" id="contenu" name="contenu" rows="5" maxlength="1000" oninput="updateContentCounter()" required></textarea>
-            <div class="d-flex justify-content-between">
-                <small class="text-muted">Maximum 1000 caractères</small>
-                <small id="contentCounter" class="text-muted">0 / 1000</small>
+        <form method="post">
+            <div class="mb-3">
+                <label for="titre" class="form-label">Titre du sujet</label>
+                <input type="text" class="form-control" id="titre" name="titre" maxlength="150" required oninput="updateCounter()">
+                <div class="d-flex justify-content-between">
+                    <small class="text-muted">Maximum 150 caractères</small>
+                    <small id="counter" class="text-muted">0 / 150</small>
+                </div>
             </div>
 
-        </div>
+            <div class="mb-3">
+                <label for="contenu" class="form-label">Message</label>
+                <textarea class="form-control" id="contenu" name="contenu" rows="5" maxlength="1000" oninput="updateContentCounter()" required></textarea>
+                <div class="d-flex justify-content-between">
+                    <small class="text-muted">Maximum 1000 caractères</small>
+                    <small id="contentCounter" class="text-muted">0 / 1000</small>
+                </div>
 
-        <button type="submit" class="btn btn-primary">Créer le sujet</button>
-    </form>
-</div>
+            </div>
 
-<?php include("../include/footer.php"); ?>
-<script>
-    function updateCounter() {
-        const input = document.getElementById('titre');
-        const counter = document.getElementById('counter');
-        counter.textContent = `${input.value.length} / 150`;
-    }
+            <button type="submit" class="btn btn-primary">Créer le sujet</button>
+        </form>
+    </div>
 
-    // Mettre à jour dès le chargement (utile en cas de retour avec texte déjà rempli)
-    document.addEventListener("DOMContentLoaded", updateCounter);
-</script>
-<script>
-    function updateCounter() {
-        const input = document.getElementById('titre');
-        const counter = document.getElementById('counter');
-        counter.textContent = `${input.value.length} / 150`;
-    }
+    <?php include("../include/footer.php"); ?>
+    <script>
+        function updateCounter() {
+            const input = document.getElementById('titre');
+            const counter = document.getElementById('counter');
+            counter.textContent = `${input.value.length} / 150`;
+        }
 
-    function updateContentCounter() {
-        const textarea = document.getElementById('contenu');
-        const counter = document.getElementById('contentCounter');
-        counter.textContent = `${textarea.value.length} / 1000`;
-    }
+        // Mettre à jour dès le chargement (utile en cas de retour avec texte déjà rempli)
+        document.addEventListener("DOMContentLoaded", updateCounter);
+    </script>
+    <script>
+        function updateCounter() {
+            const input = document.getElementById('titre');
+            const counter = document.getElementById('counter');
+            counter.textContent = `${input.value.length} / 150`;
+        }
 
-    // Met à jour les deux compteurs au chargement (utile si champs déjà remplis)
-    document.addEventListener("DOMContentLoaded", () => {
-        updateCounter();
-        updateContentCounter();
-    });
-</script>
+        function updateContentCounter() {
+            const textarea = document.getElementById('contenu');
+            const counter = document.getElementById('contentCounter');
+            counter.textContent = `${textarea.value.length} / 1000`;
+        }
+
+        // Met à jour les deux compteurs au chargement (utile si champs déjà remplis)
+        document.addEventListener("DOMContentLoaded", () => {
+            updateCounter();
+            updateContentCounter();
+        });
+    </script>
 </body>
-</html>
 
+</html>

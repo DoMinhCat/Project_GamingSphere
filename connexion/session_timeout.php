@@ -1,4 +1,4 @@
-<!-- working here -->
+<!-- working here  -->
 <!DOCTYPE html>
 <html lang="en">
 <?php
@@ -10,13 +10,16 @@ include('../include/head.php');
     <div class="d-flex justify-content-center">
         <div class="col-8 col-sm-7 col-md-6 col-lg-7 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
 
+            <!-- if (trying to access when still have time or not connected) -->
+
+            else{
             <div class="pb-1">
                 <h1 class="mb-3">Vous êtes toujours là ?</h1>
             </div>
 
             <span class="lato24" style="color: #FF6E40;"><strong>Votre session a expirée.</strong></span><br>
             <span class="lato16">Vous avez été déconnecté en raison d'inactivité afin de proteger vos informations privées</span>
-
+            }
 
 
 

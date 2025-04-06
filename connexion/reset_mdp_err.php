@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <?php
 $title = 'Erreur de réinitialisation du mot de passe';
 include('../include/head.php')
 ?>
+
 <body>
-    <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center">
     <div class="col-8 col-sm-7 col-md-6 col-lg-7 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
       <div class="pb-3">
         <h1 class="mb-0">Erreur</h1>
@@ -18,7 +19,7 @@ include('../include/head.php')
         }
         ?>
       </div>
-      
+
       <div class="line-with-letters montserrat-titre32">
         <span class="line"></span>
       </div>
@@ -42,4 +43,5 @@ include('../include/head.php')
   include('../include/footer.php');
   ?>
 </body>
+
 </html>
