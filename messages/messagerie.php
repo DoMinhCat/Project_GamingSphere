@@ -54,7 +54,7 @@ include('../include/head.php');
         <div class="list-group">
             <?php foreach ($conversations as $conversation): ?>
                 <a href="conversation.php?user=<?= $conversation['id_utilisateurs'] ?>" class="list-group-item list-group-item-action d-flex align-items-center">
-                    <img src="/PA/profil/<?= htmlspecialchars($conversation['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Profil" class="rounded-circle me-3" width="50" height="50">
+                    <img src="../profil/<?= htmlspecialchars($conversation['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Profil" class="rounded-circle me-3" width="50" height="50">
                     <span><?= htmlspecialchars($conversation['pseudo']) ?></span>
                 </a>
             <?php endforeach; ?>
