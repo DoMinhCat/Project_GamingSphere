@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
 <div class="container">
     <div class="conversation-container message_box">
         <div class="header-chat">
-            <img src="/PA/profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil">
+            <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil">
             <h5><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
         </div>
 
