@@ -1,6 +1,7 @@
 <?php
 include('../../include/database.php');
-include ('../navbar.php'); 
+require('../../include/check_timeout.php');
+
 $user_id = $_GET['id'];
 
 $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email, photo_profil, ville, rue, code_postal FROM utilisateurs WHERE id_utilisateurs = ?");
@@ -16,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ville = $_POST['ville'];
     $rue = $_POST['rue'];
     $code_postal = $_POST['code_postal'];
-    $photo = $user['photo_profil']; 
+    $photo = $user['photo_profil'];
     if (!empty($_FILES['photo']['tmp_name'])) {
         $target_dir = "../profil/uploads/profiles_pictures";
         $target_file = $target_dir . basename($_FILES["photo"]["name"]);
@@ -49,11 +50,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Modifier Utilisateur</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <?php
+    if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
+        echo '<script src="../../includes/check_timeout.js"></script>';
+    }
+    ?>
 </head>
+
 <body>
+    <?php
+    include('../navbar.php');
+    ?>
     <div class="container">
         <h2 class="mt-5">Modifier Utilisateur</h2>
         <form method="post" enctype="multipart/form-data" class="mt-3">
@@ -99,4 +110,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

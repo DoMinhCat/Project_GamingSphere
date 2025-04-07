@@ -1,7 +1,6 @@
 <?php
 include('../../include/database.php');
-include('../navbar.php');
-
+require('../../include/check_timeout.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     $category = $_POST['category'];
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     }
 
 
- 
+
     $stmt = $bdd->prepare("INSERT INTO jeu (catégorie, date_sortie, nom, note_jeu, plateforme, prix, type, éditeur, image, description)
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$category, $releaseDate, $gameName, $gameRating, $platform, $gamePrice, $gameType, $gamePublisher, $imagePath, $gameDescription]);
@@ -49,9 +48,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des jeux</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <?php
+    if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
+        echo '<script src="../../includes/check_timeout.js"></script>';
+    }
+    ?>
 </head>
 
 <body>
+    <?php
+    include('../navbar.php');
+    ?>
     <div class="container mt-4">
         <h1 class="text-center mb-3" style="font-size: 1.5rem;">Ajouter un jeu</h1>
 
@@ -104,4 +111,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

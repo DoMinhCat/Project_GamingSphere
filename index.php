@@ -1,21 +1,25 @@
 <?php
 session_start();
+require('include/check_timeout.php');
 $success = $_GET['success'] ?? "";
 $user_pseudo = htmlspecialchars($_GET['user_pseudo'] ?? "");
 $pseudo = htmlspecialchars($_GET['pseudo'] ?? "");
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <?php
 $title = 'Acceuil';
 include('include/database.php');
-include('include/head.php')
+include('include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="includes/check_timeout.js"></script>';
+}
 ?>
 
 <body>
-    <?php include('include/header.php') ?>
-
-    <?php if ($success == '1' || $success == 'connected') : ?>
+    <?php include('include/header.php');
+    if ($success == '1' || $success == 'connected') : ?>
         <div class="feedback text-center mb-4 mt-4" style="background-color: #f5f0e1; color:#1E3D59;">
             <?php
             if (!empty($pseudo)) {
@@ -192,4 +196,5 @@ include('include/head.php')
     </main>
     <?php include('include/footer.php'); ?>
 </body>
+
 </html>

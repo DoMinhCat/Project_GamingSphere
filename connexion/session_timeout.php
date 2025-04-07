@@ -5,7 +5,7 @@ session_destroy();
 
 $timeout_duree = 600;
 $this_page = basename($_SERVER['PHP_SELF']);
-if (isset($_SESSION['user_email']) || (isset($_SESSION['actif']) && time() - $_SESSION['actif'] <= $timeout_duree)) {
+if (isset($_SESSION['user_email']) || isset($_SESSION['admin']) || (isset($_SESSION['actif']) && time() - $_SESSION['actif'] <= $timeout_duree)) {
     header("Location: ../index.php");
     exit();
 }
