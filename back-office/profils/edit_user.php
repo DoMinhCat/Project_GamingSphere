@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ville = $_POST['ville'];
     $rue = $_POST['rue'];
     $code_postal = $_POST['code_postal'];
-    $photo = $user['photo_profil'];
+    $photo = "profil/uploads/profiles_pictures/" . basename($_FILES["photo"]["name"]);
     if (!empty($_FILES['photo']['tmp_name'])) {
         $target_dir = "../profil/uploads/profiles_pictures";
         $target_file = $target_dir . basename($_FILES["photo"]["name"]);
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label for="photo">Photo de profil:</label>
                 <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
                 <?php if (!empty($user['photo_profil'])): ?>
-                    <img src="<?php echo htmlspecialchars($user['photo_profil']); ?>" class="mt-2" width="100">
+                    <img src="/PA/<?php echo htmlspecialchars($user['photo_profil']); ?>" class="mt-2" width="100">
                 <?php endif; ?>
             </div>
             <div class="form-group">

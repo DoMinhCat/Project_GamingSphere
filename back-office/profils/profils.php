@@ -29,10 +29,19 @@ require('../../include/check_timeout.php');
                 $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs");
                 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+                if (isset($_GET['message'])) {
+                    if ($_GET['message'] == 'success') {
+                        echo "<div class='alert alert-success'>Modifications effectuées avec succès.</div>";
+                    } elseif ($_GET['message'] == 'delete') {
+                        echo "<div class='alert alert-success'>Utilisateur supprimé avec succès.</div>";
+                    }
+                }
+
                 if (count($users) > 0) {
                     echo "<table class='table table-striped'>";
                     echo "<thead class='thead-dark'><tr><th>ID</th><th>Nom</th><th>Email</th><th>Pseudo</th><th>Prénom</th><th>Actions</th></tr></thead>";
                     echo "<tbody>";
+
                     foreach ($users as $user) {
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($user['id_utilisateurs']) . "</td>";
@@ -46,25 +55,20 @@ require('../../include/check_timeout.php');
                         echo "</td>";
                         echo "</tr>";
                     }
+
                     echo "</tbody>";
                     echo "</table>";
-                    if (isset($_GET['message'])) {
-                        if ($_GET['message'] == 'success') {
-                            echo "<div class='alert alert-success'>Modifications effectuées avec succès.</div>";
-                        } elseif ($_GET['message'] == 'delete') {
-                            echo "<div class='alert alert-success'>Utilisateur supprimé avec succès.</div>";
-                        }
-                    }
                 } else {
                     echo "<div class='alert alert-warning'>Aucun utilisateur trouvé.</div>";
                 }
             } catch (PDOException $e) {
-                echo "<div class='alert alert-danger'>Erreur: " . $e->getMessage() . "</div>";
+                echo "<div class='alert alert-danger'>Erreur lors de la récupération des utilisateurs : " . htmlspecialchars($e->getMessage()) . "</div>";
             }
         } else {
             echo "<div class='alert alert-danger'>Accès refusé. Vous n'êtes pas administrateur.</div>";
         }
         ?>
+
     </main>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
