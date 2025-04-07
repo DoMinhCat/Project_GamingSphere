@@ -1,6 +1,6 @@
 <?php
 require('../../include/check_timeout.php');
-include('../../include/database.php');
+require('../../include/database.php');
 
 $stmt = $bdd->query("SELECT id_jeu, catégorie, date_sortie, image, nom, note_jeu, plateforme, prix, type, éditeur FROM jeu");
 $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -17,7 +17,7 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <?php
     if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../includes/check_timeout.js"></script>';
+        echo '<script src="../../include/check_timeout.js"></script>';
     }
     ?>
 </head>
