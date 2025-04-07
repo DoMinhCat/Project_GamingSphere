@@ -2,17 +2,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("theme-btn");
   const body = document.body;
 
-  console.log("toggleBtn:", toggleBtn);
-  console.log("body:", body);
+  if (!toggleBtn) {
+    console.error("Le bouton avec l'ID 'theme-btn' est introuvable.");
+    return;
+  }
+
+  function updateButtonText() {
+    const isDark = body.classList.contains("dark");
+    toggleBtn.textContent = isDark
+      ? "Désactiver le mode nuit"
+      : "Activer le mode nuit";
+  }
 
   if (localStorage.getItem("theme") === "dark") {
     body.classList.add("dark");
   }
 
-  setTimeout(updateButtonText, 0);
+  updateButtonText();
 
-  toggleBtn?.addEventListener("click", () => {
-    console.log("Bouton cliqué, body:", body);
+  toggleBtn.addEventListener("click", () => {
     const isDark = body.classList.toggle("dark");
     localStorage.setItem("theme", isDark ? "dark" : "light");
     updateButtonText();
