@@ -1,5 +1,5 @@
 <?php
-include('../../include/database.php');
+require('../../include/database.php');
 require('../../include/check_timeout.php');
 
 $user_id = $_GET['id'];
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <?php
     if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../includes/check_timeout.js"></script>';
+        echo '<script src="../../include/check_timeout.js"></script>';
     }
     ?>
 </head>

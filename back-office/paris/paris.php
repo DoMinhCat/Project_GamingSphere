@@ -1,5 +1,5 @@
 <?php
-include('../../include/database.php');
+require('../../include/database.php');
 require('../../include/check_timeout.php');
 ?>
 
@@ -11,7 +11,7 @@ require('../../include/check_timeout.php');
     <title>Gestion des paris</title>
     <?php
     if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../includes/check_timeout.js"></script>';
+        echo '<script src="../../include/check_timeout.js"></script>';
     }
     ?>
 </head>

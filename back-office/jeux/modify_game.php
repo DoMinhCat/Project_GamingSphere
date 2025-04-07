@@ -1,6 +1,6 @@
 <?php
 require('../../include/check_timeout.php');
-include('../../include/database.php');
+require('../../include/database.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameId'])) {
     $gameId = $_POST['gameId'];
@@ -105,7 +105,7 @@ if (isset($_GET['id'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <?php
     if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../includes/check_timeout.js"></script>';
+        echo '<script src="../../include/check_timeout.js"></script>';
     }
     ?>
 </head>
