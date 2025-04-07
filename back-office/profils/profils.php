@@ -20,7 +20,13 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] == true && isset($bdd)) {
 try {
         $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs");
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        if (isset($_GET['message'])) {
+            if ($_GET['message'] == 'success') {
+                echo "<div class='alert alert-success'>Modifications effectuées avec succès.</div>";
+            } elseif ($_GET['message'] == 'delete') {
+                echo "<div class='alert alert-success'>Utilisateur supprimé avec succès.</div>";
+            }
+        }
         if (count($users) > 0) {
             echo "<table class='table table-striped'>";
             echo "<thead class='thead-dark'><tr><th>ID</th><th>Nom</th><th>Email</th><th>Pseudo</th><th>Prénom</th><th>Actions</th></tr></thead>";
@@ -40,13 +46,6 @@ try {
             }
             echo "</tbody>";
             echo "</table>";
-            if (isset($_GET['message'])) {
-                if ($_GET['message'] == 'success') {
-                    echo "<div class='alert alert-success'>Modifications effectuées avec succès.</div>";
-                } elseif ($_GET['message'] == 'delete') {
-                    echo "<div class='alert alert-success'>Utilisateur supprimé avec succès.</div>";
-                }
-            }
         } else {
             echo "<div class='alert alert-warning'>Aucun utilisateur trouvé.</div>";
         }
