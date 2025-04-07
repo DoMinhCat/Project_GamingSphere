@@ -1,6 +1,6 @@
-<?php 
-
+<?php
 include('../../include/database.php');
+
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
     $query = $bdd->prepare("SELECT image FROM jeu WHERE id_jeu = :id");
@@ -27,4 +27,3 @@ if (isset($_GET['id'])) {
 } else {
     echo "Aucun identifiant de jeu fourni.";
 }
-?>

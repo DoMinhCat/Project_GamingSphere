@@ -1,4 +1,5 @@
-<?php 
+<?php
+require('../../include/check_timeout.php');
 include('../../include/database.php');
 
 $stmt = $bdd->query("SELECT id_jeu, catégorie, date_sortie, image, nom, note_jeu, plateforme, prix, type, éditeur FROM jeu");
@@ -8,14 +9,21 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des jeux</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <?php
+    if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
+        echo '<script src="../../includes/check_timeout.js"></script>';
+    }
+    ?>
 </head>
-<?php include ('../navbar.php');?>
+
 <body>
+    <?php include('../navbar.php'); ?>
     <div class="container mt-4">
         <h1 class="text-center mb-3" style="font-size: 1.5rem;">Liste des jeux</h1>
 
@@ -67,8 +75,8 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="alert alert-success mt-3" role="alert">
                 Jeu ajouté avec succès !
             </div>
-            
-        <?php endif; 
+
+        <?php endif;
         if (isset($_GET['message']) && $_GET['message'] === 'delete'): ?>
             <div class="alert alert-success mt-3" role="alert">
                 Jeu supprimé avec succès !
@@ -78,11 +86,11 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="alert alert-success mt-3" role="alert">
                 Jeu modifié avec succès !
             </div>
-            
+
         <?php endif; ?>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
 
+</html>

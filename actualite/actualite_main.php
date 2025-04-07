@@ -7,9 +7,11 @@ require('../include/check_timeout.php');
 
 <?php
 $title = 'Actualités';
-require('../include/head.php')
+require('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="includes/check_timeout.js"></script>';
+}
 ?>
-<script src="../include/check_timeout.js"></script>
 
 <body>
     <?php
