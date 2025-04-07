@@ -1,159 +1,165 @@
-  <!DOCTYPE html>
-  <html lang="fr">
+<?php
+if (isset($_SESSION['user_email']) || !empty($_SESSION['user_email'])) {
+  header('location:index.php');
+  exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="fr">
 
-  <?php
-  $title = 'S\'inscrire';
-  include('../include/head.php');
+<?php
+$title = 'S\'inscrire';
+include('../include/head.php');
 session_start();
 $error = isset($_GET['error']) ? $_GET['error'] : "";
 
- ?>
+?>
 
-  <body>
-    <?php include('../include/header.php'); ?>
+<body>
+  <?php include('../include/header.php'); ?>
 
-    <h1 class="montserrat-titre40 my_inscription"
-      style=" margin-top: 3rem;
+  <h1 class="montserrat-titre40 my_inscription"
+    style=" margin-top: 3rem;
       text-decoration-line: underline;
       text-decoration-thickness: 5px;
       text-underline-offset: 0.5rem;
       text-align: center;
       display: flex;
       justify-content: center;">
-      Inscription</h1>
-    <form class="row g-3 m-f" method="post" action="inscription_verification.php">
-      <div class="col-md-4">
-        <label for="prenom_inscrire" class="form-label">Prénom</label>
-        <input type="text" id="prenom_inscrire" name="prenom" required class="form-control f-inscription"
-          value="<?php echo isset($_GET['prenom']) ? htmlspecialchars($_GET['prenom']) : ''; ?>">
-      </div>
-      <div class="col-md-4">
-        <label for="nom_inscrire" class="form-label">Nom</label>
-        <input type="text" class="form-control f-inscription" id="nom_inscrire" name="nom" required
-          value="<?php echo isset($_GET['nom']) ? htmlspecialchars($_GET['nom']) : ''; ?>">
-      </div>
-      <div class="col-md-4">
-        <label for="pseudo_inscrire" class="form-label">Pseudo</label>
-        <div class="input-group">
-    <span class="input-group-text" id="inputGroupPrepend2">@</span>
-    <input type="text" class="form-control f-inscription <?php echo ($error == 'pseudo_exists') ? 'is-invalid' : ''; ?>" id="pseudo_inscrire" aria-describedby="inputGroupPrepend2" name="pseudo" required
-        value="<?php echo isset($_GET['pseudo']) ? htmlspecialchars($_GET['pseudo']) : ''; ?>">
-<?php if ($error == 'pseudo_exists') : ?>
-    <div class="invalid-feedback">Ce pseudo est déjà associé à un compte.</div>
-<?php endif; ?>
-</div>
-      </div>
-      <div class="col-md-6">
-        <?php
-        $error = isset($_GET['error']) ? $_GET['error'] : "";
-        ?>
-        <label for="email_inscrire" class="form-label">E-mail</label>
-        <input type="email" name="email" placeholder="email@exemple.com"
-          class="form-control f-inscription <?php echo ($error == 'email_exists') ? 'is-invalid' : ''; ?>"
-          value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>"
-          id="email_inscrire" required>
-        <?php if ($error == 'email_exists') : ?>
-          <div class="invalid-feedback">Cet e-mail est déjà associé à un compte.</div>
+    Inscription</h1>
+  <form class="row g-3 m-f" method="post" action="inscription_verification.php">
+    <div class="col-md-4">
+      <label for="prenom_inscrire" class="form-label">Prénom</label>
+      <input type="text" id="prenom_inscrire" name="prenom" required class="form-control f-inscription"
+        value="<?php echo isset($_GET['prenom']) ? htmlspecialchars($_GET['prenom']) : ''; ?>">
+    </div>
+    <div class="col-md-4">
+      <label for="nom_inscrire" class="form-label">Nom</label>
+      <input type="text" class="form-control f-inscription" id="nom_inscrire" name="nom" required
+        value="<?php echo isset($_GET['nom']) ? htmlspecialchars($_GET['nom']) : ''; ?>">
+    </div>
+    <div class="col-md-4">
+      <label for="pseudo_inscrire" class="form-label">Pseudo</label>
+      <div class="input-group">
+        <span class="input-group-text" id="inputGroupPrepend2">@</span>
+        <input type="text" class="form-control f-inscription <?php echo ($error == 'pseudo_exists') ? 'is-invalid' : ''; ?>" id="pseudo_inscrire" aria-describedby="inputGroupPrepend2" name="pseudo" required
+          value="<?php echo isset($_GET['pseudo']) ? htmlspecialchars($_GET['pseudo']) : ''; ?>">
+        <?php if ($error == 'pseudo_exists') : ?>
+          <div class="invalid-feedback">Ce pseudo est déjà associé à un compte.</div>
         <?php endif; ?>
       </div>
-
-      <div class="col-md-6">
-        <?php
-        $error = isset($_GET['error']) ? $_GET['error'] : "";
-        ?>
-        <label for="mdp_inscrire" class="form-label">Mot de passe</label>
-        <input type="password" class="form-control f-inscription <?php echo ($error == 'password_length' || $error == 'password_special_char' || $error == 'password_number' || $error == 'password_upper') ? 'is-invalid' : ''; ?>" aria-describedby="passwordHelpBlock"
-          id="mdp_inscrire" name="mot_de_passe" placeholder="Plus que 8 caractères, un caractère spécial, une lettre majuscule et un chiffre." required>
-        <?php
-        if ($error == 'password_length') {
-          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale, 1 lettre majuscule et 1 chiffre</div>';
-        } elseif ($error == 'password_special_char') {
-          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale, 1 lettre majuscule et 1 chiffre</div>';
-        } elseif ($error == 'password_number') {
-          echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale, 1 lettre majuscule et 1 chiffre</div>';
-        }
-        ?>
-
-      </div>
-      <div class="col-md-3">
-        <label for="ville_inscrire" class="form-label">Ville</label>
-        <input
-          type="text" name="ville"
-          class="form-control f-inscription" id="ville_inscrire" required
-          value="<?php echo isset($_GET['ville']) ? htmlspecialchars($_GET['ville']) : ''; ?>">
-      </div>
-      <div class="col-md-3">
-        <label for="rue_inscrire" class="form-label">Rue</label>
-        <input
-          type="text" name="rue"
-          class="form-control f-inscription" id="rue_inscrire" required
-          value="<?php echo isset($_GET['rue']) ? htmlspecialchars($_GET['rue']) : ''; ?>">
-      </div>
-      <div class="col-3">
-        <label for="region_inscrire" class="form-label">Région</label>
-        <select class="form-select f-inscription" name="region"
-          id="region_inscrire" required
-          value="<?php echo isset($_GET['region']) ? htmlspecialchars($_GET['region']) : ''; ?>">
-          <option selected disabled value="">Choisir...</option>
-          <option>Auvergne-Rhône-Alpes</option>
-          <option>Bourgogne-Franche-Comté</option>
-          <option>Bretagne</option>
-          <option>Centre-Val de Loire</option>
-          <option>Corse</option>
-          <option>Grand-Est</option>
-          <option>Hauts-De-France</option>
-          <option>Île-de-France</option>
-          <option>Normandie</option>
-          <option>Nouvelle-Aquitaine</option>
-          <option>Occitanie</option>
-          <option>Pays de la Loire</option>
-          <option>Provence-Alpes-Côte d'Azur (PACA)</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <label for="cp_inscrire" class="form-label">Code postal</label>
-        <input type="text" name="code_postal" class="form-control <?php echo ($error == 'invalid_cp') ? 'is-invalid' : ''; ?>" value="<?php echo isset($_GET['code_postal']) ? htmlspecialchars($_GET['code_postal']) : ''; ?>">
-        <?php
-        if ($error == 'invalid_cp') {
-          echo '<div class="invalid-feedback">Un code postal ne peut contenir que des chiffres</div>';
-        }
-        ?>
-      </div>
-      <div class="col-md-12">
-      <label for="captcha_question"class="form-label" id=captcha>CAPTCHA</label>
+    </div>
+    <div class="col-md-6">
       <?php
-        $questions = [
-            "Combien font 3 + 5 ?" => 8,
-            "Quelle été la couleur du cheval blanc d'Henry V ? (en un mot)" => "blanc",
-            "Quelle est la couleur du ciel (en un mot) ?" => "bleu",
-            "Combien font 10 - 4 ?" => 6,
-        ];
-        $question_keys = array_keys($questions);
-        $random_question = $question_keys[array_rand($question_keys)];
-        $_SESSION['captcha_answer'] = strtolower(trim($questions[$random_question]));
-        ?>  
-        <p><?= htmlspecialchars($random_question) ?></p>
-        <input type="text" id="captcha_answer" name="captcha_answer" class="form-control f-inscription <?php echo ($error == 'captcha_invalid') ? 'is-invalid' : ''; ?>" required>
-        <?php if ($error == 'captcha_invalid') {
-     echo '<div class="invalid-feedback">La réponse au CAPTCHA est incorrecte.</div>';
-     } ?>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="1" id="checkbox_inscrire" required>
-          <label class="form-check-label" for="checkbox_inscrire">
-            Accepter les conditions générales d'utilisations
-          </label>
-        </div>
-      </div>
-      <div class="col-12 d-flex justify-content-end">
-        <button class="btn btn-lg my-btn" type="submit">Créer mon compte</button>
-      </div>
-      
-      
-    </form>
-    </main>
-    <?php
-    include("../include/footer.php");
-    ?>
-  </body>
+      $error = isset($_GET['error']) ? $_GET['error'] : "";
+      ?>
+      <label for="email_inscrire" class="form-label">E-mail</label>
+      <input type="email" name="email" placeholder="email@exemple.com"
+        class="form-control f-inscription <?php echo ($error == 'email_exists') ? 'is-invalid' : ''; ?>"
+        value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>"
+        id="email_inscrire" required>
+      <?php if ($error == 'email_exists') : ?>
+        <div class="invalid-feedback">Cet e-mail est déjà associé à un compte.</div>
+      <?php endif; ?>
+    </div>
 
-  </html>
+    <div class="col-md-6">
+      <?php
+      $error = isset($_GET['error']) ? $_GET['error'] : "";
+      ?>
+      <label for="mdp_inscrire" class="form-label">Mot de passe</label>
+      <input type="password" class="form-control f-inscription <?php echo ($error == 'password_length' || $error == 'password_special_char' || $error == 'password_number' || $error == 'password_upper') ? 'is-invalid' : ''; ?>" aria-describedby="passwordHelpBlock"
+        id="mdp_inscrire" name="mot_de_passe" placeholder="Plus que 8 caractères, un caractère spécial, une lettre majuscule et un chiffre." required>
+      <?php
+      if ($error == 'password_length') {
+        echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale, 1 lettre majuscule et 1 chiffre</div>';
+      } elseif ($error == 'password_special_char') {
+        echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale, 1 lettre majuscule et 1 chiffre</div>';
+      } elseif ($error == 'password_number') {
+        echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale, 1 lettre majuscule et 1 chiffre</div>';
+      }
+      ?>
+
+    </div>
+    <div class="col-md-3">
+      <label for="ville_inscrire" class="form-label">Ville</label>
+      <input
+        type="text" name="ville"
+        class="form-control f-inscription" id="ville_inscrire" required
+        value="<?php echo isset($_GET['ville']) ? htmlspecialchars($_GET['ville']) : ''; ?>">
+    </div>
+    <div class="col-md-3">
+      <label for="rue_inscrire" class="form-label">Rue</label>
+      <input
+        type="text" name="rue"
+        class="form-control f-inscription" id="rue_inscrire" required
+        value="<?php echo isset($_GET['rue']) ? htmlspecialchars($_GET['rue']) : ''; ?>">
+    </div>
+    <div class="col-3">
+      <label for="region_inscrire" class="form-label">Région</label>
+      <select class="form-select f-inscription" name="region"
+        id="region_inscrire" required
+        value="<?php echo isset($_GET['region']) ? htmlspecialchars($_GET['region']) : ''; ?>">
+        <option selected disabled value="">Choisir...</option>
+        <option>Auvergne-Rhône-Alpes</option>
+        <option>Bourgogne-Franche-Comté</option>
+        <option>Bretagne</option>
+        <option>Centre-Val de Loire</option>
+        <option>Corse</option>
+        <option>Grand-Est</option>
+        <option>Hauts-De-France</option>
+        <option>Île-de-France</option>
+        <option>Normandie</option>
+        <option>Nouvelle-Aquitaine</option>
+        <option>Occitanie</option>
+        <option>Pays de la Loire</option>
+        <option>Provence-Alpes-Côte d'Azur (PACA)</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="cp_inscrire" class="form-label">Code postal</label>
+      <input type="text" name="code_postal" class="form-control <?php echo ($error == 'invalid_cp') ? 'is-invalid' : ''; ?>" value="<?php echo isset($_GET['code_postal']) ? htmlspecialchars($_GET['code_postal']) : ''; ?>">
+      <?php
+      if ($error == 'invalid_cp') {
+        echo '<div class="invalid-feedback">Un code postal ne peut contenir que des chiffres</div>';
+      }
+      ?>
+    </div>
+    <div class="col-md-12">
+      <label for="captcha_question" class="form-label" id=captcha>CAPTCHA</label>
+      <?php
+      $questions = [
+        "Combien font 3 + 5 ?" => 8,
+        "Quelle été la couleur du cheval blanc d'Henry V ? (en un mot)" => "blanc",
+        "Quelle est la couleur du ciel (en un mot) ?" => "bleu",
+        "Combien font 10 - 4 ?" => 6,
+      ];
+      $question_keys = array_keys($questions);
+      $random_question = $question_keys[array_rand($question_keys)];
+      $_SESSION['captcha_answer'] = strtolower(trim($questions[$random_question]));
+      ?>
+      <p><?= htmlspecialchars($random_question) ?></p>
+      <input type="text" id="captcha_answer" name="captcha_answer" class="form-control f-inscription <?php echo ($error == 'captcha_invalid') ? 'is-invalid' : ''; ?>" required>
+      <?php if ($error == 'captcha_invalid') {
+        echo '<div class="invalid-feedback">La réponse au CAPTCHA est incorrecte.</div>';
+      } ?>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="1" id="checkbox_inscrire" required>
+        <label class="form-check-label" for="checkbox_inscrire">
+          Accepter les conditions générales d'utilisations
+        </label>
+      </div>
+    </div>
+    <div class="col-12 d-flex justify-content-end">
+      <button class="btn btn-lg my-btn" type="submit">Créer mon compte</button>
+    </div>
+
+
+  </form>
+  </main>
+  <?php
+  include("../include/footer.php");
+  ?>
+</body>
+
+</html>

@@ -80,7 +80,7 @@
             header("Location: inscription.php?error=pseudo_exists");
             exit();
         }
-        //validate email ici
+        //validate email ici 
 
 
 
