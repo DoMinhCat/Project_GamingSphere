@@ -1,5 +1,7 @@
 <?php
 session_start();
+$login_page = '../../connexion/login.php';
+require('../check_session.php');
 require('../../include/database.php');
 require('../../include/check_timeout.php');
 ?>
@@ -24,7 +26,7 @@ require('../../include/check_timeout.php');
     ?>
     <main class="container mt-5">
         <?php
-        if (isset($_SESSION['admin']) && $_SESSION['admin'] == true && isset($bdd)) {
+        if (isset($bdd)) {
             try {
                 $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs");
                 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -65,7 +67,7 @@ require('../../include/check_timeout.php');
                 echo "<div class='alert alert-danger'>Erreur lors de la récupération des utilisateurs : " . htmlspecialchars($e->getMessage()) . "</div>";
             }
         } else {
-            echo "<div class='alert alert-danger'>Accès refusé. Vous n'êtes pas administrateur.</div>";
+            echo "<div class='alert alert-danger'>Erreur lors de la connexion à la base de donnée.</div>";
         }
         ?>
 

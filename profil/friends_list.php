@@ -1,11 +1,9 @@
 <?php
 session_start();
-include('../include/database.php');
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: profil.php?error=not_logged_in');
-    exit;
-}
+$login_page='../connexion/login.php';
+require('../include/check_session.php');
+require('../include/database.php');
+require('../include/check_timeout.php');
 
 $userId = $_SESSION['user_id'];
 try {
@@ -33,9 +31,16 @@ try {
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
-<?php $title = "Mes amis"; include('../include/head.php'); ?>
+<?php $title = "Mes amis"; 
+require('../include/head.php'); 
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
+
+?>
 <body>
   <?php include('../include/header.php'); ?>
   <div class="container my-4">

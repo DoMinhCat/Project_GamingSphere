@@ -1,11 +1,9 @@
 <?php
 session_start();
-include('../include/database.php');
-
-if (!isset($_SESSION['user_id'])) {
-    echo "Vous devez être connecté pour accéder à cette page.";
-    exit;
-}
+$login_page='../connexion/login.php';
+require('../include/check_session.php');
+require('../include/database.php');
+require('../include/check_timeout.php');
 
 $userId = $_SESSION['user_id'];
 
@@ -67,9 +65,14 @@ try {
 <!DOCTYPE html>
 <html lang="fr">
 <?php $title = "Mon compte";
-include('../include/head.php');
-include('../include/header.php'); 
+require('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
 ?>
+
+<body>
+<?php include('../include/header.php'); ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light nav_profil">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,7 +96,7 @@ include('../include/header.php');
     </div>
   </div>
 </nav>
-<body>
+
 <div class="container mt-4">
 
     <div class="card shadow-sm p-4 connexion_box">
