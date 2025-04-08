@@ -32,26 +32,26 @@ if (!isset($bdd)) {
     </div>
 
         <?php
-        $query = $bdd->query("SELECT DISTINCT catégories FROM messages WHERE parent_id IS NULL");
+        $query = $bdd->query("SELECT DISTINCT categories FROM forum_sujets WHERE parent_id IS NULL");
         if (!$query) {
             die("Erreur dans la requête SQL: " . $bdd->errorInfo()[2]);
         }
 
         while ($row = $query->fetch()) {
-            $categorie = $row['catégories'];
+            $categorie = $row['categories'];
 
-            $stmt = $bdd->prepare("SELECT COUNT(*) FROM messages WHERE catégories = ? AND parent_id IS NULL");
+            $stmt = $bdd->prepare("SELECT COUNT(*) FROM forum_sujets WHERE categories = ? AND parent_id IS NULL");
             $stmt->execute([$categorie]);
             $nb_sujets = $stmt->fetchColumn();
 
-            $stmt = $bdd->prepare("SELECT id_message FROM messages WHERE catégories = ? AND parent_id IS NULL");
+            $stmt = $bdd->prepare("SELECT id_sujet FROM forum_sujets WHERE categories = ? AND parent_id IS NULL");
             $stmt->execute([$categorie]);
             $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
             $nb_messages = 0;
             if (!empty($ids)) {
                 $placeholders = implode(',', array_fill(0, count($ids), '?'));
-                $stmt = $bdd->prepare("SELECT COUNT(*) FROM reponses_forum WHERE id_sujet IN ($placeholders)");
+                $stmt = $bdd->prepare("SELECT COUNT(*) FROM forum_reponses WHERE id_sujet IN ($placeholders)");
                 $stmt->execute($ids);
                 $nb_messages = $stmt->fetchColumn();
             }
