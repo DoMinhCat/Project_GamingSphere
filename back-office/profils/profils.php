@@ -10,12 +10,12 @@ require('../../include/check_timeout.php');
 <html lang="fr">
 <?php
 $title = 'Gestions des utilisateurs';
-require('include/head.php');
+require('../head.php');
 ?>
 
 <body>
     <?php
-    $page='index.php';
+    $page = 'index.php';
     include('../navbar.php');
     ?>
     <main class="container mt-5">

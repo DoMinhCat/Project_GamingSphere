@@ -11,12 +11,12 @@ require('../../include/check_timeout.php');
 
 <?php
 $title = 'Gestion des évènements';
-require('include/head.php');
+require('../head.php');
 ?>
 
 <body>
-<?php
-    $page='index.php';
+    <?php
+    $page = 'index.php';
     include('../navbar.php');
     ?>
 </body>

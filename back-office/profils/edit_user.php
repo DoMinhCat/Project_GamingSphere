@@ -55,13 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html>
 <?php
 $title = 'Modifier utilisateurs';
-require('include/head.php');
+require('../head.php');
 ?>
 
 
 <body>
     <?php
-    $page='profils/profils.php';
+    $page = 'profils/profils.php';
     include('../navbar.php');
     ?>
     <div class="container">

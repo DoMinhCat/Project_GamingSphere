@@ -10,12 +10,12 @@ require('../../include/check_timeout.php');
 <html lang="fr">
 <?php
 $title = 'Gestions des paris';
-require('include/head.php');
+require('../head.php');
 ?>
 
 <body>
-<?php
-    $page='index.php';
+    <?php
+    $page = 'index.php';
     include('../navbar.php');
     ?>
 </body>

@@ -10,7 +10,7 @@ require('../include/check_timeout.php');
 
 <?php
 $title = 'Acceuil';
-require('include/head.php');
+require('head.php');
 ?>
 
 <body>
@@ -29,49 +29,49 @@ require('include/head.php');
     </nav>
 
     <div class="container my-5">
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col">
-            <a href="evenements.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                Gestion des évènements
-            </a>
-        </div>
-        <div class="col">
-            <a href="article/articles.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                Gestion des articles
-            </a>
-        </div>
-        <div class="col">
-            <a href="tournois/tournois_main.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                Gestion des Tournois
-            </a>
-        </div>
-        <div class="col">
-            <a href="profils/profils.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                Gestion des profils
-            </a>
-        </div>
-        <div class="col">
-            <a href="forum/forum.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                Gestion du forum
-            </a>
-        </div>
-        <div class="col">
-            <a href="paris.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                Gestion des paris
-            </a>
-        </div>
-        <div class="col">
-            <a href="communication.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                Gestion des canaux de communication
-            </a>
-        </div>
-        <div class="col">
-            <a href="jeux/jeux.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                Gestion des jeux
-            </a>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <a href="evenements.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des évènements
+                </a>
+            </div>
+            <div class="col">
+                <a href="article/articles.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des articles
+                </a>
+            </div>
+            <div class="col">
+                <a href="tournois/tournois_main.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des Tournois
+                </a>
+            </div>
+            <div class="col">
+                <a href="profils/profils.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des profils
+                </a>
+            </div>
+            <div class="col">
+                <a href="forum/forum.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion du forum
+                </a>
+            </div>
+            <div class="col">
+                <a href="paris.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des paris
+                </a>
+            </div>
+            <div class="col">
+                <a href="communication.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des canaux de communication
+                </a>
+            </div>
+            <div class="col">
+                <a href="jeux/jeux.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des jeux
+                </a>
+            </div>
         </div>
     </div>
-</div>
 </body>
 
 </html>

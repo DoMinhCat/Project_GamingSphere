@@ -102,12 +102,12 @@ if (isset($_GET['id'])) {
 <html lang="fr">
 <?php
 $title = 'Modifier un jeu';
-require('include/head.php');
+require('../head.php');
 ?>
 
 <body>
     <?php
-    $page='jeux/jeux.php';
+    $page = 'jeux/jeux.php';
     include('../navbar.php');
     ?>
     <div class="container mt-5">

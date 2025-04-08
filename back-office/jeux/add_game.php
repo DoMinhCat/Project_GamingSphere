@@ -48,12 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
 <html lang="fr">
 <?php
 $title = 'Gestions des jeux';
-require('include/head.php');
+require('../head.php');
 ?>
 
 <body>
     <?php
-    $page='jeux/jeux.php';
+    $page = 'jeux/jeux.php';
     include('../navbar.php');
     ?>
     <div class="container mt-4">
@@ -62,7 +62,7 @@ require('include/head.php');
         <form action="" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
             <div class="mb-2">
                 <label for="category" class="form-label">Catégorie :</label>
-            <input type="text" id="category" name="category" class="form-control" required>
+                <input type="text" id="category" name="category" class="form-control" required>
             </div>
             <div class="mb-2">
                 <label for="releaseDate" class="form-label">Date de sortie :</label>
