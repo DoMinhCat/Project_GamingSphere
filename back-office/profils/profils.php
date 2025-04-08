@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../../include/database.php');
+require('../../include/database.php');
 require('../../include/check_timeout.php');
 ?>
 
@@ -13,7 +13,7 @@ require('../../include/check_timeout.php');
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <?php
     if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../includes/check_timeout.js"></script>';
+        echo '<script src="../../include/check_timeout.js"></script>';
     }
     ?>
 </head>

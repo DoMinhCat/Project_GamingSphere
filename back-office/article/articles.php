@@ -1,5 +1,5 @@
 <?php
-include('../../include/database.php');
+require('../../include/database.php');
 require('../../include/check_timeout.php');
 ?>
 
@@ -12,7 +12,7 @@ require('../../include/check_timeout.php');
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <?php
     if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../includes/check_timeout.js"></script>';
+        echo '<script src="../../include/check_timeout.js"></script>';
     }
     ?>
 </head>

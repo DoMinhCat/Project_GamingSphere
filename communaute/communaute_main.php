@@ -9,7 +9,7 @@ require('../include/check_timeout.php');
 $title = 'Communauté';
 include('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
-    echo '<script src="includes/check_timeout.js"></script>';
+    echo '<script src="../include/check_timeout.js"></script>';
 }
 ?>
 
