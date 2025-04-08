@@ -2,7 +2,7 @@
 session_start();
 require('../../include/database.php');
 $login_page = '../../connexion/login.php';
-require('../check_session.php'); 
+require('../check_session.php');
 require('../../include/check_timeout.php');
 ?>
 
@@ -11,12 +11,12 @@ require('../../include/check_timeout.php');
 
 <?php
 $title = 'Gérer les articles';
-require('include/head.php');
+require('../head.php');
 ?>
 
 <body>
     <?php
-    $page='index.php';
+    $page = 'index.php';
     include('../navbar.php');
     ?>
     <div class="container my-5">

@@ -11,13 +11,13 @@ require('../../include/check_timeout.php');
 
 <?php
 $title = 'Gestions du forum';
-require('include/head.php');
+require('../head.php');
 ?>
 
 
 <body>
-<?php
-    $page='index.php';
+    <?php
+    $page = 'index.php';
     include('../navbar.php');
     ?>
 </body>

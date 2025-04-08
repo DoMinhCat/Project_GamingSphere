@@ -15,13 +15,13 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <?php
 $title = 'Liste des jeux';
-require('include/head.php');
+require('../head.php');
 ?>
 
 <body>
-    <?php 
-    $page='index.php';
-    include('../navbar.php'); 
+    <?php
+    $page = 'index.php';
+    include('../navbar.php');
     ?>
     <div class="container mt-4">
         <h1 class="text-center mb-3" style="font-size: 1.5rem;">Liste des jeux</h1>
@@ -85,10 +85,10 @@ require('include/head.php');
             <div class="alert alert-success mt-3" role="alert">
                 Jeu modifié avec succès !
             </div>
-        <?php endif; 
+        <?php endif;
         if (isset($_GET['message_err']) && !empty($_GET['message_err'])): ?>
             <div class="alert alert-danger mt-3" role="alert">
-            <?= htmlspecialchars($_GET['message_err']); ?>
+                <?= htmlspecialchars($_GET['message_err']); ?>
             </div>
         <?php endif; ?>
     </div>

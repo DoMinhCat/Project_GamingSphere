@@ -1,19 +1,18 @@
 <?php
-
 session_start();
-include('../../include/database.php');
-
-$title = 'Ajouter un Tournoi';
+$login_page = '../../connexion/login.php';
+require('../check_session.php');
+require('../../include/database.php');
+require('../../include/check_timeout.php');
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($title) ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<?php
+$title = 'Ajouter un tournoi';
+require('../head.php');
+?>
+
 <body>
     <?php include('../navbar.php'); ?>
 
@@ -29,7 +28,7 @@ $title = 'Ajouter un Tournoi';
             $jeu = $_POST['jeu'] ?? '';
             $statut = $_POST['statut'] ?? '';
 
-     
+
             if (empty($nom_tournoi) || empty($date_debut) || empty($date_fin) || empty($jeu) || empty($statut)) {
                 echo "<div class='alert alert-danger'>Tous les champs sont obligatoires.</div>";
             } else {
@@ -79,4 +78,5 @@ $title = 'Ajouter un Tournoi';
     </div>
 
 </body>
+
 </html>

@@ -1,33 +1,32 @@
 <?php
-
-
 session_start();
-include('../../include/database.php'); 
-$title = 'Liste des Tournois';
+$login_page = '../../connexion/login.php';
+require('../check_session.php');
+require('../../include/database.php');
+require('../../include/check_timeout.php');
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($title) ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<?php
+$title = 'Liste des tournois';
+require('../head.php');
+?>
+
 <body>
     <?php include('../navbar.php'); ?>
 
     <div class="container my-5">
-    <?php if (isset($_GET['message']) && $_GET['message'] === 'tournoi_deleted'): ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        Le tournoi a été supprimé avec succès.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<?php endif; ?>
+        <?php if (isset($_GET['message']) && $_GET['message'] === 'tournoi_deleted'): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Le tournoi a été supprimé avec succès.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
         <h1 class="mb-4 text-center">Liste des Tournois Disponibles</h1>
         <div class="mb-4 text-end">
-        <a href="add_tournoi.php" class="btn btn-primary">Ajouter un tournoi</a>
-    </div>
+            <a href="add_tournoi.php" class="btn btn-primary">Ajouter un tournoi</a>
+        </div>
         <?php
         try {
             $stmt = $bdd->query("SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu, status_ENUM FROM tournoi ORDER BY date_debut DESC");
@@ -63,11 +62,12 @@ $title = 'Liste des Tournois';
                 </table>
             <?php else: ?>
                 <div class="alert alert-info text-center">Aucun tournoi disponible pour le moment.</div>
-            <?php endif;
+        <?php endif;
         } catch (PDOException $e) {
             echo "<div class='alert alert-danger'>Erreur lors de la récupération des tournois : " . htmlspecialchars($e->getMessage()) . "</div>";
         }
         ?>
-    </div>  
+    </div>
 </body>
+
 </html>
