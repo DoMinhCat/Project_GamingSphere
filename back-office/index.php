@@ -31,7 +31,7 @@ require('head.php');
     <div class="container my-5">
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
-                <a href="evenements.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="event/evenements.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des évènements
                 </a>
             </div>
@@ -56,12 +56,12 @@ require('head.php');
                 </a>
             </div>
             <div class="col">
-                <a href="paris.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="paris/paris.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des paris
                 </a>
             </div>
             <div class="col">
-                <a href="communication.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="communication/communication.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des canaux de communication
                 </a>
             </div>
