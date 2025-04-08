@@ -41,34 +41,49 @@ require('../include/check_timeout.php');
     </nav>
 
     <div class="container my-5">
-        <div class="row g-4">
-            <div class="col-md-4">
-                <a href="evenements.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des évènements</a>
-            </div>
-            <div class="col-md-4">
-                <a href="article/articles.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des articles</a>
-            </div>
-            <div class="col-md-4">
-                <a href="profils/profils.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des profils</a>
-            </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <a href="evenements.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                Gestion des évènements
+            </a>
         </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <a href="forum/forum.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion du forum</a>
-            </div>
-            <div class="col-md-4">
-                <a href="paris.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des paris</a>
-            </div>
-            <div class="col-md-4">
-                <a href="communication.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des canaux de communication</a>
-            </div>
+        <div class="col">
+            <a href="article/articles.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                Gestion des articles
+            </a>
         </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <a href="jeux/jeux.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des jeux</a>
-            </div>
+        <div class="col">
+            <a href="tournois/tournois_main.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                Gestion des Tournois
+            </a>
+        </div>
+        <div class="col">
+            <a href="profils/profils.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                Gestion des profils
+            </a>
+        </div>
+        <div class="col">
+            <a href="forum/forum.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                Gestion du forum
+            </a>
+        </div>
+        <div class="col">
+            <a href="paris.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                Gestion des paris
+            </a>
+        </div>
+        <div class="col">
+            <a href="communication.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                Gestion des canaux de communication
+            </a>
+        </div>
+        <div class="col">
+            <a href="jeux/jeux.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                Gestion des jeux
+            </a>
         </div>
     </div>
+</div>
 </body>
 
 </html>
