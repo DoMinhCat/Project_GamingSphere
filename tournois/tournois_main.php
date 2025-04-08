@@ -1,5 +1,12 @@
+<?php
+session_start();
+require('../include/database.php');
+require('../include/check_timeout.php');
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
+  
 <?php
 $title = 'Tournois';
 include('../include/head.php');

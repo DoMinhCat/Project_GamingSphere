@@ -1,11 +1,9 @@
 <?php
 session_start();
-include('../include/database.php');
-
-if (!isset($_SESSION['user_id'])) {
-    echo "Vous devez être connecté pour accéder à cette page.";
-    exit;
-}
+$login_page='../connexion/login.php';
+require('../include/check_session.php');
+require('../include/database.php');
+require('../include/check_session.php');
 
 $userId = $_SESSION['user_id'];
 

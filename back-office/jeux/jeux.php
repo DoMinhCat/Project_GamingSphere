@@ -1,4 +1,7 @@
 <?php
+session_start();
+$login_page = '../../connexion/login.php';
+require('../check_session.php');
 require('../../include/check_timeout.php');
 require('../../include/database.php');
 
@@ -86,7 +89,11 @@ $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="alert alert-success mt-3" role="alert">
                 Jeu modifié avec succès !
             </div>
-
+        <?php endif; 
+        if (isset($_GET['message_err']) && !empty($_GET['message_err'])): ?>
+            <div class="alert alert-danger mt-3" role="alert">
+            <?= htmlspecialchars($_GET['message_err']); ?>
+            </div>
         <?php endif; ?>
     </div>
 

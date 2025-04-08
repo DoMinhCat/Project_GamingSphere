@@ -1,6 +1,7 @@
 <?php
 session_start();
-include('../include/database.php');
+require('../include/database.php');
+require('../include/check_timeout.php');
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: profil.php?error=not_logged_in');
@@ -42,7 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php $title = 'Nouvelle Conversation'; include('../include/head.php'); ?>
+
+<?php $title = 'Nouvelle Conversation'; 
+require('../include/head.php'); 
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
+?>
 <body>
 <?php include('../include/header.php'); ?>
 <div class="container my-4">

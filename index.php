@@ -1,5 +1,6 @@
 <?php
 session_start();
+require('include/database.php');
 require('include/check_timeout.php');
 $success = $_GET['success'] ?? "";
 $user_pseudo = htmlspecialchars($_GET['user_pseudo'] ?? "");
@@ -10,8 +11,7 @@ $pseudo = htmlspecialchars($_GET['pseudo'] ?? "");
 <html lang="fr">
 <?php
 $title = 'Acceuil';
-include('include/database.php');
-include('include/head.php');
+require('include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="include/check_timeout.js"></script>';
 }

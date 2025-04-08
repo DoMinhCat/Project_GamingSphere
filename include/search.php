@@ -1,5 +1,6 @@
 <?php
-include('database.php');
+require('database.php');
+require('check_timeout.php');
 
 $query = $_POST['query'] ?? '';
 $category = $_POST['category'] ?? '';
@@ -38,7 +39,11 @@ try {
 <!DOCTYPE html>
 <html lang="fr">
 <?php $title = 'Recherche';
-include('head.php');;
+require('head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="check_timeout.js"></script>';
+}
+
 ?>
 
 <body>

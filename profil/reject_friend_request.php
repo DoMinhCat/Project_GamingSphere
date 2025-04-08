@@ -1,10 +1,9 @@
 <?php
 session_start();
-include('../include/database.php');
-if (!isset($_SESSION['user_id'])) {
-    header('Location: profil.php?error=not_logged_in');
-    exit;
-}
+require('../include/database.php');
+$login_page='../connexion/login.php';
+require('../include/check_session.php');
+
 $friendPseudo = htmlspecialchars($_POST['friend_pseudo'] ?? '');
 if (empty($friendPseudo)) {
     header('Location: profil.php?error=no_user_specified');

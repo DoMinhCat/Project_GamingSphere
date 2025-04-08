@@ -1,4 +1,7 @@
 <?php
+session_start();
+$login_page = '../../connexion/login.php';
+require('../check_session.php');
 require('../../include/database.php');
 require('../../include/check_timeout.php');
 
@@ -40,13 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des jeux</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <?php
     if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
@@ -108,8 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
             </div>
         </form>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

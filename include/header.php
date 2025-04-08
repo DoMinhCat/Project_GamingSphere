@@ -166,7 +166,7 @@ if (isset($_SESSION['user_id'])) {
         </div>
       </div>
       <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
-        <a href="/PA/back-office/index.php" class="btn btn-warning me-3 ml-4 mr-4" style="background-color: #ffc107; color: #212529; border-radius: 25px; font-weight: bold; padding: 0.5rem 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <a href="<?= ($this_page == 'index.php') ? 'back-office/index.php' : '../back-office/index.php' ?>" class="btn btn-warning mx-3" style="background-color: #ffc107; color: #212529; border-radius: 20px; font-weight: bold; padding: 0.5rem 1rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
           <i class="bi bi-gear-fill"></i> Back-Office
         </a>
       <?php endif; ?>

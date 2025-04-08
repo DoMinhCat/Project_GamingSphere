@@ -1,5 +1,7 @@
 <?php
 session_start();
+require('../include/database.php');
+require('../include/check_timeout.php');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
@@ -7,9 +9,11 @@ ini_set('display_errors', 1);
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-$title = 'Sujet';
-include('../include/head.php');
-include('../include/database.php');
+$title = 'Forum - sujet';
+require('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
 
 if (!isset($bdd)) {
     die("Erreur de connexion à la base de données");
