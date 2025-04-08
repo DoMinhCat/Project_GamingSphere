@@ -1,5 +1,5 @@
 <?php
-$timeout_duree = 600;
+$timeout_duree = 60*30;
 if (isset($_SESSION['user_email']) || isset($_SESSION['admin'])) {
     if (isset($_SESSION['actif'])) {
         if (time() - $_SESSION['actif'] > $timeout_duree) {

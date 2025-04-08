@@ -1,4 +1,4 @@
-let timeoutDuration = 10 * 1000; 
+let timeoutDuration = 30*60*1000; 
 let timeout;
 
 async function update_session() {
