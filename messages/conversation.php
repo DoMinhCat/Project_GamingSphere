@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
         </form>
     </div>
 </div>
-<script src=""></script>
+<script src="refresh.js"></script>
 <?php include('../include/footer.php'); ?>
 </body>
 </html>
