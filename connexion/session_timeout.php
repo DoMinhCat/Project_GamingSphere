@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$timeout_duree = 1;
+$timeout_duree = 10;
 $this_page = basename($_SERVER['PHP_SELF']);
 
 if ((isset($_SESSION['actif']) && time() - $_SESSION['actif'] < $timeout_duree)) {
