@@ -1,4 +1,4 @@
-let timeoutDuration = 1000;
+let timeoutDuration = 10000;
 let timeout;
 
 function resetTimer() {
