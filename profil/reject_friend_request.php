@@ -1,6 +1,7 @@
 <?php
 session_start();
-include('../include/database.php');
+require('../include/database.php');
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: profil.php?error=not_logged_in');
     exit;

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../include/database.php');
+require('../include/database.php');
 if (isset($_SESSION['user_id'])) {
     try {
         $stmt = $bdd->prepare("SELECT u.pseudo, r.date_début
