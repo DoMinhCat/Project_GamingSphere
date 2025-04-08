@@ -41,7 +41,7 @@ require('../include/check_timeout.php');
     <div class="container my-5">
         <div class="row g-4">
             <div class="col-md-4">
-                <a href="evenements.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des évènements</a>
+                <a href="event/evenements.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des évènements</a>
             </div>
             <div class="col-md-4">
                 <a href="article/articles.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des articles</a>
@@ -55,10 +55,10 @@ require('../include/check_timeout.php');
                 <a href="forum/forum.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion du forum</a>
             </div>
             <div class="col-md-4">
-                <a href="paris.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des paris</a>
+                <a href="paris/paris.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des paris</a>
             </div>
             <div class="col-md-4">
-                <a href="communication.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des canaux de communication</a>
+                <a href="communication/communication.php" class="tableau-card mb-4 d-block text-white text-decoration-none">Gestion des canaux de communication</a>
             </div>
         </div>
         <div class="row g-4">

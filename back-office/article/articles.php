@@ -1,7 +1,8 @@
 <?php
+session_start();
 require('../../include/database.php');
 $login_page = '../../connexion/login.php';
-require('../check_session.php');
+require('../check_session.php'); 
 require('../../include/check_timeout.php');
 ?>
 
