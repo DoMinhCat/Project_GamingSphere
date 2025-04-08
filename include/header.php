@@ -154,7 +154,11 @@ if (isset($_SESSION['user_id'])) {
                     <a href="<?= $href ?>" class="dropdown-item btn btn-sm py-3"><?php echo htmlspecialchars($display_name) ?></a>
                   </li>
                   <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
-                  <li><a href="connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">Se déconnecter</a></li>
+                  <li>
+                    <?php if (isset($_SESSION['user_email'])): ?>
+                    <a href="<?= ($this_page == 'index.php') ? 'connexion/deconnexion.php' : '../connexion/deconnexion.php' ?>" class="dropdown-item btn btn-sm py-3">Se déconnecter</a>
+                    <?php endif; ?>
+                </li>
                 </ul>
               </div>
             </div>

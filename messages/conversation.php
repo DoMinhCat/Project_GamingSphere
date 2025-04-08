@@ -107,7 +107,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         </form>
     </div>
 </div>
-<script src=""></script>
+<script src="refresh.js"></script>
 <?php include('../include/footer.php'); ?>
 </body>
 </html>
