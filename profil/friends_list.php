@@ -42,7 +42,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
 ?>
 <body>
-  <?php include('../include/header.php'); ?>
+  <?php 
+  include('../include/header.php');
+  include('navbar.php');
+    ?>
   <div class="container my-4">
       <h2 class="mb-4 text-center">Mes amis</h2>
       <?php if (count($friends) > 0): ?>
