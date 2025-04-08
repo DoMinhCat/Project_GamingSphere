@@ -53,19 +53,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html>
+<?php
+$title = 'Modifier utilisateurs';
+require('include/head.php');
+?>
 
-<head>
-    <title>Modifier Utilisateur</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <?php
-    if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../include/check_timeout.js"></script>';
-    }
-    ?>
-</head>
 
 <body>
     <?php
+    $page='profils/profils.php';
     include('../navbar.php');
     ?>
     <div class="container">

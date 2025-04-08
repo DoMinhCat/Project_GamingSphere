@@ -9,19 +9,14 @@ require('../../include/check_timeout.php');
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Gérer les articles</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <?php
-    if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../include/check_timeout.js"></script>';
-    }
-    ?>
-</head>
+<?php
+$title = 'Gérer les articles';
+require('include/head.php');
+?>
 
 <body>
     <?php
+    $page='index.php';
     include('../navbar.php');
     ?>
     <div class="container my-5">

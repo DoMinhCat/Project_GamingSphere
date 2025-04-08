@@ -46,21 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
 
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des jeux</title>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <?php
-    if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../include/check_timeout.js"></script>';
-    }
-    ?>
-</head>
+<?php
+$title = 'Gestions des jeux';
+require('include/head.php');
+?>
 
 <body>
     <?php
+    $page='jeux/jeux.php';
     include('../navbar.php');
     ?>
     <div class="container mt-4">
@@ -69,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
         <form action="" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
             <div class="mb-2">
                 <label for="category" class="form-label">Catégorie :</label>
-                <input type="text" id="category" name="category" class="form-control" required>
+            <input type="text" id="category" name="category" class="form-control" required>
             </div>
             <div class="mb-2">
                 <label for="releaseDate" class="form-label">Date de sortie :</label>
