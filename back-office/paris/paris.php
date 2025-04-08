@@ -8,19 +8,16 @@ require('../../include/check_timeout.php');
 
 <!DOCTYPE html>
 <html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Gestion des paris</title>
-    <?php
-    if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../include/check_timeout.js"></script>';
-    }
-    ?>
-</head>
+<?php
+$title = 'Gestions des paris';
+require('include/head.php');
+?>
 
 <body>
-
+<?php
+    $page='index.php';
+    include('../navbar.php');
+    ?>
 </body>
 
 </html>

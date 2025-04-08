@@ -8,20 +8,14 @@ require('../../include/check_timeout.php');
 
 <!DOCTYPE html>
 <html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Gestions des utilisateurs</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <?php
-    if (isset($_SESSION['admin']) && !empty($_SESSION['admin'])) {
-        echo '<script src="../../include/check_timeout.js"></script>';
-    }
-    ?>
-</head>
+<?php
+$title = 'Gestions des utilisateurs';
+require('include/head.php');
+?>
 
 <body>
     <?php
+    $page='index.php';
     include('../navbar.php');
     ?>
     <main class="container mt-5">
