@@ -1,11 +1,12 @@
-let timeoutDuration = 600000;
+let timeoutDuration = 1000;
 let timeout;
 
 function resetTimer() {
   clearTimeout(timeout);
   timeout = setTimeout(() => {
-    const basePath = window.location.origin;
-    window.location.href = `${basePath}/connexion/session_timeout.php`;
+    //const basePath = window.location.origin;
+    //window.location.href = `${basePath}/connexion/session_timeout.php`;
+    window.location.href = 'PA/connexion/session_timeout.php';
   }, timeoutDuration);
 }
 

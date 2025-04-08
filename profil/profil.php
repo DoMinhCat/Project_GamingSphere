@@ -1,5 +1,7 @@
 <?php
 session_start();
+$login_page='../connexion/login.php';
+require('../include/check_session.php');
 require('../include/database.php');
 require('../include/check_timeout.php');
 
@@ -51,9 +53,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <div class="alert alert-danger" role="alert">
             <?php
             switch ($_GET['error']) {
-                case 'not_logged_in':
-                    echo "Vous devez être connecté pour ajouter un ami.";
-                    break;
                 case 'no_user_specified':
                     echo "Aucun utilisateur spécifié.";
                     break;
