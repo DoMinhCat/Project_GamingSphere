@@ -1,6 +1,7 @@
 <?php
 session_start();
-include('../include/database.php');
+require('../include/database.php');
+require('../include/check_timeout.php');
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: /PA/connexion/login.php');
@@ -41,10 +42,15 @@ ORDER BY last_message DESC;
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <?php
 $title = 'Messagerie';
-include('../include/head.php');
+require('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
 ?>
+
 <body>
 <?php include('../include/header.php'); ?>
 <div class="container my-4">

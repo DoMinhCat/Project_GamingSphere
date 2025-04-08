@@ -1,6 +1,12 @@
 <?php
 session_start();
-include('../include/database.php');
+require('../include/database.php');
+require('../include/check_timeout.php');
+
+if (!isset($_SESSION['user_id'])) {
+    echo "Vous devez être connecté pour accéder à cette page.";
+    exit;
+}
 
 $pseudo = $_GET['user'] ?? '';
 
@@ -31,12 +37,16 @@ try {
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php $title = "Profil de " . htmlspecialchars($pseudo);
-include('../include/head.php');
-include('../include/header.php');
+<?php 
+$title = "Profil de " . htmlspecialchars($pseudo);
+require('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
 ?>
 
 <body>
+<?php include('../include/header.php'); ?>
     <?php if (isset($_GET['error'])): ?>
         <div class="alert alert-danger" role="alert">
             <?php

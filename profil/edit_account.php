@@ -1,6 +1,7 @@
 <?php
 session_start();
-include('../include/database.php');
+require('../include/database.php');
+require('../include/check_session.php');
 
 if (!isset($_SESSION['user_id'])) {
     echo "Vous devez être connecté pour accéder à cette page.";
