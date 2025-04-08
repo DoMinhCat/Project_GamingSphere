@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-$timeout_duree = 600;
+$timeout_duree = 1;
 $this_page = basename($_SERVER['PHP_SELF']);
 
-if ((isset($_SESSION['actif']) && time() - $_SESSION['actif'] <= $timeout_duree)) {
+if ((isset($_SESSION['actif']) && time() - $_SESSION['actif'] < $timeout_duree)) {
     header("Location: ../index.php");
     exit();
 }

@@ -28,7 +28,7 @@ include('../include/head.php')
                 </div>
                 <form method="post" action="login_verification.php">
                     <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
-                        <input type="email" name="email" placeholder="Identifiant/Email" required aria-describedby="emailHelp" class="form-control input_field">
+                        <input type="email" name="email" placeholder="Identifiant/Email" required aria-describedby="emailHelp" class="form-control input_field" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>">
 
                         <input type="password" name="mdp" placeholder="Mot de passe" class="form-control input_field" required>
 
