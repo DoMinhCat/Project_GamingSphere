@@ -156,9 +156,9 @@ if (isset($_SESSION['user_id'])) {
                   <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
                   <li>
                     <?php if (isset($_SESSION['user_email'])): ?>
-                    <a href="<?= ($this_page == 'index.php') ? 'connexion/deconnexion.php' : '../connexion/deconnexion.php' ?>" class="dropdown-item btn btn-sm py-3">Se déconnecter</a>
+                      <a href="<?= ($this_page == 'index.php') ? 'connexion/deconnexion.php' : '../connexion/deconnexion.php' ?>" class="dropdown-item btn btn-sm py-3">Se déconnecter</a>
                     <?php endif; ?>
-                </li>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -167,7 +167,7 @@ if (isset($_SESSION['user_id'])) {
       </div>
       <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
         <a href="<?= ($this_page == 'index.php') ? 'back-office/index.php' : '../back-office/index.php' ?>" class="btn btn-warning mx-3" style="background-color: #ffc107; color: #212529; border-radius: 20px; font-weight: bold; padding: 0.5rem 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-          <i class="bi bi-gear-fill"></i> Back-Office
+          <i class="bi bi-gear-fill"></i> Back Office
         </a>
       <?php endif; ?>
   </nav>
