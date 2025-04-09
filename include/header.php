@@ -72,7 +72,7 @@ if (isset($_SESSION['user_id'])) {
 
         <div class="d-flex ms-auto align-items-center">
 
-          <form id="globalSearchForm" method="POST" action="/PA/include/search.php" class="d-flex align-items-center me-3">
+          <form id="globalSearchForm" method="POST" action="<?= ($this_page == 'index.php') ? 'include/search.php' : '../include/search.php' ?>" class="d-flex align-items-center me-3">
             <div class="input-group">
               <input type="text" id="query" name="query" class="form-control" placeholder="Rechercher..." required>
               <select name="category" id="category" class="form-select">

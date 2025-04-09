@@ -1,12 +1,8 @@
 <?php
 session_start();
 require('../include/database.php');
+require('../include/check_session.php');
 require('../include/check_timeout.php');
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: profil.php?error=not_logged_in');
-    exit;
-}
 
 $userId = $_SESSION['user_id'];
 
