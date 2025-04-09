@@ -21,6 +21,13 @@ try {
         header("Location: tournois_main.php?message=tournoi_not_found");
         exit();
     }
+    $is_registered = false;
+    if (isset($_SESSION['user_id'])) {
+        $user_id = intval($_SESSION['user_id']);
+        $check_stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
+        $check_stmt->execute([$id_tournoi, $user_id]);
+        $is_registered = $check_stmt->fetchColumn() > 0;
+    }
 } catch (PDOException $e) {
     echo "<div class='alert alert-danger'>Erreur lors de la récupération des informations du tournoi : " . htmlspecialchars($e->getMessage()) . "</div>";
     exit();
@@ -49,11 +56,15 @@ include('../include/head.php');
             </div>
             <div class="card-footer text-center">
                 <a href="tournois_main.php" class="btn btn-secondary">Retour à la liste</a>
-                <a href="tournois_main.php" class="btn btn-secondary">Participer</a>
+                <?php if ($is_registered): ?>
+                <button class="btn btn-danger desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Se désinscrire</button>
+            <?php else: ?>
+                <button class="btn btn-warning participer-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Participer</button>
+            <?php endif; ?>
             </div>
         </div>
     </div>
-
+<script src="fluid.js"></script>
     <?php include('../include/footer.php'); ?>
 </body>
 </html>

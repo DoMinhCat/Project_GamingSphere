@@ -37,7 +37,7 @@ $categorie_nom = $_GET['nom'];
 
     <?php
     // Récupération des sujets de la catégorie
-    $stmt = $bdd->prepare("SELECT * FROM messages WHERE catégories = ? AND parent_id IS NULL ORDER BY date_msg DESC");
+    $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? AND parent_id IS NULL ORDER BY date_msg DESC");
     $stmt->execute([$categorie_nom]);
     $sujets = $stmt->fetchAll();
 
@@ -47,14 +47,14 @@ $categorie_nom = $_GET['nom'];
 
     foreach ($sujets as $sujet) {
         // Compter les réponses
-        $stmt_reponses = $bdd->prepare("SELECT COUNT(*) FROM reponses_forum WHERE id_sujet = ?");
-        $stmt_reponses->execute([$sujet['id_message']]);
+        $stmt_reponses = $bdd->prepare("SELECT COUNT(*) FROM forum_reponses WHERE id_sujet = ?");
+        $stmt_reponses->execute([$sujet['id_sujet']]);
         $nb_reponses = $stmt_reponses->fetchColumn();
         ?>
         <div class="card mb-3">
             <div class="card-body">
                 <h5>
-                    <a href="sujet.php?id=<?= $sujet['id_message'] ?>" class="text-decoration-none">
+                    <a href="sujet.php?id=<?= $sujet['id_sujet'] ?>" class="text-decoration-none">
                         <?= htmlspecialchars($sujet['titre']) ?>
                     </a>
                 </h5>

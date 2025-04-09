@@ -38,8 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } elseif (empty($titre) || empty($contenu)) {
         $messageErreur = "Veuillez remplir tous les champs.";
     } else {
-        $stmt = $bdd->prepare("INSERT INTO messages (titre, contenu, message_public, date_msg, catégories, parent_id, auteur)
-                               VALUES (?, ?, 'oui', NOW(), ?, NULL, ?)");
+        $stmt = $bdd->prepare("INSERT INTO forum_sujets (titre, contenu, date_msg, categories, parent_id, auteur) 
+                               VALUES (?, ?, NOW(), ?, NULL, ?)");
         $stmt->execute([$titre, $contenu, $categorie_nom, $auteur]);
 
         header("Location: categorie.php?nom=" . urlencode($categorie_nom));
