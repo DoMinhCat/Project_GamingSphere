@@ -25,7 +25,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id_sujet = (int) $_GET['id'];
 
-$stmt = $bdd->prepare("SELECT * FROM messages WHERE id_message = ?");
+$stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE id_sujet = ?");
 $stmt->execute([$id_sujet]);
 $sujet = $stmt->fetch();
 
@@ -37,14 +37,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['contenu']) && !empty(
     $contenu_reponse = trim($_POST['contenu']);
     $auteur = $_SESSION['utilisateur'] ?? 'Anonyme';
 
-    $stmt = $bdd->prepare("INSERT INTO reponses_forum (id_sujet, contenu, auteur) VALUES (?, ?, ?)");
+    $stmt = $bdd->prepare("INSERT INTO forum_reponses (id_sujet, contenu, auteur) VALUES (?, ?, ?)");
     $stmt->execute([$id_sujet, $contenu_reponse, $auteur]);
 
     header("Location: sujet.php?id=" . $id_sujet);
     exit;
 }
 
-$stmt = $bdd->prepare("SELECT * FROM reponses_forum WHERE id_sujet = ? ORDER BY date_msg ASC");
+$stmt = $bdd->prepare("SELECT * FROM forum_reponses WHERE id_sujet = ? ORDER BY date_msg ASC");
 $stmt->execute([$id_sujet]);
 $reponses = $stmt->fetchAll();
 ?>
