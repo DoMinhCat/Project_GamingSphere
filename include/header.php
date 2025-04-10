@@ -110,7 +110,7 @@ if (isset($_SESSION['user_id'])) {
                     <?php if ($notificationCount > 0): ?>
                       <?php foreach ($friendRequests as $request): ?>
                         <li class="dropdown-item d-flex justify-content-between align-items-center">
-                          <a href="profil.php?user=<?= urlencode($request['pseudo']) ?>" class="text-dark">
+                          <a href="/PA/profil/profil.php?user=<?= urlencode($request['pseudo']) ?>" class="text-dark">
                             <strong>Demande d'ami</strong> de <?= htmlspecialchars($request['pseudo']) ?> - <?= date('d/m/Y', strtotime($request['date_début'])) ?>
                           </a>
                           <div class="btn-group">

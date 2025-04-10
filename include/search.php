@@ -30,6 +30,13 @@ try {
         $stmtGames->execute(['%' . $query . '%']);
         $games = $stmtGames->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    if ($category == 'tournois' || empty($category)) {
+        $stmtTournois = $bdd->prepare("SELECT id_tournoi, nom_tournoi FROM tournoi WHERE nom_tournoi LIKE ?");
+        $stmtTournois->execute(['%' . $query . '%']);
+        $tournois = $stmtTournois->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 } catch (PDOException $e) {
 
     $errorMessage = $e->getMessage();
@@ -90,6 +97,19 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php endif; ?>
 
+        <?php if ($tournois): ?>
+            <div class="section mb-4">
+                <h3 class="search-title">Tournois</h3>
+                <ul class="list-group">
+                    <?php foreach ($tournois as $tournoi): ?>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <?php echo htmlspecialchars($tournoi['nom_tournoi']); ?>
+                            <a href="../tournois/tournois_details.php?id_tournoi=<?php echo urlencode($tournoi['id_tournoi']); ?>" class="btn btn-primary btn-sm">Voir le tournoi</a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
 
         <?php if ($games): ?>
             <div class="section mb-4">
@@ -106,7 +126,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php endif; ?>
 
 
-        <?php if (empty($users) && empty($articles) && empty($games)): ?>
+        <?php if (empty($users) && empty($articles) && empty($games)  && empty($tournois)): ?>
             <div class="alert alert-info" role="alert">
                 Aucun résultat trouvé pour votre recherche.
             </div>
