@@ -13,9 +13,10 @@ if (!isset($_SESSION['user_id'])) {
 $pseudo = $_GET['user'] ?? '';
 
 if (empty($pseudo)) {
-    echo "Aucun utilisateur spécifié.";
+    header('Location: profil.php?error=no_user_specified');
     exit();
 }
+
 
 if (isset($_SESSION['user_pseudo']) && $_SESSION['user_pseudo'] === $pseudo) {
     header('Location: my_account.php');
