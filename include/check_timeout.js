@@ -10,8 +10,8 @@ function resetTimer() {
   update_session();
 
   timeout = setTimeout(() => {
-    const basePath = window.location.origin;
-    window.location.href = `${basePath}/connexion/session_timeout.php`;
+    const root = window.location.origin;
+    window.location.href = `${root}/connexion/session_timeout.php`;
   }, timeoutDuration);
 }
 

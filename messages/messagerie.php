@@ -1,12 +1,8 @@
 <?php
 session_start();
 require('../include/database.php');
+require('../include/check_session.php');
 require('../include/check_timeout.php');
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: /PA/connexion/login.php');
-    exit;
-}
 
 $userId = $_SESSION['user_id'];
 

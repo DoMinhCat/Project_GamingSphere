@@ -1,8 +1,7 @@
 <?php
 session_start();
-require('../include/check_timeout.php');
 require('../include/database.php');
-
+require('../include/check_timeout.php');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
