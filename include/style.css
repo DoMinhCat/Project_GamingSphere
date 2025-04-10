@@ -507,7 +507,7 @@ body{
 }
 .dark .dropdown-item {
   background-color: #333;
-  color: #f5f5f5;
+  color: #f5f5f5 !important;
 }
 .dark .dropdown-item:hover {
   background-color: #2f608e;
