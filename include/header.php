@@ -114,14 +114,14 @@ if (isset($_SESSION['user_id'])) {
                             <strong>Demande d'ami</strong> de <?= htmlspecialchars($request['pseudo']) ?> - <?= date('d/m/Y', strtotime($request['date_début'])) ?>
                           </a>
                           <div class="btn-group">
-                            <form action="<?php echo $_SERVER['SERVER_NAME'].'/profil/accept_friend_request.php' ?>"
+                            <form action="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/profil/accept_friend_request.php'; ?>" 
                             method="POST" style="display: inline;">
                               <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
                               <button type="submit" class="btn btn-success btn-sm" title="Accepter">
                                 <i class="bi bi-check-circle-fill"></i>
                               </button>
                             </form>
-                            <form action="<?php echo $_SERVER['SERVER_NAME'].'/profil/accept_friend_request.php' ?>"
+                            <form action="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . '/profil/accept_friend_request.php'; ?>" 
                             method="POST" style="display: inline;">
                               <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
                               <button type="submit" class="btn btn-danger btn-sm" title="Refuser">
