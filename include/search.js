@@ -46,7 +46,7 @@ function renderResults(data, resultDiv) {
       renderItem: (item) => `<a href="/game/${item.id}">${item.name}</a>`,
     },
     {
-      key: "tournois", // Nouvelle section pour les tournois
+      key: "tournois",
       title: "Tournois",
       renderItem: (item) =>
         `<a href="/tournois/tournois_details.php?id_tournoi=${item.id}">${item.nom_tournoi}</a>`,
