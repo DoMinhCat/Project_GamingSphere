@@ -1,11 +1,10 @@
 <?php
 session_start();
 include('../include/database.php');
+require('../include/check_timeout.php');
 
-// Définissez la variable $this_page pour indiquer la page actuelle
 $this_page = 'tournois_details.php';
 
-// Vérifiez si un ID de tournoi est passé dans l'URL
 if (!isset($_GET['id_tournoi']) || empty($_GET['id_tournoi'])) {
     header("Location: tournois_main.php?message=missing_id");
     exit();
@@ -14,13 +13,11 @@ if (!isset($_GET['id_tournoi']) || empty($_GET['id_tournoi'])) {
 $id_tournoi = intval($_GET['id_tournoi']); // Sécurisez l'ID
 
 try {
-    // Récupérez les informations du tournoi
     $stmt = $bdd->prepare("SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu, status_ENUM FROM tournoi WHERE id_tournoi = ?");
     $stmt->execute([$id_tournoi]);
     $tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$tournoi) {
-        // Si le tournoi n'existe pas, redirigez avec un message d'erreur
         header("Location: tournois_main.php?message=tournoi_not_found");
         exit();
     }
