@@ -48,10 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameId'])) {
     }
 
     $query = "UPDATE jeu SET 
-              nom = ?, catégorie = ?, date_sortie = ?, note_jeu = ?, plateforme = ?, prix = ?, type = ?, éditeur = ?, description = ?;";
+    nom = ?, catégorie = ?, date_sortie = ?, note_jeu = ?, plateforme = ?, prix = ?, type = ?, éditeur = ?, description = ?";
 
     if ($imagePath) {
-        $query .= ", image = ?";
+    $query .= ", image = ?";
     }
 
     $query .= " WHERE id_jeu = ?";
