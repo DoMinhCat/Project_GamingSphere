@@ -22,8 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $bdd->prepare("INSERT INTO equipe (nom, niveau, date_creation) VALUES (?, ?, CURDATE())");
             $stmt->execute([$teamName, $teamLevel,]);
 
-            $stmt->execute([$teamName, $teamLevel]);
-
             // Récupérer l'ID de l'équipe nouvellement créée
             $teamId = $bdd->lastInsertId();
 

@@ -40,28 +40,34 @@ include('../include/head.php');
 
     <!-- Boutons pour gérer les équipes -->
     <div class="mb-4 text-center">
-        <?php
-        $user_id = $_SESSION['user_id'] ?? null;
+    <?php
+    $user_id = $_SESSION['user_id'] ?? null;
 
-        if ($user_id) {
-            // Vérifier si l'utilisateur a rejoint une équipe
-            $stmt = $bdd->prepare("SELECT e.id_équipe, e.nom FROM membres_equipe me JOIN equipe e ON me.id_equipe = e.id_équipe WHERE me.id_utilisateur = ?");
-            $stmt->execute([$user_id]);
-            $team = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($user_id) {
+        // Vérifier si l'utilisateur a rejoint une équipe
+        $stmt = $bdd->prepare("
+            SELECT e.id_équipe AS id_equipe, e.nom AS nom_equipe
+            FROM membres_equipe me
+            JOIN equipe e ON me.id_equipe = e.id_équipe
+            WHERE me.id_utilisateur = ?
+        ");
+        $stmt->execute([$user_id]);
+        $team = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($team): ?>
-                <a href="../team/team_details.php?id_equipe=<?= $team['id_equipe'] ?>" class="btn btn-primary">
-                    Voir les détails de votre équipe : <?= htmlspecialchars($team['nom_equipe']) ?>
-                </a>
-            <?php else: ?>
-                <a href="../team/join_team.php" class="btn btn-success">Rejoindre une équipe</a>
-                <a href="../team/create_team.php" class="btn btn-secondary">Créer une équipe</a>
-            <?php endif;
-        } else {
-            echo "<div class='alert alert-warning'>Vous devez être connecté pour gérer vos équipes.</div>";
-        }
-        ?>
-    </div>
+        if ($team && isset($team['id_equipe'], $team['nom_equipe'])): ?>
+            <a href="../team/team_details.php?id_equipe=<?= htmlspecialchars($team['id_equipe']) ?>" class="btn btn-primary">
+                Voir les détails de votre équipe : <?= htmlspecialchars($team['nom_equipe']) ?>
+            </a>
+            <a href="../team/create_team.php" class="btn btn-secondary">Créer une autre équipe</a>
+        <?php else: ?>
+            <a href="../team/join_team.php" class="btn btn-success">Rejoindre une équipe</a>
+            <a href="../team/create_team.php" class="btn btn-secondary">Créer une équipe</a>
+        <?php endif;
+    } else {
+        echo "<div class='alert alert-warning'>Vous devez être connecté pour gérer vos équipes.</div>";
+    }
+    ?>
+</div>
 
     <?php
     // Fonction pour afficher les tournois par statut sous forme de cartes

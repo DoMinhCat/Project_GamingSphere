@@ -11,13 +11,13 @@ $invitationId = $_POST['invitation_id'] ?? null;
 
 if ($invitationId) {
     try {
-        // Accepter la demande
-        $stmt = $bdd->prepare("UPDATE invitations SET statut = 'acceptée' WHERE id_invitation = ?");
+        
+        $stmt = $bdd->prepare("UPDATE invitations SET statut = 'refusée' WHERE id_invitation = ?");
         $stmt->execute([$invitationId]);
 
         // Ajouter l'utilisateur à l'équipe
         $stmt = $bdd->prepare("
-            INSERT INTO membres_equipe (id_equipe, id_utilisateur, role, date_rejoint)
+            DELETE membres_equipe (id_equipe, id_utilisateur, role, date_rejoint)
             SELECT id_equipe, id_utilisateur, 'joueur', NOW()
             FROM invitations
             WHERE id_invitation = ?
