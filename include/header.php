@@ -131,17 +131,18 @@ if (isset($_SESSION['user_id'])) {
             <?php foreach ($friendRequests as $request): ?>
                 <li class="dropdown-item d-flex justify-content-between align-items-center">
                     <div>
+                    <a href="profil.php?user=<?= urlencode($request['pseudo']) ?>" class="text-dark">
                         <strong>Demande d'ami</strong> de <?= htmlspecialchars($request['pseudo']) ?> - <?= date('d/m/Y', strtotime($request['date_début'])) ?>
                     </div>
                     <div class="btn-group">
-                        <form action="/PA/profil/accept_friend_request.php" method="POST" style="display: inline;">
+                    <form action="<?php echo $_SERVER['SERVER_NAME'].'/profil/accept_friend_request.php' ?>">
                             <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
                             <button type="submit" class="btn btn-success btn-sm" title="Accepter">
                                 <i class="bi bi-check-circle-fill"></i>
                             </button>
                         </form>
-                        <form action="/PA/profil/reject_friend_request.php" method="POST" style="display: inline;">
-                            <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
+                        <form action="<?php echo $_SERVER['SERVER_NAME'].'/profil/accept_friend_request.php' ?>">
+                        <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
                             <button type="submit" class="btn btn-danger btn-sm" title="Refuser">
                                 <i class="bi bi-x-circle-fill"></i>
                             </button>
