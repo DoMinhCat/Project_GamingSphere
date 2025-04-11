@@ -29,7 +29,8 @@ require('../head.php');
         </div>
         <?php
         try {
-            $stmt = $bdd->query("SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu, status_ENUM FROM tournoi ORDER BY date_debut DESC");
+            // Ajout de la colonne type_tournoi dans la requête SQL
+            $stmt = $bdd->query("SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu, status_ENUM, type FROM tournoi ORDER BY date_debut DESC");
             $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if (count($tournois) > 0): ?>
@@ -41,6 +42,7 @@ require('../head.php');
                             <th>Date de Début</th>
                             <th>Date de Fin</th>
                             <th>Statut</th>
+                            <th>Type</th> <!-- Nouvelle colonne pour le type -->
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -52,6 +54,7 @@ require('../head.php');
                                 <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
                                 <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
                                 <td><?= htmlspecialchars($tournoi['status_ENUM']) ?></td>
+                                <td><?= htmlspecialchars($tournoi['type']) ?></td> <!-- Affichage du type -->
                                 <td>
                                     <a href="modify_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning">Modifier</a>
                                     <a href="delete_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce tournoi ?');">Supprimer</a>
