@@ -15,6 +15,9 @@
           <a class="nav-link" href="order_history.php">Historique des commandes</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="my_teams.php">Mes équipes</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/PA/connexion/deconnexion.php">Se déconnecter</a>
         </li>
       </ul>

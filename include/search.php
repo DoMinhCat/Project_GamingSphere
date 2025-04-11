@@ -6,7 +6,9 @@ $query = $_POST['query'] ?? '';
 $category = $_POST['category'] ?? '';
 
 
-$users = $articles = $games = [];
+$users = $articles = $games = $tournois = $teams = [];
+$response = [];
+
 
 try {
 
@@ -36,7 +38,26 @@ try {
         $stmtTournois->execute(['%' . $query . '%']);
         $tournois = $stmtTournois->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
+    if ($category == 'teams' || empty($category)) {
+        $stmtTeams = $bdd->prepare("
+        SELECT e.id_équipe AS id, e.nom 
+        FROM equipe e
+        LEFT JOIN membres_equipe me ON e.id_équipe = me.id_equipe
+        LEFT JOIN utilisateurs u ON me.id_utilisateur = u.id_utilisateurs
+        WHERE e.nom LIKE ? OR u.pseudo LIKE ?
+        GROUP BY e.id_équipe
+    ");
+    $stmtTeams->execute(['%' . $query . '%', '%' . $query . '%']);
+    $teams = $stmtTeams->fetchAll(PDO::FETCH_ASSOC);
+    }
+    $response = [
+        'users' => $users,
+        'articles' => $articles,
+        'games' => $games,
+        'tournois' => $tournois,
+        'teams' => $teams,
+    ];
 } catch (PDOException $e) {
 
     $errorMessage = $e->getMessage();
@@ -125,8 +146,21 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php endif; ?>
 
+        <?php if ($teams): ?>
+    <div class="section mb-4">
+        <h3 class="search-title">Equipes</h3>
+        <ul class="list-group">
+            <?php foreach ($teams as $team): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <?php echo htmlspecialchars($team['nom']); ?>
+                    <a href="../team/team_details.php?id_equipe=<?php echo urlencode($team['id']); ?>" class="btn btn-primary btn-sm">Voir l'équipe</a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
 
-        <?php if (empty($users) && empty($articles) && empty($games)  && empty($tournois)): ?>
+        <?php if (empty($users) && empty($articles) && empty($games)  && empty($tournois) && empty($teams)): ?>
             <div class="alert alert-info" role="alert">
                 Aucun résultat trouvé pour votre recherche.
             </div>

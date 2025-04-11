@@ -1,8 +1,8 @@
 <?php
 try {
-    if ($_SERVER['HTTP_HOST'] === 'localhost') {
+    if ($_SERVER['HTTP_HOST'] === 'localhost:81') {
         // Connexion en local
-        $bdd = new PDO("mysql:host=localhost;port=3306;dbname=gamingsphère;charset=utf8", "root", "root");
+        $bdd = new PDO("mysql:host=localhost;port=3307;dbname=gamingsphère;charset=utf8", "root", "root");
     } else {
         // Connexion sur le serveur (OVH)
         $bdd = new PDO("mysql:host=localhost;port=3306;dbname=gamingsphere;charset=utf8", "root", "odissey");

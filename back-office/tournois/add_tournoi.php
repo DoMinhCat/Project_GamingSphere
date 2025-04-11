@@ -27,15 +27,15 @@ require('../head.php');
             $date_fin = $_POST['date_fin'] ?? '';
             $jeu = $_POST['jeu'] ?? '';
             $statut = $_POST['statut'] ?? '';
+            $type_tournoi = $_POST['type_tournoi'] ?? ''; // Nouveau champ pour le type de tournoi
 
-
-            if (empty($nom_tournoi) || empty($date_debut) || empty($date_fin) || empty($jeu) || empty($statut)) {
+            if (empty($nom_tournoi) || empty($date_debut) || empty($date_fin) || empty($jeu) || empty($statut) || empty($type_tournoi)) {
                 echo "<div class='alert alert-danger'>Tous les champs sont obligatoires.</div>";
             } else {
                 try {
-
-                    $stmt = $bdd->prepare("INSERT INTO tournoi (nom_tournoi, date_debut, date_fin, jeu, status_ENUM) VALUES (?, ?, ?, ?, ?)");
-                    $stmt->execute([$nom_tournoi, $date_debut, $date_fin, $jeu, $statut]);
+                    // Ajout du champ type_tournoi dans la requête SQL
+                    $stmt = $bdd->prepare("INSERT INTO tournoi (nom_tournoi, date_debut, date_fin, jeu, status_ENUM, type) VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([$nom_tournoi, $date_debut, $date_fin, $jeu, $statut, $type_tournoi]);
                     header("Location: tournois_main.php?message=tournoi_added");
                     exit();
                 } catch (PDOException $e) {
@@ -68,6 +68,13 @@ require('../head.php');
                     <option value="En attente">En attente</option>
                     <option value="En cours">En cours</option>
                     <option value="Terminé">Terminé</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="type_tournoi" class="form-label">Type de Tournoi</label>
+                <select class="form-select" id="type_tournoi" name="type_tournoi" required>
+                    <option value="Solo">Solo</option>
+                    <option value="Équipe">Équipe</option>
                 </select>
             </div>
             <div class="text-center">
