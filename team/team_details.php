@@ -48,23 +48,32 @@ require('../include/head.php');
 
     <div class="container my-5">
         <h1 class="mb-4 text-center">Détails de l'équipe</h1>
+        <?php if (isset($_GET['success'])): ?>
+    <?php if ($_GET['success'] === 'invitation_sent'): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Votre demande pour rejoindre l'équipe a été envoyée avec succès.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php elseif ($_GET['success'] === 'left_team'): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Vous avez quitté l'équipe avec succès.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+<?php elseif (isset($_GET['error'])): ?>
+    <?php if ($_GET['error'] === 'invitation_already_pending'): ?>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Une demande pour rejoindre cette équipe est déjà en attente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php else: ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Une erreur s'est produite : <?= htmlspecialchars($_GET['error']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
 
-        <?php if (isset($_GET['success']) && $_GET['success'] === 'invitation_sent'): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Votre demande pour rejoindre l'équipe a été envoyée avec succès.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php elseif (isset($_GET['error']) && $_GET['error'] === 'invitation_already_pending'): ?>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                Une demande pour rejoindre cette équipe est déjà en attente.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php elseif (isset($_GET['error'])): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                Une erreur s'est produite : <?= htmlspecialchars($_GET['error']) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
 
         <div class="card mb-4">
             <div class="card-body">
@@ -108,6 +117,7 @@ $stmt->execute([$teamId, $_SESSION['user_id']]);
 $isInvitationPending = $stmt->fetchColumn() > 0;
 
 if ($isMember): ?>
+
     <p class="text-success mt-3">Vous êtes membre de cette équipe.</p>
     <form action="../team/leave_team.php" method="POST" class="mt-3">
         <input type="hidden" name="team_id" value="<?= htmlspecialchars($teamId) ?>">

@@ -67,15 +67,20 @@ include('../include/head.php');
         echo "<div class='alert alert-warning'>Vous devez être connecté pour gérer vos équipes.</div>";
     }
     ?>
-</div>
+    </div>
 
     <?php
-    // Fonction pour afficher les tournois par statut sous forme de cartes
-    function afficherTournoisParStatut($bdd, $statut, $titre)
+    // Fonction pour afficher les tournois par type et statut
+    function afficherTournois($bdd, $type_tournoi, $statut, $titre)
     {
         try {
-            $stmt = $bdd->prepare("SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu FROM tournoi WHERE status_ENUM = ? ORDER BY date_debut DESC");
-            $stmt->execute([$statut]);
+            $stmt = $bdd->prepare("
+                SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu 
+                FROM tournoi 
+                WHERE type = ? AND status_ENUM = ? 
+                ORDER BY date_debut DESC
+            ");
+            $stmt->execute([$type_tournoi, $statut]);
             $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             echo "<h2 class='mt-5'>$titre</h2>";
@@ -123,14 +128,17 @@ include('../include/head.php');
         }
     }
 
-    afficherTournoisParStatut($bdd, 'en cours', 'Tournois en cours');
-    afficherTournoisParStatut($bdd, 'en attente', 'Tournois en attente');
-    afficherTournoisParStatut($bdd, 'terminé', 'Tournois terminés');
+    // Afficher les tournois par type et statut
+    afficherTournois($bdd, 'solo', 'en cours', 'Tournois solo en cours');
+    afficherTournois($bdd, 'Équipe', 'en cours', 'Tournois en équipe en cours');
+    afficherTournois($bdd, 'solo', 'en attente', 'Tournois solo en attente');
+    afficherTournois($bdd, 'Équipe', 'en attente', 'Tournois en équipe en attente');
+    afficherTournois($bdd, 'solo', 'terminé', 'Tournois solo terminés');
+    afficherTournois($bdd, 'Équipe', 'terminé', 'Tournois en équipe terminés');
     ?>
   </main>
 
   <?php include('../include/footer.php'); ?>
 <script src="fluid.js"></script>
 </body>
-
 </html>

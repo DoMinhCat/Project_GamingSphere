@@ -26,8 +26,7 @@ if ($teamId) {
         // Supprimer l'utilisateur de l'équipe
         $stmt = $bdd->prepare("DELETE FROM membres_equipe WHERE id_equipe = ? AND id_utilisateur = ?");
         $stmt->execute([$teamId, $userId]);
-
-        header('Location: team_details.php?success=left_team');
+        header('Location: team_details.php?success=left_team&id_equipe=' . $teamId);
         exit();
     } catch (PDOException $e) {
         header('Location: team_details.php?id_equipe=' . $teamId . '&error=' . urlencode($e->getMessage()));
