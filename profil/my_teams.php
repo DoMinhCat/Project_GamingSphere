@@ -2,16 +2,11 @@
 session_start();
 require('../include/database.php');
 require('../include/check_timeout.php');
-
-// Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../connexion/login.php');
     exit();
 }
-
 $userId = $_SESSION['user_id'];
-
-// Récupérer les équipes que l'utilisateur a rejointes
 $stmt = $bdd->prepare("
     SELECT e.id_équipe, e.nom, e.niveau, e.date_creation 
     FROM membres_equipe me
@@ -62,7 +57,6 @@ require('../include/head.php');
             <p class="text-center">Vous n'avez rejoint aucune équipe pour le moment.</p>
         <?php endif; ?>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

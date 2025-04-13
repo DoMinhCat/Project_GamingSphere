@@ -5,35 +5,29 @@ require('../check_session.php');
 require('../../include/database.php');
 require('../../include/check_timeout.php');
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <?php
 $title = 'Ajouter un tournoi';
 require('../head.php');
 ?>
-
 <body>
     <?php include('../navbar.php'); ?>
 
     <div class="container my-5">
         <h1 class="mb-4 text-center">Ajouter un Nouveau Tournoi</h1>
-
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
             $nom_tournoi = $_POST['nom_tournoi'] ?? '';
             $date_debut = $_POST['date_debut'] ?? '';
             $date_fin = $_POST['date_fin'] ?? '';
             $jeu = $_POST['jeu'] ?? '';
             $statut = $_POST['statut'] ?? '';
-            $type_tournoi = $_POST['type_tournoi'] ?? ''; // Nouveau champ pour le type de tournoi
-
+            $type_tournoi = $_POST['type_tournoi'] ?? '';
             if (empty($nom_tournoi) || empty($date_debut) || empty($date_fin) || empty($jeu) || empty($statut) || empty($type_tournoi)) {
                 echo "<div class='alert alert-danger'>Tous les champs sont obligatoires.</div>";
             } else {
                 try {
-                    // Ajout du champ type_tournoi dans la requête SQL
                     $stmt = $bdd->prepare("INSERT INTO tournoi (nom_tournoi, date_debut, date_fin, jeu, status_ENUM, type) VALUES (?, ?, ?, ?, ?, ?)");
                     $stmt->execute([$nom_tournoi, $date_debut, $date_fin, $jeu, $statut, $type_tournoi]);
                     header("Location: tournois_main.php?message=tournoi_added");
@@ -44,7 +38,6 @@ require('../head.php');
             }
         }
         ?>
-
         <form method="POST" class="p-4 border rounded shadow-sm bg-light">
             <div class="mb-3">
                 <label for="nom_tournoi" class="form-label">Nom du Tournoi</label>
@@ -83,7 +76,5 @@ require('../head.php');
             </div>
         </form>
     </div>
-
 </body>
-
 </html>

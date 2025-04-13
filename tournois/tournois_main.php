@@ -3,22 +3,16 @@ session_start();
 require('../include/database.php');
 require('../include/check_timeout.php');
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
-
 <?php
 $title = 'Tournois';
 include('../include/head.php');
 ?>
-
 <body>
   <?php include('../include/header.php'); ?>
-
   <main class="container my-5">
     <h1 class="mb-4 text-center">Liste des Tournois</h1>
-
-    <!-- Gestion des messages -->
     <?php if (isset($_GET['message'])): ?>
         <?php if ($_GET['message'] === 'registration_success'): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -37,14 +31,11 @@ include('../include/head.php');
             </div>
         <?php endif; ?>
     <?php endif; ?>
-
-    <!-- Boutons pour gérer les équipes -->
     <div class="mb-4 text-center">
     <?php
     $user_id = $_SESSION['user_id'] ?? null;
 
     if ($user_id) {
-        // Vérifier si l'utilisateur a rejoint une équipe
         $stmt = $bdd->prepare("
             SELECT e.id_équipe AS id_equipe, e.nom AS nom_equipe
             FROM membres_equipe me
@@ -68,9 +59,7 @@ include('../include/head.php');
     }
     ?>
     </div>
-
     <?php
-    // Fonction pour afficher les tournois par type et statut
     function afficherTournois($bdd, $type_tournoi, $statut, $titre)
     {
         try {
@@ -86,16 +75,15 @@ include('../include/head.php');
             echo "<h2 class='mt-5'>$titre</h2>";
 
             if (count($tournois) > 0) {
-                echo "<div class='row row-cols-1 row-cols-md-3 g-4'>"; // Grille Bootstrap
+                echo "<div class='row row-cols-1 row-cols-md-3 g-4'>"; 
                 foreach ($tournois as $tournoi) {
-                    $user_id = $_SESSION['user_id'] ?? null; // ID de l'utilisateur connecté
+                    $user_id = $_SESSION['user_id'] ?? null; 
                     $is_registered = false;
                     if ($user_id) {
                         $check_stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
                         $check_stmt->execute([$tournoi['id_tournoi'], $user_id]);
                         $is_registered = $check_stmt->fetchColumn() > 0;
                     }
-
                     echo "<div class='col'>
                             <div class='card h-100 shadow-sm'>
                                 <div class='card-body'>
@@ -127,8 +115,6 @@ include('../include/head.php');
             echo "<div class='alert alert-danger'>Erreur lors de la récupération des tournois : " . htmlspecialchars($e->getMessage()) . "</div>";
         }
     }
-
-    // Afficher les tournois par type et statut
     afficherTournois($bdd, 'solo', 'en cours', 'Tournois solo en cours');
     afficherTournois($bdd, 'Équipe', 'en cours', 'Tournois en équipe en cours');
     afficherTournois($bdd, 'solo', 'en attente', 'Tournois solo en attente');
