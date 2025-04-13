@@ -2,17 +2,11 @@
 session_start();
 require('../include/database.php');
 require('../include/check_timeout.php');
-
-// Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../connexion/login.php');
     exit();
 }
-
-// Récupérer le terme de recherche
 $search = $_GET['search'] ?? '';
-
-// Requête pour récupérer les équipes
 $stmt = $bdd->prepare("
     SELECT id_équipe, nom, niveau 
     FROM equipe 
@@ -35,16 +29,12 @@ require('../include/head.php');
 
     <div class="container my-5">
         <h1 class="mb-4 text-center">Liste des équipes</h1>
-
-        <!-- Formulaire de recherche -->
         <form method="GET" class="mb-4">
             <div class="input-group">
                 <input type="text" class="form-control" name="search" placeholder="Rechercher une équipe..." value="<?= htmlspecialchars($search) ?>">
                 <button type="submit" class="btn btn-primary">Rechercher</button>
             </div>
         </form>
-
-        <!-- Liste des équipes -->
         <?php if (count($teams) > 0): ?>
             <table class="table table-striped">
                 <thead>
@@ -69,8 +59,6 @@ require('../include/head.php');
         <?php else: ?>
             <p class="text-center">Aucune équipe trouvée.</p>
         <?php endif; ?>
-
-        <!-- Bouton pour créer une équipe -->
         <div class="text-center mt-4">
             <a href="create_team.php" class="btn btn-success">Créer une nouvelle équipe</a>
         </div>

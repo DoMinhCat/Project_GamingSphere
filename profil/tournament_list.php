@@ -1,19 +1,13 @@
 <?php
-// filepath: c:\MAMP\htdocs\PA\profil\tournament_list.php
-
 session_start();
 include('../include/database.php');
-
-// Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../connexion/login.php?message=login_required");
     exit();
 }
 
-$user_id = intval($_SESSION['user_id']); // ID de l'utilisateur connecté
-
+$user_id = intval($_SESSION['user_id']);
 try {
-    // Récupérez les tournois auxquels l'utilisateur est inscrit
     $stmt = $bdd->prepare("
     SELECT t.id_tournoi, t.nom_tournoi, t.date_debut, t.date_fin, t.jeu, t.status_ENUM, t.type
     FROM inscription_tournoi it
@@ -28,7 +22,6 @@ try {
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <?php
@@ -43,10 +36,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include('../include/header.php');
     include('navbar.php');
      ?>
-
     <div class="container my-5">
         <h1 class="mb-4 text-center">Mes Tournois</h1>
-
         <?php if (count($tournois) > 0): ?>
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <?php foreach ($tournois as $tournoi): ?>
@@ -71,7 +62,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="alert alert-info text-center">Vous n'êtes inscrit à aucun tournoi pour le moment.</div>
         <?php endif; ?>
     </div>
-
     <?php include('../include/footer.php'); ?>
 </body>
 </html>

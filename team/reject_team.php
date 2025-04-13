@@ -14,8 +14,6 @@ if ($invitationId) {
         
         $stmt = $bdd->prepare("UPDATE invitations SET statut = 'refusée' WHERE id_invitation = ?");
         $stmt->execute([$invitationId]);
-
-        // Ajouter l'utilisateur à l'équipe
         $stmt = $bdd->prepare("
             DELETE membres_equipe (id_equipe, id_utilisateur, role, date_rejoint)
             SELECT id_equipe, id_utilisateur, 'joueur', NOW()

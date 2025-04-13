@@ -10,7 +10,7 @@ if (!isset($_GET['id_tournoi']) || empty($_GET['id_tournoi'])) {
     exit();
 }
 
-$id_tournoi = intval($_GET['id_tournoi']); // Sécurisez l'ID
+$id_tournoi = intval($_GET['id_tournoi']);
 
 try {
     $stmt = $bdd->prepare("SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu, status_ENUM FROM tournoi WHERE id_tournoi = ?");

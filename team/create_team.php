@@ -2,34 +2,23 @@
 session_start();
 require('../include/database.php');
 require('../include/check_timeout.php');
-
-// Vérifiez si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../connexion/login.php');
     exit();
 }
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $teamName = $_POST['team_name'] ?? '';
     $teamLevel = $_POST['team_level'] ?? '';
     $userId = $_SESSION['user_id'];
-
     if (empty($teamName)) {
         $error = "Le nom de l'équipe est obligatoire.";
     } else {
         try {
-            // Insérer l'équipe dans la table `equipe`
             $stmt = $bdd->prepare("INSERT INTO equipe (nom, niveau, date_creation) VALUES (?, ?, CURDATE())");
             $stmt->execute([$teamName, $teamLevel,]);
-
-            // Récupérer l'ID de l'équipe nouvellement créée
             $teamId = $bdd->lastInsertId();
-
-            // Ajouter le créateur comme membre de l'équipe dans la table `membres_equipe`
             $stmt = $bdd->prepare("INSERT INTO membres_equipe (id_equipe, id_utilisateur, role, date_rejoint) VALUES (?, ?, ?, NOW())");
             $stmt->execute([$teamId, $userId, 'capitaine']);
-
-            // Rediriger vers la page des détails de l'équipe
             header('Location: team_details.php?id_equipe=' . $teamId);
             exit();
         } catch (PDOException $e) {
@@ -38,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <?php
