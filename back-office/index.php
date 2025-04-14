@@ -20,7 +20,7 @@ require('head.php');
                 <img src="../include/LOGO ENTIER 40px.png" alt="Logo" width="120px" height="50px" class="rounded-circle">
             </a>
         </div>
-        <div class="mx-auto">
+        <div class="mx-auto text-center">
             <span class="navbar-brand">Back Office</span>
         </div>
         <div class="ms-auto">

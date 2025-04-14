@@ -13,7 +13,7 @@ $title = 'Liste des tournois';
 require('../head.php');
 ?>
 
-<body>
+<body class="p-3">
     <?php include('../navbar.php'); ?>
 
     <div class="container my-5">
@@ -53,7 +53,7 @@ require('../head.php');
                                 <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
                                 <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
                                 <td><?= htmlspecialchars($tournoi['status_ENUM']) ?></td>
-                                <td><?= htmlspecialchars($tournoi['type']) ?></td> 
+                                <td><?= htmlspecialchars($tournoi['type']) ?></td>
                                 <td>
                                     <a href="modify_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning">Modifier</a>
                                     <a href="delete_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce tournoi ?');">Supprimer</a>

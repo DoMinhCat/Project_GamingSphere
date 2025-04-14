@@ -11,7 +11,8 @@ require('../../include/check_timeout.php');
 $title = 'Ajouter un tournoi';
 require('../head.php');
 ?>
-<body>
+
+<body class="p-3">
     <?php include('../navbar.php'); ?>
 
     <div class="container my-5">
@@ -77,4 +78,5 @@ require('../head.php');
         </form>
     </div>
 </body>
+
 </html>

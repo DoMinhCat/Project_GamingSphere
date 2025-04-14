@@ -1,13 +1,9 @@
 <?php
 session_start();
-require('../include/database.php');
+$login_page = '../connexion/login.php';
+require('../include/check_session.php');
 require('../include/check_timeout.php');
-
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../connexion/login.php');
-    exit();
-}
+require('../include/database.php');
 
 $teamId = $_GET['id_equipe'] ?? null;
 
@@ -49,30 +45,30 @@ require('../include/head.php');
     <div class="container my-5">
         <h1 class="mb-4 text-center">Détails de l'équipe</h1>
         <?php if (isset($_GET['success'])): ?>
-    <?php if ($_GET['success'] === 'invitation_sent'): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Votre demande pour rejoindre l'équipe a été envoyée avec succès.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php elseif ($_GET['success'] === 'left_team'): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Vous avez quitté l'équipe avec succès.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
-<?php elseif (isset($_GET['error'])): ?>
-    <?php if ($_GET['error'] === 'invitation_already_pending'): ?>
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            Une demande pour rejoindre cette équipe est déjà en attente.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php else: ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            Une erreur s'est produite : <?= htmlspecialchars($_GET['error']) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
-<?php endif; ?>
+            <?php if ($_GET['success'] === 'invitation_sent'): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Votre demande pour rejoindre l'équipe a été envoyée avec succès.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php elseif ($_GET['success'] === 'left_team'): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Vous avez quitté l'équipe avec succès.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+        <?php elseif (isset($_GET['error'])): ?>
+            <?php if ($_GET['error'] === 'invitation_already_pending'): ?>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Une demande pour rejoindre cette équipe est déjà en attente.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php else: ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Une erreur s'est produite : <?= htmlspecialchars($_GET['error']) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
 
 
         <div class="card mb-4">
@@ -108,33 +104,34 @@ require('../include/head.php');
         <?php endif; ?>
 
         <?php
-$stmt = $bdd->prepare("SELECT COUNT(*) FROM membres_equipe WHERE id_equipe = ? AND id_utilisateur = ?");
-$stmt->execute([$teamId, $_SESSION['user_id']]);
-$isMember = $stmt->fetchColumn() > 0;
+        $stmt = $bdd->prepare("SELECT COUNT(*) FROM membres_equipe WHERE id_equipe = ? AND id_utilisateur = ?");
+        $stmt->execute([$teamId, $_SESSION['user_id']]);
+        $isMember = $stmt->fetchColumn() > 0;
 
-$stmt = $bdd->prepare("SELECT COUNT(*) FROM invitations WHERE id_equipe = ? AND id_utilisateur = ? AND statut = 'en attente'");
-$stmt->execute([$teamId, $_SESSION['user_id']]);
-$isInvitationPending = $stmt->fetchColumn() > 0;
+        $stmt = $bdd->prepare("SELECT COUNT(*) FROM invitations WHERE id_equipe = ? AND id_utilisateur = ? AND statut = 'en attente'");
+        $stmt->execute([$teamId, $_SESSION['user_id']]);
+        $isInvitationPending = $stmt->fetchColumn() > 0;
 
-if ($isMember): ?>
+        if ($isMember): ?>
 
-    <p class="text-success mt-3">Vous êtes membre de cette équipe.</p>
-    <form action="../team/leave_team.php" method="POST" class="mt-3">
-        <input type="hidden" name="team_id" value="<?= htmlspecialchars($teamId) ?>">
-        <button type="submit" class="btn btn-danger">Quitter l'équipe</button>
-    </form>
-<?php elseif (!$isMember && !$isInvitationPending): ?>
-    <form action="../team/send_invitation.php" method="POST" class="mt-3">
-        <input type="hidden" name="team_id" value="<?= htmlspecialchars($teamId) ?>">
-        <button type="submit" class="btn btn-primary">Envoyer une demande pour rejoindre l'équipe</button>
-    </form>
-<?php elseif ($isInvitationPending): ?>
-    <p class="text-warning mt-3">Une demande pour rejoindre cette équipe est déjà en attente.</p>
-<?php endif; ?>
+            <p class="text-success mt-3">Vous êtes membre de cette équipe.</p>
+            <form action="../team/leave_team.php" method="POST" class="mt-3">
+                <input type="hidden" name="team_id" value="<?= htmlspecialchars($teamId) ?>">
+                <button type="submit" class="btn btn-danger">Quitter l'équipe</button>
+            </form>
+        <?php elseif (!$isMember && !$isInvitationPending): ?>
+            <form action="../team/send_invitation.php" method="POST" class="mt-3">
+                <input type="hidden" name="team_id" value="<?= htmlspecialchars($teamId) ?>">
+                <button type="submit" class="btn btn-primary">Envoyer une demande pour rejoindre l'équipe</button>
+            </form>
+        <?php elseif ($isInvitationPending): ?>
+            <p class="text-warning mt-3">Une demande pour rejoindre cette équipe est déjà en attente.</p>
+        <?php endif; ?>
         <div class="text-center mt-4">
             <a href="team_list.php" class="btn btn-secondary">Retour à la liste des équipes</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

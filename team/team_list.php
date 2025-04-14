@@ -1,11 +1,9 @@
 <?php
 session_start();
-require('../include/database.php');
+$login_page = '../connexion/login.php';
 require('../include/check_timeout.php');
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../connexion/login.php');
-    exit();
-}
+require('../include/check_session.php');
+require('../include/database.php');
 $search = $_GET['search'] ?? '';
 $stmt = $bdd->prepare("
     SELECT id_équipe, nom, niveau 
@@ -66,4 +64,5 @@ require('../include/head.php');
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

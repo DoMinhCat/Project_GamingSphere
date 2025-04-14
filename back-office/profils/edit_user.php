@@ -59,7 +59,7 @@ require('../head.php');
 ?>
 
 
-<body>
+<body class="p-3">
     <?php
     $page = 'profils/profils.php';
     include('../navbar.php');

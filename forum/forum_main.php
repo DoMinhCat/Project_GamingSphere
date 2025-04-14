@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start();;
 require('../include/database.php');
 require('../include/check_timeout.php');
 error_reporting(E_ALL);
@@ -28,8 +28,8 @@ if (!isset($bdd)) {
         <h1 class="mb-4">Forum - Catégories</h1>
 
         <div class="mb-4 text-end">
-        <a href="nouveau_sujet.php" class="btn btn-primary">Ajouter un sujet</a>
-    </div>
+            <a href="nouveau_sujet.php" class="btn btn-primary">Ajouter un sujet</a>
+        </div>
 
         <?php
         $query = $bdd->query("SELECT DISTINCT categories FROM forum_sujets WHERE parent_id IS NULL");
