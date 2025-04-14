@@ -39,8 +39,8 @@ if (isset($_SESSION['user_id'])) {
 }
 
 if (isset($_SESSION['user_id'])) {
-    try {
-      $stmtTeamRequests = $bdd->prepare("
+  try {
+    $stmtTeamRequests = $bdd->prepare("
           SELECT i.id_invitation, u.pseudo AS demandeur, e.nom AS equipe, i.date_invitation
           FROM invitations i
           JOIN utilisateurs u ON i.id_utilisateur = u.id_utilisateurs
@@ -48,14 +48,14 @@ if (isset($_SESSION['user_id'])) {
           JOIN membres_equipe me ON e.id_équipe = me.id_equipe
           WHERE me.id_utilisateur = ? AND me.role = 'capitaine' AND i.statut = 'en attente'
       ");
-      $stmtTeamRequests->execute([$_SESSION['user_id']]);
-      $teamRequests = $stmtTeamRequests->fetchAll(PDO::FETCH_ASSOC);
-      $notificationCountTeams = count($teamRequests);
-    } catch (PDOException $e) {
-        $notificationCountTeams = 0;
-    }
-} else {
+    $stmtTeamRequests->execute([$_SESSION['user_id']]);
+    $teamRequests = $stmtTeamRequests->fetchAll(PDO::FETCH_ASSOC);
+    $notificationCountTeams = count($teamRequests);
+  } catch (PDOException $e) {
     $notificationCountTeams = 0;
+  }
+} else {
+  $notificationCountTeams = 0;
 }
 
 $credits = 0;
@@ -133,67 +133,67 @@ if (isset($_SESSION['user_id'])) {
               </a>
               <?php if (isset($_SESSION['user_email'])) : ?>
                 <div class="dropdown me-3">
-    <button class="btn btn-outline-dark position-relative d-flex align-items-center" id="notification-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-bell-fill"></i>
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notification-count" style="display: <?= ($notificationCount + $notificationCountTeams) > 0 ? 'inline' : 'none'; ?>;">
-    <?= $notificationCount + $notificationCountTeams ?>
-        </span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end" id="notification-menu" style="padding: 0; max-height: 300px; overflow-y: auto;">
+                  <button class="btn btn-outline-dark position-relative d-flex align-items-center" id="notification-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-bell-fill"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notification-count" style="display: <?= ($notificationCount + $notificationCountTeams) > 0 ? 'inline' : 'none'; ?>;">
+                      <?= $notificationCount + $notificationCountTeams ?>
+                    </span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" id="notification-menu" style="padding: 0; max-height: 300px; overflow-y: auto;">
 
-        <?php if ($notificationCount > 0): ?>
-            <?php foreach ($friendRequests as $request): ?>
-                <li class="dropdown-item d-flex justify-content-between align-items-center">
-                    <div>
-                    <a href="profil.php?user=<?= urlencode($request['pseudo']) ?>" class="text-dark">
-                        <strong>Demande d'ami</strong> de <?= htmlspecialchars($request['pseudo']) ?> - <?= date('d/m/Y', strtotime($request['date_début'])) ?>
-                    </div>
-                    <div class="btn-group">
-                    <form action="<?php echo $_SERVER['SERVER_NAME'].'/profil/accept_friend_request.php' ?>">
-                            <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
-                            <button type="submit" class="btn btn-success btn-sm" title="Accepter">
+                    <?php if ($notificationCount > 0): ?>
+                      <?php foreach ($friendRequests as $request): ?>
+                        <li class="dropdown-item d-flex justify-content-between align-items-center">
+                          <div>
+                            <a href="profil.php?user=<?= urlencode($request['pseudo']) ?>" class="text-dark">
+                              <strong>Demande d'ami</strong> de <?= htmlspecialchars($request['pseudo']) ?> - <?= date('d/m/Y', strtotime($request['date_début'])) ?>
+                          </div>
+                          <div class="btn-group">
+                            <form action="<?php echo $_SERVER['SERVER_NAME'] . '/profil/accept_friend_request.php' ?>">
+                              <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
+                              <button type="submit" class="btn btn-success btn-sm" title="Accepter">
                                 <i class="bi bi-check-circle-fill"></i>
-                            </button>
-                        </form>
-                        <form action="<?php echo $_SERVER['SERVER_NAME'].'/profil/accept_friend_request.php' ?>">
-                        <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
-                            <button type="submit" class="btn btn-danger btn-sm" title="Refuser">
+                              </button>
+                            </form>
+                            <form action="<?php echo $_SERVER['SERVER_NAME'] . '/profil/accept_friend_request.php' ?>">
+                              <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
+                              <button type="submit" class="btn btn-danger btn-sm" title="Refuser">
                                 <i class="bi bi-x-circle-fill"></i>
-                            </button>
-                        </form>
-                    </div>
-                </li>
-            <?php endforeach; ?>
-        <?php endif; ?>
-<?php if ($notificationCountTeams > 0): ?>
-    <?php foreach ($teamRequests as $request): ?>
-        <li class="dropdown-item d-flex justify-content-between align-items-center">
-            <div>
-                <strong>Demande de rejoindre</strong> l'équipe <?= htmlspecialchars($request['equipe']) ?> par <?= htmlspecialchars($request['demandeur']) ?> - <?= date('d/m/Y', strtotime($request['date_invitation'])) ?>
-            </div>
-            <div class="btn-group">
-                <form action="/PA/team/accept_team.php" method="POST" style="display: inline;">
-                    <input type="hidden" name="invitation_id" value="<?= htmlspecialchars($request['id_invitation']) ?>">
-                    <button type="submit" class="btn btn-success btn-sm" title="Accepter">
-                        <i class="bi bi-check-circle-fill"></i>
-                    </button>
-                </form>
-                <form action="/PA/team/reject_team_request.php" method="POST" style="display: inline;">
-                    <input type="hidden" name="invitation_id" value="<?= htmlspecialchars($request['id_invitation']) ?>">
-                    <button type="submit" class="btn btn-danger btn-sm" title="Refuser">
-                        <i class="bi bi-x-circle-fill"></i>
-                    </button>
-                </form>
-            </div>
-        </li>
-    <?php endforeach; ?>
-<?php endif; ?>
+                              </button>
+                            </form>
+                          </div>
+                        </li>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+                    <?php if ($notificationCountTeams > 0): ?>
+                      <?php foreach ($teamRequests as $request): ?>
+                        <li class="dropdown-item d-flex justify-content-between align-items-center">
+                          <div>
+                            <strong>Demande de rejoindre</strong> l'équipe <?= htmlspecialchars($request['equipe']) ?> par <?= htmlspecialchars($request['demandeur']) ?> - <?= date('d/m/Y', strtotime($request['date_invitation'])) ?>
+                          </div>
+                          <div class="btn-group">
+                            <form action="<?php echo $_SERVER['SERVER_NAME'] . '/team/accept_team.php' ?>" method="POST" style="display: inline;">
+                              <input type="hidden" name="invitation_id" value="<?= htmlspecialchars($request['id_invitation']) ?>">
+                              <button type="submit" class="btn btn-success btn-sm" title="Accepter">
+                                <i class="bi bi-check-circle-fill"></i>
+                              </button>
+                            </form>
+                            <form action="<?= $_SERVER['SERVER_NAME'] . 'team/reject_team_request.php' ?>" method="POST" style="display: inline;">
+                              <input type="hidden" name="invitation_id" value="<?= htmlspecialchars($request['id_invitation']) ?>">
+                              <button type="submit" class="btn btn-danger btn-sm" title="Refuser">
+                                <i class="bi bi-x-circle-fill"></i>
+                              </button>
+                            </form>
+                          </div>
+                        </li>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
 
-        <?php if ($notificationCount === 0 && $notificationCountTeams === 0): ?>
-            <li class="dropdown-item text-center text-muted">Aucune notification</li>
-        <?php endif; ?>
-    </ul>
-</div>
+                    <?php if ($notificationCount === 0 && $notificationCountTeams === 0): ?>
+                      <li class="dropdown-item text-center text-muted">Aucune notification</li>
+                    <?php endif; ?>
+                  </ul>
+                </div>
               <?php endif; ?>
               <div class="dropdown">
                 <button class="btn btn-outline-dark dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">

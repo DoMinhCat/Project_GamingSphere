@@ -1,6 +1,6 @@
 <?php
 if (isset($_SESSION['user_email']) || !empty($_SESSION['user_email'])) {
-    header('location:index.php');
+    header('location:../index.php');
     exit();
 }
 ?>
@@ -28,9 +28,10 @@ include('../include/head.php')
                 </div>
                 <form method="post" action="login_verification.php">
                     <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
-                        <input type="email" name="email" placeholder="Identifiant/Email" required aria-describedby="emailHelp" class="form-control input_field" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>">
 
-                        <input type="password" name="mdp" placeholder="Mot de passe" class="form-control input_field" required>
+                        <input type="email" name="email" id="email" placeholder="Identifiant/Email" required aria-describedby="emailHelp" class="form-control input_field" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>">
+
+                        <input type="password" id="mdp" name="mdp" placeholder="Mot de passe" class="form-control input_field" required>
 
                         <div class="d-flex flex-column pt-3">
                             <input type="Submit" class="btn btn-primary" value="Me connecter">
