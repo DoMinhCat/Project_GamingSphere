@@ -135,7 +135,7 @@ h1 {
   background-color: #f5f0e1;
 }
 .input_field{
-  padding: 1rem 0.75rem;
+  padding: 1rem 0.75rem !important;
 }
 .m-f {
   padding: 0.9375rem;
@@ -520,7 +520,7 @@ body{
   background-color: #adaaa0;
 }
 .form-floating label {
-  background-color: #f5f0e1;
+  background-color: #f5f0e1 !important;
 }
 .dark .input_field {
   background-color: #2f2f2f;
