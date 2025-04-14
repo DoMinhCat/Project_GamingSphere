@@ -516,9 +516,7 @@ body{
 .dark #bande_noire {
   background-color: #adaaa0;
 }
-.form-floating label {
-  background-color: #f5f0e1 !important;
-}
+
 .dark .input_field {
   background-color: #2f2f2f;
   color: #ffffff;
