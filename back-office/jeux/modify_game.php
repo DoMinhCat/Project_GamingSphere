@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameId'])) {
     nom = ?, catégorie = ?, date_sortie = ?, note_jeu = ?, plateforme = ?, prix = ?, type = ?, éditeur = ?, description = ?";
 
     if ($imagePath) {
-    $query .= ", image = ?";
+        $query .= ", image = ?";
     }
 
     $query .= " WHERE id_jeu = ?";
@@ -105,7 +105,7 @@ $title = 'Modifier un jeu';
 require('../head.php');
 ?>
 
-<body>
+<body class="p-3">
     <?php
     $page = 'jeux/jeux.php';
     include('../navbar.php');
