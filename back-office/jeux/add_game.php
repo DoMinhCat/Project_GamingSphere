@@ -51,7 +51,7 @@ $title = 'Gestions des jeux';
 require('../head.php');
 ?>
 
-<body>
+<body class="p-3">
     <?php
     $page = 'jeux/jeux.php';
     include('../navbar.php');

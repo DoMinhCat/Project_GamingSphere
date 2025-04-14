@@ -1,6 +1,6 @@
 <?php
 if (isset($_SESSION['user_email']) || !empty($_SESSION['user_email'])) {
-  header('location:index.php');
+  header('location:../index.php');
   exit();
 }
 ?>
