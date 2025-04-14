@@ -34,7 +34,7 @@ include('../include/head.php')
                             <label for="email">Identifiant/Email</label>
                         </div>
 
-                        <div class="form-floating mb-3">
+                        <div class="form-floating">
                             <input type="password" id="mdp" name="mdp" placeholder="Mot de passe" class="form-control input_field" required>
                             <label for="mdp">Mot de passe</label>
                         </div>
