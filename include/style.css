@@ -134,9 +134,6 @@ h1 {
 .input_field:hover {
   background-color: #f5f0e1;
 }
-.input_field{
-  padding: 1rem 0.75rem !important;
-}
 .m-f {
   padding: 0.9375rem;
 }
@@ -528,7 +525,7 @@ body{
   border: 0.046875rem solid #2f608e;
 }
 .dark .input_field::placeholder {
-  color: transparent;
+  color: #f5f0e1;
 }
 .dark .input_field:hover {
   background-color: #3f3f3f;
