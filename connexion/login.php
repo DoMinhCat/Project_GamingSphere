@@ -29,15 +29,9 @@ include('../include/head.php')
                 <form method="post" action="login_verification.php">
                     <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
 
-                        <div class="form-floating mb-3">
-                            <input type="email" name="email" id="email" placeholder="Identifiant/Email" required aria-describedby="emailHelp" class="form-control input_field" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>">
-                            <label for="email">Identifiant/Email</label>
-                        </div>
+                        <input type="email" name="email" id="email" placeholder="Identifiant/Email" required aria-describedby="emailHelp" class="form-control input_field" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>">
 
-                        <div class="form-floating">
-                            <input type="password" id="mdp" name="mdp" placeholder="Mot de passe" class="form-control input_field" required>
-                            <label for="mdp">Mot de passe</label>
-                        </div>
+                        <input type="password" id="mdp" name="mdp" placeholder="Mot de passe" class="form-control input_field" required>
 
                         <div class="d-flex flex-column pt-3">
                             <input type="Submit" class="btn btn-primary" value="Me connecter">
