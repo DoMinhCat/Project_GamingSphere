@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nom = trim($_POST['nom']);
     $prenom = trim($_POST['prenom']);
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+    $email = strtolower($email);
     $mot_de_passe = trim($_POST['mot_de_passe']);
     $pseudo = trim($_POST['pseudo']);
     $ville = trim($_POST['ville']);
@@ -67,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("Location: inscription.php?error=invalid_email");
+        header("Location: inscription.php?error=invalid_email&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom)  .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (empty($nom) || empty($prenom) || empty($email) || empty($mot_de_passe) || empty($pseudo) || empty($ville) || empty($rue) || empty($code_postal)) {
@@ -81,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_count = $stmt->fetchColumn();
 
     if ($email_count > 0) {
-        header("Location: inscription.php?error=email_exists");
+        header("Location: inscription.php?error=email_exists&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
 
@@ -91,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $psuedo_count = $stmt->fetchColumn();
 
     if ($psuedo_count > 0) {
-        header("Location: inscription.php?error=pseudo_exists");
+        header("Location: inscription.php?error=pseudo_exists&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
 
@@ -132,6 +133,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $mail = new PHPMailer(true);
         try {
+            $mail->SMTPDebug = 2; // or 3 for more detail
+$mail->Debugoutput = 'html';
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
@@ -150,7 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->Body = $message;
             $mail->send();
 
-            header('Location: inscription.php?return=success');
+            header('Location: inscription.php?message=sent_to'.$email);
             exit();
         } catch (Exception $e) {
             $stmt = $bdd->prepare("UPDATE utilisateurs SET inscrire_token = NULL, inscrire_token_expiry = NULL WHERE inscrire_token = :token");
