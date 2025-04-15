@@ -57,6 +57,20 @@ if (isset($_SESSION['user_id'])) {
 } else {
   $notificationCountTeams = 0;
 }
+
+$credits = 0;
+if (isset($_SESSION['user_id'])) {
+  try {
+    $stmtCredits = $bdd->prepare("SELECT credits FROM credits WHERE user_id = ?");
+    $stmtCredits->execute([$_SESSION['user_id']]);
+    $result = $stmtCredits->fetch(PDO::FETCH_ASSOC);
+    if ($result) {
+      $credits = $result['credits'];
+    }
+  } catch (PDOException $e) {
+    $credits = 0; // fallback si erreur
+  }
+}
 ?>
 <header style="background-color: #ff6e40 !important;">
   <nav class="navbar nav-underline navbar-expand-xl bg-body-tertiary my-navbar" style="padding-top: 0.2rem; padding-bottom:0.4rem;">
@@ -210,6 +224,17 @@ if (isset($_SESSION['user_id'])) {
           </div>
         </div>
       </div>
+      <?php if (isset($_SESSION['user_id'])): ?>
+        <div class="d-flex align-items-center me-3" style="margin-left: 10px; margin-right: 10px;">
+          <a href="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/PA/credits/credits_main.php' ?>" class="text-decoration-none">
+            <span class="badge d-flex align-items-center justify-content-center"
+                  style="font-size: 0.85rem; padding: 0.35rem 0.75rem; border-radius: 20px; background-color: #ffc107; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); min-width: 120px; color: black;">
+              <i class="bi bi-wallet2 me-2" style="font-size: 1rem;"></i>
+              Crédits : <?= htmlspecialchars($credits) ?>
+            </span>
+          </a>
+        </div>
+      <?php endif; ?>
       <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
         <a href="<?= ($this_page == 'index.php') ? 'back-office/index.php' : '../back-office/index.php' ?>" class="btn btn-warning mx-3" style="background-color: #ffc107; color: #212529; border-radius: 20px; font-weight: bold; padding: 0.5rem 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
           <i class="bi bi-gear-fill"></i> Back Office
