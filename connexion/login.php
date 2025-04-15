@@ -15,7 +15,7 @@ include('../include/head.php')
     <?php include('../include/header.php'); ?>
     <main>
         <div class="d-flex justify-content-center">
-            <div class="col-8 col-sm-7 col-md-6 col-lg-7 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
+            <div class="col-8 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
                 <div class="pb-3">
                     <h1>Se connecter</h1>
                 </div>
