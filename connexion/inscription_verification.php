@@ -12,6 +12,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;
 
+// Chargement des variables d'environnement
 $dotenv = Dotenv::createImmutable('/var/www/PA');
 $dotenv->load();
 
@@ -19,6 +20,7 @@ require('../include/database.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    // Récupération et nettoyage des données du formulaire
     $nom = trim($_POST['nom']);
     $prenom = trim($_POST['prenom']);
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
@@ -31,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $code_postal = trim($_POST['code_postal']);
     $date = date('Y-m-d H:i:s');
 
+    // Vérification du captcha
     if (!isset($_POST['captcha_answer']) || !isset($_SESSION['captcha_answer'])) {
         header("Location: inscription.php?error=captcha_missing&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
@@ -43,8 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     unset($_SESSION['captcha_answer']);
 
-
-
+    // Vérifications du mot de passe
     if (strlen($mot_de_passe) < 8) {
         header("Location: inscription.php?error=password_length&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
@@ -57,12 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: inscription.php?error=password_number&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
-
     if (!preg_match('/[A-Z]/', $mot_de_passe)) {
         header("Location: inscription.php?error=password_upper&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
 
+    // Vérification du code postal et de l'email
     if (!ctype_digit($code_postal)) {
         header("Location: inscription.php?error=invalid_cp&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
@@ -76,6 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+    // Vérification de l'existence de l'email
     $stmt = $bdd->prepare("SELECT COUNT(email) FROM utilisateurs WHERE email = :email");
     $stmt->bindParam(':email', $email, PDO::PARAM_STR);
     $stmt->execute();
@@ -86,24 +89,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+    // Vérification de l'existence du pseudo
     $stmt = $bdd->prepare("SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo");
     $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
     $stmt->execute();
-    $psuedo_count = $stmt->fetchColumn();
+    $pseudo_count = $stmt->fetchColumn();
 
-    if ($psuedo_count > 0) {
+    if ($pseudo_count > 0) {
         header("Location: inscription.php?error=pseudo_exists&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
 
+    // Création du token pour la confirmation d'inscription
     $token = bin2hex(random_bytes(32));
     $expire_inscrire = date("Y-m-d H:i:s", strtotime("+30 minutes"));
     $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_DEFAULT);
 
-
     try {
+        // Insertion de l'utilisateur dans la table
         $stmt = $bdd->prepare("INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, pseudo, date_inscription, ville, rue, code_postal, status_ENUm, inscrire_token, inscrire_token_expiry) 
-                                    VALUES (:nom, :prenom, :email, :mot_de_passe, :pseudo, :date_inscription, :ville, :rue, :code_postal, :status_ENUm, :token, :expire)");
+                               VALUES (:nom, :prenom, :email, :mot_de_passe, :pseudo, :date_inscription, :ville, :rue, :code_postal, :status_ENUm, :token, :expire)");
         $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
         $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
@@ -119,6 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':expire', $expire_inscrire, PDO::PARAM_STR);
         $stmt->execute();
 
+        // Préparation du lien de confirmation
         $verify_link = "https://gamingsphere.duckdns.org/verify_inscrire.php?token=" . $token;
         $subject = "Confirmation de votre inscription sur Gaming Sphère";
         $message = "
@@ -131,10 +137,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p>À très bientôt sur Gaming Sphere !<br>L'équipe de Gaming Sphère</p>
             ";
 
+        // Envoi de l'e-mail de confirmation
         $mail = new PHPMailer(true);
         try {
-            $mail->SMTPDebug = 2; // or 3 for more detail
-$mail->Debugoutput = 'html';
+            $mail->SMTPDebug = 2; // 2 ou 3 pour plus de détails en développement
+            $mail->Debugoutput = 'html';
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
@@ -153,9 +160,20 @@ $mail->Debugoutput = 'html';
             $mail->Body = $message;
             $mail->send();
 
-            header('Location: inscription.php?message=sent_to'.$email);
+            // Insertion d'une ligne dans la table "credits" avec 0 crédit pour le nouvel utilisateur
+            $lastUserId = $bdd->lastInsertId();
+            $insertCredits = $bdd->prepare("INSERT INTO credits (user_id, credits) VALUES (?, 0)");
+            $insertCredits->execute([$lastUserId]);
+
+            // Création de la session pour l'utilisateur
+            $_SESSION['user_id'] = $lastUserId;
+            $_SESSION['user_email'] = $email;
+            $_SESSION['user_pseudo'] = $pseudo;
+
+            header('Location: ../index.php?success=1&pseudo=' . urlencode($pseudo));
             exit();
         } catch (Exception $e) {
+            // En cas d'erreur lors de l'envoi de l'e-mail, on annule la création du token
             $stmt = $bdd->prepare("UPDATE utilisateurs SET inscrire_token = NULL, inscrire_token_expiry = NULL WHERE inscrire_token = :token");
             $stmt->execute([
                 'token' => $token,
@@ -167,3 +185,4 @@ $mail->Debugoutput = 'html';
         die("Erreur lors de la création de compte : " . $e->getMessage());
     }
 }
+?>
