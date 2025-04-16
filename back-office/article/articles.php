@@ -14,7 +14,7 @@ $title = 'Gérer les articles';
 require('../head.php');
 ?>
 
-<body class="p-3">
+<body class="pb-4">
     <?php
     $page = 'index.php';
     include('../navbar.php');
@@ -38,9 +38,9 @@ require('../head.php');
                 </select>
             </div>
             <input type="hidden" name="id" id="article-id">
-            <button type="submit" name="action" value="add" class="btn btn-primary">Ajouter l'article</button>
-            <button type="submit" name="action" value="edit" class="btn btn-warning">Modifier l'article</button>
-            <button type="submit" name="action" value="delete" class="btn btn-danger">Supprimer l'article</button>
+            <button type="submit" name="action" value="add" class="btn btn-primary m-2">Ajouter l'article</button>
+            <button type="submit" name="action" value="edit" class="btn btn-warning m-2">Modifier l'article</button>
+            <button type="submit" name="action" value="delete" class="btn btn-danger m-2">Supprimer l'article</button>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -73,9 +73,9 @@ require('../head.php');
                     </select>
                 </div>
                 <input type="hidden" name="id" id="article-id">
-                <button type="submit" name="action" value="add" class="btn btn-primary">Ajouter l'article</button>
-                <button type="submit" name="action" value="edit" class="btn btn-warning">Modifier l'article</button>
-                <button type="submit" name="action" value="delete" class="btn btn-danger">Supprimer l'article</button>
+                <button type="submit" name="action" value="add" class="btn btn-primary m-2">Ajouter l'article</button>
+                <button type="submit" name="action" value="edit" class="btn btn-warning m-2">Modifier l'article</button>
+                <button type="submit" name="action" value="delete" class="btn btn-danger m-2">Supprimer l'article</button>
             </form>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

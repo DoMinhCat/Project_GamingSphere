@@ -13,7 +13,7 @@ $title = 'Acceuil';
 require('head.php');
 ?>
 
-<body>
+<body class="pb-4">
     <nav class="navbar navbar-dark bg-dark px-3">
         <div class="d-flex align-items-center">
             <a href="#">

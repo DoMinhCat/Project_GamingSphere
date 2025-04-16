@@ -105,7 +105,7 @@ $title = 'Modifier un jeu';
 require('../head.php');
 ?>
 
-<body class="p-3">
+<body class="pb-4">
     <?php
     $page = 'jeux/jeux.php';
     include('../navbar.php');
