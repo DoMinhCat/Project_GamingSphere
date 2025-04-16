@@ -9,39 +9,57 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 try {
-  $stmt = $bdd->prepare("SELECT credits, pseudo FROM utilisateurs WHERE id_utilisateurs = ?");
-  $stmt->execute([$_SESSION['user_id']]);
-  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Récupération du pseudo dans la table "utilisateurs"
+    $stmt = $bdd->prepare("SELECT pseudo FROM utilisateurs WHERE id_utilisateurs = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  if (!$user) {
-    throw new Exception("Utilisateur introuvable.");
-  }
+    // Pour le débogage
+    // var_dump($userData);
 
-  $credits = $user['credits'];
-  $pseudo = $user['pseudo'];
+    if (!$userData) {
+        throw new Exception("Utilisateur introuvable.");
+    }
+  
+    $pseudo = $userData['pseudo'];
+  
+    // Récupération des crédits dans la table "credits"
+    $stmt = $bdd->prepare("SELECT credits FROM credits WHERE user_id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $creditData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  
+    if (!$creditData) {
+        $insert = $bdd->prepare("INSERT INTO credits (user_id, credits) VALUES (?, 0)");
+        $insert->execute([$_SESSION['user_id']]);
+        $credits = 0;
+    } else {
+        $credits = (int)$creditData['credits'];
+    }
+  
 } catch (Exception $e) {
-  $credits = 0;
-  $pseudo = "Inconnu";
+    $credits = 0;
+    $pseudo = "Inconnu";
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php $title = 'Mes Crédits';?>
-<?php include('../include/head.php');?>
+<?php $title = 'Mes Crédits'; ?>
+<?php include('../include/head.php'); ?>
 
 <body>
 <?php include('../include/header.php'); ?>
   <div class="container py-5">
     <div class="card shadow-lg p-4">
-      <h2 class="mb-4 text-center">👛 Espace Crédits</h2>
+      <h2 class="mb-4 text-center">💻 Espace Crédits</h2>
       
       <div class="text-center mb-3">
-        <h4>Bonjour <strong><?= htmlspecialchars($pseudo) ?></strong> !</h4>
+        <h4>Bonjour <strong><?= htmlspecialchars($pseudo ?? "Utilisateur inconnu", ENT_QUOTES, 'UTF-8') ?></strong> !</h4>
         <p>Voici votre solde actuel :</p>
         <h3 class="text-warning">
           <i class="bi bi-wallet2"></i>
-          <?= htmlspecialchars($credits) ?> crédits
+          <?= htmlspecialchars((string)$credits, ENT_QUOTES, 'UTF-8') ?> crédits
         </h3>
       </div>
 

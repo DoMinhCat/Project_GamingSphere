@@ -79,38 +79,40 @@
             header("Location: inscription.php?error=pseudo_exists");
             exit();
         }
-        //validate email ici 
 
+$mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_DEFAULT);
+try {
+    $stmt = $bdd->prepare("INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, pseudo, date_inscription, ville, rue, code_postal, status_ENUm) 
+                            VALUES (:nom, :prenom, :email, :mot_de_passe, :pseudo, :date_inscription, :ville, :rue, :code_postal, :status_ENUm)");
+    $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
+    $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->bindParam(':mot_de_passe', $mot_de_passe_hache, PDO::PARAM_STR);
+    $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
+    $stmt->bindParam(':date_inscription', $date, PDO::PARAM_STR);
+    $stmt->bindParam(':ville', $ville, PDO::PARAM_STR);
+    $stmt->bindParam(':rue', $rue, PDO::PARAM_STR);
+    $stmt->bindParam(':code_postal', $code_postal, PDO::PARAM_STR);
+    $status_enum = 'Client';
+    $stmt->bindParam(':status_ENUm', $status_enum, PDO::PARAM_STR);
 
+    // Exécution de l'insertion de l'utilisateur
+    $stmt->execute();
 
+    // Récupère l'ID du dernier utilisateur inséré
+    $lastUserId = $bdd->lastInsertId();
 
+    // Insertion d'une ligne dans la table "credits" avec 0 crédit pour le nouvel utilisateur
+    $insertCredits = $bdd->prepare("INSERT INTO credits (user_id, credits) VALUES (?, 0)");
+    $insertCredits->execute([$lastUserId]);
 
-
-        //Insert new user to BDD
-        $mot_de_passe_hache = password_hash($mot_de_passe, PASSWORD_DEFAULT);
-        try {
-            $stmt = $bdd->prepare("INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, pseudo, date_inscription, ville, rue, code_postal, status_ENUm) 
-                                    VALUES (:nom, :prenom, :email, :mot_de_passe, :pseudo, :date_inscription, :ville, :rue, :code_postal, :status_ENUm)");
-            $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
-            $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
-            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':mot_de_passe', $mot_de_passe_hache, PDO::PARAM_STR);
-            $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
-            $stmt->bindParam(':date_inscription', $date, PDO::PARAM_STR);
-            $stmt->bindParam(':ville', $ville, PDO::PARAM_STR);
-            $stmt->bindParam(':rue', $rue, PDO::PARAM_STR);
-            $stmt->bindParam(':code_postal', $code_postal, PDO::PARAM_STR);
-            $status_enum = 'Client';
-            $stmt->bindParam(':status_ENUm', $status_ENUm, PDO::PARAM_STR);
-
-            $stmt->execute();
-            session_start();
-            $_SESSION['user_id'] = $bdd->lastInsertId();
-            $_SESSION['user_email'] = $email;
-            $_SESSION['user_pseudo'] = $pseudo;
-            header("Location: ../index.php?success=1&pseudo=" . urlencode($pseudo));
-            exit();
-        } catch (PDOException $e) {
-            die("Erreur lors de la création de compte : " . $e->getMessage());
-        }
+    session_start();
+    $_SESSION['user_id'] = $lastUserId;
+    $_SESSION['user_email'] = $email;
+    $_SESSION['user_pseudo'] = $pseudo;
+    header("Location: ../index.php?success=1&pseudo=" . urlencode($pseudo));
+    exit();
+} catch (PDOException $e) {
+    die("Erreur lors de la création de compte : " . $e->getMessage());
+}
     }
