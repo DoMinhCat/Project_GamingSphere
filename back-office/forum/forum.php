@@ -15,7 +15,7 @@ require('../head.php');
 ?>
 
 
-<body class="p-3">
+<body class="pb-4">
     <?php
     $page = 'index.php';
     include('../navbar.php');

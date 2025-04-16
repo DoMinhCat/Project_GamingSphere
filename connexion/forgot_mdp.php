@@ -86,24 +86,24 @@ include('../include/head.php');
             }
             ?>
           </h1>
-
-          <div class="modal-body">
-            <?php
-            if (isset($_GET['return'])) {
-              if ($_GET['return'] == 'success') {
-                echo 'Suivez le lien envoyé à votre email pour réinitialiser votre mot de passe. N\'oubliez pas de verifier votre boîte spam.';
-              } elseif ($_GET['return'] == 'not_found') {
-                echo 'Veuillez saisir l\'adresse e-mail associée à votre compte.';
-              } elseif ($_GET['return'] == 'already_requested') {
-                echo 'Une demande de réinitialisation de mot de passe a déjà été envoyée. Veuillez vérifier votre boîte mail et votre boîte spam.';
-              }
-            }
-            ?>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
-          </div>
         </div>
+        <div class="modal-body">
+          <?php
+          if (isset($_GET['return'])) {
+            if ($_GET['return'] == 'success') {
+              echo 'Suivez le lien envoyé à votre email pour réinitialiser votre mot de passe. N\'oubliez pas de verifier votre boîte spam.';
+            } elseif ($_GET['return'] == 'not_found') {
+              echo 'Veuillez saisir l\'adresse e-mail associée à votre compte.';
+            } elseif ($_GET['return'] == 'already_requested') {
+              echo 'Une demande de réinitialisation de mot de passe a déjà été envoyée. Veuillez vérifier votre boîte mail et votre boîte spam.';
+            }
+          }
+          ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+
       </div>
     </div>
   </div>

@@ -11,7 +11,8 @@ function writeLogLine(string $email, bool $success): void
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST['email']) && !empty($_POST['email'])) {
-        setcookie('email', $_POST['email'], time() + 24 * 3600);
+        setcookie('email', strtolower($_POST['email']), time() + 24 * 3600);
+        $mail = strtolower($_POST['email']);
     }
 
     if (!isset($_POST['email']) || !isset($_POST['mdp']) || empty($_POST['email']) || empty($_POST['mdp'])) {
@@ -31,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $q_connect = 'SELECT id_utilisateurs, mot_de_passe, pseudo, status_ENUm FROM utilisateurs WHERE email = :email';
     $statement = $bdd->prepare($q_connect);
     $statement->execute([
-        'email' => $_POST['email'],
+        'email' => $mail,
     ]);
 
     $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -40,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (password_verify($_POST['mdp'], $result['mot_de_passe'])) {
             $_SESSION['user_id'] = $result['id_utilisateurs'];
-            $_SESSION['user_email'] = $_POST['email'];
+            $_SESSION['user_email'] = $mail;
             $_SESSION['user_pseudo'] = $result['pseudo'];
 
             writeLogLine($_POST['email'], true);

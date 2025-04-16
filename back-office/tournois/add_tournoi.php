@@ -12,7 +12,7 @@ $title = 'Ajouter un tournoi';
 require('../head.php');
 ?>
 
-<body class="p-3">
+<body class="pb-4">
     <?php include('../navbar.php'); ?>
 
     <div class="container my-5">
