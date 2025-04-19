@@ -158,8 +158,6 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
       </div>
     </div>
     <div class="col-12 d-flex justify-content-end">
-      <button class="btn btn-lg my-btn" type="submit">Créer mon compte</button>
-
       <button type="submit" class="btn btn-lg my-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         Créer mon compte
       </button>
