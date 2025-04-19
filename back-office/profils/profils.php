@@ -77,7 +77,7 @@ require('../head.php');
         document.getElementById('search').addEventListener('input', function() {
             const query = this.value;
 
-            fetch('search_users.php?search=' + encodeURIComponent(query), {
+            fetch('search_profils.php?search=' + encodeURIComponent(query), {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     }
