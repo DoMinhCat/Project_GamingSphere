@@ -55,14 +55,19 @@ if (!isset($_SESSION['user_id'])) {
         return;
       }
 
-      fetch('/credits/create_checkout_session.php', {
+      fetch('/PA/credits/create_checkout_session.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ amount: amount })
       })
-      .then(response => response.json())
+      .then(response => {
+         if (!response.ok) {
+            throw new Error("HTTP error " + response.status);
+         }
+         return response.json();
+      })
       .then(session => {
         if (session.id) {
           return stripe.redirectToCheckout({ sessionId: session.id });
