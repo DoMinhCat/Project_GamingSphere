@@ -55,7 +55,7 @@ if (!isset($_SESSION['user_id'])) {
         return;
       }
 
-      fetch('/PA/credits/create_checkout_session.php', {
+      fetch('/credits/create_checkout_session.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
