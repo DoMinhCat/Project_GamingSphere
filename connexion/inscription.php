@@ -16,7 +16,14 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
 ?>
 
 <body>
-  <?php include('../include/header.php'); ?>
+  <?php include('../include/header.php');
+  if (isset($_GET['message']) && !empty($_GET['message'])) {
+    echo '<div class="lato24 my-2">';
+    echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
+  }
+  ?>
+  </div>
+  ?>
 
   <h1 class="montserrat-titre40 my_inscription"
     style=" margin-top: 3rem;
@@ -152,6 +159,10 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
     </div>
     <div class="col-12 d-flex justify-content-end">
       <button class="btn btn-lg my-btn" type="submit">Créer mon compte</button>
+
+      <button type="submit" class="btn btn-lg my-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Créer mon compte
+      </button>
     </div>
 
 
@@ -160,6 +171,41 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
   <?php
   include("../include/footer.php");
   ?>
+
+
+
+
+  <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal">Vérification de l'e-mail requise</h1>
+        </div>
+
+        <div class="modal-body">
+          Votre compte a été crée. <br>Veuillez suivez le lien envoyé à votre adresse email enregistrée pour vérifier votre email. Ce lien est valable pour 30 minutes. N'oubliez pas de vérifier votre boîte spam !
+          <br>
+          Vous devrez peut-être attendre un peu pour que l'email soit envoyé.
+        </div>
+        <div class="modal-footer">
+          <a href="resend_verify_inscrire.php" type="button" class="btn btn-primary">Renvoyer l'email</a>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const returnParam = urlParams.get('result');
+
+    if (returnParam == 'success') {
+      var modal = new bootstrap.Modal(document.getElementById('modal'), {
+        keyboard: false
+      });
+      modal.show();
+    }
+  </script>
 </body>
 
 </html>

@@ -12,35 +12,34 @@ include('../include/head.php');
   ?>
 
   <div class="d-flex justify-content-center">
-    <div class="col-8 col-sm-7 col-md-6 col-lg-7 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
+    <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
 
       <?php if (!isset($_GET['success']) || empty($_GET['success'])): ?>
-        <div class="pb-1">
-          <h1 class="mb-0">Mot de passe oublié ?</h1>
+        <div class="pb-1 mb-2">
+          <h1>Mot de passe oublié ?</h1>
         </div>
 
-        <span class="lato16">Entrez votre email et nous vous enverrons un email pour réinitialiser votre mot de passe</span>
-
-        <div class="lato24">
-          <?php
-          if (isset($_GET['message']) && !empty($_GET['message'])) {
-            echo '<p class="m-0 py-3">' . htmlspecialchars($_GET['message']) . '</p>';
-          }
-          ?>
-        </div>
+        <span class="lato16 mb-3">Entrez votre adresse email enregistrée et nous vous enverrons un email pour réinitialiser votre mot de passe</span>
+        <?php include('../include/header.php');
+        if (isset($_GET['message']) && !empty($_GET['message'])) {
+          echo '<div class="lato24 mb-3">';
+          echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
+          echo '</div>';
+        }
+        ?>
 
         <form method="post" action="forgot_verification.php">
           <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
             <input type="email" name="email" placeholder="Votre email" required aria-describedby="emailHelp" class="form-control input_field">
 
             <div class="d-flex flex-column pt-3">
-              <input type="submit" class="btn btn-primary" value="Envoyer le lien de connexion">
+              <input type="submit" class="btn btn-primary" value="Envoyer le lien de réinitialisation">
             </div>
 
           </div>
         </form>
 
-        <div class="line-with-letters montserrat-titre32">
+        <div class="line-with-letters montserrat-titre32 py-3">
           <span class="line"></span>OU<span class="line"></span>
         </div>
 
@@ -52,7 +51,7 @@ include('../include/head.php');
 
       <?php else: ?>
         <h2>Votre mot de passe a été réinitialisé</h2>
-        <div class="line-with-letters py-2">
+        <div class="line-with-letters my-3">
           <span class="line"></span>
         </div>
       <?php endif; ?>
@@ -91,11 +90,11 @@ include('../include/head.php');
           <?php
           if (isset($_GET['return'])) {
             if ($_GET['return'] == 'success') {
-              echo 'Suivez le lien envoyé à votre email pour réinitialiser votre mot de passe. N\'oubliez pas de verifier votre boîte spam.';
+              echo 'Suivez le lien envoyé à votre email pour réinitialiser votre mot de passe. Ce lien est valable pour 15 minutes. Vous pourrez redemander pour un autre lien après 15 minutes. <br> N\'oubliez pas de verifier votre boîte spam. Vous devrez peut-être attendre un peu pour que l\'e-mail soit envoyé.';
             } elseif ($_GET['return'] == 'not_found') {
               echo 'Veuillez saisir l\'adresse e-mail associée à votre compte.';
             } elseif ($_GET['return'] == 'already_requested') {
-              echo 'Une demande de réinitialisation de mot de passe a déjà été envoyée. Veuillez vérifier votre boîte mail et votre boîte spam.';
+              echo 'Une demande de réinitialisation de mot de passe a déjà été envoyée. Veuillez vérifier votre boîte mail et votre boîte spam ou attendez 15 minutes pour demander un autre lien.';
             }
           }
           ?>

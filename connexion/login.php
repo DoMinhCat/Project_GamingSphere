@@ -15,23 +15,27 @@ include('../include/head.php')
     <?php include('../include/header.php'); ?>
     <main>
         <div class="d-flex justify-content-center">
-            <div class="col-8 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
-                <div class="pb-3">
+            <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
+      
+                <div class="pb-3 my-3">
                     <h1>Se connecter</h1>
                 </div>
-                <div class="lato24 ">
-                    <?php
-                    if (isset($_GET['message']) && !empty($_GET['message'])) {
-                        echo '<p>' . htmlspecialchars($_GET['message']) . '</p>';
-                    }
-                    ?>
-                </div>
+
+                
+        <?php
+        if (isset($_GET['message']) && !empty($_GET['message'])) {
+            echo '<div class="lato24 mb-2">';
+          echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
+        }
+        ?>
+      </div>
+               
                 <form method="post" action="login_verification.php">
                     <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
 
                         <input type="email" name="email" id="email" placeholder="Identifiant/Email" required aria-describedby="emailHelp" class="form-control input_field" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>">
 
-                        <input type="password" id="mdp" name="mdp" placeholder="Mot de passe" class="form-control input_field" required>
+                        <input type="password" id="mdp" name="mdp" placeholder="Mot de passe" class="form-control input_field mt-1" required>
 
                         <div class="d-flex flex-column pt-3">
                             <input type="Submit" class="btn btn-primary" value="Me connecter">
@@ -39,7 +43,7 @@ include('../include/head.php')
                     </div>
                 </form>
 
-                <div class="line-with-letters montserrat-titre32">
+                <div class="line-with-letters montserrat-titre32 my-3">
                     <span class="line"></span>OU<span class="line"></span>
                 </div>
 
@@ -54,7 +58,7 @@ include('../include/head.php')
                         </svg>
                     </a>
 
-                    <a href="https://www.facebook.com/?locale=fr_FR" target="_blank" class="btn btn-secondary facebook_login">
+                    <a href="https://www.facebook.com/?locale=fr_FR" target="_blank" class="btn btn-secondary facebook_login my-2">
                         <i class="bi bi-facebook"></i>
                     </a>
 
@@ -65,12 +69,12 @@ include('../include/head.php')
                 </div>
 
 
-                <p class="lato16" style="margin:0.5rem;">
-                    <a href="forgot_mdp.php" id="creer_compte">Mot de passe oublié ?</a> <br>
+                <p class="lato16 my-2" style="margin:0.5rem;">
+                    <a href="forgot_mdp.php" id="creer_compte">Mot de passe oublié ?</a>
                 </p>
 
                 <div class="line-with-letters montserrat-titre32 pt-2 pb-3">
-                    <span class="line"></span>
+                    <span class="line my-2"></span>
                 </div>
                 <div>
                     <h6 style="margin-bottom: 0;">

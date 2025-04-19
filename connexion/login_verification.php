@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST['email']) && !empty($_POST['email'])) {
         setcookie('email', strtolower($_POST['email']), time() + 24 * 3600);
-        $mail = strtolower($_POST['email']);
+        $mail = strtolower(trim($_POST['email']));
     }
 
     if (!isset($_POST['email']) || !isset($_POST['mdp']) || empty($_POST['email']) || empty($_POST['mdp'])) {
@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
         writeLogLine($_POST['email'], false);
         header('location: login.php?message=Adresse email invalide.');
         exit;
@@ -55,12 +55,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit;
             }
         } else {
-            writeLogLine($_POST['email'], false);
+            writeLogLine($mail, false);
             header('location: login.php?message=Identifiants incorrects');
             exit;
         }
     } else {
-        writeLogLine($_POST['email'], false);
+        writeLogLine($mail, false);
         header('location: login.php?message=Identifiants incorrects');
         exit;
     }
