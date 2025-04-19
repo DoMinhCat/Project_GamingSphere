@@ -18,7 +18,7 @@ require('../head.php');
     $page = 'index.php';
     include('../navbar.php');
     ?>
-    <main class="container mt-5">
+    <main class="container my-5">
         <?php
         if (isset($bdd)) {
             try {
@@ -33,11 +33,12 @@ require('../head.php');
                     }
                 }
 
-                echo '<div class="form-group my-2">
+                echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
                 <input type="text" id="search" class="form-control" placeholder="Rechercher par pseudo ou email">
                 </div>';
 
                 if (count($users) > 0) {
+                    echo '<div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">';
                     echo "<table class='table table-striped'>";
                     echo "<thead class='thead-dark'><tr><th>ID</th><th>Nom</th><th>Email</th><th>Pseudo</th><th>Prénom</th><th>Actions</th></tr></thead>";
                     echo "<tbody id='user_results'>";

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md bg-light border-bottom px-3 py-2">
+<nav class="navbar container-fluid navbar-expand-md bg-light border-bottom px-3 py-2">
     <div class="container-fluid">
 
         <div class="d-flex">
