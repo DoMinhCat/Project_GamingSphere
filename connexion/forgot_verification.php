@@ -16,7 +16,7 @@ $dotenv = Dotenv::createImmutable('/var/www/PA');
 $dotenv->load();
 
 if (isset($_POST['email']) && !empty($_POST['email'])) {
-    $email = trim($_POST['email']);
+    $email = strtolower(trim($_POST['email']));
 
     $stmt = $bdd->prepare("SELECT pseudo, reset_mdp_token, token_expiry FROM utilisateurs WHERE email = :email LIMIT 1");
     $stmt->execute(['email' => $email]);

@@ -1,7 +1,6 @@
-
 <?php
 if (!isset($_GET['token']) || empty($_GET['token'])) {
-  header('Location: reset_mdp_err.php?message=' .urldecode("Cette page est actuellement indisponible"));
+  header('Location: reset_mdp_err.php?message=' . urldecode("Cette page est actuellement indisponible"));
   exit();
 }
 $token = $_GET['token'];
@@ -11,8 +10,8 @@ $stmt = $bdd->prepare("SELECT * FROM utilisateurs WHERE reset_mdp_token = :token
 $stmt->execute(['token' => $token]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if(!$user){
-  header('Location: reset_mdp_err.php?message=' .urldecode("Cette page est actuellement indisponible"));
+if (!$user) {
+  header('Location: reset_mdp_err.php?message=' . urldecode("Cette page est actuellement indisponible"));
   exit();
 }
 ?>
@@ -31,15 +30,17 @@ include('../include/head.php')
 
 
   <div class="d-flex justify-content-center">
-    <div class="col-8 col-sm-7 col-md-6 col-lg-7 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
+    <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
+    
       <div class="pb-3">
         <h1 class="mb-0">Réinitialisation de mot de passe</h1>
       </div>
 
-      <div class="lato24">
+      
         <?php
         if (isset($_GET['message']) && !empty($_GET['message'])) {
-          echo '<p class="m-0 py-2 text-warning">' . htmlspecialchars($_GET['message']) . '</p>';
+          echo '<div class="lato24 my-2">';
+          echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
         }
         ?>
       </div>
@@ -85,4 +86,5 @@ include('../include/head.php')
   include("../include/footer.php");
   ?>
 </body>
+
 </html>

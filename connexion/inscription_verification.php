@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nom = trim($_POST['nom']);
     $prenom = trim($_POST['prenom']);
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
-    $email = strtolower($email);
+    $email = strtolower(trim($email));
     $mot_de_passe = trim($_POST['mot_de_passe']);
     $pseudo = trim($_POST['pseudo']);
     $ville = trim($_POST['ville']);
@@ -123,18 +123,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $subject = "Confirmation de votre inscription sur Gaming Sphère";
         $message = "
             <p>Bonjour <strong>$pseudo</strong>,</p>
-            <p>Merci de vous être inscrit(e) sur Gaming Sphere !</p>
+            <p>Merci de vous être inscrit(e) sur <strong>Gaming Sphère</strong> !</p>
             <p>Pour finaliser la création de votre compte, veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous :</p>
-            <p><a href='$verify_link'>Cliquez ici</a> pour confirmer votre adresse email.</p>
-            <p>Ce lien est valable pour <strong>30 minutes</strong>.</p>
+            <p><a href='$verify_link'>Cliquez ici</a> pour confirmer votre adresse email. Ce lien est valable pour <strong>30 minutes</strong>.</p>
             <p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>
-            <p>À très bientôt sur Gaming Sphere !<br>L'équipe de Gaming Sphère</p>
+            <p>À très bientôt sur Gaming Sphere !</p>
+            <p>L'équipe de Gaming Sphère</p>
             ";
 
         $mail = new PHPMailer(true);
         try {
-            $mail->SMTPDebug = 2; // or 3 for more detail
-$mail->Debugoutput = 'html';
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
@@ -153,14 +151,14 @@ $mail->Debugoutput = 'html';
             $mail->Body = $message;
             $mail->send();
 
-            header('Location: inscription.php?message=sent_to'.$email);
+            header('Location: inscription.php?result=success');
             exit();
         } catch (Exception $e) {
             $stmt = $bdd->prepare("UPDATE utilisateurs SET inscrire_token = NULL, inscrire_token_expiry = NULL WHERE inscrire_token = :token");
             $stmt->execute([
                 'token' => $token,
             ]);
-            header('Location: inscription.php?message=Erreur d\'envoi de l\'email: ' . urlencode($mail->ErrorInfo));
+            header('Location: inscription.php?message='.urlencode('Erreur d\'envoi de l\'email: ') . urlencode($mail->ErrorInfo));
             exit();
         }
     } catch (PDOException $e) {
