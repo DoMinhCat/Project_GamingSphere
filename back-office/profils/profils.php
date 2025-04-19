@@ -33,10 +33,14 @@ require('../head.php');
                     }
                 }
 
+                echo '<div class="form-group">
+                <input type="text" id="search" class="form-control" placeholder="Rechercher par pseudo ou email">
+                </div>';
+
                 if (count($users) > 0) {
                     echo "<table class='table table-striped'>";
                     echo "<thead class='thead-dark'><tr><th>ID</th><th>Nom</th><th>Email</th><th>Pseudo</th><th>Prénom</th><th>Actions</th></tr></thead>";
-                    echo "<tbody>";
+                    echo "<tbody id='user_results'>";
 
                     foreach ($users as $user) {
                         echo "<tr>";
@@ -69,6 +73,21 @@ require('../head.php');
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('search').addEventListener('input', function() {
+            const query = this.value;
+
+            fetch('search_users.php?search=' + encodeURIComponent(query), {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('user-results').innerHTML = data;
+                });
+        });
+    </script>
 </body>
 
 </html>

@@ -31,28 +31,28 @@ include('../include/head.php');
         echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
       }
       ?>
-    </div>
-    <form method="post" action="resend_verification.php">
-      <div class="d-flex flex-column pt-2 py-3 mb-1 row-gap-1 lato16">
-        <input type="email" name="email" placeholder="Votre email" required aria-describedby="emailHelp" class="form-control input_field">
 
-        <div class="d-flex flex-column pt-3">
-          <input type="submit" class="btn btn-primary" value="Envoyer le lien de vérification">
-        </div>
+      <form method="post" action="resend_verification.php">
+        <div class="d-flex flex-column pt-2 py-3 mb-1 row-gap-1 lato16">
+          <input type="email" name="email" placeholder="Votre email" required aria-describedby="emailHelp" class="form-control input_field">
 
-        <div class="line-with-letters montserrat-titre32 py-3 my-2">
-          <span class="line"></span>OU<span class="line"></span>
-        </div>
+          <div class="d-flex flex-column pt-3">
+            <input type="submit" class="btn btn-primary" value="Envoyer le lien de vérification">
+          </div>
+      </form>
 
-        <div class="d-flex flex-column pt-1">
-          <a href="login.php" class="btn btn-success">
-            Revenir à la page de connexion
-          </a>
-        </div>
-
+      <div class="line-with-letters montserrat-titre32 py-3 my-2">
+        <span class="line"></span>OU<span class="line"></span>
       </div>
-    </form>
-  </div>
+
+      <div class="d-flex flex-column pt-1">
+        <a href="login.php" class="btn btn-success">
+          Revenir à la page de connexion
+        </a>
+      </div>
+
+    </div>
+
   </div>
 
   <?php

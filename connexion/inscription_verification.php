@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $insertCredits = $bdd->prepare("INSERT INTO credits (user_id, credits) VALUES (?, 0)");
         $insertCredits->execute([$lastUserId]);
 
-        $verify_link = "https://gamingsphere.duckdns.org/verify_inscrire.php?token=" . $token;
+        $verify_link = "https://gamingsphere.duckdns.org/connexion/verify_inscrire.php?token=" . $token;
         $subject = "Confirmation de votre inscription sur Gaming Sphère";
         $message = "
             <p>Bonjour <strong>$pseudo</strong>,</p>
