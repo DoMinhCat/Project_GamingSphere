@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: inscription.php?error=invalid_cp&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL || preg_match('/[\r\n]/', $email))) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL) || preg_match('/[\r\n]/', $email)) {
         header("Location: inscription.php?error=invalid_email&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom)  .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
@@ -152,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->Body = $message;
             $mail->send();
 
-            header('Location: inscription.php?message=sent_to' . urlencode($email));
+            header('Location: inscription.php?result=success');
             exit();
         } catch (Exception $e) {
             $stmt = $bdd->prepare("UPDATE utilisateurs SET inscrire_token = NULL, inscrire_token_expiry = NULL WHERE inscrire_token = :token");

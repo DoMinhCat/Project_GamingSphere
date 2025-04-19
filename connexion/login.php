@@ -16,20 +16,21 @@ include('../include/head.php')
     <main>
         <div class="d-flex justify-content-center">
             <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
-      
+
                 <div class="pb-3 my-3">
                     <h1>Se connecter</h1>
                 </div>
 
-                
-        <?php
-        if (isset($_GET['message']) && !empty($_GET['message'])) {
-            echo '<div class="lato24 mb-2">';
-          echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
-        }
-        ?>
-      </div>
-               
+
+                <?php
+                if (isset($_GET['message']) && !empty($_GET['message'])) {
+                    echo '<div class="lato24 mb-2">';
+                    echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
+                    echo '</div>';
+                }
+                ?>
+
+
                 <form method="post" action="login_verification.php">
                     <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
 

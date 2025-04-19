@@ -20,7 +20,7 @@ include('../include/head.php');
         </div>
 
         <span class="lato16 mb-3">Entrez votre adresse email enregistrée et nous vous enverrons un email pour réinitialiser votre mot de passe</span>
-        <?php include('../include/header.php');
+        <?php
         if (isset($_GET['message']) && !empty($_GET['message'])) {
           echo '<div class="lato24 mb-3">';
           echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
