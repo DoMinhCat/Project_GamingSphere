@@ -226,7 +226,7 @@ if (isset($_SESSION['user_id'])) {
       </div>
       <?php if (isset($_SESSION['user_id'])): ?>
         <div class="d-flex align-items-center me-3" style="margin-left: 10px; margin-right: 10px;">
-          <a href="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/PA/credits/credits_main.php' ?>" class="text-decoration-none">
+          <a href="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/credits/credits_main.php' ?>" class="text-decoration-none">
             <span class="badge d-flex align-items-center justify-content-center"
                   style="font-size: 0.85rem; padding: 0.35rem 0.75rem; border-radius: 20px; background-color: #ffc107; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); min-width: 120px; color: black;">
               <i class="bi bi-wallet2 me-2" style="font-size: 1rem;"></i>
