@@ -12,7 +12,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable('/var/www/PA');
+$dotenv = Dotenv::createImmutable('/var/www/PA', null, false);
 $dotenv->load();
 
 require('../include/database.php');
