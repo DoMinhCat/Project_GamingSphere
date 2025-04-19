@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     include('../include/database.php');
-    $q_connect = 'SELECT id_utilisateurs, mot_de_passe, pseudo, status_ENUm FROM utilisateurs WHERE email = :email';
+    $q_connect = 'SELECT id_utilisateurs, mot_de_passe, pseudo, status_ENUm, email_verifie FROM utilisateurs WHERE email = :email';
     $statement = $bdd->prepare($q_connect);
     $statement->execute([
         'email' => $mail,
@@ -38,6 +38,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $statement->fetch(PDO::FETCH_ASSOC);
 
     if ($result) {
+        if ($result['email_verifie'] == 0) {
+            header('location:login.php?error=email_verification');
+            exit();
+        }
 
         if (password_verify($_POST['mdp'], $result['mot_de_passe'])) {
             $_SESSION['user_id'] = $result['id_utilisateurs'];

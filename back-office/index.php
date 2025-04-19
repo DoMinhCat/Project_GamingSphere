@@ -42,7 +42,7 @@ require('head.php');
             </div>
             <div class="col">
                 <a href="tournois/tournois_main.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des Tournois
+                    Gestion des tournois
                 </a>
             </div>
             <div class="col">
