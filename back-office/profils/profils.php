@@ -33,7 +33,7 @@ require('../head.php');
                     }
                 }
 
-                echo '<div class="form-group">
+                echo '<div class="form-group my-2">
                 <input type="text" id="search" class="form-control" placeholder="Rechercher par pseudo ou email">
                 </div>';
 
@@ -84,7 +84,7 @@ require('../head.php');
                 })
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById('user-results').innerHTML = data;
+                    document.getElementById('user_results').innerHTML = data;
                 });
         });
     </script>
