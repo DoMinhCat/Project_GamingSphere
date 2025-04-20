@@ -78,7 +78,7 @@ h1 {
   box-shadow: 0 0 0 2px #ff6e40 !important;
   border-color: #ff6e40 !important;
 }
-.btn-warning:hover{
+.btn-warning:hover {
   transform: scale(1.01);
   background-color: #fcbd02;
 }
@@ -139,9 +139,7 @@ h1 {
 .nav-link:active {
   color: #1e3d59 !important;
 }
-.my-navbar {
-  background-color: #ff6e40 !important;
-}
+
 .input_field:hover {
   background-color: #f5f0e1;
 }
@@ -267,19 +265,19 @@ h1 {
 .tournament_title {
   text-align: left;
   margin-left: 7%;
-  text-decoration-line: underline,#1E3D59;
+  text-decoration-line: underline, #1e3d59;
   text-decoration-thickness: 0.1rem;
   text-underline-offset: 0.234375rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  color: #1E3D59;
+  color: #1e3d59;
 }
 .tournament_title:hover {
-  color: #2f608e ;
-} 
+  color: #2f608e;
+}
 .dark .tournament_title:hover {
-  color: #d0ccbf ;
-} 
+  color: #d0ccbf;
+}
 
 .title_selling_item_index {
   text-align: left;
@@ -354,29 +352,17 @@ h1 {
 }
 
 .under_nav .nav-link {
-  padding: 15px 25px; 
-  margin: 0 15px; 
+  padding: 15px 25px;
+  margin: 0 15px;
 }
-
-.navbar-nav {
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%; 
-  padding: 0; 
-}
-
-.navbar-nav .nav-item {
-  margin: 0 20px; /
-}
-
 
 .card-img-top {
-    height: 200px;
-    object-fit: cover;
+  height: 200px;
+  object-fit: cover;
 }
 .section-title {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 .message_box {
   max-width: 900px;
@@ -390,8 +376,7 @@ h1 {
   background-color: #2f608e !important;
 }
 
-.dark 
-body{
+.dark body {
   background-color: #121212;
   color: #f1f1f1;
 }
@@ -426,7 +411,7 @@ body{
   background-color: #ffc13b !important;
   color: white;
 }
-.dark .message.sent .message-bubble{
+.dark .message.sent .message-bubble {
   background-color: #2f608e !important;
 }
 .message.received .message-bubble {
@@ -473,17 +458,20 @@ body{
 .send-button:hover {
   background-color: #fdae95;
 }
-.desinscrire-btn, .participer-btn {
+.desinscrire-btn,
+.participer-btn {
   transition: all 0.3s ease-in-out;
 }
-.desinscrire-btn:hover, .participer-btn:hover {
-  transform: scale(1.05); 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+.desinscrire-btn:hover,
+.participer-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.desinscrire-btn:disabled, .participer-btn:disabled {
-  opacity: 0.6; 
-  cursor: not-allowed; 
+.desinscrire-btn:disabled,
+.participer-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 .dark {
   background-color: #1e1e1e;
@@ -495,9 +483,21 @@ body{
 .dark .lato16 {
   color: #ffffff;
 }
-.dark .my-navbar {
+#upper_header,
+#single_header {
+  background-color: #ff6e40 !important;
+}
+#lower_header {
+  background-color: rgb(254, 118, 76) !important;
+}
+.dark #upper_header,
+.dark #single_header {
   background-color: #1e3d59 !important;
 }
+.dark #lower_header {
+  background-color: #214564 !important;
+}
+
 .dark .nav-link {
   color: #f5f5f5 !important;
 }
@@ -561,29 +561,30 @@ body{
   background-color: #f5f0e1;
   color: #1e3d59;
 }
-.dark #mdp_help{
-  color: #F5F0E1;
+.dark #mdp_help {
+  color: #f5f0e1;
 }
-.dark footer{
-background-color: #1E3D59 !important;
+.dark footer {
+  background-color: #1e3d59 !important;
 }
-footer{
+footer {
   background-color: #ff6e40 !important;
 }
-  body.offcanvas-backdrop {
-    overflow: auto !important;
-  }
-  
-  .offcanvas-backdrop {
-    pointer-events: none !important;
-    background-color: rgba(0, 0, 0, 0.5) !important;
-  }
-  .offcanvas{
-    background-color: #fc6f44;
-  }
-  .dark .offcanvas{
-    background-color: #3e80bd;
-  }
-  #query:hover, #category:hover{
-    background-color: #F5F0E1;
-    }
+body.offcanvas-backdrop {
+  overflow: auto !important;
+}
+
+.offcanvas-backdrop {
+  pointer-events: none !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+.offcanvas {
+  background-color: #fc6f44;
+}
+.dark .offcanvas {
+  background-color: #1e3d59;
+}
+#query:hover,
+#category:hover {
+  background-color: #f5f0e1;
+}
