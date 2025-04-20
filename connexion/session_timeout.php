@@ -26,10 +26,10 @@ include('../include/head.php');
                 <h1>Vous êtes toujours là ?</h1>
             </div>
 
-            <span class="lato24 mb-2"><strong>Votre session a expirée.</strong></span>
-            <span class="lato16">Vous avez été déconnecté en raison d'inactivité afin de proteger vos informations privées</span>
+            <span class="lato24 mb-2"><strong>Votre session a expirée.</strong></span> <br>
+            <span class="lato16 mt-2">Vous avez été déconnecté en raison d'inactivité afin de proteger vos informations privées</span>
 
-            <div class="line-with-letters montserrat-titre32 my-2">
+            <div class="line-with-letters montserrat-titre32 my-3">
                 <span class="line"></span>
             </div>
 
@@ -38,12 +38,12 @@ include('../include/head.php');
                     Revenir à la page de connexion
                 </a>
             </div>
+            </br>
         </div>
-    </div>
 
-    <?php
-    include("../include/footer.php");
-    ?>
+        <?php
+        include("../include/footer.php");
+        ?>
 </body>
 
 </html>
