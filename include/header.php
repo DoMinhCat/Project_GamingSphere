@@ -79,7 +79,7 @@ if (isset($_SESSION['user_id'])) {
 <header>
 
   <!-- uppper -->
-  <div style="background-color: #ff6e40 !important;">
+  <div id="upper_header">
     <div class="container">
       <div class=" row d-none d-xl-flex justify-content-end align-items-center py-2 container-fluid px-0 mx-0">
         <div class="col-12 col-md-6 d-flex justify-content-end align-items-center p-0 mx-0">
@@ -109,7 +109,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
   </div>
   <!-- lower -->
-  <div style="background-color:rgb(254, 118, 76) !important;">
+  <div id="lower_header">
     <div class="container">
       <div class="row d-none d-xl-flex justify-content-between align-items-center py-3 px-0 mx-0 container-fluid">
 
@@ -251,7 +251,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
   </div>
   <!-- single -->
-  <div style="background-color: #FF6E40 !important;">
+  <div id="single_header">
     <div class="mx-3 justify-content-between">
       <div class="row d-flex d-xl-none justify-content-between align-items-center p-2">
         <div class="col-3 d-flex justify-content-start px-2">
