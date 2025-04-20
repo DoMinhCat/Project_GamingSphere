@@ -72,6 +72,16 @@ h1 {
   margin: 0 0.46875rem;
 }
 
+#globalSearchForm input:focus,
+#globalSearchForm select:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px #ff6e40 !important;
+  border-color: #ff6e40 !important;
+}
+.btn-warning:hover{
+  transform: scale(1.01);
+  background-color: #fcbd02;
+}
 .btn-primary {
   background-color: #2f608e;
   border-color: #1e3d59 !important;
@@ -559,4 +569,21 @@ background-color: #1E3D59 !important;
 }
 footer{
   background-color: #ff6e40 !important;
+}
+  body.offcanvas-backdrop {
+    overflow: auto !important;
   }
+  
+  .offcanvas-backdrop {
+    pointer-events: none !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+  .offcanvas{
+    background-color: #fc6f44;
+  }
+  .dark .offcanvas{
+    background-color: #3e80bd;
+  }
+  #query:hover, #category:hover{
+    background-color: #F5F0E1;
+    }
