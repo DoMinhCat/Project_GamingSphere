@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
-  header('location: index.php?message=email_verifie');
+  header('location: ../index.php?message=email_verifie');
   exit();
 }
 $title = 'Vérification de l\'email';
