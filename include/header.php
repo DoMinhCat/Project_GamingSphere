@@ -220,32 +220,17 @@ if (isset($_SESSION['user_id'])) {
               <?php
               if (isset($_SESSION['user_email'])) {
                 $link = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/credits/credits_main.php';
-                echo '<a href="' . $link . '" class="dropdown-item btn btn-sm py-3">
-            <span class="badge d-flex align-items-center justify-content-center" style="font-size: 0.85rem;">
+                echo '<li><a href="' . $link . '" class="dropdown-item btn btn-sm py-3">
+            <span class="d-flex align-items-center justify-content-center">
                 <i class="bi bi-wallet2 me-2" style="font-size: 1rem;"></i>
                 Crédits : ' . htmlspecialchars($credits) . '
             </span>
-          </a>';
+          </a></li>';
               }
               ?>
-
-
-
               <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
-              <li>
-                <?php if (isset($_SESSION['user_email'])): ?>
-                  <a href="<?= ($this_page == 'index.php') ? 'connexion/deconnexion.php' : '../connexion/deconnexion.php' ?>" class="dropdown-item btn btn-sm py-3 text-decoration-none">
-                    <span class="badge d-flex align-items-center justify-content-center"
-                      style="font-size: 0.85rem;">
-                      <i class="bi bi-wallet2 me-2" style="font-size: 1rem;"></i>
-                      Crédits : <?= htmlspecialchars($credits) ?>
-                    </span>
-                  </a>
-                <?php endif; ?>
-              </li>
             </ul>
           </div>
-
 
         </div>
         <?php if (isset($_SESSION['user_id'])): ?>
