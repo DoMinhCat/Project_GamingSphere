@@ -122,8 +122,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $subject = "Confirmation de votre inscription sur Gaming Sphère";
         $message = "
             <p>Bonjour <strong>$pseudo</strong>,</p>
-            <p>Merci de vous être inscrit(e) sur <strong>Gaming Sphère</strong> !</p>
-            <p>Pour finaliser la création de votre compte, veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous :</p>
+            <p>Merci de vous être inscrit(e) sur <strong>Gaming Sphère</strong> !<br>
+            Pour finaliser la création de votre compte, veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous :</p>
             <p><a href='$verify_link'>Cliquez ici</a> pour confirmer votre adresse email. Ce lien est valable pour <strong>30 minutes</strong>.</p>
             <p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>
             <p>À très bientôt sur Gaming Sphere !</p>

@@ -9,7 +9,7 @@ $search = trim($_GET['search'] ?? '');
 
 try {
     if (!empty($search)) {
-        $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs WHERE pseudo LIKE :search OR email LIKE :search");
+        $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs WHERE pseudo LIKE :search OR email LIKE :search OR nom LIKE :search OR prenom LIKE :search");
         $stmt->execute(['search' => '%' . $search . '%']);
     } else {
         $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs");

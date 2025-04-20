@@ -14,14 +14,15 @@ try {
             header("Location: profils.php?message=delete");
             exit();
         } else {
-            echo "Error deleting user.";
+            header('location:profils.php?message=user_non_exist');
+            exit();
         }
     } else {
-        echo "User ID not provided.";
+        header('location:profils.php?message=id_invalid');
+        exit();
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
 
 $bdd = null;
-?>
