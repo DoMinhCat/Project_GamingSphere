@@ -34,8 +34,8 @@ try {
       ],
     ],
     'mode' => 'payment',
-    'success_url' => 'http://localhost:81/PA/credits/success.php?session_id={CHECKOUT_SESSION_ID}',
-    'cancel_url' => 'http://localhost:81/PA/credits/cancel.php',
+    'success_url' => 'https://213.32.90.110/credits/success.php?session_id={CHECKOUT_SESSION_ID}',
+    'cancel_url' => 'https://213.32.90.110/credits/credits/cancel.php',
     'metadata' => [
       'credits_ajoutes' => $credits_ajoutes // Ajout des crédits dans les métadonnées
     ]

@@ -57,7 +57,7 @@ include('../include/head.php'); ?>
         return;
       }
 
-      fetch('/PA/credits/create_checkout_session.php', {
+      fetch('create_checkout_session.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
