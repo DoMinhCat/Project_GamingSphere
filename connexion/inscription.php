@@ -23,7 +23,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
   }
   ?>
   </div>
-  ?>
+
 
   <h1 class="montserrat-titre40 my_inscription"
     style=" margin-top: 3rem;

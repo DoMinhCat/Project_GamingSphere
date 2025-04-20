@@ -53,11 +53,12 @@ include('../include/head.php');
 
     </div>
 
-  </div>
 
-  <?php
-  include("../include/footer.php");
-  ?>
+
+    <?php
+    include("../include/footer.php");
+    ?>
+  </div>
 
   <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">

@@ -30,8 +30,13 @@ require('../head.php');
                         echo "<div class='alert alert-success'>Modifications effectuées avec succès.</div>";
                     } elseif ($_GET['message'] == 'delete') {
                         echo "<div class='alert alert-success'>Utilisateur supprimé avec succès.</div>";
+                    } elseif ($_GET['message'] == 'user_non_exist') {
+                        echo "<div class='alert alert-danger'>Utilisateur non trouvé.</div>";
+                    } elseif ($_GET['message'] == 'id_invalid') {
+                        echo "<div class='alert alert-danger'>ID utilisateur invalide</div>";
                     }
                 }
+
 
                 echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
                 <input type="text" id="search" class="form-control" placeholder="Rechercher par pseudo ou email">
@@ -52,6 +57,7 @@ require('../head.php');
                         echo "<td>" . htmlspecialchars($user['prenom']) . "</td>";
                         echo "<td>";
                         echo "<a href='edit_user.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm'>Modifier</a> ";
+                        echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm'>Exporter PDF</a> ";
                         echo "<a href='delete_user.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet utilisateur?\");'>Supprimer</a>";
                         echo "</td>";
                         echo "</tr>";

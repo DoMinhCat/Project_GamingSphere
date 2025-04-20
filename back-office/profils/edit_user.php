@@ -5,12 +5,21 @@ require('../check_session.php');
 require('../../include/database.php');
 require('../../include/check_timeout.php');
 
-$user_id = $_GET['id'];
+if (!empty($_GET['id'])) {
+    $user_id = $_GET['id'];
+} else {
+    header('location:profils.php?message=id_invalid');
+    exit();
+}
 
 $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email, photo_profil, ville, rue, code_postal FROM utilisateurs WHERE id_utilisateurs = ?");
 $stmt->bindValue(1, $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+if (!$user) {
+    header('location:profils.php?message=user_non_exist');
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pseudo = $_POST['pseudo'];
@@ -52,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <?php
 $title = 'Modifier utilisateurs';
 require('../head.php');

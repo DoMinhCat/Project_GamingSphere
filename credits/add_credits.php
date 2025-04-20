@@ -8,11 +8,13 @@ if (!isset($_SESSION['user_id'])) {
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php $title = 'Ajouter des Crédits'; include('../include/head.php'); ?>
+<?php $title = 'Ajouter des Crédits';
+include('../include/head.php'); ?>
+
 <body class="bg-light">
   <?php include('../include/header.php'); ?>
 
-  <div class="container mt-5">
+  <div class="container my-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
         <div class="card shadow rounded">
@@ -38,14 +40,14 @@ if (!isset($_SESSION['user_id'])) {
 
   <script src="https://js.stripe.com/v3/"></script>
   <script>
-    const stripe = Stripe("pk_test_51RDpJn2ZZkaFqUsQTHcwbnERS9qnFgiqaBnTZgRdqQeT0cc7NC2n5jgszyLGguiGNjlg20xIaSTePX1Vcb4BAftP00Z6b5CsSr"); // Remplace par ta vraie clé publique
+    const stripe = Stripe("pk_test_51RDpJn2ZZkaFqUsQTHcwbnERS9qnFgiqaBnTZgRdqQeT0cc7NC2n5jgszyLGguiGNjlg20xIaSTePX1Vcb4BAftP00Z6b5CsSr");
 
     document.getElementById('payment-form').addEventListener('submit', function(e) {
       e.preventDefault();
 
       const amount = document.getElementById('amount').value;
 
-      // Réinitialisation du message d'erreur à chaque soumission
+
       document.getElementById('error-message').style.display = 'none';
       document.getElementById('error-message').innerHTML = '';
 
@@ -56,34 +58,39 @@ if (!isset($_SESSION['user_id'])) {
       }
 
       fetch('/PA/credits/create_checkout_session.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ amount: amount })
-      })
-      .then(response => {
-         if (!response.ok) {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            amount: amount
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
             throw new Error("HTTP error " + response.status);
-         }
-         return response.json();
-      })
-      .then(session => {
-        if (session.id) {
-          return stripe.redirectToCheckout({ sessionId: session.id });
-        } else {
-          document.getElementById('error-message').innerHTML = 'Erreur lors de la création de la session Stripe.';
+          }
+          return response.json();
+        })
+        .then(session => {
+          if (session.id) {
+            return stripe.redirectToCheckout({
+              sessionId: session.id
+            });
+          } else {
+            document.getElementById('error-message').innerHTML = 'Erreur lors de la création de la session Stripe.';
+            document.getElementById('error-message').style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Erreur :', error);
+          document.getElementById('error-message').innerHTML = 'Une erreur est survenue. Veuillez réessayer.';
           document.getElementById('error-message').style.display = 'block';
-        }
-      })
-      .catch(error => {
-        console.error('Erreur :', error);
-        document.getElementById('error-message').innerHTML = 'Une erreur est survenue. Veuillez réessayer.';
-        document.getElementById('error-message').style.display = 'block';
-      });
+        });
     });
   </script>
 
   <?php include('../include/footer.php'); ?>
 </body>
+
 </html>

@@ -90,13 +90,6 @@ include('../include/head.php')
     include("../include/footer.php");
     ?>
 
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        Launch static backdrop modal
-    </button>
-
-    <!-- Modal -->
     <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -110,7 +103,7 @@ include('../include/head.php')
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                    <button type="button" href="resend_verify_inscrire.php" class="btn btn-primary">Vérifier mon email</button>
+                    <a href="resend_verify_inscrire.php" class="btn btn-primary">Vérifier mon email</a>
                 </div>
             </div>
         </div>
