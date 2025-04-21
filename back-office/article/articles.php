@@ -1,7 +1,7 @@
 <?php
 session_start();
-require('../include/check_timeout.php');
-require('../include/database.php');  // Assurez-vous que la connexion à la base de données est incluse
+require('../check_session.php'); 
+require('../../include/database.php');  // Assurez-vous que la connexion à la base de données est incluse
 
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
@@ -55,11 +55,11 @@ $articles = $query->fetchAll();
 <html lang="fr">
 <?php
 $title = 'Gestion des Articles';
-include('../include/head.php');
+include('../../include/head.php');
 ?>
 
 <body>
-<?php include("../include/header.php"); ?>
+<?php include("../navbar.php"); ?>
 
 <div class="container my-5">
     <h1 class="mb-4">Gestion des Articles</h1>
@@ -102,8 +102,6 @@ include('../include/head.php');
         </tbody>
     </table>
 </div>
-
-<?php include("../include/footer.php"); ?>
 </body>
 </html>
 
