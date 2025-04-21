@@ -1,6 +1,7 @@
 <?php
 session_start();
 require('../include/check_timeout.php');
+require('../include/database.php');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -19,16 +20,13 @@ include("../include/header.php");
 
 // Connexion à la base de données
 try {
-    $pdo = new PDO('mysql:host=localhost;dbname=gamingsphère', 'root', 'root');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     // Vérifier si un ID d'article est passé dans l'URL
     if (isset($_GET['id']) && !empty($_GET['id'])) {
         $id_article = (int)$_GET['id'];
 
         // Requête pour récupérer l'article spécifique
         $query = "SELECT * FROM news WHERE id_news = :id";
-        $stmt = $pdo->prepare($query);
+        $stmt = $bdd->prepare($query);
         $stmt->bindParam(':id', $id_article, PDO::PARAM_INT);
         $stmt->execute();
 
