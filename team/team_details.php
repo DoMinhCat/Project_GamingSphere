@@ -94,7 +94,7 @@ require('../include/head.php');
                         <tr>
                             <td><?= htmlspecialchars($member['pseudo']) ?></td>
                             <td><?= htmlspecialchars($member['role']) ?></td>
-                            <td><?= htmlspecialchars($member['date_rejoint']) ?></td>
+                            <td><?= htmlspecialchars($member(date('Y-m-d'['date_rejoint']))) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
