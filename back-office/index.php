@@ -14,8 +14,8 @@ require('head.php');
 ?>
 
 <body class="pb-4">
-    <nav class="navbar navbar-dark bg-dark px-3 d-flex flex-row justify-content-between">
-        <div class="container">
+    <nav class="navbar navbar-dark bg-dark px-3">
+        <div class="container  d-flex flex-row justify-content-between">
             <div class="d-flex align-items-center">
                 <a href="#">
                     <img src="../include/LOGO ENTIER 40px.png" alt="Logo" height="30" class="rounded-circle">
