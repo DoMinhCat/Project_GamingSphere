@@ -51,7 +51,7 @@ include('../include/head.php');
             </a>
             <a href="../team/create_team.php" class="btn btn-secondary">Créer une autre équipe</a>
         <?php else: ?>
-            <a href="../team/team_list.php" class="btn btn-success">Rejoindre une équipe</a>
+            <a href="../team/join_team.php" class="btn btn-success">Rejoindre une équipe</a>
             <a href="../team/create_team.php" class="btn btn-secondary">Créer une équipe</a>
         <?php endif;
     } else {

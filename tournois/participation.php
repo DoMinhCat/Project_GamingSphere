@@ -26,9 +26,7 @@ try {
         exit();
     }
 
-    // Gestion pour un tournoi par équipe
     if ($tournoi['type'] === 'Équipe') {
-        // Vérifier si l'utilisateur est capitaine de son équipe
         $stmt = $bdd->prepare("
             SELECT me.role 
             FROM membres_equipe me
