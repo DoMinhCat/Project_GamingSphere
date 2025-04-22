@@ -24,11 +24,11 @@ RewriteCond %{THE_REQUEST} \s/tournois/tournois_main\.php [NC]
 RewriteRule ^tournois/tournois_main\.php$ /tournois/ [R=301,L]
 RewriteRule ^tournois/?$ tournois/tournois_main.php [L]
 
-# commnunaute_main.php
+# communaute_main.php
 
-RewriteCond %{THE_REQUEST} \s/commnunaute/commnunaute_main\.php [NC]
-RewriteRule ^commnunaute/commnunaute_main\.php$ /commnunaute/ [R=301,L]
-RewriteRule ^commnunaute/?$ commnunaute/commnunaute_main.php [L]
+RewriteCond %{THE_REQUEST} \s/communaute/communaute_main\.php [NC]
+RewriteRule ^communaute/communaute_main\.php$ /communaute/ [R=301,L]
+RewriteRule ^communaute/?$ communaute/communaute_main.php [L]
 
 # actualite_main.php
 
@@ -45,8 +45,8 @@ RewriteRule ^forum/?$ forum/forum_main.php [L]
 # back-office index.php
 
 RewriteCond %{THE_REQUEST} \s/back-office/index\.php [NC]
-RewriteRule ^back-office/index\.php$ /backOffice/ [R=301,L]
-RewriteRule ^backOffice/?$ back-office/index.php [L]
+RewriteRule ^back-office/index\.php$ /back-office/ [R=301,L]
+RewriteRule ^back-office/?$ back-office/index.php [L]
 
 # Pages d'erreur
 

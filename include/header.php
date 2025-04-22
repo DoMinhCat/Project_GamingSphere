@@ -83,7 +83,7 @@ if (isset($_SESSION['user_id'])) {
     <div class="container">
       <div class=" row d-none d-xl-flex justify-content-end align-items-center py-2 container-fluid px-0 mx-0">
         <div class="col-12 col-md-6 d-flex justify-content-end align-items-center p-0 mx-0">
-          <form id="globalSearchForm" method="POST" action="<?= ($this_page == 'index.php') ? 'include/search.php' : '../include/search.php' ?>" class="d-flex align-items-center">
+          <form id="globalSearchForm" method="POST" action="<?= ($this_page == index_front) ? 'include/search.php' : '../include/search.php' ?>" class="d-flex align-items-center">
             <div class="input-group justify-content-end">
               <input type="text" id="query_mobile" name="query" class="form-control-sm col-6 w-50" style="border: 0.3rem;" placeholder="Rechercher" required>
               <select name="category" id="category" class="form-select-sm" style="border: 0.3rem;">
@@ -100,7 +100,7 @@ if (isset($_SESSION['user_id'])) {
           </a>
 
           <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
-            <a href="<?= ($this_page == 'index.php') ? 'back-office/index.php' : '../back-office/index.php' ?>" class="btn btn-warning ms-2 px-2" style="background-color: #ffc107; color: #212529; border-radius: 10px; font-weight: bold; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <a href="<?= ($this_page == index_front) ? 'back-office/index.php' : '../back-office/index.php' ?>" class="btn btn-warning ms-2 px-2" style="background-color: #ffc107; color: #212529; border-radius: 10px; font-weight: bold; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
               <i class="bi bi-gear-fill"></i>Back office
             </a>
           <?php endif; ?>
@@ -114,28 +114,28 @@ if (isset($_SESSION['user_id'])) {
       <div class="row d-none d-xl-flex justify-content-between align-items-center py-3 px-0 mx-0 container-fluid">
 
         <div class="col-3 d-flex justify-content-start">
-          <a href="<?= ($this_page == 'index.php') ? index_front : '..' . index_front ?>">
-            <img src="<?= ($this_page == 'index.php') ? 'include/LOGO ENTIER 40px.png' : '../include/LOGO ENTIER 40px.png' ?>" alt="Logo" class="col-2 image-fluid" style="height: 30px; width: auto;">
+          <a href="<?= ($this_page == index_front) ? index_front : '..' . index_front ?>">
+            <img src="<?= ($this_page == index_front) ? 'include/LOGO ENTIER 40px.png' : '../include/LOGO ENTIER 40px.png' ?>" alt="Logo" class="col-2 image-fluid" style="height: 30px; width: auto;">
           </a>
         </div>
 
         <div class="col-6 d-flex justify-content-center nav-underline">
-          <a class="nav-link lato16 px-2 py-1 <?= ($this_page == 'index.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? index_front : '..' . index_front ?>" style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 px-2 py-1 <?= ($this_page == index_front) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? index_front : '..' . index_front ?>" style="color: #F5F0E1 !important;">
             Accueil
           </a>
-          <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? magasin_main : '..' . magasin_main ?>" style="color: #F5F0E1 !important;">
+          <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == magasin_main) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? magasin_main : '..' . magasin_main ?>" style="color: #F5F0E1 !important;">
             Magasin
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? tournois_main : '..' . tournois_main ?>" style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == tournois_main) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? tournois_main : '..' . tournois_main ?>" style="color: #F5F0E1 !important;">
             Tournois
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'communaute_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? communaute_main : '..' . communaute_main ?>" style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == communaute_main) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? communaute_main : '..' . communaute_main ?>" style="color: #F5F0E1 !important;">
             Communauté
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? actualite_main : '..' . actualite_main ?>" style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == actualite_main) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? actualite_main : '..' . actualite_main ?>" style="color: #F5F0E1 !important;">
             Actualités
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'forum_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? forum_main : '..' . forum_main ?>" style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == forum_main) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? forum_main : '..' . forum_main ?>" style="color: #F5F0E1 !important;">
             Forum
           </a>
         </div>
@@ -143,7 +143,7 @@ if (isset($_SESSION['user_id'])) {
         <div class="col-3 d-flex justify-content-end px-0">
 
           <?php if (isset($_SESSION['user_email'])) : ?>
-            <a href=<?= ($this_page == 'index.php') ? 'messages/messagerie.php' : '../messages/messagerie.php' ?> class="btn btn-outline-dark d-flex align-items-center ms-2 position-relative">
+            <a href=<?= ($this_page == index_front) ? 'messages/messagerie.php' : '../messages/messagerie.php' ?> class="btn btn-outline-dark d-flex align-items-center ms-2 position-relative">
               <i class="bi bi-chat-dots-fill"></i>
               <?php if (isset($_SESSION['user_email']) && ($notificationCountMessages > 0)): ?>
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.75rem;">
@@ -222,11 +222,11 @@ if (isset($_SESSION['user_id'])) {
             </button>
             <ul class="dropdown-menu dropdown-menu-end" style="padding: 0;">
               <?php if (isset($_SESSION['user_email'])) {
-                $href = ($this_page == 'index.php') ? 'profil/my_account.php' : '../profil/my_account.php';
+                $href = ($this_page == index_front) ? 'profil/my_account.php' : '../profil/my_account.php';
                 $display_name = 'Mon compte - ' . $_SESSION['user_pseudo'];
                 $link = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/credits/credits_main.php';
               } else {
-                $href = ($this_page == 'index.php') ? 'connexion/login.php' : '../connexion/login.php';
+                $href = ($this_page == index_front) ? 'connexion/login.php' : '../connexion/login.php';
                 $display_name = 'Se connecter';
               }
               ?>
@@ -261,14 +261,14 @@ if (isset($_SESSION['user_id'])) {
     <div class="mx-3 justify-content-between">
       <div class="row d-flex d-xl-none justify-content-between align-items-center p-2">
         <div class="col-3 d-flex justify-content-start px-2">
-          <a href="<?= ($this_page == 'index.php') ? 'index.php' : '../index.php' ?>">
-            <img src="<?= ($this_page == 'index.php') ? 'include/LOGO ENTIER 40px.png' : '../include/LOGO ENTIER 40px.png' ?>" alt="Logo" class="col-2 image-fluid" style="height: 30px; width: auto;">
+          <a href="<?= ($this_page == index_front) ? index_front : '..' . index_front ?>">
+            <img src="<?= ($this_page == index_front) ? 'include/LOGO ENTIER 40px.png' : '../include/LOGO ENTIER 40px.png' ?>" alt="Logo" class="col-2 image-fluid" style="height: 30px; width: auto;">
           </a>
         </div>
 
         <div class="col-9 d-flex justify-content-end px-2">
           <?php if (isset($_SESSION['user_email'])): ?>
-            <a href="<?= ($this_page == 'index.php') ? 'messages/messagerie.php' : '../messages/messagerie.php' ?>" class="btn btn-outline-dark d-flex align-items-center me-2">
+            <a href="<?= ($this_page == index_front) ? 'messages/messagerie.php' : '../messages/messagerie.php' ?>" class="btn btn-outline-dark d-flex align-items-center me-2">
               <i class=" bi bi-chat-dots-fill"></i>
             </a>
           <?php endif; ?>
@@ -361,11 +361,11 @@ if (isset($_SESSION['user_id'])) {
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end" style="padding: 0;">
                     <?php if (isset($_SESSION['user_email'])) {
-                      $href = ($this_page == 'index.php') ? 'profil/my_account.php' : '../profil/my_account.php';
+                      $href = ($this_page == index_front) ? 'profil/my_account.php' : '../profil/my_account.php';
                       $display_name = 'Mon compte - ' . $_SESSION['user_pseudo'];
                       $link = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/credits/credits_main.php';
                     } else {
-                      $href = ($this_page == 'index.php') ? 'connexion/login.php' : '../connexion/login.php';
+                      $href = ($this_page == index_front) ? 'connexion/login.php' : '../connexion/login.php';
                       $display_name = 'Se connecter';
                     }
                     ?>
@@ -388,12 +388,12 @@ if (isset($_SESSION['user_id'])) {
                   </ul>
                 </div>
                 <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
-                  <a href="<?= ($this_page == 'index.php') ? 'back-office/index.php' : '../back-office/index.php' ?>" class="btn btn-warning px-2 m-3" style="background-color: #ffc107; color: #212529; border-radius: 10px; font-weight: bold; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                  <a href="<?= ($this_page == index_front) ? 'back-office/index.php' : '../back-office/index.php' ?>" class="btn btn-warning px-2 m-3" style="background-color: #ffc107; color: #212529; border-radius: 10px; font-weight: bold; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                     <i class="bi bi-gear-fill"></i>Back office
                   </a>
                 <?php endif; ?>
 
-                <form id="globalSearchForm_mobile" method="POST" action="<?= ($this_page == 'index.php') ? 'include/search.php' : '../include/search.php' ?>" class="d-flex align-items-center">
+                <form id="globalSearchForm_mobile" method="POST" action="<?= ($this_page == index_front) ? 'include/search.php' : '../include/search.php' ?>" class="d-flex align-items-center">
                   <div class="input-group justify-content-end">
                     <input type="text" id="query" name="query" class="form-control-sm col-3 w-50" style="border: 0.3rem;" placeholder="Rechercher" required>
                     <select name="category" id="category_mobile" class="form-select form-select-sm" style="border: 0.1rem; font-size: 0.75rem; padding: 0.25rem 0.5rem;">
@@ -406,22 +406,24 @@ if (isset($_SESSION['user_id'])) {
                 </form>
 
                 <div class="col-6 d-flex flex-column">
-                  <a class="nav-link lato16 px-2 py-1 <?= ($this_page == 'index.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? index_front : '..'  . index_front ?>" style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 px-2 py-1 <?= ($this_page == index_front) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? index_front : '..'  . index_front ?>" style="color: #F5F0E1 !important;">
                     Accueil
                   </a>
-                  <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? magasin_main : '..' . magasin_main ?>" style="color: #F5F0E1 !important;">
+                  <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == magasin_main) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? magasin_main : '..' . magasin_main ?>" style="color: #F5F0E1 !important;">
                     Magasin
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? tournois_main : '..' . tournois_main ?>" style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == tournois_main) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? tournois_main : '..' . tournois_main ?>" style="color: #F5F0E1 !important;">
                     Tournois
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'communaute_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? communaute_main : '..' . communaute_main ?>" style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == communaute_main) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? communaute_main : '..' . communaute_main ?>" style="color: #F5F0E1 !important;">
                     Communauté
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? actualite_main : '..' . actualite_main ?>" style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == actualite_main) ? 'active' : '' ?>" href="<?= ($this_page == index_front) ? actualite_main : '..' . actualite_main ?>" style="color: #F5F0E1 !important;">
                     Actualités
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'forum_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? forum_main : '..' . forum_main ?>" style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == forum_main) ? 'active' : '' ?>"
+                    href="<?= ($this_page == index_front) ? forum_main : '..' . forum_main ?>"
+                    style="color: #F5F0E1 !important;">
                     Forum
                   </a>
                 </div>
