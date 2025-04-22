@@ -11,7 +11,17 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^$ index.php [L]
 
+# magasin_main.php
+
+RewriteCond %{THE_REQUEST} \s/magasin/magasin_main\.php [NC]
+RewriteRule ^magasin/magasin_main\.php$ /magasin/ [R=301,L]
 RewriteRule ^magasin/?$ magasin/magasin_main.php [L]
+
+# tournois_main.php
+
+RewriteCond %{THE_REQUEST} \s/tournois/tournois_main\.php [NC]
+RewriteRule ^tournois/tournois_main\.php$ /tournois/ [R=301,L]
+RewriteRule ^tournois/?$ tournois/tournois_main.php [L]
 
 # Pages d'erreur
 
