@@ -1,0 +1,45 @@
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTPS} off
+RewriteRule ^(.\*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# URL réecriture
+
+RewriteCond %{THE_REQUEST} /index\.php [NC]
+RewriteRule ^index\.php$ / [R=301,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^$ index.php [L]
+
+# Example: /article/slug-title → article.php?slug=slug-title
+
+RewriteRule ^magasin/([a-zA-Z0-9\-]+)$ magasin/$1 [L]
+
+# Pages d'erreur
+
+ErrorDocument 404 /error_pages/404.php
+ErrorDocument 403 /error_pages/500.php
+
+# ------------------------
+
+# Optional: Block access to .env and config files
+
+# ------------------------
+
+<FilesMatch "\.(env|ini|log|sh|sql|bak)$">
+Order allow,deny
+Deny from all
+</FilesMatch>
+
+# ------------------------
+
+# Optional: Security Headers
+
+# ------------------------
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+</IfModule>

@@ -240,6 +240,12 @@ if (isset($_SESSION['user_id'])) {
                   </a></li>
               <?php endif ?>
               <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
+              <?php
+              if (isset($_SESSION['user_email'])): ?>
+                <li><a href="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/connexion/deconnexion.php' ?>" class="dropdown-item btn btn-sm py-3">
+                    Déconnexion
+                  </a></li>
+              <?php endif ?>
             </ul>
           </div>
 
@@ -332,10 +338,7 @@ if (isset($_SESSION['user_id'])) {
             </div>
           <?php endif; ?>
 
-
-
-
-
+          <!-- mobile -->
           <button class="btn btn-outline-dark d-flex align-items-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
             <i class="bi bi-list"></i>
           </button>
@@ -376,6 +379,12 @@ if (isset($_SESSION['user_id'])) {
                         </a></li>
                     <?php endif ?>
                     <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
+                    <?php
+                    if (isset($_SESSION['user_email'])): ?>
+                      <li><a href="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/connexion/deconnexion.php' ?>" class="dropdown-item btn btn-sm py-3">
+                          Déconnexion
+                        </a></li>
+                    <?php endif ?>
                   </ul>
                 </div>
                 <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>

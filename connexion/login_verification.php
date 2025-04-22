@@ -3,7 +3,7 @@ session_start();
 
 function writeLogLine(string $email, bool $success): void
 {
-    $stream = fopen('log.txt', 'a+');
+    $stream = fopen('../log/log_login.txt', 'a+');
     $line = date('Y/m/d - H:i:s') . ' - Tentative de connexion ' . ($success ? 'réussie' : 'échouée') . ' de ' . $email . "\n";
     fputs($stream, $line);
     fclose($stream);
