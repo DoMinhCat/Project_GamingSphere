@@ -47,14 +47,62 @@ $html = '
             font-size: 12px;
             text-align: right;
         }
+        img{
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+    <img src="../../include/LOGO ENTIER 40px.png" alt="Logo Gaming Sphère">
     <h1>Informations de l’utilisateur</h1>
     <ul>';
 foreach ($user as $key => $value) {
-    $html .= "<li><strong>" . htmlspecialchars($key) . " :</strong> " . htmlspecialchars($value) . "</li>";
+    switch ($key) {
+        case 'id_utilisateurs':
+            $label = 'User ID';
+            break;
+        case 'email':
+            $label = 'Email';
+            break;
+        case 'pseudo':
+            $label = 'Pseudo';
+            break;
+        case 'nom':
+            $label = 'Nom';
+            break;
+        case 'prenom':
+            $label = 'Prénom';
+            break;
+        case 'monnaie_virtuelle':
+            $label = 'Somme de monnaie virtuelle';
+            break;
+        case 'status_ENUm':
+            $label = 'Rôle';
+            break;
+        case 'date_inscription':
+            $label = 'Date d\'inscription';
+            break;
+        case 'ville':
+            $label = 'Ville';
+            break;
+        case 'rue':
+            $label = 'Rue';
+            break;
+        case 'code_postal':
+            $label = 'Code postal';
+            break;
+        case 'region':
+            $label = 'Région';
+            break;
+        default:
+            $label = ucfirst($key);
+    }
+
+    $html .= "<li><strong>$label :</strong> " . htmlspecialchars($value) . "</li>";
 }
+
 $html .= '
     </ul>
     <div class="footer">
