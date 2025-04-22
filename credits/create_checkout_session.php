@@ -35,7 +35,7 @@ try {
     ],
     'mode' => 'payment',
     'success_url' => 'https://213.32.90.110/credits/success.php?session_id={CHECKOUT_SESSION_ID}',
-    'cancel_url' => 'https://213.32.90.110/credits/credits/cancel.php',
+    'cancel_url' => 'https://213.32.90.110/credits/cancel.php',
     'metadata' => [
       'credits_ajoutes' => $credits_ajoutes // Ajout des crédits dans les métadonnées
     ]
