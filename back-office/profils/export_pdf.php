@@ -115,4 +115,4 @@ $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
-$dompdf->stream("user_info.pdf", ["Attachment" => true]);
+$dompdf->stream('user_info_id' . $id . '.pdf', ["Attachment" => true]);

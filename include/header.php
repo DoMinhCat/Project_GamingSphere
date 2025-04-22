@@ -85,7 +85,7 @@ if (isset($_SESSION['user_id'])) {
         <div class="col-12 col-md-6 d-flex justify-content-end align-items-center p-0 mx-0">
           <form id="globalSearchForm" method="POST" action="<?= ($this_page == 'index.php') ? 'include/search.php' : '../include/search.php' ?>" class="d-flex align-items-center">
             <div class="input-group justify-content-end">
-              <input type="text" id="query" name="query" class="form-control-sm col-6 w-50" style="border: 0.3rem;" placeholder="Rechercher" required>
+              <input type="text" id="query_mobile" name="query" class="form-control-sm col-6 w-50" style="border: 0.3rem;" placeholder="Rechercher" required>
               <select name="category" id="category" class="form-select-sm" style="border: 0.3rem;">
                 <option value="">Tous</option>
                 <option value="users">Utilisateurs</option>
@@ -393,10 +393,10 @@ if (isset($_SESSION['user_id'])) {
                   </a>
                 <?php endif; ?>
 
-                <form id="globalSearchForm" method="POST" action="<?= ($this_page == 'index.php') ? 'include/search.php' : '../include/search.php' ?>" class="d-flex align-items-center">
+                <form id="globalSearchForm_mobile" method="POST" action="<?= ($this_page == 'index.php') ? 'include/search.php' : '../include/search.php' ?>" class="d-flex align-items-center">
                   <div class="input-group justify-content-end">
                     <input type="text" id="query" name="query" class="form-control-sm col-3 w-50" style="border: 0.3rem;" placeholder="Rechercher" required>
-                    <select name="category" id="category" class="form-select form-select-sm" style="border: 0.1rem; font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+                    <select name="category" id="category_mobile" class="form-select form-select-sm" style="border: 0.1rem; font-size: 0.75rem; padding: 0.25rem 0.5rem;">
                       <option value="">Tous</option>
                       <option value="users">Utilisateurs</option>
                       <option value="articles">Articles</option>
