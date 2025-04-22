@@ -58,6 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
             }
         }
     }
+	   $updateStatus = $bdd->prepare("UPDATE tournoi SET status_ENUM = 'Terminé' WHERE id_tournoi = ?");
+	   $updateStatus->execute([$id_tournoi]);
 
     header("Location: tournois_main.php?id_tournoi=" . $id_tournoi . "&updated=1");
     exit();

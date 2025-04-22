@@ -18,7 +18,7 @@
           <a class="nav-link" href="my_teams.php">Mes équipes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/PA/connexion/deconnexion.php">Se déconnecter</a>
+          <a class="nav-link" href="../connexion/deconnexion.php">Se déconnecter</a>
         </li>
       </ul>
     </div>
