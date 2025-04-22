@@ -36,23 +36,8 @@ require('head.php');
                 </a>
             </div>
             <div class="col">
-                <a href="article/articles.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des articles
-                </a>
-            </div>
-            <div class="col">
                 <a href="tournois/tournois_main.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des tournois
-                </a>
-            </div>
-            <div class="col">
-                <a href="profils/profils.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des profils
-                </a>
-            </div>
-            <div class="col">
-                <a href="forum/forum.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion du forum
                 </a>
             </div>
             <div class="col">
@@ -60,9 +45,15 @@ require('head.php');
                     Gestion des paris
                 </a>
             </div>
+
             <div class="col">
-                <a href="communication/communication.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des canaux de communication
+                <a href="forum/forum.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion du forum
+                </a>
+            </div>div>
+            <div class="col">
+                <a href="article/articles.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des articles
                 </a>
             </div>
             <div class="col">
@@ -70,6 +61,23 @@ require('head.php');
                     Gestion des jeux
                 </a>
             </div>
+
+            <div class="col">
+                <a href="profils/profils.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des profils
+                </a>
+            </div>
+            <div class="col">
+                <a href="captcha/captcha.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des captchas
+                </a>
+            </div>
+            <div class="col">
+                <a href="communication/communication.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    Gestion des canaux de communication
+                </a>
+            </div>
+
         </div>
     </div>
 </body>
