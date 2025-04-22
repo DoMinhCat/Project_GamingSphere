@@ -29,10 +29,11 @@ include('../include/head.php');
       if (isset($_GET['message']) && !empty($_GET['message'])) {
         echo '<div class="lato24 my-2">';
         echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
+        echo '</div>';
       }
       ?>
 
-      <form method="post" action="resend_verification.php">
+      <form method="POST" action="resend_verification.php">
         <div class="d-flex flex-column pt-2 py-3 mb-1 row-gap-1 lato16">
           <input type="email" name="email" placeholder="Votre email" required aria-describedby="emailHelp" class="form-control input_field">
 
