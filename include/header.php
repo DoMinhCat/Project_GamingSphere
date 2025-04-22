@@ -114,28 +114,28 @@ if (isset($_SESSION['user_id'])) {
       <div class="row d-none d-xl-flex justify-content-between align-items-center py-3 px-0 mx-0 container-fluid">
 
         <div class="col-3 d-flex justify-content-start">
-          <a href="<?= ($this_page == 'index.php') ? 'index.php' : '../index.php' ?>">
+          <a href="<?= ($this_page == 'index.php') ? index_front : '..' . index_front ?>">
             <img src="<?= ($this_page == 'index.php') ? 'include/LOGO ENTIER 40px.png' : '../include/LOGO ENTIER 40px.png' ?>" alt="Logo" class="col-2 image-fluid" style="height: 30px; width: auto;">
           </a>
         </div>
 
         <div class="col-6 d-flex justify-content-center nav-underline">
-          <a class="nav-link lato16 px-2 py-1 <?= ($this_page == 'index.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'index.php' : '../index.php' ?> style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 px-2 py-1 <?= ($this_page == 'index.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? index_front : '..' . index_front ?>" style="color: #F5F0E1 !important;">
             Accueil
           </a>
-          <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'magasin/magasin_main.php' : '../magasin/magasin_main.php' ?> style="color: #F5F0E1 !important;">
+          <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? magasin_main : '..' . magasin_main ?>" style="color: #F5F0E1 !important;">
             Magasin
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'tournois/tournois_main.php' : '../tournois/tournois_main.php' ?> style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? tournois_main : '..' . tournois_main ?>" style="color: #F5F0E1 !important;">
             Tournois
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'communaute_main.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'communaute/communaute_main.php' : '../communaute/communaute_main.php' ?> style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'communaute_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? communaute_main : '..' . communaute_main ?>" style="color: #F5F0E1 !important;">
             Communauté
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'actualite/actualite_main.php' : '../actualite/actualite_main.php' ?> style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? actualite_main : '..' . actualite_main ?>" style="color: #F5F0E1 !important;">
             Actualités
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'forum_main.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'forum/forum_main.php' : '../forum/forum_main.php' ?> style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'forum_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? forum_main : '..' . forum_main ?>" style="color: #F5F0E1 !important;">
             Forum
           </a>
         </div>
@@ -406,22 +406,22 @@ if (isset($_SESSION['user_id'])) {
                 </form>
 
                 <div class="col-6 d-flex flex-column">
-                  <a class="nav-link lato16 px-2 py-1 <?= ($this_page == 'index.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'index.php' : '../index.php' ?> style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 px-2 py-1 <?= ($this_page == 'index.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? index_front : '..'  . index_front ?>" style="color: #F5F0E1 !important;">
                     Accueil
                   </a>
-                  <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'magasin/magasin_main.php' : '../magasin/magasin_main.php' ?> style="color: #F5F0E1 !important;">
+                  <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? magasin_main : '..' . magasin_main ?>" style="color: #F5F0E1 !important;">
                     Magasin
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'tournois/tournois_main.php' : '../tournois/tournois_main.php' ?> style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? tournois_main : '..' . tournois_main ?>" style="color: #F5F0E1 !important;">
                     Tournois
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'communaute_main.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'communaute/communaute_main.php' : '../communaute/communaute_main.php' ?> style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'communaute_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? communaute_main : '..' . communaute_main ?>" style="color: #F5F0E1 !important;">
                     Communauté
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'actualite/actualite_main.php' : '../actualite/actualite_main.php' ?> style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? actualite_main : '..' . actualite_main ?>" style="color: #F5F0E1 !important;">
                     Actualités
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'forum_main.php') ? 'active' : '' ?>" href=<?= ($this_page == 'index.php') ? 'forum/forum_main.php' : '../forum/forum_main.php' ?> style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'forum_main.php') ? 'active' : '' ?>" href="<?= ($this_page == 'index.php') ? forum_main : '..' . forum_main ?>" style="color: #F5F0E1 !important;">
                     Forum
                   </a>
                 </div>
