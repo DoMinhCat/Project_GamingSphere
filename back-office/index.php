@@ -3,6 +3,7 @@ session_start();
 $login_page = '../connexion/login.php';
 require('check_session.php');
 require('../include/check_timeout.php');
+require_once('../path.php');
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +26,7 @@ require('head.php');
                 <span class="navbar-brand">Back Office</span>
             </div>
             <div class="ms-auto">
-                <a href="../index.php" class="btn btn-primary">Front Office</a>
+                <a href="<?= '../' . index_back ?>" class="btn btn-primary">Front Office</a>
             </div>
         </div>
     </nav>

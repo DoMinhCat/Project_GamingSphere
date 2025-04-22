@@ -47,14 +47,14 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="include/img/fortnite-tournaments.webp" class="d-block img-fluid c-img" alt="Fortnite" onclick="window.location.href='tournois/tournois_main.php'">
+                        <img src="include/img/fortnite-tournaments.webp" class="d-block img-fluid c-img" alt="Fortnite" onclick="window.location.href='<?= tournois_main ?>'">
                         <div class="carousel-caption d-none d-md-block lato24">
                             <h5>Fortnite Tournaments</h5>
                             <p>Join the latest Fortnite tournaments and compete with the best.</p>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="include/img/Wasted-League-of-Legends-Temps-perdus-sur-LOL-1024x538.webp" class="d-block c-img img-fluid" alt="LOL" onclick="window.location.href='actualité.php'">
+                        <img src="include/img/Wasted-League-of-Legends-Temps-perdus-sur-LOL-1024x538.webp" class="d-block c-img img-fluid" alt="LOL" onclick="window.location.href='<?= actualite_main ?>'">
                         <div class="carousel-caption d-none d-md-block lato24">
                             <h5>League of Legends News</h5>
                             <p>Stay updated with the latest news in the League of Legends community.</p>
@@ -79,7 +79,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         </div>
         <div id="bande_sepe"></div>
-        <a href="tournois/tournois_main.php" style="text-decoration: none;">
+        <a href="<?= tournois_main ?>" style="text-decoration: none;">
             <h3 class="montserrat-titre40 tournament_title mt-3">TOURNOIS EN COURS</h3>
         </a>
         <div class="b_l">
@@ -171,7 +171,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
         <div id="bande_sepe"></div>
-        <a href="magasin/magasin_main.php" style="text-decoration: none;">
+        <a href="<?= magasin_main ?>" style="text-decoration: none;">
             <h3 class="montserrat-titre40 tournament_title">MAGASIN</h3>
         </a>
         <h2 class="montserrat-titre32 title_selling_item_index">Meilleurs Ventes</h2>
