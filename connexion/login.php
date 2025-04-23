@@ -1,6 +1,7 @@
 <?php
+require_once __DIR__ . '/../path.php';
 if (isset($_SESSION['user_email']) || !empty($_SESSION['user_email'])) {
-    header('location:../index.php');
+    header('location:' . index_front);
     exit();
 }
 ?>
@@ -81,7 +82,7 @@ include('../include/head.php')
                     <h6 style="margin-bottom: 0;">
                         Vous êtes nouveau?
                     </h6>
-                    <a class="lato16" href="inscription.php" id="creer_compte">Créer un compte</a>
+                    <a class="lato16" href="<?= inscription ?>" id="creer_compte">Créer un compte</a>
                 </div>
             </div>
         </div>

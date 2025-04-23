@@ -12,6 +12,16 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^/?$ index.php [L]
 
+# login.php
+RewriteCond %{THE_REQUEST} \s/connexion/login\.php [NC]
+RewriteRule ^connexion/login\.php$ /connexion [R=301,L,QSA]
+RewriteRule ^connexion/?$ connexion/login.php [L]
+
+# inscription.php
+RewriteCond %{THE_REQUEST} \s/connexion/inscription\.php [NC]
+RewriteRule ^connexion/inscription\.php$ /inscription [R=301,L,QSA]
+RewriteRule ^inscription/?$ connexion/inscription.php [L]
+
 # magasin_main.php
 
 RewriteCond %{THE_REQUEST} \s/magasin/magasin_main\.php [NC]
@@ -67,6 +77,24 @@ RewriteRule ^actualite_article/?$ actualite/actualite_article.php [L]
 RewriteCond %{THE_REQUEST} \s/forum/forum_main\.php [NC]
 RewriteRule ^forum/forum_main\.php$ /forum/ [R=301,L]
 RewriteRule ^forum/?$ forum/forum_main.php [L]
+
+# categorie.php (forum)
+
+RewriteCond %{THE_REQUEST} \s/forum/categorie\.php [NC]
+RewriteRule ^forum/categorie\.php$ /forum/category [R=301,L,QSA]
+RewriteRule ^forum/category/?$ forum/categorie.php [L]
+
+# nouveau_sujet.php (forum)
+
+RewriteCond %{THE_REQUEST} \s/forum/nouveau_sujet\.php [NC]
+RewriteRule ^forum/nouveau_sujet\.php$ /forum/new [R=301,L,QSA]
+RewriteRule ^forum/new/?$ forum/nouveau_sujet.php [L]
+
+# sujet.php (forum)
+
+RewriteCond %{THE_REQUEST} \s/forum/sujet\.php [NC]
+RewriteRule ^forum/sujet\.php$ /forum/new [R=301,L,QSA]
+RewriteRule ^forum/new/?$ forum/sujet.php [L]
 
 # back-office index.php
 
