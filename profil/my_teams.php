@@ -47,7 +47,7 @@ require('../include/head.php');
                             <td><?= htmlspecialchars($team['niveau']) ?></td>
                             <td><?= htmlspecialchars(date('Y-m-d', strtotime($team['date_creation']))) ?></td>
                             <td>
-                                <a href="../team/team_details.php?id_equipe=<?= urlencode($team['id_équipe']) ?>" class="btn btn-primary btn-sm">Voir l'équipe</a>
+                                <a href="../team/team_details.php?id_equipe=<?= urlencode($team['id_equipe']) ?>" class="btn btn-primary btn-sm">Voir l'équipe</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
