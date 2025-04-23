@@ -3,11 +3,9 @@ session_start();
 require('../include/check_timeout.php');
 require('../include/database.php');
 
-// Récupération des jeux pour le carousel (3 premiers)
 $stmt = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu LIMIT 3");
 $carouselGames = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Récupération de tous les jeux
 $stmtAllGames = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu");
 $games = $stmtAllGames->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -26,7 +24,6 @@ include('../include/head.php');
 <div class="container mt-4">
     <h1 class="text-center mb-4">Boutique de jeux</h1>
 
-    <!-- Carousel Auto-déroulant Centré -->
     <?php if (count($carouselGames) > 0): ?>
     <div class="d-flex justify-content-center mb-5">
         <div class="carousel-container mx-auto" style="max-width: 800px; width: 100%; padding: 0; position: relative;">
@@ -61,7 +58,6 @@ include('../include/head.php');
                 </button>
             </div>
 
-            <!-- Arrière-plan défilant -->
             <div class="carousel-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;">
                 <div class="carousel-bg-content">
                     <?php foreach ($games as $game): ?>
@@ -74,28 +70,28 @@ include('../include/head.php');
     <?php endif; ?>
 
     <h2 class="mb-3 text-center">Tous les jeux</h2>
-    <div class="row">
-        <?php
-        foreach ($games as $game) {
-        ?>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <?php if (!empty($game['image'])): ?>
-                        <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>" style="height: 250px; object-fit: cover;">
-                    <?php else: ?>
-                        <img src="../../assets/img/no_image.png" class="card-img-top" alt="Aucune image" style="height: 250px; object-fit: cover;">
-                    <?php endif; ?>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
-                        <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                        <a href="buy_game.php?id=<?= $game['id_jeu'] ?>" class="btn btn-success mt-auto">Acheter</a>
+<div class="row">
+    <?php foreach ($games as $game): ?>
+        <div class="col-md-4 mb-4 d-flex">
+            <div class="card shadow-sm w-100 d-flex flex-column">
+                <?php if (!empty($game['image'])): ?>
+                    <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
+                <?php else: ?>
+                    <img src="../../assets/img/no_image.png" class="card-img-top" alt="Aucune image">
+                <?php endif; ?>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
+                    <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                    <div class="mt-auto d-flex justify-content-between gap-2">
+                        <a href="game_info.php?id=<?= $game['id_jeu'] ?>" class="btn btn-outline-primary w-50">Voir détails</a>
+                        <a href="../panier/add_to_cart.php?'<?$game['id_jeu'] ?>" class="btn btn-success w-50">Acheter</a>
                     </div>
                 </div>
             </div>
-        <?php }
-        ?>
-    </div>
+        </div>
+    <?php endforeach; ?>
 </div>
+
 
 </body>
 </html>
@@ -139,7 +135,6 @@ include('../include/head.php');
         object-fit: cover;
     }
 
-    /* Animation de défilement des jeux en arrière-plan */
     .carousel-background {
         position: absolute;
         top: 0;
@@ -163,9 +158,28 @@ include('../include/head.php');
         background-position: center;
     }
 
-    /* Définir l'animation de défilement */
+
     @keyframes slideBackground {
         0% { transform: translateX(0); }
         100% { transform: translateX(-100%); }
     }
+    .card {
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    padding: 1.2rem;
+}
+
+.btn {
+    font-weight: 500;
+}
+
 </style>
