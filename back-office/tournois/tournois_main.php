@@ -4,6 +4,7 @@ $login_page = '../../connexion/login.php';
 require('../check_session.php');
 require('../../include/database.php');
 require('../../include/check_timeout.php');
+require_once __DIR__ . '/../../path.php';
 ?>
 
 <!DOCTYPE html>
@@ -17,19 +18,19 @@ require('../head.php');
     <?php include('../navbar.php'); ?>
 
     <div class="container my-5">
-    <?php if (isset($_GET['message']) && $_GET['message'] === 'tournoi_deleted'): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Le tournoi a été supprimé avec succès.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+        <?php if (isset($_GET['message']) && $_GET['message'] === 'tournoi_deleted'): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Le tournoi a été supprimé avec succès.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
 
-    <?php if (isset($_GET['updated']) && $_GET['updated'] == 1): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Les résultats du tournoi ont bien été enregistrés.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+        <?php if (isset($_GET['updated']) && $_GET['updated'] == 1): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Les résultats du tournoi ont bien été enregistrés.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
         <h1 class="mb-4 text-center">Liste des Tournois Disponibles</h1>
         <div class="mb-4 text-end">
             <a href="add_tournoi.php" class="btn btn-primary">Ajouter un tournoi</a>

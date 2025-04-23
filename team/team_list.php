@@ -3,7 +3,9 @@ session_start();
 $login_page = '../connexion/login.php';
 require('../include/check_timeout.php');
 require('../include/check_session.php');
+require_once __DIR__ . '/../path.php';
 require('../include/database.php');
+
 $search = $_GET['search'] ?? '';
 $stmt = $bdd->prepare("
     SELECT id_équipe, nom, niveau 
@@ -20,6 +22,9 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php
 $title = 'Liste des équipes';
 require('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
 ?>
 
 <body>

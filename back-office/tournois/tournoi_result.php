@@ -4,6 +4,8 @@ $login_page = '../../connexion/login.php';
 require('../check_session.php');
 require('../../include/database.php');
 require('../../include/check_timeout.php');
+require_once __DIR__ . '/../../path.php';
+
 if (isset($_GET['id_tournoi'])) {
     $id_tournoi = intval($_GET['id_tournoi']);
     try {
@@ -58,8 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
             }
         }
     }
-	   $updateStatus = $bdd->prepare("UPDATE tournoi SET status_ENUM = 'Terminé' WHERE id_tournoi = ?");
-	   $updateStatus->execute([$id_tournoi]);
+    $updateStatus = $bdd->prepare("UPDATE tournoi SET status_ENUM = 'Terminé' WHERE id_tournoi = ?");
+    $updateStatus->execute([$id_tournoi]);
 
     header("Location: tournois_main.php?id_tournoi=" . $id_tournoi . "&updated=1");
     exit();
@@ -72,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
 $title = 'Éditer les Résultats du Tournoi';
 require('../head.php');
 ?>
+
 <body>
     <?php include('../navbar.php'); ?>
 
@@ -138,7 +141,7 @@ require('../head.php');
                                     </td>
                                     <input type="hidden" name="result_id[<?= $participant['participant_id'] ?>]" value="<?= htmlspecialchars($participant['result_id']) ?>">
                                 </tr>
-                            <?php endforeach;
+                    <?php endforeach;
                         }
                     } catch (PDOException $e) {
                         echo "<tr><td colspan='4'>Erreur lors de la récupération des résultats : " . htmlspecialchars($e->getMessage()) . "</td></tr>";
@@ -156,4 +159,5 @@ require('../head.php');
         </form>
     </div>
 </body>
+
 </html>

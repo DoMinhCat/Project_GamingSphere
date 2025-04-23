@@ -7,14 +7,14 @@
                 ← Retour
             </button>
 
-            <button onclick="window.location.href = window.location.origin + '/back-office/index.php'"
+            <button onclick="window.location.href = window.location.origin + <?php index_back ?>"
                 class="btn btn-primary">
                 Accueil Back-Office
             </button>
         </div>
 
         <div class="ms-auto mt-2 mt-md-0">
-            <button onclick="window.location.href = window.location.origin + '/index.php'"
+            <button onclick="window.location.href = window.location.origin + <?php index_front ?>"
                 class="btn btn-primary">
                 Front Office
             </button>

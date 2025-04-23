@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('../include/database.php');
+require_once __DIR__ . '/../path.php';
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'Vous devez être connecté pour participer.']);
@@ -79,4 +80,3 @@ try {
     echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'inscription : ' . htmlspecialchars($e->getMessage())]);
     exit();
 }
-?>

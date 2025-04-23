@@ -3,11 +3,12 @@ session_start();
 require('../include/database.php');
 require('../include/check_session.php');
 require('../include/check_timeout.php');
+require_once __DIR__ . '/../path.php';
 
 $userId = $_SESSION['user_id'];
 
 try {
-    $stmt = $bdd->prepare("
+    $stmt = $bdd->prepare('
    SELECT u.id_utilisateurs, u.pseudo, u.photo_profil, 
        (SELECT MAX(m2.date_envoi) 
         FROM messages m2 
@@ -27,7 +28,7 @@ AND EXISTS (
     AND r.ami = 1
 )
 ORDER BY last_message DESC;
-    ");
+    ');
     $stmt->execute([$userId, $userId, $userId, $userId, $userId, $userId]);
     $conversations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -48,29 +49,30 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 ?>
 
 <body>
-<?php include('../include/header.php'); ?>
-<div class="container my-4">
-    <h2 class="mb-4 text-center">Messagerie</h2>
+    <?php include('../include/header.php'); ?>
+    <div class="container my-4">
+        <h2 class="mb-4 text-center">Messagerie</h2>
 
-    <?php if (!empty($conversations)): ?>
-        <div class="list-group">
-            <?php foreach ($conversations as $conversation): ?>
-                <a href="conversation.php?user=<?= $conversation['id_utilisateurs'] ?>" class="list-group-item list-group-item-action d-flex align-items-center">
-                    <img src="../profil/<?= htmlspecialchars($conversation['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Profil" class="rounded-circle me-3" width="50" height="50">
-                    <span><?= htmlspecialchars($conversation['pseudo']) ?></span>
-                </a>
-            <?php endforeach; ?>
+        <?php if (!empty($conversations)): ?>
+            <div class="list-group">
+                <?php foreach ($conversations as $conversation): ?>
+                    <a href="conversation.php?user=<?= $conversation['id_utilisateurs'] ?>" class="list-group-item list-group-item-action d-flex align-items-center">
+                        <img src="../profil/<?= htmlspecialchars($conversation['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Profil" class="rounded-circle me-3" width="50" height="50">
+                        <span><?= htmlspecialchars($conversation['pseudo']) ?></span>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <div class="alert alert-info text-center">Aucune conversation pour le moment.</div>
+        <?php endif; ?>
+
+
+        <div class="text-center mt-4">
+            <a href="nouvelle_conversation.php" class="btn btn-primary">Créer une conversation</a>
         </div>
-    <?php else: ?>
-        <div class="alert alert-info text-center">Aucune conversation pour le moment.</div>
-    <?php endif; ?>
 
-   
-    <div class="text-center mt-4">
-        <a href="nouvelle_conversation.php" class="btn btn-primary">Créer une conversation</a>
     </div>
-
-</div>
-<?php include('../include/footer.php'); ?> 
+    <?php include('../include/footer.php'); ?>
 </body>
+
 </html>
