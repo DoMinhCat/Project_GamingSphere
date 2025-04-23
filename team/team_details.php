@@ -14,7 +14,7 @@ if (!$teamId) {
 }
 
 
-$stmt = $bdd->prepare("SELECT nom, niveau, date_creation FROM equipe WHERE id_équipe = ?");
+$stmt = $bdd->prepare("SELECT nom, niveau, date_creation FROM equipe WHERE id_equipe = ?");
 $stmt->execute([$teamId]);
 $team = $stmt->fetch(PDO::FETCH_ASSOC);
 

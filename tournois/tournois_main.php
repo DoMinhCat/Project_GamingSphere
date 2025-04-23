@@ -42,9 +42,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
             if ($user_id) {
                 $stmt = $bdd->prepare("
-            SELECT e.id_équipe AS id_equipe, e.nom AS nom_equipe
+            SELECT e.id_equipe AS id_equipe, e.nom AS nom_equipe
             FROM membres_equipe me
-            JOIN equipe e ON me.id_equipe = e.id_équipe
+            JOIN equipe e ON me.id_equipe = e.id_equipe
             WHERE me.id_utilisateur = ?
         ");
                 $stmt->execute([$user_id]);
