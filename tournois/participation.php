@@ -31,7 +31,7 @@ try {
         $stmt = $bdd->prepare("
             SELECT me.role 
             FROM membres_equipe me
-            JOIN equipe e ON me.id_equipe = e.id_équipe
+            JOIN equipe e ON me.id_equipe = e.id_equipe
             WHERE me.id_utilisateur = ? AND me.role = 'capitaine'
         ");
         $stmt->execute([$user_id]);

@@ -10,12 +10,11 @@ if (!isset($_SESSION['user_id'])) {
 
 \Stripe\Stripe::setApiKey('sk_test_51RDpJn2ZZkaFqUsQHx2eH0G1KDxUwLXWqIejLLUbLmvsuDk9hppSPkjUGv9BgOmkEcjHaDHZbbBMNmT2H5NPC1dI00cUBnBfto');
 
-// Récupérer le montant payé
+
 $data = json_decode(file_get_contents('php://input'), true);
 $amount = isset($data['amount']) ? (float)$data['amount'] : 0;
 $amountInCents = intval($amount * 100);
 
-// Calculer les crédits à ajouter (1€ = 10 crédits)
 $credits_ajoutes = $amount * 10;
 
 try {

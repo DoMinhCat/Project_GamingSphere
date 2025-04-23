@@ -6,7 +6,7 @@ require('../include/check_timeout.php');
 require('../include/database.php');
 require_once __DIR__ . '/../path.php';
 
-$teamId = $_GET['id_equipe'] ?? null;
+$teamId = $_GET['id_équipe'] ?? null;
 
 if (!$teamId) {
     echo "ID de l'équipe manquant.";
@@ -14,7 +14,7 @@ if (!$teamId) {
 }
 
 
-$stmt = $bdd->prepare("SELECT nom, niveau, date_creation FROM equipe WHERE id_équipe = ?");
+$stmt = $bdd->prepare("SELECT nom, niveau, date_creation FROM equipe WHERE id_equipe = ?");
 $stmt->execute([$teamId]);
 $team = $stmt->fetch(PDO::FETCH_ASSOC);
 
