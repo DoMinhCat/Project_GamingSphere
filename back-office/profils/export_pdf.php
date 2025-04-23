@@ -1,3 +1,4 @@
+<!-- L'export des infos utilisateurs PDF -->
 <?php
 require('../../include/database.php');
 require_once '../../vendor/autoload.php';

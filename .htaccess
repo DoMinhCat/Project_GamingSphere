@@ -7,7 +7,7 @@ RewriteRule ^(.\*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 #index.php
 RewriteCond %{THE_REQUEST} /index\.php [NC]
-RewriteRule ^index\.php$ / [R=301,L]
+RewriteRule ^index\.php$ / [R=301,L,QSA]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^/?$ index.php [L]
@@ -24,6 +24,26 @@ RewriteCond %{THE_REQUEST} \s/tournois/tournois_main\.php [NC]
 RewriteRule ^tournois/tournois_main\.php$ /tournois/ [R=301,L]
 RewriteRule ^tournois/?$ tournois/tournois_main.php [L]
 
+# tournois_details.php
+RewriteCond %{THE_REQUEST} \s/tournois/tournois_details\.php [NC]
+RewriteRule ^tournois/tournois_details\.php$ /tournois_details [R=301,L,QSA]
+RewriteRule ^tournois_details/?$ tournois/tournois_details.php [L]
+
+# create_team.php
+RewriteCond %{THE_REQUEST} \s/team/create_team\.php [NC]
+RewriteRule ^team/create_team\.php$ /create_team [R=301,L,QSA]
+RewriteRule ^create_team/?$ team/create_team.php [L]
+
+# team_details.php
+RewriteCond %{THE_REQUEST} \s/team/team_details\.php [NC]
+RewriteRule ^team/team_details\.php$ /team_details [R=301,L,QSA]
+RewriteRule ^team_details/?$ team/team_details.php [L]
+
+# team_list.php
+RewriteCond %{THE_REQUEST} \s/team/team_list\.php [NC]
+RewriteRule ^team/team_list\.php$ /team_list/ [R=301,L,QSA]
+RewriteRule ^team_list/?$ team/team_list.php [L]
+
 # communaute_main.php
 
 RewriteCond %{THE_REQUEST} \s/communaute/communaute_main\.php [NC]
@@ -36,6 +56,12 @@ RewriteCond %{THE_REQUEST} \s/actualite/actualite_main\.php [NC]
 RewriteRule ^actualite/actualite_main\.php$ /actualite/ [R=301,L]
 RewriteRule ^actualite/?$ actualite/actualite_main.php [L]
 
+# actualite_article.php
+
+RewriteCond %{THE_REQUEST} \s/actualite/actualite_article\.php [NC]
+RewriteRule ^actualite/actualite_article\.php$ /actualite_article [R=301,L,QSA]
+RewriteRule ^actualite_article/?$ actualite/actualite_article.php [L]
+
 # forum_main.php
 
 RewriteCond %{THE_REQUEST} \s/forum/forum_main\.php [NC]
@@ -47,6 +73,8 @@ RewriteRule ^forum/?$ forum/forum_main.php [L]
 RewriteCond %{THE_REQUEST} \s/back-office/index\.php [NC]
 RewriteRule ^back-office/index\.php$ /back-office/ [R=301,L]
 RewriteRule ^back-office/?$ back-office/index.php [L]
+
+
 
 # Pages d'erreur
 

@@ -1,10 +1,10 @@
 <?php
 session_start();
+$login_page = '../connexion/login.php';
 include('../include/database.php');
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../connexion/login.php?message=login_required");
-    exit();
-}
+require_once __DIR__ . '/../path.php';
+require('../include/check_session.php');
+require('../include/check_timeout.php');
 
 $user_id = intval($_SESSION['user_id']);
 try {
@@ -31,11 +31,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
 }
 ?>
+
 <body>
-    <?php 
+    <?php
     include('../include/header.php');
     include('navbar.php');
-     ?>
+    ?>
     <div class="container my-5">
         <h1 class="mb-4 text-center">Mes Tournois</h1>
         <?php if (count($tournois) > 0): ?>
@@ -43,14 +44,14 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php foreach ($tournois as $tournoi): ?>
                     <div class="col">
                         <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($tournoi['nom_tournoi']) ?></h5>
-                            <p class="card-text"><strong>Jeu :</strong> <?= htmlspecialchars($tournoi['jeu']) ?></p>
-                            <p class="card-text"><strong>Type :</strong> <?= htmlspecialchars($tournoi['type']) ?></p>
-                            <p class="card-text"><strong>Date de Début :</strong> <?= htmlspecialchars($tournoi['date_debut']) ?></p>
-                            <p class="card-text"><strong>Date de Fin :</strong> <?= htmlspecialchars($tournoi['date_fin']) ?></p>
-                            <p class="card-text"><strong>Statut :</strong> <?= htmlspecialchars($tournoi['status_ENUM']) ?></p>
-                        </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><?= htmlspecialchars($tournoi['nom_tournoi']) ?></h5>
+                                <p class="card-text"><strong>Jeu :</strong> <?= htmlspecialchars($tournoi['jeu']) ?></p>
+                                <p class="card-text"><strong>Type :</strong> <?= htmlspecialchars($tournoi['type']) ?></p>
+                                <p class="card-text"><strong>Date de Début :</strong> <?= htmlspecialchars($tournoi['date_debut']) ?></p>
+                                <p class="card-text"><strong>Date de Fin :</strong> <?= htmlspecialchars($tournoi['date_fin']) ?></p>
+                                <p class="card-text"><strong>Statut :</strong> <?= htmlspecialchars($tournoi['status_ENUM']) ?></p>
+                            </div>
                             <div class="card-footer text-center">
                                 <a href="../tournois/tournois_details.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-primary btn-sm">Voir les détails</a>
                             </div>
@@ -64,4 +65,5 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     </div>
     <?php include('../include/footer.php'); ?>
 </body>
+
 </html>

@@ -2,6 +2,7 @@
 session_start();
 require('../include/database.php');
 require('../include/check_timeout.php');
+require_once __DIR__ . '/../path.php';
 ?>
 
 <!DOCTYPE html>

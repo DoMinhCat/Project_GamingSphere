@@ -1,14 +1,10 @@
 <?php
 session_start();
-$login_page='../connexion/login.php';
+$login_page = '../connexion/login.php';
 require('../include/check_session.php');
 require('../include/database.php');
 require('../include/check_timeout.php');
-
-if (!isset($_SESSION['user_id'])) {
-    echo "Vous devez être connecté pour accéder à cette page.";
-    exit;
-}
+require_once __DIR__ . '/../path.php';
 
 $pseudo = $_GET['user'] ?? '';
 
@@ -40,7 +36,7 @@ try {
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
+<?php
 $title = "Profil de " . htmlspecialchars($pseudo);
 require('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
@@ -49,7 +45,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 ?>
 
 <body>
-<?php include('../include/header.php'); ?>
+    <?php include('../include/header.php'); ?>
     <?php if (isset($_GET['error'])): ?>
         <div class="alert alert-danger" role="alert">
             <?php

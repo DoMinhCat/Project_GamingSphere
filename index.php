@@ -2,6 +2,8 @@
 session_start();
 require('include/database.php');
 require('include/check_timeout.php');
+require_once __DIR__ . '/path.php';
+
 $success = $_GET['success'] ?? "";
 $user_pseudo = htmlspecialchars($_GET['user_pseudo'] ?? "");
 $pseudo = htmlspecialchars($_GET['pseudo'] ?? "");

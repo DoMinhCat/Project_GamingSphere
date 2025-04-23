@@ -1,17 +1,15 @@
 <?php
 session_start();
+$login_page = '../connexion/login.php';
 require('../include/database.php');
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../connexion/login.php');
-    exit();
-}
+require_once __DIR__ . '/../path.php';
+require('../include/check_session.php');
 
 $invitationId = $_POST['invitation_id'] ?? null;
 
 if ($invitationId) {
     try {
-        
+
         $stmt = $bdd->prepare("UPDATE invitations SET statut = 'refusée' WHERE id_invitation = ?");
         $stmt->execute([$invitationId]);
         $stmt = $bdd->prepare("

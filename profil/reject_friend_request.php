@@ -1,8 +1,9 @@
 <?php
 session_start();
 require('../include/database.php');
-$login_page='../connexion/login.php';
+$login_page = '../connexion/login.php';
 require('../include/check_session.php');
+require_once __DIR__ . '/../path.php';
 
 $friendPseudo = htmlspecialchars($_POST['friend_pseudo'] ?? '');
 if (empty($friendPseudo)) {
@@ -40,9 +41,7 @@ try {
 
     header('Location: profil.php?user=' . urlencode($friendPseudo) . '&success=friend_request_rejected');
     exit;
-
 } catch (PDOException $e) {
     header('Location: profil.php?error=database_error');
     exit;
 }
-?>

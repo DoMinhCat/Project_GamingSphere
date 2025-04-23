@@ -96,7 +96,7 @@ if (isset($_SESSION['user_id'])) {
             </div>
           </form>
 
-          <a href="panier.php" class="btn btn-outline-dark d-flex align-items-center ms-3">
+          <a href="panier/panier.php" class="btn btn-outline-dark d-flex align-items-center ms-3">
             <i class="bi bi-cart-fill"></i>
           </a>
 
@@ -379,7 +379,7 @@ if (isset($_SESSION['user_id'])) {
                           </span>
                         </a></li>
                     <?php endif ?>
-                    <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
+                    <li><button id="theme-btn-mobile" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
                     <?php
                     if (isset($_SESSION['user_email'])): ?>
                       <li><a href="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/connexion/deconnexion.php' ?>" class="dropdown-item btn btn-sm py-3">
@@ -429,7 +429,7 @@ if (isset($_SESSION['user_id'])) {
                   </a>
                 </div>
 
-                <a href="panier.php" class="btn btn-outline-dark d-flex align-items-center my-2">
+                <a href="panier/panier.php" class="btn btn-outline-dark d-flex align-items-center my-2">
                   <i class="bi bi-cart-fill"></i>
                 </a>
               </div>
