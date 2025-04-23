@@ -3,6 +3,8 @@ session_start();
 require('../include/check_timeout.php');
 require('../include/database.php');
 require('../include/check_session.php');
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 $id_utilisateur = $_SESSION['user_id'];
 
@@ -52,5 +54,5 @@ foreach ($panier as $jeu) {
 $stmtUpdateCredits = $bdd->prepare("UPDATE credits SET credits = credits - ? WHERE user_id = ?");
 $stmtUpdateCredits->execute([$total, $id_utilisateur]);
 
-echo json_encode(['status' => 'success', 'message' => 'Achat effectué avec succès !']);
+header('Location: confirmation_achat.php');
 ?>
