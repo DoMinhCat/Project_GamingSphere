@@ -5,8 +5,9 @@ require('../include/check_session.php');
 require('../include/check_timeout.php');
 require('../include/database.php');
 require_once __DIR__ . '/../path.php';
-
-$teamId = $_GET['id_équipe'] ?? null;
+ini_set('display_errors', 1);  // Affiche les erreurs
+error_reporting(E_ALL); 
+$teamId = $_GET['id_equipe'] ?? null;
 
 if (!$teamId) {
     echo "ID de l'équipe manquant.";
@@ -98,7 +99,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <tr>
                             <td><?= htmlspecialchars($member['pseudo']) ?></td>
                             <td><?= htmlspecialchars($member['role']) ?></td>
-                            <td><?= htmlspecialchars($member(date('Y-m-d'['date_rejoint']))) ?></td>
+                            <td><?= htmlspecialchars(date('Y-m-d', strtotime($member['date_rejoint']))) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -132,7 +133,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <p class="text-warning mt-3">Une demande pour rejoindre cette équipe est déjà en attente.</p>
         <?php endif; ?>
         <div class="text-center mt-4">
-            <a href="team_list.php" class="btn btn-secondary">Retour à la liste des équipes</a>
+            <a href="team/team_list.php" class="btn btn-secondary">Retour à la liste des équipes</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

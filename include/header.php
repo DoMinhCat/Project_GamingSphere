@@ -45,8 +45,8 @@ if (isset($_SESSION['user_id'])) {
           SELECT i.id_invitation, u.pseudo AS demandeur, e.nom AS equipe, i.date_invitation
           FROM invitations i
           JOIN utilisateurs u ON i.id_utilisateur = u.id_utilisateurs
-          JOIN equipe e ON i.id_equipe = e.id_équipe
-          JOIN membres_equipe me ON e.id_équipe = me.id_equipe
+          JOIN equipe e ON i.id_equipe = e.id_equipe
+          JOIN membres_equipe me ON e.id_equipe = me.id_equipe
           WHERE me.id_utilisateur = ? AND me.role = 'capitaine' AND i.statut = 'en attente'
       ");
     $stmtTeamRequests->execute([$_SESSION['user_id']]);
