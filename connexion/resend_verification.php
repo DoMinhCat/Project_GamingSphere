@@ -12,7 +12,10 @@ $dotenv = Dotenv::createImmutable('/var/www/PA');
 $dotenv->load();
 
 require('../include/database.php');
-
+if (!isset($_POST['email'])) {
+    header('Location: resend_verify_inscrire.php?message=' . urlencode('Aucune adresse email reçue.'));
+    exit();
+}
 $email = strtolower(trim($_POST['email']));
 $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, inscrire_token, inscrire_token_expiry, last_resend_time FROM utilisateurs WHERE email = ? AND email_verifie = 0 LIMIT 1");
 $stmt->execute([$email]);
@@ -35,7 +38,7 @@ if ($user) {
     }
 
     $stmt = $bdd->prepare("UPDATE utilisateurs SET inscrire_token = ?, inscrire_token_expiry = ?, last_resend_time = NOW() WHERE id_utilisateurs = ?");
-    $stmt->execute([$token, $expiry, $user['id']]);
+    $stmt->execute([$token, $expiry, $user['id_utilisateurs']]);
 
     $verify_link = "https://gamingsphere.duckdns.org/verify_inscrire.php?token=" . $token;
     $subject = "Confirmation de votre inscription sur Gaming Sphère";

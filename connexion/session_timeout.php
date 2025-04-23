@@ -40,11 +40,11 @@ include('../include/head.php');
             </div>
             </br>
         </div>
-
-        <?php
-        include("../include/footer.php");
-        ?>
     </div>
+    <?php
+    include("../include/footer.php");
+    ?>
+
 </body>
 
 </html>
