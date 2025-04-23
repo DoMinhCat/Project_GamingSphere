@@ -41,12 +41,12 @@ try {
 
     if ($category == 'teams' || empty($category)) {
         $stmtTeams = $bdd->prepare("
-        SELECT e.id_équipe AS id, e.nom 
+        SELECT e.id_equipe AS id, e.nom 
         FROM equipe e
-        LEFT JOIN membres_equipe me ON e.id_équipe = me.id_equipe
+        LEFT JOIN membres_equipe me ON e.id_equipe = me.id_equipe
         LEFT JOIN utilisateurs u ON me.id_utilisateur = u.id_utilisateurs
         WHERE e.nom LIKE ? OR u.pseudo LIKE ?
-        GROUP BY e.id_équipe
+        GROUP BY e.id_equipe
     ");
     $stmtTeams->execute(['%' . $query . '%', '%' . $query . '%']);
     $teams = $stmtTeams->fetchAll(PDO::FETCH_ASSOC);
