@@ -16,7 +16,7 @@ $dotenv->load();
 if (isset($_GET['token']) && !empty($_GET['token'])) {
     $token = $_GET['token'];
 
-    $stmt = $bdd->prepare("SELECT id_utilisateurs, inscrire_token_expiry, pseudo FROM utilisateurs WHERE inscrire_token = ? LIMIT 1");
+    $stmt = $bdd->prepare("SELECT id_utilisateurs, inscrire_token_expiry, pseudo, email FROM utilisateurs WHERE inscrire_token = ? LIMIT 1");
     $stmt->execute([$token]);
     $user = $stmt->fetch();
 
@@ -64,7 +64,7 @@ if (isset($_GET['token']) && !empty($_GET['token'])) {
             $mail->Encoding = 'base64';
 
             $mail->setFrom($_ENV['SMTP_USER'], 'Gaming Sphère');
-            $mail->addAddress($email);
+            $mail->addAddress($user['email']);
             $mail->Subject = $subject;
             $mail->isHTML(true);
             $mail->Body = $message;

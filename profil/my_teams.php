@@ -1,11 +1,11 @@
 <?php
 session_start();
+$login_page = '../connexion/login.php';
 require('../include/database.php');
 require('../include/check_timeout.php');
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../connexion/login.php');
-    exit();
-}
+require('../include/check_session.php');
+require_once __DIR__ . '/../path.php';
+
 $userId = $_SESSION['user_id'];
 $stmt = $bdd->prepare("
     SELECT e.id_équipe, e.nom, e.niveau, e.date_creation 
@@ -59,4 +59,5 @@ require('../include/head.php');
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

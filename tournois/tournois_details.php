@@ -1,12 +1,15 @@
+<!-- Page dédiée à un tournois -->
 <?php
 session_start();
 include('../include/database.php');
 require('../include/check_timeout.php');
+require_once __DIR__ . '/../path.php';
 
-$this_page = 'tournois_details.php';
+
+$this_page = tournois_details;
 
 if (!isset($_GET['id_tournoi']) || empty($_GET['id_tournoi'])) {
-    header("Location: tournois_main.php?message=missing_id");
+    header('Location:' . tournois_main . '?message=missing_id');
     exit();
 }
 
@@ -18,7 +21,7 @@ try {
     $tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$tournoi) {
-        header("Location: tournois_main.php?message=tournoi_not_found");
+        header('Location:' . tournois_main . '?message=tournoi_not_found');
         exit();
     }
     $is_registered = false;
@@ -39,7 +42,11 @@ try {
 <?php
 $title = 'Détails du Tournoi';
 include('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
 ?>
+
 <body>
     <?php include('../include/header.php'); ?>
 
@@ -55,16 +62,17 @@ include('../include/head.php');
                 <p class="card-text"><strong>Statut :</strong> <?= htmlspecialchars($tournoi['status_ENUM']) ?></p>
             </div>
             <div class="card-footer text-center">
-                <a href="tournois_main.php" class="btn btn-secondary">Retour à la liste</a>
+                <a href="<?php tournois_main ?>" class="btn btn-secondary">Retour à la liste</a>
                 <?php if ($is_registered): ?>
-                <button class="btn btn-danger desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Se désinscrire</button>
-            <?php else: ?>
-                <button class="btn btn-warning participer-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Participer</button>
-            <?php endif; ?>
+                    <button class="btn btn-danger desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Se désinscrire</button>
+                <?php else: ?>
+                    <button class="btn btn-warning participer-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Participer</button>
+                <?php endif; ?>
             </div>
         </div>
     </div>
-<script src="fluid.js"></script>
+    <script src="fluid.js"></script>
     <?php include('../include/footer.php'); ?>
 </body>
+
 </html>

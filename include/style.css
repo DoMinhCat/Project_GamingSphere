@@ -73,7 +73,9 @@ h1 {
 }
 
 #globalSearchForm input:focus,
-#globalSearchForm select:focus {
+#globalSearchForm select:focus,
+#globalSearchForm_mobile input:focus,
+#globalSearchForm_mobile select:focus {
   outline: none !important;
   box-shadow: 0 0 0 2px #ff6e40 !important;
   border-color: #ff6e40 !important;
@@ -585,6 +587,8 @@ body.offcanvas-backdrop {
   background-color: #1e3d59;
 }
 #query:hover,
-#category:hover {
+#query_mobile:hover,
+#category:hover,
+#category_mobile:hover {
   background-color: #f5f0e1;
 }

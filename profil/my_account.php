@@ -1,9 +1,10 @@
 <?php
 session_start();
-$login_page='../connexion/login.php';
+$login_page = '../connexion/login.php';
 require('../include/check_session.php');
 require('../include/database.php');
 require('../include/check_timeout.php');
+require_once __DIR__ . '/../path.php';
 
 $userId = $_SESSION['user_id'];
 
@@ -72,94 +73,95 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 ?>
 
 <body>
-<?php 
-include('../include/header.php');
-include('navbar.php'); 
-?>
+    <?php
+    include('../include/header.php');
+    include('navbar.php');
+    ?>
 
 
-<div class="container mt-4">
+    <div class="container mt-4">
 
-    <div class="card shadow-sm p-4 connexion_box">
-        <h3 class="card-title montserrat-titre40">Mon compte</h3>
-        <hr>
-        <div class="text-center mb-4">
-            <h4>Photo de profil</h4>
-            <?php if (!empty($user['photo_profil'])): ?>
-                <img src="<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
-                <form method="POST" enctype="multipart/form-data" class="mt-3">
-                    <button type="button" class="btn btn-dark" onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
-                        Modifier la photo de profil
-                    </button>
-                </form>
-                <form id="profile_picture_form" method="POST" enctype="multipart/form-data" style="display: none;" class="mt-3">
-                    <div class="mb-3">
-                        <label for="profile_picture" class="form-label">Changer votre photo de profil :</label>
-                        <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Télécharger</button>
-                </form>
-            <?php else: ?>
-                <p>Aucune photo de profil.</p>
-                <form method="POST" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="profile_picture" class="form-label">Ajouter une photo de profil :</label>
-                        <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Télécharger</button>
-                </form>
-            <?php endif; ?>
-        </div>
-
-        <div class="card shadow-sm p-3 mb-4">
-            <h4 class="card-title montserrat-titre40">Informations personnelles</h4>
+        <div class="card shadow-sm p-4 connexion_box">
+            <h3 class="card-title montserrat-titre40">Mon compte</h3>
             <hr>
-            <p class="montserrat-titre32"><strong>Pseudo :</strong> <?php echo htmlspecialchars($user['pseudo']); ?></p>
-            <p class="montserrat-titre32"><strong>Email :</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-            <p class="montserrat-titre32"><strong>Nom :</strong> <?php echo htmlspecialchars($user['nom']); ?></p>
-            <p class="montserrat-titre32"><strong>Prénom :</strong> <?php echo htmlspecialchars($user['prenom']); ?></p>
-            <p class="montserrat-titre32"><strong>Date d'inscription :</strong> <?php echo htmlspecialchars($user['date_inscription']); ?></p>
-        </div>
+            <div class="text-center mb-4">
+                <h4>Photo de profil</h4>
+                <?php if (!empty($user['photo_profil'])): ?>
+                    <img src="<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
+                    <form method="POST" enctype="multipart/form-data" class="mt-3">
+                        <button type="button" class="btn btn-dark" onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
+                            Modifier la photo de profil
+                        </button>
+                    </form>
+                    <form id="profile_picture_form" method="POST" enctype="multipart/form-data" style="display: none;" class="mt-3">
+                        <div class="mb-3">
+                            <label for="profile_picture" class="form-label">Changer votre photo de profil :</label>
+                            <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Télécharger</button>
+                    </form>
+                <?php else: ?>
+                    <p>Aucune photo de profil.</p>
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="profile_picture" class="form-label">Ajouter une photo de profil :</label>
+                            <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Télécharger</button>
+                    </form>
+                <?php endif; ?>
+            </div>
+
+            <div class="card shadow-sm p-3 mb-4">
+                <h4 class="card-title montserrat-titre40">Informations personnelles</h4>
+                <hr>
+                <p class="montserrat-titre32"><strong>Pseudo :</strong> <?php echo htmlspecialchars($user['pseudo']); ?></p>
+                <p class="montserrat-titre32"><strong>Email :</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                <p class="montserrat-titre32"><strong>Nom :</strong> <?php echo htmlspecialchars($user['nom']); ?></p>
+                <p class="montserrat-titre32"><strong>Prénom :</strong> <?php echo htmlspecialchars($user['prenom']); ?></p>
+                <p class="montserrat-titre32"><strong>Date d'inscription :</strong> <?php echo htmlspecialchars($user['date_inscription']); ?></p>
+            </div>
 
 
-        <div class="card shadow-sm p-3">
-            <h4 class="card-title montserrat-titre40">Adresse</h4>
+            <div class="card shadow-sm p-3">
+                <h4 class="card-title montserrat-titre40">Adresse</h4>
+                <hr>
+                <p class="montserrat-titre32"><strong>Ville :</strong> <?php echo htmlspecialchars($user['ville']); ?></p>
+                <p class="montserrat-titre32"><strong>Code Postal :</strong> <?php echo htmlspecialchars($user['code_postal']); ?></p>
+                <p class="montserrat-titre32"><strong>Rue :</strong> <?php echo htmlspecialchars($user['rue']); ?></p>
+            </div>
+
             <hr>
-            <p class="montserrat-titre32"><strong>Ville :</strong> <?php echo htmlspecialchars($user['ville']); ?></p>
-            <p class="montserrat-titre32"><strong>Code Postal :</strong> <?php echo htmlspecialchars($user['code_postal']); ?></p>
-            <p class="montserrat-titre32"><strong>Rue :</strong> <?php echo htmlspecialchars($user['rue']); ?></p>
-        </div>
-
-        <hr>
-        <div class="d-flex justify-content-between mt-4">
-        <a href="edit_account.php" class="btn btn-primary">Modifier mes informations</a>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
-                Supprimer mon compte
-            </button>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteAccountModalLabel">Confirmer la suppression</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <form method="POST" class="d-inline">
-                    <button type="submit" name="delete_account" class="btn btn-danger">Supprimer</button>
-                </form>
+            <div class="d-flex justify-content-between mt-4">
+                <a href="edit_account.php" class="btn btn-primary">Modifier mes informations</a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                    Supprimer mon compte
+                </button>
             </div>
         </div>
     </div>
-</div>
 
-<?php include('../include/footer.php'); ?>
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAccountModalLabel">Confirmer la suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <form method="POST" class="d-inline">
+                        <button type="submit" name="delete_account" class="btn btn-danger">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php include('../include/footer.php'); ?>
 </body>
+
 </html>

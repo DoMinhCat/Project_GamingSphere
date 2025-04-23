@@ -1,10 +1,10 @@
 <?php
 session_start();
+$login_page = '../connexion/login.php';
 require('../include/database.php');
-if (!isset($_SESSION['user_id'])) {
-    header('Location: profil.php?error=not_logged_in');
-    exit;
-}
+require_once __DIR__ . '/../path.php';
+require('../include/check_session.php');
+
 $friendPseudo = htmlspecialchars($_POST['friend_pseudo'] ?? '');
 if (empty($friendPseudo)) {
     header('Location: profil.php?error=no_user_specified');
@@ -41,9 +41,7 @@ try {
 
     header('Location: profil.php?user=' . urlencode($friendPseudo) . '&success=friend_accepted');
     exit;
-
 } catch (PDOException $e) {
     header('Location: profil.php?error=database_error');
     exit;
 }
-?>

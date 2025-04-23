@@ -1,6 +1,8 @@
 <?php
 session_start();
 require('../include/database.php');
+require_once __DIR__ . '/../path.php';
+
 if (isset($_SESSION['user_id'])) {
     try {
         $stmt = $bdd->prepare("SELECT u.pseudo, r.date_début
@@ -64,9 +66,7 @@ try {
 
     header('Location: profil.php?user=' . urlencode($friendPseudo) . '&success=friend_request_sent');
     exit;
-
 } catch (PDOException $e) {
     header('Location: profil.php?error=database_error');
     exit;
 }
-?>

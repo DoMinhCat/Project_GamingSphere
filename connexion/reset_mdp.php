@@ -31,19 +31,20 @@ include('../include/head.php')
 
   <div class="d-flex justify-content-center">
     <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
-    
+
       <div class="pb-3">
         <h1 class="mb-0">Réinitialisation de mot de passe</h1>
       </div>
 
-      
-        <?php
-        if (isset($_GET['message']) && !empty($_GET['message'])) {
-          echo '<div class="lato24 my-2">';
-          echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
-        }
-        ?>
-      </div>
+
+      <?php
+      if (isset($_GET['message']) && !empty($_GET['message'])) {
+        echo '<div class="lato24 my-2">';
+        echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
+        echo '</div>';
+      }
+      ?>
+
 
       <form method="post" action="update_mdp.php">
         <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">

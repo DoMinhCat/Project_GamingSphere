@@ -2,6 +2,7 @@
 session_start();
 require('../include/check_timeout.php');
 require('../include/database.php');
+require_once __DIR__ . '/../path.php';
 
 $stmt = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu LIMIT 3");
 $carouselGames = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -19,10 +20,10 @@ include('../include/head.php');
 ?>
 
 <body>
-<?php include('../include/header.php'); ?>
+    <?php include('../include/header.php'); ?>
 
-<div class="container mt-4">
-    <h1 class="text-center mb-4">Boutique de jeux</h1>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Boutique de jeux</h1>
 
     <?php if (count($carouselGames) > 0): ?>
     <div class="d-flex justify-content-center mb-5">
@@ -65,9 +66,7 @@ include('../include/head.php');
                     <?php endforeach; ?>
                 </div>
             </div>
-        </div>
-    </div>
-    <?php endif; ?>
+        <?php endif; ?>
 
     <h2 class="mb-3 text-center">Tous les jeux</h2>
 <div class="row">
@@ -94,21 +93,26 @@ include('../include/head.php');
 
 
 </body>
+
 </html>
 
 <style>
     /* Supprimer toute marge externe indésirable */
     .carousel-container {
-        padding: 0 !important; /* Enlever le padding */
-        margin: 0 !important;  /* Enlever la marge */
+        padding: 0 !important;
+        /* Enlever le padding */
+        margin: 0 !important;
+        /* Enlever la marge */
         position: relative;
     }
 
     /* Centrer le carousel */
     #gameCarousel {
         width: 100%;
-        max-width: 800px; /* Limiter la largeur */
-        margin: 0 auto; /* Centrer horizontalement */
+        max-width: 800px;
+        /* Limiter la largeur */
+        margin: 0 auto;
+        /* Centrer horizontalement */
     }
 
     /* Centrer le contenu du carousel */
@@ -125,7 +129,8 @@ include('../include/head.php');
     }
 
     /* Centrer les titres */
-    h1, h2 {
+    h1,
+    h2 {
         text-align: center;
     }
 
@@ -160,9 +165,15 @@ include('../include/head.php');
 
 
     @keyframes slideBackground {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-100%); }
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
     }
+<<<<<<< HEAD
     .card {
     border-radius: 1rem;
     overflow: hidden;
@@ -183,3 +194,6 @@ include('../include/head.php');
 }
 
 </style>
+=======
+</style>
+>>>>>>> 4effe9b3ce1f4e7c30c5b70ff15d798f09ca950f

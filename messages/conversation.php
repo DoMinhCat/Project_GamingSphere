@@ -3,6 +3,7 @@ session_start();
 require('../include/database.php');
 require('../include/check_session.php');
 require('../include/check_timeout.php');
+require_once __DIR__ . '/../path.php';
 
 $userId = $_SESSION['user_id'];
 $otherUserId = isset($_GET['user']) ? (int)$_GET['user'] : 0;
@@ -59,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
             }
             header("Location: conversation.php?user=$otherUserId");
             exit;
-
         } catch (PDOException $e) {
             echo "Erreur : " . htmlspecialchars($e->getMessage());
             exit;
@@ -70,40 +70,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php 
-$title = 'Conversation avec ' . htmlspecialchars($otherUser['pseudo']); include('../include/head.php'); 
+<?php
+$title = 'Conversation avec ' . htmlspecialchars($otherUser['pseudo']);
+include('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
 }
 
-?>  
+?>
+
 <body>
-<?php include('../include/header.php'); ?>
-<div class="container">
-    <div class="conversation-container message_box">
-        <div class="header-chat">
-            <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil">
-            <h5><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
-        </div>
+    <?php include('../include/header.php'); ?>
+    <div class="container">
+        <div class="conversation-container message_box">
+            <div class="header-chat">
+                <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil">
+                <h5><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
+            </div>
 
-        <div class="message-list">
-            <?php foreach ($messages as $message): ?>
-                <div class="message <?= $message['expediteur'] == $otherUser['pseudo'] ? 'received' : 'sent' ?>">
-                    <div class="message-bubble">
-                        <p><?= nl2br(htmlspecialchars($message['contenu'])) ?></p>
-                        <div class="message-time"><?= date('H:i', strtotime($message['date_envoi'])) ?></div>
+            <div class="message-list">
+                <?php foreach ($messages as $message): ?>
+                    <div class="message <?= $message['expediteur'] == $otherUser['pseudo'] ? 'received' : 'sent' ?>">
+                        <div class="message-bubble">
+                            <p><?= nl2br(htmlspecialchars($message['contenu'])) ?></p>
+                            <div class="message-time"><?= date('H:i', strtotime($message['date_envoi'])) ?></div>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
+                <?php endforeach; ?>
+            </div>
 
-        <form action="conversation.php?user=<?= $otherUserId ?>" method="POST" class="message-input-container">
-            <textarea name="message" rows="2" placeholder="Écrivez un message..." required></textarea>
-            <button type="submit" class="send-button">Envoyer</button>
-        </form>
+            <form action="conversation.php?user=<?= $otherUserId ?>" method="POST" class="message-input-container">
+                <textarea name="message" rows="2" placeholder="Écrivez un message..." required></textarea>
+                <button type="submit" class="send-button">Envoyer</button>
+            </form>
+        </div>
     </div>
-</div>
-<script src="refresh.js"></script>
-<?php include('../include/footer.php'); ?>
+    <script src="refresh.js"></script>
+    <?php include('../include/footer.php'); ?>
 </body>
+
 </html>
