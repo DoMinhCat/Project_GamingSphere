@@ -95,7 +95,7 @@ if (isset($_SESSION['user_id'])) {
             </div>
           </form>
 
-          <a href="panier.php" class="btn btn-outline-dark d-flex align-items-center ms-3">
+          <a href=<?= ($this_page == 'index.php') ? 'panier/panier_main.php' : '../panier/panier_main.php' ?> class="btn btn-outline-dark d-flex align-items-center ms-3">
             <i class="bi bi-cart-fill"></i>
           </a>
 

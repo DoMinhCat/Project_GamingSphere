@@ -64,7 +64,6 @@ include('../../include/head.php');
 <div class="container my-5">
     <h1 class="mb-4">Gestion des Articles</h1>
 
-    <!-- Formulaire d'ajout d'article -->
     <form method="POST" action="articles.php" class="mb-5">
         <h3>Ajouter un nouvel article</h3>
         <div class="mb-3">
