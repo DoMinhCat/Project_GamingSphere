@@ -9,42 +9,42 @@ require('../include/database.php');
 <?php
 $title = 'Actualités';
 require('../include/head.php');
-
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
 }
 ?>
 
 <body>
-<?php include("../include/header.php"); ?>
+    <?php include("../include/header.php"); ?>
 
-<div class="container mt-4">
-    <h1 class="text-center mb-4">Actualités</h1>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Actualités</h1>
 
-    <?php
-    try {
-        $query = "SELECT * FROM news ORDER BY date_article DESC";
-        $stmt = $bdd->query($query);
+        <?php
+        try {
+            $query = "SELECT * FROM news ORDER BY date_article DESC";
+            $stmt = $bdd->query($query);
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            ?>
-            <div class="article border rounded p-3 mb-4 shadow-sm">
-                <h2>
-                    <a href="actualite_article.php?id=<?= $row['id_news'] ?>">
-                        <?= htmlspecialchars($row['titre']) ?>
-                    </a>
-                </h2>
-                <p><strong>Publié le :</strong> <?= htmlspecialchars($row['date_article']) ?></p>
-                <p><?= nl2br(htmlspecialchars($row['contenue'])) ?></p>
-            </div>
-            <?php
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        ?>
+                <div class="article border rounded p-3 mb-4 shadow-sm">
+                    <h2>
+                        <a href="actualite_article.php?id=<?= $row['id_news'] ?>">
+                            <?= htmlspecialchars($row['titre']) ?>
+                        </a>
+                    </h2>
+                    <p><strong>Publié le :</strong> <?= htmlspecialchars($row['date_article']) ?></p>
+                    <p><?= nl2br(htmlspecialchars($row['contenue'])) ?></p>
+                </div>
+        <?php
+            }
+        } catch (PDOException $e) {
+            echo "<div class='alert alert-danger'>Une erreur est survenue lors de la récupération des actualités.</div>";
         }
-    } catch (PDOException $e) {
-        echo "<div class='alert alert-danger'>Une erreur est survenue lors de la récupération des actualités.</div>";
-    }
-    ?>
-</div>
+        ?>
+    </div>
 
-<?php include("../include/footer.php"); ?>
+    <?php include("../include/footer.php"); ?>
 </body>
+
 </html>

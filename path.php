@@ -1,6 +1,9 @@
 <?php
 define('index_front', '/');
 
+define('login', '/connexion');
+define('inscription', '/inscription');
+
 define('magasin_main', '/magasin/');
 
 define('tournois_main', '/tournois/');
@@ -16,5 +19,7 @@ define('actualite_main', '/actualite/');
 define('actualite_article', '/actualite');
 
 define('forum_main', '/forum/');
+define('forum_category', '/forum/category');
+define('nouveau_sujet', '/forum/new');
 
 define('index_back', '/back-office/');
