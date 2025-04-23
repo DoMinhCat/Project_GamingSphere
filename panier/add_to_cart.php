@@ -2,7 +2,7 @@
 session_start();
 
 header('Content-Type: application/json; charset=utf-8');
-
+$login_page = '../connexion/login.php';
 require('../include/check_timeout.php');
 require('../include/database.php');
 require('../include/check_session.php');
@@ -42,9 +42,8 @@ if ($stmt->execute([$id_utilisateur, $id_jeu])) {
     echo json_encode([
         'status' => 'success',
         'message' => 'Le jeu a été ajouté à votre panier : ' . htmlspecialchars($jeu['nom']),
-        'panierCount' => $panierCount 
+        'panierCount' => $panierCount
     ]);
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Erreur lors de l\'ajout au panier.']);
 }
-?>

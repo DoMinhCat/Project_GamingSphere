@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("theme-btn");
+  const offcanvasEl = document.getElementById("offcanvasWithBothOptions");
   const body = document.body;
 
   function updateButtonText(button) {
@@ -24,9 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateButtonText(toggleBtn);
   toggleBtn?.addEventListener("click", toggleTheme);
 
-  const offcanvas = document.getElementById("offcanvasWithBothOptions");
-  if (offcanvas) {
-    offcanvas.addEventListener("shown.bs.offcanvas", () => {
+  if (offcanvasEl) {
+    offcanvasEl.addEventListener("shown.bs.offcanvas", () => {
       const toggleBtn_mobile = document.getElementById("theme-btn-mobile");
       if (toggleBtn_mobile && !toggleBtn_mobile.dataset.bound) {
         toggleBtn_mobile.addEventListener("click", toggleTheme);

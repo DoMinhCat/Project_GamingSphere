@@ -1,5 +1,6 @@
 <?php
 session_start();
+$login_page = '../connexion/login.php';
 require('../include/check_timeout.php');
 require('../include/database.php');
 require('../include/check_session.php');
@@ -55,4 +56,3 @@ $stmtUpdateCredits = $bdd->prepare("UPDATE credits SET credits = credits - ? WHE
 $stmtUpdateCredits->execute([$total, $id_utilisateur]);
 
 header('Location: confirmation_achat.php');
-?>

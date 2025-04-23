@@ -25,13 +25,13 @@ RewriteRule ^inscription/?$ connexion/inscription.php [L]
 # magasin_main.php
 
 RewriteCond %{THE_REQUEST} \s/magasin/magasin_main\.php [NC]
-RewriteRule ^magasin/magasin_main\.php$ /magasin/ [R=301,L]
+RewriteRule ^magasin/magasin_main\.php$ /magasin [R=301,L]
 RewriteRule ^magasin/?$ magasin/magasin_main.php [L]
 
 # tournois_main.php
 
 RewriteCond %{THE_REQUEST} \s/tournois/tournois_main\.php [NC]
-RewriteRule ^tournois/tournois_main\.php$ /tournois/ [R=301,L]
+RewriteRule ^tournois/tournois_main\.php$ /tournois [R=301,L]
 RewriteRule ^tournois/?$ tournois/tournois_main.php [L]
 
 # tournois_details.php
@@ -51,19 +51,19 @@ RewriteRule ^team_details/?$ team/team_details.php [L]
 
 # team_list.php
 RewriteCond %{THE_REQUEST} \s/team/team_list\.php [NC]
-RewriteRule ^team/team_list\.php$ /team_list/ [R=301,L,QSA]
+RewriteRule ^team/team_list\.php$ /team_list [R=301,L,QSA]
 RewriteRule ^team_list/?$ team/team_list.php [L]
 
 # communaute_main.php
 
 RewriteCond %{THE_REQUEST} \s/communaute/communaute_main\.php [NC]
-RewriteRule ^communaute/communaute_main\.php$ /communaute/ [R=301,L]
+RewriteRule ^communaute/communaute_main\.php$ /communaute [R=301,L]
 RewriteRule ^communaute/?$ communaute/communaute_main.php [L]
 
 # actualite_main.php
 
 RewriteCond %{THE_REQUEST} \s/actualite/actualite_main\.php [NC]
-RewriteRule ^actualite/actualite_main\.php$ /actualite/ [R=301,L]
+RewriteRule ^actualite/actualite_main\.php$ /actualite [R=301,L]
 RewriteRule ^actualite/?$ actualite/actualite_main.php [L]
 
 # actualite_article.php
@@ -75,7 +75,7 @@ RewriteRule ^actualite_article/?$ actualite/actualite_article.php [L]
 # forum_main.php
 
 RewriteCond %{THE_REQUEST} \s/forum/forum_main\.php [NC]
-RewriteRule ^forum/forum_main\.php$ /forum/ [R=301,L]
+RewriteRule ^forum/forum_main\.php$ /forum [R=301,L]
 RewriteRule ^forum/?$ forum/forum_main.php [L]
 
 # categorie.php (forum)
@@ -93,8 +93,66 @@ RewriteRule ^forum/new/?$ forum/nouveau_sujet.php [L]
 # sujet.php (forum)
 
 RewriteCond %{THE_REQUEST} \s/forum/sujet\.php [NC]
-RewriteRule ^forum/sujet\.php$ /forum/new [R=301,L,QSA]
-RewriteRule ^forum/new/?$ forum/sujet.php [L]
+RewriteRule ^forum/sujet\.php$ /forum/sujet [R=301,L,QSA]
+RewriteRule ^forum/sujet/?$ forum/sujet.php [L]
+
+# panier_main.php 
+
+RewriteCond %{THE_REQUEST} \s/panier/panier_main\.php [NC]
+RewriteRule ^panier/panier_main\.php$ /panier [R=301,L,QSA]
+RewriteRule ^panier/?$ panier/panier_main.php [L]
+
+# confirmation_achat.php (panier)
+
+RewriteCond %{THE_REQUEST} \s/panier/confirmation_achat\.php [NC]
+RewriteRule ^panier/confirmation_achat\.php$ /panier/confirmation_achat [R=301,L,QSA]
+RewriteRule ^panier/confirmation_achat/?$ panier/confirmation_achat.php [L]
+
+# my_account.php (profil)
+
+RewriteCond %{THE_REQUEST} \s/profil/my_account\.php [NC]
+RewriteRule ^profil/my_account\.php$ /mon_compte [R=301,L,QSA]
+RewriteRule ^mon_compte/?$ profil/my_account.php [L]
+
+# edit_account.php (profil)
+
+RewriteCond %{THE_REQUEST} \s/profil/edit_account\.php [NC]
+RewriteRule ^profil/edit_account\.php$ /mon_compte/edit [R=301,L,QSA]
+RewriteRule ^mon_compte/edit/?$ profil/edit_account.php [L]
+
+# friend_list.php (profil)
+
+RewriteCond %{THE_REQUEST} \s/profil/friend_list\.php [NC]
+RewriteRule ^profil/friend_list\.php$ /mon_compte/friend_list [R=301,L,QSA]
+RewriteRule ^mon_compte/friend_list/?$ profil/friend_list.php [L]
+
+# my_teams.php (profil)
+
+RewriteCond %{THE_REQUEST} \s/profil/my_teams\.php [NC]
+RewriteRule ^profil/my_teams\.php$ /mon_compte/teams [R=301,L,QSA]
+RewriteRule ^mon_compte/teams/?$ profil/my_teams.php [L]
+
+# order_history.php (profil)
+
+RewriteCond %{THE_REQUEST} \s/profil/order_history\.php [NC]
+RewriteRule ^profil/order_history\.php$ /mon_compte/order_history [R=301,L,QSA]
+RewriteRule ^mon_compte/order_history/?$ profil/order_history.php [L]
+
+# profil.php (profil)
+
+RewriteCond %{THE_REQUEST} \s/profil/profil\.php [NC]
+RewriteRule ^profil/profil\.php$ /profil [R=301,L,QSA]
+RewriteRule ^profil/?$ profil/profil.php [L]
+
+# tournament_list.php (profil)
+
+RewriteCond %{THE_REQUEST} \s/profil/tournament_list\.php [NC]
+RewriteRule ^profil/tournament_list\.php$ /mon_compte/tournament_list [R=301,L,QSA]
+RewriteRule ^mon_compte/tournament_list/?$ profil/tournament_list.php [L]
+
+
+
+
 
 # back-office index.php
 
