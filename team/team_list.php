@@ -8,7 +8,7 @@ require('../include/database.php');
 
 $search = $_GET['search'] ?? '';
 $stmt = $bdd->prepare("
-    SELECT id_équipe, nom, niveau 
+    SELECT id_equipe, nom, niveau 
     FROM equipe 
     WHERE nom LIKE ?
     ORDER BY nom ASC
@@ -53,7 +53,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <td><?= htmlspecialchars($team['nom']) ?></td>
                             <td><?= htmlspecialchars($team['niveau']) ?></td>
                             <td>
-                                <a href="team_details.php?id_equipe=<?= $team['id_équipe'] ?>" class="btn btn-sm btn-info">Voir</a>
+                                <a href="team_details.php?id_equipe=<?= $team['id_equipe'] ?>" class="btn btn-sm btn-info">Voir</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

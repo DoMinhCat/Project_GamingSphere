@@ -8,9 +8,9 @@ require_once __DIR__ . '/../path.php';
 
 $userId = $_SESSION['user_id'];
 $stmt = $bdd->prepare("
-    SELECT e.id_équipe, e.nom, e.niveau, e.date_creation 
+    SELECT e.id_equipe, e.nom, e.niveau, e.date_creation 
     FROM membres_equipe me
-    JOIN equipe e ON me.id_equipe = e.id_équipe
+    JOIN equipe e ON me.id_equipe = e.id_equipe
     WHERE me.id_utilisateur = ?
 ");
 $stmt->execute([$userId]);

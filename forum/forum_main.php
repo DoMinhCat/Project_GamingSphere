@@ -26,11 +26,6 @@ if (!isset($bdd)) {
 
     <div class="container my-5">
         <h1 class="mb-4">Forum - Catégories</h1>
-
-        <div class="mb-4 text-end">
-            <a href="nouveau_sujet.php" class="btn btn-primary">Ajouter un sujet</a>
-        </div>
-
         <?php
         $query = $bdd->query("SELECT DISTINCT categories FROM forum_sujets WHERE parent_id IS NULL");
         if (!$query) {

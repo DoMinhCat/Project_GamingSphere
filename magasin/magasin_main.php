@@ -28,157 +28,159 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <div class="container mt-4">
         <h1 class="text-center mb-4">Boutique de jeux</h1>
 
-        <!-- Carousel Auto-déroulant Centré -->
         <?php if (count($carouselGames) > 0): ?>
-            <div class="d-flex justify-content-center mb-5">
-                <div class="carousel-container mx-auto" style="max-width: 800px; width: 100%; padding: 0; position: relative;">
-                    <div id="gameCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-                        <div class="carousel-indicators">
-                            <?php foreach ($carouselGames as $index => $game): ?>
-                                <button type="button" data-bs-target="#gameCarousel" data-bs-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>" aria-current="<?= $index === 0 ? 'true' : 'false' ?>" aria-label="Slide <?= $index + 1 ?>"></button>
-                            <?php endforeach; ?>
-                        </div>
-                        <div class="carousel-inner">
-                            <?php foreach ($carouselGames as $index => $game): ?>
-                                <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                                    <?php if (!empty($game['image'])): ?>
-                                        <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="d-block w-100" alt="<?= htmlspecialchars($game['nom']) ?>" style="height: 400px; object-fit: cover;">
-                                    <?php else: ?>
-                                        <img src="../../assets/img/no_image.png" class="d-block w-100" alt="Aucune image" style="height: 400px; object-fit: cover;">
-                                    <?php endif; ?>
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5><?= htmlspecialchars($game['nom']) ?></h5>
-                                        <p><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#gameCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Précédent</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#gameCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Suivant</span>
-                        </button>
+        <div class="d-flex justify-content-center mb-5">
+            <div class="carousel-container mx-auto" style="max-width: 800px;">
+                <div id="gameCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                    <div class="carousel-indicators">
+                        <?php foreach ($carouselGames as $index => $game): ?>
+                            <button type="button" data-bs-target="#gameCarousel" data-bs-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>" aria-current="<?= $index === 0 ? 'true' : 'false' ?>" aria-label="Slide <?= $index + 1 ?>"></button>
+                        <?php endforeach; ?>
                     </div>
+                    <div class="carousel-inner">
+                        <?php foreach ($carouselGames as $index => $game): ?>
+                        <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                            <?php if (!empty($game['image'])): ?>
+                                <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="d-block w-100" alt="<?= htmlspecialchars($game['nom']) ?>" style="height: 400px; object-fit: cover;">
+                            <?php else: ?>
+                                <img src="../../assets/img/no_image.png" class="d-block w-100" alt="Aucune image" style="height: 400px; object-fit: cover;">
+                            <?php endif; ?>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5><?= htmlspecialchars($game['nom']) ?></h5>
+                                <p><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#gameCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Précédent</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#gameCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Suivant</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
 
-                    <!-- Arrière-plan défilant -->
-                    <div class="carousel-background" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;">
-                        <div class="carousel-bg-content">
-                            <?php foreach ($games as $game): ?>
-                                <div class="carousel-bg-item" style="position: absolute; width: 100%; height: 100%; background-image: url('../back-office/uploads/<?= htmlspecialchars($game['image']) ?>'); background-size: cover; background-position: center; opacity: 0.5;"></div>
-                            <?php endforeach; ?>
+        <h2 class="mb-3 text-center">Tous les jeux</h2>
+        <div id="alert-container"></div>
+        <div class="row">
+            <?php foreach ($games as $game): ?>
+            <div class="col-md-4 mb-4 d-flex align-items-stretch">
+                <div class="card shadow-sm w-100 d-flex flex-column">
+                    <?php if (!empty($game['image'])): ?>
+                        <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
+                    <?php else: ?>
+                        <img src="../../assets/img/no_image.png" class="card-img-top" alt="Aucune image">
+                    <?php endif; ?>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
+                        <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                        <div class="mt-auto d-flex justify-content-between gap-2">
+                            <a href="game_info.php?id=<?= $game['id_jeu'] ?>" class="btn btn-outline-primary w-50">Voir détails</a>
+                            <button class="btn btn-success mt-3 btn-add-to-cart" data-id="<?= $game['id_jeu'] ?>">Acheter ce jeu</button>
                         </div>
                     </div>
                 </div>
             </div>
-        <?php endif; ?>
-
-        <h2 class="mb-3 text-center">Tous les jeux</h2>
-        <div class="row">
-            <?php
-            foreach ($games as $game) {
-            ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <?php if (!empty($game['image'])): ?>
-                            <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>" style="height: 250px; object-fit: cover;">
-                        <?php else: ?>
-                            <img src="../../assets/img/no_image.png" class="card-img-top" alt="Aucune image" style="height: 250px; object-fit: cover;">
-                        <?php endif; ?>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
-                            <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                            <a href="buy_game.php?id=<?= $game['id_jeu'] ?>" class="btn btn-success mt-auto">Acheter</a>
-                        </div>
-                    </div>
-                </div>
-            <?php }
-            ?>
+            <?php endforeach; ?>
         </div>
     </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".btn-add-to-cart").forEach(button => {
+        button.addEventListener("click", async () => {
+            const gameId = button.getAttribute("data-id");
 
+            const response = await fetch(`../panier/add_to_cart.php?id=${gameId}`);
+            const data = await response.json();
+
+            // Créer une alerte
+            const alertBox = document.createElement("div");
+            alertBox.className = `alert mt-3 text-center alert-${data.status === "success" ? "success" : "danger"}`;
+            alertBox.textContent = data.message;
+
+            // Ajouter l'alerte au conteneur d'alertes
+            const alertContainer = document.getElementById("alert-container");
+            alertContainer.appendChild(alertBox);
+
+            // Supprimer l'alerte après 5 secondes
+            setTimeout(() => alertBox.remove(), 5000);
+
+            // Mettre à jour le badge du panier
+            const panierCount = data.panierCount; // Assurez-vous que vous envoyez ce champ depuis le PHP.
+            updatePanierBadge(panierCount);
+        });
+    });
+});
+
+function updatePanierBadge(count) {
+    const badge = document.querySelector(".panier-badge");
+    if (badge) {
+        if (count > 0) {
+            badge.textContent = count;
+            badge.style.display = 'inline'; // Afficher le badge si il y a des articles
+        } else {
+            badge.style.display = 'none'; // Cacher le badge si le panier est vide
+        }
+    }
+}
+</script>
 </body>
 
 </html>
 
 <style>
-    /* Supprimer toute marge externe indésirable */
-    .carousel-container {
-        padding: 0 !important;
-        /* Enlever le padding */
-        margin: 0 !important;
-        /* Enlever la marge */
-        position: relative;
-    }
+.card {
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
 
-    /* Centrer le carousel */
-    #gameCarousel {
-        width: 100%;
-        max-width: 800px;
-        /* Limiter la largeur */
-        margin: 0 auto;
-        /* Centrer horizontalement */
-    }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
 
-    /* Centrer le contenu du carousel */
-    .carousel-inner {
-        text-align: center;
-    }
+.card-body {
+    padding: 1.2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
 
-    /* Centrer le texte des captions */
-    .carousel-caption {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+.card-text {
+    margin-bottom: auto;
+}
 
-    /* Centrer les titres */
-    h1,
-    h2 {
-        text-align: center;
-    }
+.btn {
+    font-weight: 500;
+}
 
-    /* Ajustements pour les images dans la grille */
-    .card-img-top {
-        height: 250px;
-        object-fit: cover;
-    }
+.carousel-container {
+    padding: 0 !important;
+    margin: 0 auto;
+    position: relative;
+}
 
-    /* Animation de défilement des jeux en arrière-plan */
-    .carousel-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        overflow: hidden;
-    }
+.carousel-inner {
+    text-align: center;
+}
 
-    .carousel-bg-content {
-        display: flex;
-        animation: slideBackground 15s linear infinite;
-    }
+.carousel-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-    .carousel-bg-item {
-        width: 100%;
-        height: 100%;
-        opacity: 0.5;
-        background-size: cover;
-        background-position: center;
-    }
-
-    /* Définir l'animation de défilement */
-    @keyframes slideBackground {
-        0% {
-            transform: translateX(0);
-        }
-
-        100% {
-            transform: translateX(-100%);
-        }
-    }
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
 </style>

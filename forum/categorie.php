@@ -2,8 +2,6 @@
 session_start();
 require('../include/database.php');
 require('../include/check_timeout.php');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 ?>
 
 <!DOCTYPE html>
