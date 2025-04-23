@@ -1,5 +1,6 @@
 <?php
 session_start();
+$login_page = '../connexion/login.php';
 require('../include/database.php');
 require('../include/check_session.php');
 require('../include/check_timeout.php');
