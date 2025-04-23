@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $teamId = $bdd->lastInsertId();
             $stmt = $bdd->prepare("INSERT INTO membres_equipe (id_equipe, id_utilisateur, role, date_rejoint) VALUES (?, ?, ?, NOW())");
             $stmt->execute([$teamId, $userId, 'capitaine']);
-            header('Location: team/team_details.php?id_équipe=' . $teamId);
+            header('Location: team_details.php?id_équipe=' . $teamId);
             exit();
         } catch (PDOException $e) {
             $error = "Erreur lors de la création de l'équipe : " . htmlspecialchars($e->getMessage());
