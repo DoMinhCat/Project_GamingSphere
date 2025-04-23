@@ -69,7 +69,6 @@ include('../include/head.php');
         <p class="text-center">Votre panier est vide.</p>
     <?php endif; ?>
 </div>
-
 </body>
 <?php include('../include/footer.php'); ?>
 </html>

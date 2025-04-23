@@ -62,7 +62,6 @@ include('../include/head.php');
         <a href="../profil.php" class="btn btn-secondary">👤 Mon profil</a>
     </div>
 </div>
-
 </body>
 <?php include('../include/footer.php'); ?>
 </html>

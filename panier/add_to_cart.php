@@ -1,12 +1,14 @@
 <?php
 session_start();
+
+header('Content-Type: application/json; charset=utf-8');
+
 require('../include/check_timeout.php');
 require('../include/database.php');
 require('../include/check_session.php');
 
 $id_utilisateur = $_SESSION['user_id'];
 
-// On vérifie bien 'id' comme reçu dans l'URL (ex: ?id=2)
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo json_encode(['status' => 'error', 'message' => 'ID de jeu invalide.']);
     exit();
@@ -32,7 +34,16 @@ if ($stmt->fetch()) {
 
 $stmt = $bdd->prepare("INSERT INTO panier (id_utilisateur, id_jeu) VALUES (?, ?)");
 if ($stmt->execute([$id_utilisateur, $id_jeu])) {
-    echo json_encode(['status' => 'success', 'message' => 'Le jeu a été ajouté à votre panier : ' . htmlspecialchars($jeu['nom'])]);
+
+    $stmtCount = $bdd->prepare("SELECT COUNT(*) FROM panier WHERE id_utilisateur = ?");
+    $stmtCount->execute([$id_utilisateur]);
+    $panierCount = $stmtCount->fetchColumn();
+
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Le jeu a été ajouté à votre panier : ' . htmlspecialchars($jeu['nom']),
+        'panierCount' => $panierCount 
+    ]);
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Erreur lors de l\'ajout au panier.']);
 }
