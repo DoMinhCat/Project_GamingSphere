@@ -63,6 +63,7 @@ include('../include/head.php');
         <?php endif; ?>
 
         <h2 class="mb-3 text-center">Tous les jeux</h2>
+        <div id="alert-container"></div>
         <div class="row">
             <?php foreach ($games as $game): ?>
             <div class="col-md-4 mb-4 d-flex align-items-stretch">
@@ -77,7 +78,7 @@ include('../include/head.php');
                         <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
                         <div class="mt-auto d-flex justify-content-between gap-2">
                             <a href="game_info.php?id=<?= $game['id_jeu'] ?>" class="btn btn-outline-primary w-50">Voir détails</a>
-                            <a href="../panier/add_to_cart.php?id_jeu=<?= $game['id_jeu'] ?>" class="btn btn-success w-50">Acheter</a>
+                            <button class="btn btn-success mt-3 btn-add-to-cart" data-id="<?= $game['id_jeu'] ?>">Acheter ce jeu</button>
                         </div>
                     </div>
                 </div>
@@ -85,6 +86,46 @@ include('../include/head.php');
             <?php endforeach; ?>
         </div>
     </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".btn-add-to-cart").forEach(button => {
+        button.addEventListener("click", async () => {
+            const gameId = button.getAttribute("data-id");
+
+            const response = await fetch(`../panier/add_to_cart.php?id=${gameId}`);
+            const data = await response.json();
+
+            // Créer une alerte
+            const alertBox = document.createElement("div");
+            alertBox.className = `alert mt-3 text-center alert-${data.status === "success" ? "success" : "danger"}`;
+            alertBox.textContent = data.message;
+
+            // Ajouter l'alerte au conteneur d'alertes
+            const alertContainer = document.getElementById("alert-container");
+            alertContainer.appendChild(alertBox);
+
+            // Supprimer l'alerte après 5 secondes
+            setTimeout(() => alertBox.remove(), 5000);
+
+            // Mettre à jour le badge du panier
+            const panierCount = data.panierCount; // Assurez-vous que vous envoyez ce champ depuis le PHP.
+            updatePanierBadge(panierCount);
+        });
+    });
+});
+
+function updatePanierBadge(count) {
+    const badge = document.querySelector(".panier-badge");
+    if (badge) {
+        if (count > 0) {
+            badge.textContent = count;
+            badge.style.display = 'inline'; // Afficher le badge si il y a des articles
+        } else {
+            badge.style.display = 'none'; // Cacher le badge si le panier est vide
+        }
+    }
+}
+</script>
 </body>
 
 </html>

@@ -48,6 +48,14 @@ include('../include/head.php');
         </div>
     </div>
 </div>
-
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const successMsg = document.querySelector(".achat-success");
+    if (successMsg) {
+        successMsg.classList.add("show");
+        setTimeout(() => successMsg.classList.remove("show"), 5000);
+    }
+});
+</script>
 </body>
 </html>

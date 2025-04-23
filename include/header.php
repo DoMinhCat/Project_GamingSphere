@@ -72,6 +72,9 @@ if (isset($_SESSION['user_id'])) {
     $credits = 0;
   }
 }
+
+$panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
+
 ?>
 
 
@@ -95,11 +98,14 @@ if (isset($_SESSION['user_id'])) {
               </select>
             </div>
           </form>
-
-          <a href=<?= ($this_page == 'index.php') ? 'panier/panier_main.php' : '../panier/panier_main.php' ?> class="btn btn-outline-dark d-flex align-items-center ms-3">
-            <i class="bi bi-cart-fill"></i>
+          <a href="<?= ($this_page == 'index.php') ? 'panier/panier_main.php' : '../panier/panier_main.php' ?>" class="btn btn-outline-dark d-flex align-items-center ms-3">
+              <i class="bi bi-cart-fill"></i>
+              <?php if ($panierCount > 0): ?>
+                  <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-2 rounded-circle panier-badge"><?= $panierCount ?></span>
+              <?php else: ?>
+                  <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-2 rounded-circle panier-badge" style="display:none;"></span>
+              <?php endif; ?>
           </a>
-
           <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
             <a href="<?= ($this_page == index_front) ? 'back-office/index.php' : '../back-office/index.php' ?>" class="btn btn-warning ms-2 px-2" style="background-color: #ffc107; color: #212529; border-radius: 10px; font-weight: bold; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
               <i class="bi bi-gear-fill"></i>Back office
