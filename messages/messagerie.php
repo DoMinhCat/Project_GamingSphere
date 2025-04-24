@@ -57,7 +57,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php if (!empty($conversations)): ?>
             <div class="list-group">
                 <?php foreach ($conversations as $conversation): ?>
-                    <a href="conversation.php?user=<?= $conversation['id_utilisateurs'] ?>" class="list-group-item list-group-item-action d-flex align-items-center">
+                    <a href="<?= conversation . '?user=' . $conversation['id_utilisateurs'] ?>" class="list-group-item list-group-item-action d-flex align-items-center">
                         <img src="../profil/<?= htmlspecialchars($conversation['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Profil" class="rounded-circle me-3" width="50" height="50">
                         <span><?= htmlspecialchars($conversation['pseudo']) ?></span>
                     </a>
@@ -69,7 +69,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
 
         <div class="text-center mt-4">
-            <a href="nouvelle_conversation.php" class="btn btn-primary">Créer une conversation</a>
+            <a href="<?= nouvelle_conversation ?>" class="btn btn-primary">Créer une conversation</a>
         </div>
 
     </div>

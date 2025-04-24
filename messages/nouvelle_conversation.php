@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Erreur : " . htmlspecialchars($e->getMessage());
         exit;
     }
-    header('Location: conversation.php?user=' . $friendId);
+    header('Location:' . conversation . '?user=' . $friendId);
     exit;
 }
 ?>
@@ -54,7 +54,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <div class="container my-4">
         <h2 class="mb-4 text-center">Choisir un ami pour démarrer une conversation</h2>
         <?php if (count($friends) > 0): ?>
-            <form method="POST" action="nouvelle_conversation.php">
+            <form method="POST" action="<?= nouvelle_conversation ?>">
                 <div class="list-group">
                     <?php foreach ($friends as $friend): ?>
                         <label class="list-group-item d-flex align-items-center">

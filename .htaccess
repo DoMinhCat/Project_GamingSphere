@@ -167,9 +167,23 @@ RewriteCond %{THE_REQUEST} \s/profil/tournament_list\.php [NC]
 RewriteRule ^profil/tournament_list\.php$ /mon_compte/tournament_list [R=301,L,QSA]
 RewriteRule ^mon_compte/tournament_list/?$ profil/tournament_list.php [L]
 
+# conversation.php (messages)
 
+RewriteCond %{THE_REQUEST} \s/messages/conversation\.php [NC]
+RewriteRule ^messages/conversation\.php$ /messages/conversation [R=301,L,QSA]
+RewriteRule ^messages/conversation/?$ messages/conversation.php [L]
 
+# messagerie.php (messages)
 
+RewriteCond %{THE_REQUEST} \s/messages/messagerie\.php [NC]
+RewriteRule ^messages/messagerie\.php$ /messages [R=301,L,QSA]
+RewriteRule ^messages/?$ messages/messagerie.php [L]
+
+# nouvelle_conversation.php (messages)
+
+RewriteCond %{THE_REQUEST} \s/messages/nouvelle_conversation\.php [NC]
+RewriteRule ^messages/nouvelle_conversation\.php$ /messages/new [R=301,L,QSA]
+RewriteRule ^messages/new/?$ messages/nouvelle_conversation.php [L]
 
 
 
