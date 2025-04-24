@@ -15,7 +15,9 @@ require('../head.php');
 ?>
 
 <body class="pb-4">
-    <?php include('../navbar.php'); ?>
+    <?php
+    $page = index_back;
+    include('../navbar.php'); ?>
 
     <div class="container my-5">
         <?php if (isset($_GET['message']) && $_GET['message'] === 'tournoi_deleted'): ?>
@@ -33,7 +35,7 @@ require('../head.php');
         <?php endif; ?>
         <h1 class="mb-4 text-center">Liste des Tournois Disponibles</h1>
         <div class="mb-4 text-end">
-            <a href="add_tournoi.php" class="btn btn-primary">Ajouter un tournoi</a>
+            <a href="<?= tournois_add_back ?>" class="btn btn-primary">Ajouter un tournoi</a>
         </div>
         <?php
         try {
@@ -63,9 +65,9 @@ require('../head.php');
                                 <td><?= htmlspecialchars($tournoi['status_ENUM']) ?></td>
                                 <td><?= htmlspecialchars($tournoi['type']) ?></td>
                                 <td>
-                                    <a href="modify_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning">Modifier</a>
+                                    <a href="<?= tournois_edit_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning">Modifier</a>
                                     <a href="delete_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce tournoi ?');">Supprimer</a>
-                                    <a href="tournoi_result.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-success">Éditer les Résultats</a>
+                                    <a href="<?= tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-success">Éditer les Résultats</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

@@ -16,7 +16,7 @@ require('../head.php');
 
 <body class="pb-4">
     <?php
-    $page = 'index.php';
+    $page = tournois_back;
     include('../navbar.php');
     ?>
 </body>

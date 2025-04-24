@@ -10,7 +10,7 @@ $dompdf = new Dompdf();
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
 } else {
-    header('location:profils.php?message=id_invalid');
+    header('location:' . profils_back . '?message=id_invalid');
     exit();
 }
 
@@ -18,7 +18,7 @@ $stmt = $bdd->prepare("SELECT id_utilisateurs, email, pseudo, nom, prenom, monna
 $stmt->execute([$id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) {
-    header('location:profils.php?message=user_non_exist');
+    header('location:' . profils_back . '?message=user_non_exist');
     exit();
 }
 

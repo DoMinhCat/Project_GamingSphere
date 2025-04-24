@@ -54,7 +54,7 @@ require('../head.php');
 
 <body class="pb-4">
     <?php
-    $page = 'jeux/jeux.php';
+    $page = jeux_back;
     include('../navbar.php');
     ?>
     <div class="container mt-4">

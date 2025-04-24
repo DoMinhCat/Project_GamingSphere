@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameId'])) {
         $stmt = $bdd->prepare($query);
         $stmt->execute($params);
         echo "<div class='alert alert-success text-center'>Jeu modifié avec succès !</div>";
-        header("Location: jeux.php?message=updated");
+        header('Location:' . jeux_back . '?message=updated');
         exit();
     } catch (PDOException $e) {
         echo "<div class='alert alert-danger text-center'>Erreur lors de la modification du jeu : " . $e->getMessage() . "</div>";
@@ -108,13 +108,13 @@ require('../head.php');
 
 <body class="pb-4">
     <?php
-    $page = 'jeux/jeux.php';
+    $page = jeux_back;
     include('../navbar.php');
     ?>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Modifier le jeu</h2>
         <?php if (isset($game)): ?>
-            <form action="modify_game.php" method="POST" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
+            <form action="<?= jeux_edit_back ?>" method="POST" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
                 <input type="hidden" name="gameId" value="<?php echo htmlspecialchars($game['id_jeu'] ?? ''); ?>">
 
                 <div class="mb-3">

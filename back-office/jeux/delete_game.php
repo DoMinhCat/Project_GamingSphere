@@ -20,14 +20,13 @@ if (isset($_GET['id'])) {
     $query = $bdd->prepare("DELETE FROM jeu WHERE id_jeu = :id");
     $query->bindParam(':id', $id, PDO::PARAM_INT);
     if ($query->execute()) {
-        header("Location: jeux.php?message_err=delete");
+        header('Location:' . jeux_back . '?message_err=delete');
         exit();
     } else {
-        header("Location: jeux.php?message_err=Une erreur s'est produite lors de la suppression du jeu.");
+        header('Location:' . jeux_back . '?message_err=' . urlencode('Une erreur s\'est produite lors de la suppression du jeu.'));
         exit();
     }
 } else {
-    header("Location: jeux.php?message_err=Aucun identifiant de jeu fourni.");
-        exit();
+    header('Location: ' . jeux_back . '?message_err=' . urlencode('Aucun identifiant de jeu fourni.'));
+    exit();
 }
-?>

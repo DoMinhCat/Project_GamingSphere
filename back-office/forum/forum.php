@@ -8,7 +8,7 @@ require_once __DIR__ . '/../../path.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <?php
 $title = 'Gestions du forum';
@@ -18,6 +18,7 @@ require('../head.php');
 
 <body class="pb-4">
     <?php
+    $page = index_back;
     include('../navbar.php');
     ?>
 </body>

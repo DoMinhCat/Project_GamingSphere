@@ -12,6 +12,9 @@ require_once __DIR__ . '/../path.php';
 <?php
 $title = 'Acceuil';
 require('head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../../include/check_timeout.js"></script>';
+}
 ?>
 
 <body class="pb-4">
@@ -34,49 +37,49 @@ require('head.php');
     <div class="container my-5">
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
-                <a href="event/evenements.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="<?= event_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des évènements
                 </a>
             </div>
             <div class="col">
-                <a href="tournois/tournois_main.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="<?= tournois_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des tournois
                 </a>
             </div>
             <div class="col">
-                <a href="paris/paris.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="<?= paris_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des paris
                 </a>
             </div>
 
             <div class="col">
-                <a href="forum/forum.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="<?= forum_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion du forum
                 </a>
             </div>
             <div class="col">
-                <a href="article/articles.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="<?= article_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des articles
                 </a>
             </div>
             <div class="col">
-                <a href="jeux/jeux.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="<?= jeux_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des jeux
                 </a>
             </div>
 
             <div class="col">
-                <a href="profils/profils.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="<?= profils_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des profils
                 </a>
             </div>
             <div class="col">
-                <a href="captcha/captcha.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="<?= captcha_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des captchas
                 </a>
             </div>
             <div class="col">
-                <a href="communication/communication.php" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                <a href="<?= communication_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                     Gestion des canaux de communication
                 </a>
             </div>
