@@ -21,14 +21,14 @@ require('../head.php');
 
 <body class="pb-4">
     <?php
-    $page = 'index.php';
+    $page = index_back;
     include('../navbar.php');
     ?>
     <div class="container mt-4">
         <h1 class="text-center mb-3" style="font-size: 1.5rem;">Liste des jeux</h1>
 
         <div class="text-end mb-3">
-            <a href="add_game.php" class="btn btn-primary">Ajouter un jeu</a>
+            <a href="<?= jeux_add_back ?>" class="btn btn-primary">Ajouter un jeu</a>
         </div>
 
         <table class="table table-bordered mt-3">
@@ -58,8 +58,8 @@ require('../head.php');
                             <td><?= htmlspecialchars($game['type']) ?></td>
                             <td><?= htmlspecialchars($game['éditeur']) ?></td>
                             <td class="text-center">
-                                <a href="delete_game.php?id=<?= $game['id_jeu'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce jeu ?');">Supprimer</a>
-                                <a href="modify_game.php?id=<?= $game['id_jeu'] ?>" class="btn btn-warning btn-sm">Modifier</a>
+                                <a href="delete_game.php?id=$game['id_jeu'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce jeu ?');">Supprimer</a>
+                                <a href="<?= jeux_edit_back . '?id=' . $game['id_jeu'] ?>" class="btn btn-warning btn-sm">Modifier</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

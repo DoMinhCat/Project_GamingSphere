@@ -28,6 +28,12 @@ RewriteCond %{THE_REQUEST} \s/magasin/magasin_main\.php [NC]
 RewriteRule ^magasin/magasin_main\.php$ /magasin [R=301,L]
 RewriteRule ^magasin/?$ magasin/magasin_main.php [L]
 
+# game_info.php (magasin)
+
+RewriteCond %{THE_REQUEST} \s/magasin/game_info\.php [NC]
+RewriteRule ^magasin/game_info\.php$ /magasin/game [R=301,L]
+RewriteRule ^magasin/game/?$ magasin/game_info.php [L]
+
 # tournois_main.php
 
 RewriteCond %{THE_REQUEST} \s/tournois/tournois_main\.php [NC]
@@ -36,23 +42,28 @@ RewriteRule ^tournois/?$ tournois/tournois_main.php [L]
 
 # tournois_details.php
 RewriteCond %{THE_REQUEST} \s/tournois/tournois_details\.php [NC]
-RewriteRule ^tournois/tournois_details\.php$ /tournois_details [R=301,L,QSA]
-RewriteRule ^tournois_details/?$ tournois/tournois_details.php [L]
+RewriteRule ^tournois/tournois_details\.php$ /tournois/details [R=301,L,QSA]
+RewriteRule ^tournois/details/?$ tournois/tournois_details.php [L]
+
+# tournois_jeux.php
+RewriteCond %{THE_REQUEST} \s/tournois/tournois_jeux\.php [NC]
+RewriteRule ^tournois/tournois_jeux\.php$ /tournois/jeux [R=301,L,QSA]
+RewriteRule ^tournois/jeux/?$ tournois/tournois_jeux.php [L]
 
 # create_team.php
 RewriteCond %{THE_REQUEST} \s/team/create_team\.php [NC]
-RewriteRule ^team/create_team\.php$ /create_team [R=301,L,QSA]
-RewriteRule ^create_team/?$ team/create_team.php [L]
+RewriteRule ^team/create_team\.php$ /team/create [R=301,L,QSA]
+RewriteRule ^/team/create/?$ team/create_team.php [L]
 
 # team_details.php
 RewriteCond %{THE_REQUEST} \s/team/team_details\.php [NC]
-RewriteRule ^team/team_details\.php$ /team_details [R=301,L,QSA]
-RewriteRule ^team_details/?$ team/team_details.php [L]
+RewriteRule ^team/team_details\.php$ /team/details [R=301,L,QSA]
+RewriteRule ^team/details/?$ team/team_details.php [L]
 
 # team_list.php
 RewriteCond %{THE_REQUEST} \s/team/team_list\.php [NC]
-RewriteRule ^team/team_list\.php$ /team_list [R=301,L,QSA]
-RewriteRule ^team_list/?$ team/team_list.php [L]
+RewriteRule ^team/team_list\.php$ /team/list [R=301,L,QSA]
+RewriteRule ^team/list/?$ team/team_list.php [L]
 
 # communaute_main.php
 
@@ -69,8 +80,14 @@ RewriteRule ^actualite/?$ actualite/actualite_main.php [L]
 # actualite_article.php
 
 RewriteCond %{THE_REQUEST} \s/actualite/actualite_article\.php [NC]
-RewriteRule ^actualite/actualite_article\.php$ /actualite_article [R=301,L,QSA]
-RewriteRule ^actualite_article/?$ actualite/actualite_article.php [L]
+RewriteRule ^actualite/actualite_article\.php$ /actualite/article [R=301,L,QSA]
+RewriteRule ^actualite/article/?$ actualite/actualite_article.php [L]
+
+# actualite_categorie.php
+
+RewriteCond %{THE_REQUEST} \s/actualite/actualite_categorie\.php [NC]
+RewriteRule ^actualite/actualite_categorie\.php$ /actualite/categorie [R=301,L,QSA]
+RewriteRule ^actualite/categorie/?$ actualite/actualite_categorie.php [L]
 
 # forum_main.php
 
@@ -122,9 +139,9 @@ RewriteRule ^mon_compte/edit/?$ profil/edit_account.php [L]
 
 # friend_list.php (profil)
 
-RewriteCond %{THE_REQUEST} \s/profil/friend_list\.php [NC]
-RewriteRule ^profil/friend_list\.php$ /mon_compte/friend_list [R=301,L,QSA]
-RewriteRule ^mon_compte/friend_list/?$ profil/friend_list.php [L]
+RewriteCond %{THE_REQUEST} \s/profil/friends_list\.php [NC]
+RewriteRule ^profil/friends_list\.php$ /mon_compte/friend_list [R=301,L,QSA]
+RewriteRule ^mon_compte/friend_list/?$ profil/friends_list.php [L]
 
 # my_teams.php (profil)
 
@@ -154,11 +171,135 @@ RewriteRule ^mon_compte/tournament_list/?$ profil/tournament_list.php [L]
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # back-office index.php
 
 RewriteCond %{THE_REQUEST} \s/back-office/index\.php [NC]
 RewriteRule ^back-office/index\.php$ /back-office/ [R=301,L]
 RewriteRule ^back-office/?$ back-office/index.php [L]
+
+# back-office articles.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/article/articles\.php [NC]
+RewriteRule ^back-office/article/articles\.php$ /back-office/article [R=301,L,QSA]
+RewriteRule ^back-office/article/?$ back-office/article/articles.php [L]
+
+# back-office articles.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/article/article_edit\.php [NC]
+RewriteRule ^back-office/article/article_edit\.php$ /back-office/article/edit [R=301,L,QSA]
+RewriteRule ^back-office/article/edit/?$ back-office/article/article_edit.php [L]
+
+# back-office captcha.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/captcha/captcha\.php [NC]
+RewriteRule ^back-office/captcha/captcha\.php$ /back-office/captcha [R=301,L,QSA]
+RewriteRule ^back-office/captcha/?$ back-office/captcha/captcha.php [L]
+
+# back-office captcha_edit.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/captcha/captcha_edit\.php [NC]
+RewriteRule ^back-office/captcha/captcha_edit\.php$ /back-office/captcha/edit [R=301,L,QSA]
+RewriteRule ^back-office/captcha/edit/?$ back-office/captcha/captcha_edit.php [L]
+
+# back-office communication.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/communication/communication\.php [NC]
+RewriteRule ^back-office/communication/communication\.php$ /back-office/communication [R=301,L,QSA]
+RewriteRule ^back-office/communication/?$ back-office/communication/communication.php [L]
+
+# back-office evenements.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/event/evenements\.php [NC]
+RewriteRule ^back-office/event/evenements\.php$ /back-office/event [R=301,L,QSA]
+RewriteRule ^back-office/event/?$ back-office/event/evenements.php [L]
+
+# back-office forum.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/forum/forum\.php [NC]
+RewriteRule ^back-office/forum/forum\.php$ /back-office/forum [R=301,L,QSA]
+RewriteRule ^back-office/forum/?$ back-office/forum/forum.php [L]
+
+# back-office jeux.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/jeux/jeux\.php [NC]
+RewriteRule ^back-office/jeux/jeux\.php$ /back-office/jeux [R=301,L,QSA]
+RewriteRule ^back-office/jeux/?$ back-office/jeux/jeux.php [L]
+
+# back-office modify_game.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/jeux/modify_game\.php [NC]
+RewriteRule ^back-office/jeux/modify_game\.php$ /back-office/jeux/edit [R=301,L,QSA]
+RewriteRule ^back-office/jeux/edit/?$ back-office/jeux/modify_game.php [L]
+
+# back-office add_game.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/jeux/add_game\.php [NC]
+RewriteRule ^back-office/jeux/add_game\.php$ /back-office/jeux/add [R=301,L,QSA]
+RewriteRule ^back-office/jeux/add/?$ back-office/jeux/add_game.php [L]
+
+# back-office paris.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/paris/paris\.php [NC]
+RewriteRule ^back-office/paris/paris\.php$ /back-office/paris [R=301,L,QSA]
+RewriteRule ^back-office/paris/?$ back-office/paris/paris.php [L]
+
+# back-office profils.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/profils/profils\.php [NC]
+RewriteRule ^back-office/profils/profils\.php$ /back-office/profils [R=301,L,QSA]
+RewriteRule ^back-office/profils/?$ back-office/profils/profils.php [L]
+
+# back-office edit_user.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/profils/edit_user\.php [NC]
+RewriteRule ^back-office/profils/edit_user\.php$ /back-office/profils/edit [R=301,L,QSA]
+RewriteRule ^back-office/profils/edit/?$ back-office/profils/edit_user.php [L]
+
+# back-office tournois_main.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/tournois/tournois_main\.php [NC]
+RewriteRule ^back-office/tournois/tournois_main\.php$ /back-office/tournois [R=301,L,QSA]
+RewriteRule ^back-office/tournois/?$ back-office/tournois/tournois_main.php [L]
+
+# back-office add_tournoi.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/tournois/add_tournoi\.php [NC]
+RewriteRule ^back-office/tournois/add_tournoi\.php$ /back-office/tournois/add [R=301,L,QSA]
+RewriteRule ^back-office/tournois/add/?$ back-office/tournois/add_tournoi.php [L]
+
+# back-office modify_tournoi.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/tournois/modify_tournoi\.php [NC]
+RewriteRule ^back-office/tournois/modify_tournoi\.php$ /back-office/tournois/edit [R=301,L,QSA]
+RewriteRule ^back-office/tournois/edit/?$ back-office/tournois/modify_tournoi.php [L]
+
+# back-office tournoi_result.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/tournois/tournoi_result\.php [NC]
+RewriteRule ^back-office/tournois/tournoi_result\.php$ /back-office/tournois/result [R=301,L,QSA]
+RewriteRule ^back-office/tournois/result/?$ back-office/tournois/tournoi_result.php [L]
+
+
+
+
+
+
 
 
 

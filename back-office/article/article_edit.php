@@ -1,24 +1,24 @@
 <?php
 session_start();
-require('../../include/database.php');
 $login_page = '../../connexion/login.php';
 require('../check_session.php');
 require('../../include/check_timeout.php');
+require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
-
 <?php
-$title = 'Questions captcha';
-require('../head.php');
+$title = 'Modification des Articles';
+require('../../include/head.php');
 ?>
 
-<body class="pb-4">
+<body>
     <?php
     $page = index_back;
-    include('../navbar.php');
-    ?>
+    include("../navbar.php"); ?>
 </body>
 
 </html>

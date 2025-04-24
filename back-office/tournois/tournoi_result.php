@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
     $updateStatus = $bdd->prepare("UPDATE tournoi SET status_ENUM = 'Terminé' WHERE id_tournoi = ?");
     $updateStatus->execute([$id_tournoi]);
 
-    header("Location: tournois_main.php?id_tournoi=" . $id_tournoi . "&updated=1");
+    header('Location:' . tournois_back . '?id_tournoi=' . $id_tournoi . "&updated=1");
     exit();
 }
 ?>
@@ -76,13 +76,12 @@ require('../head.php');
 ?>
 
 <body>
-    <?php include('../navbar.php'); ?>
+    <?php
+    $page = tournois_back;
+    include('../navbar.php'); ?>
 
     <div class="container my-5">
         <h1 class="mb-4 text-center">Résultats du Tournoi : <?= htmlspecialchars($tournoi['nom_tournoi']); ?></h1>
-        <div class="mb-4 text-end">
-            <a href="tournoi_list.php" class="btn btn-primary">Retour à la Liste des Tournois</a>
-        </div>
         <h3>Participants et Résultats</h3>
         <form method="post">
             <table class="table table-striped table-bordered">

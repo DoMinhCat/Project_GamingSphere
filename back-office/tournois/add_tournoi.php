@@ -14,7 +14,9 @@ require('../head.php');
 ?>
 
 <body class="pb-4">
-    <?php include('../navbar.php'); ?>
+    <?php
+    $page = tournois_back;
+    include('../navbar.php'); ?>
 
     <div class="container my-5">
         <h1 class="mb-4 text-center">Ajouter un Nouveau Tournoi</h1>
@@ -32,7 +34,7 @@ require('../head.php');
                 try {
                     $stmt = $bdd->prepare("INSERT INTO tournoi (nom_tournoi, date_debut, date_fin, jeu, status_ENUM, type) VALUES (?, ?, ?, ?, ?, ?)");
                     $stmt->execute([$nom_tournoi, $date_debut, $date_fin, $jeu, $statut, $type_tournoi]);
-                    header("Location: tournois_main.php?message=tournoi_added");
+                    header('Location:' . tournois_back . '?message=tournoi_added');
                     exit();
                 } catch (PDOException $e) {
                     echo "<div class='alert alert-danger'>Erreur lors de l'ajout du tournoi : " . htmlspecialchars($e->getMessage()) . "</div>";
@@ -74,7 +76,7 @@ require('../head.php');
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Ajouter le Tournoi</button>
-                <a href="tournois_main.php" class="btn btn-secondary">Retour</a>
+                <a href="<?= tournois_back ?>" class="btn btn-secondary">Retour</a>
             </div>
         </form>
     </div>

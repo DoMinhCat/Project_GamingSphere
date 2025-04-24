@@ -11,14 +11,14 @@ try {
         $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            header("Location: profils.php?message=delete");
+            header('Location: ' . profils_back . '?message=delete');
             exit();
         } else {
-            header('location:profils.php?message=user_non_exist');
+            header('location:' . profils_back . '?message=user_non_exist');
             exit();
         }
     } else {
-        header('location:profils.php?message=id_invalid');
+        header('location:' . profils_back . '?message=id_invalid');
         exit();
     }
 } catch (PDOException $e) {

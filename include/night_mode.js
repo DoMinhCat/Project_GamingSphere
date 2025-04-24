@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const toggleBtn = document.getElementById("theme-btn");
-  const offcanvasEl = document.getElementById("offcanvasWithBothOptions");
   const body = document.body;
 
   function updateButtonText(button) {
@@ -10,29 +8,25 @@ document.addEventListener("DOMContentLoaded", () => {
       : "Activer mode nuit";
   }
 
-  function toggleTheme() {
-    const isDark = body.classList.toggle("dark");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-    updateButtonText(toggleBtn);
-    const mobileBtn = document.getElementById("theme-btn-mobile");
-    updateButtonText(mobileBtn);
-  }
-
   if (localStorage.getItem("theme") === "dark") {
     body.classList.add("dark");
   }
 
-  updateButtonText(toggleBtn);
-  toggleBtn?.addEventListener("click", toggleTheme);
+  updateButtonText(document.getElementById("theme-btn"));
+  updateButtonText(document.getElementById("theme-btn-mobile"));
 
-  if (offcanvasEl) {
-    offcanvasEl.addEventListener("shown.bs.offcanvas", () => {
-      const toggleBtn_mobile = document.getElementById("theme-btn-mobile");
-      if (toggleBtn_mobile && !toggleBtn_mobile.dataset.bound) {
-        toggleBtn_mobile.addEventListener("click", toggleTheme);
-        toggleBtn_mobile.dataset.bound = "true";
-        updateButtonText(toggleBtn_mobile);
-      }
-    });
-  }
+  document.addEventListener("click", (e) => {
+    const target = e.target;
+
+    if (
+      target &&
+      (target.id === "theme-btn" || target.id === "theme-btn-mobile")
+    ) {
+      const isDark = body.classList.toggle("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+
+      updateButtonText(document.getElementById("theme-btn"));
+      updateButtonText(document.getElementById("theme-btn-mobile"));
+    }
+  });
 });

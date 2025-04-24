@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../path.php';
 if (!empty($_GET['id'])) {
     $user_id = $_GET['id'];
 } else {
-    header('location:profils.php?message=id_invalid');
+    header('location:' . profils_back . '?message=id_invalid');
     exit();
 }
 
@@ -18,7 +18,7 @@ $stmt->bindValue(1, $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) {
-    header('location:profils.php?message=user_non_exist');
+    header('location:' . profils_back . '?message=user_non_exist');
     exit();
 }
 
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $update_stmt->bindValue(9, $user_id, PDO::PARAM_INT);
     $update_stmt->execute();
 
-    header("Location: profils.php?message=success");
+    header('Location: ' . profils_back . '?message=success');
     exit();
 }
 ?>
@@ -71,7 +71,7 @@ require('../head.php');
 
 <body class="pb-4">
     <?php
-    $page = 'profils/profils.php';
+    $page = profils_back;
     include('../navbar.php');
     ?>
     <div class="container">

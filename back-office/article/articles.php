@@ -1,40 +1,33 @@
 <?php
 session_start();
+$login_page = '../../connexion/login.php';
 require('../check_session.php');
+require('../../include/check_timeout.php');
 require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
 
-if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
-    echo '<script src="../include/check_timeout.js"></script>';
-} else {
-    header('Location: login.php');  // Si l'utilisateur n'est pas connecté, redirige vers la page de login
-    exit();
-}
 
-// Gestion de l'ajout d'un article
 if (isset($_POST['add_article'])) {
     $titre = $_POST['titre'];
     $contenu = $_POST['contenu'];
-    $date_article = date('Y-m-d'); // Date de création de l'article
+    $date_article = date('Y-m-d');
 
     $query = $bdd->prepare("INSERT INTO news (titre, date_article, contenue) VALUES (?, ?, ?)");
     $query->execute([$titre, $date_article, $contenu]);
 
-    header('Location: articles.php'); // Redirection après ajout
+    header('Location:' . article_back);
     exit();
 }
 
-// Gestion de la suppression d'un article
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
     $query = $bdd->prepare("DELETE FROM news WHERE id_news = ?");
     $query->execute([$delete_id]);
 
-    header('Location: articles.php'); // Redirection après suppression
+    header('Location:' . article_back);
     exit();
 }
 
-// Gestion de la modification d'un article
 if (isset($_POST['update_article'])) {
     $update_id = $_POST['update_id'];
     $titre = $_POST['titre'];
@@ -43,11 +36,10 @@ if (isset($_POST['update_article'])) {
     $query = $bdd->prepare("UPDATE news SET titre = ?, contenue = ? WHERE id_news = ?");
     $query->execute([$titre, $contenu, $update_id]);
 
-    header('Location: articles.php'); // Redirection après modification
+    header('Location:' . article_back);
     exit();
 }
 
-// Affichage des articles existants
 $query = $bdd->query("SELECT * FROM news ORDER BY date_article DESC");
 $articles = $query->fetchAll();
 ?>
@@ -56,17 +48,19 @@ $articles = $query->fetchAll();
 <html lang="fr">
 <?php
 $title = 'Gestion des Articles';
-include('../../include/head.php');
+require('../../include/head.php');
 ?>
 
 <body>
-    <?php include("../navbar.php"); ?>
+    <?php
+    $page = index_back;
+    include("../navbar.php"); ?>
 
     <div class="container my-5">
         <h1 class="mb-4">Gestion des Articles</h1>
 
         <!-- Formulaire d'ajout d'article -->
-        <form method="POST" action="articles.php" class="mb-5">
+        <form method="POST" action="<?= article_back ?>" class="mb-5">
             <h3>Ajouter un nouvel article</h3>
             <div class="mb-3">
                 <label for="titre" class="form-label">Titre</label>
@@ -95,8 +89,8 @@ include('../../include/head.php');
                         <td><?= htmlspecialchars($article['titre']) ?></td>
                         <td><?= htmlspecialchars($article['date_article']) ?></td>
                         <td>
-                            <a href="articles.php?delete_id=<?= $article['id_news'] ?>" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">Supprimer</a>
-                            <a href="article_edit.php?id=<?= $article['id_news'] ?>" class="btn btn-warning">Modifier</a>
+                            <a href="'<?= article_back . '?delete_id=' . $article['id_news'] ?>." class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">Supprimer</a>
+                            <a href="<?= article_edit_back . '?id=' . $article['id_news'] ?>" class="btn btn-warning">Modifier</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
