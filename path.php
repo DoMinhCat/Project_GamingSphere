@@ -2,41 +2,58 @@
 //FRONT OFFICE
 define('index_front', '/'); // index.php
 
-define('login', '/connexion'); // connexion/login.php
-define('inscription', '/inscription'); // connexion/inscription.php
+//connexion
+define('login', '/connexion'); // login.php
+define('inscription', '/inscription'); // inscription.php
 
-define('magasin_main', '/magasin'); // magasin/magasin_main.php
-define('magasin_game', '/magasin/game'); // magasin/game_info.php
+//magasin
+define('magasin_main', '/magasin'); // magasin_main.php
+define('magasin_game', '/magasin/game'); // game_info.php
 
-define('tournois_main', '/tournois'); // tournois/tournois_main.php
-define('tournois_details', '/tournois/details'); // tournois/tournois_details.php
-define('tournois_jeux', '/tournois/jeux'); // tournois/tournois_jeux.php
+//tournois
+define('tournois_main', '/tournois'); // tournois_main.php
+define('tournois_details', '/tournois/details'); // tournois_details.php
+define('tournois_jeux', '/tournois/jeux'); // tournois_jeux.php
 
-define('create_team', '/team/create'); // team/create_team.php
-define('team_details', '/team/details'); // team/team_details.php
-define('team_list', '/team/list'); // team/team_list.php
+//team
+define('create_team', '/team/create'); // create_team.php
+define('team_details', '/team/details'); // team_details.php
+define('team_list', '/team/list'); // team_list.php
 
-define('communaute_main', '/communaute'); // communaute/communaute.php
+//communaute
+define('communaute_main', '/communaute'); // communaute.php
 
-define('actualite_main', '/actualite'); // actualite/actualite_main.php
-define('actualite_article', '/actualite/article'); // actualite/actualite_article.php
-define('actualite_categorie', '/actualite/categorie'); // actualite/actualite_categorie.php
+//actualite
+define('actualite_main', '/actualite'); // actualite_main.php
+define('actualite_article', '/actualite/article'); // actualite_article.php
+define('actualite_categorie', '/actualite/categorie'); // actualite_categorie.php
 
-define('forum_main', '/forum'); // forum/forum.php
-define('forum_category', '/forum/category'); // forum/categorie.php
-define('nouveau_sujet', '/forum/new'); // forum/nouveau_sujet.php
-define('sujet', '/forum/sujet'); // forum/sujet.php
+//forum
+define('forum_main', '/forum'); // forum.php
+define('forum_category', '/forum/category'); // categorie.php
+define('nouveau_sujet', '/forum/new'); // nouveau_sujet.php
+define('sujet', '/forum/sujet'); // sujet.php
 
-define('panier', '/panier'); // panier/panier_main.php
-define('confirmation_achat', '/panier/confirmation_achat/'); // panier/confirmation_achat.php
+//panier
+define('panier', '/panier'); // panier_main.php
+define('confirmation_achat', '/panier/confirmation_achat/'); // confirmation_achat.php
 
-define('my_account', '/mon_compte'); // profil/my_account.php
-define('edit_account', '/mon_compte/edit'); // profil/edit_account.php
-define('friend_list', '/mon_compte/friend_list'); // profil/friend_list.php
-define('my_teams', '/mon_compte/teams'); // profil/my_teams.php
-define('order_history', '/mon_compte/order_history'); // profil/order_history.php
-define('profil', '/profil'); // profil/profil.php
-define('tournament_list', '/mon_compte/tournament_list'); // profil/tournament_list.php
+//profil
+define('my_account', '/mon_compte'); // my_account.php
+define('edit_account', '/mon_compte/edit'); // edit_account.php
+define('friend_list', '/mon_compte/friend_list'); // friend_list.php
+define('my_teams', '/mon_compte/teams'); // my_teams.php
+define('order_history', '/mon_compte/order_history'); // order_history.php
+define('profil', '/profil'); // profil.php
+define('tournament_list', '/mon_compte/tournament_list'); // tournament_list.php
+
+//messages
+define('conversation', '/messages/conversation'); // conversation.php
+define('messagerie', '/messages'); // messagerie.php
+define('nouvelle_conversation', '/messages/new'); // nouvelle_conversation.php
+
+
+
 
 
 

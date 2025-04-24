@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
                 ]);
                 exit;
             }
-            header("Location: conversation.php?user=$otherUserId");
+            header('Location:' . conversation . '?user=$otherUserId');
             exit;
         } catch (PDOException $e) {
             echo "Erreur : " . htmlspecialchars($e->getMessage());
@@ -100,7 +100,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php endforeach; ?>
             </div>
 
-            <form action="conversation.php?user=<?= $otherUserId ?>" method="POST" class="message-input-container">
+            <form action="<?= conversation . '?user=' . $otherUserId ?>" method="POST" class="message-input-container">
                 <textarea name="message" rows="2" placeholder="Écrivez un message..." required></textarea>
                 <button type="submit" class="send-button">Envoyer</button>
             </form>
