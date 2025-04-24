@@ -56,7 +56,7 @@ $reponses = $stmt->fetchAll();
         <h2 class="mb-3"><?= htmlspecialchars($sujet['titre']) ?></h2>
         <div class="mb-4">
             <div class="p-3 border rounded bg-light">
-                <p><?= nl2br(htmlspecialchars($sujet['contenu'])) ?></p>
+                <p><?= nl2br(htmlspecialchars($sujet['contenu']??'')) ?></p>
                 <p class="text-muted text-end">Posté par <?= htmlspecialchars($sujet['auteur']) ?> le <?= date("d/m/Y à H:i", strtotime($sujet['date_msg'])) ?></p>
             </div>
         </div>
