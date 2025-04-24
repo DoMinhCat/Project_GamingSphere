@@ -71,7 +71,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         </div>
     </div>
-    <script src="fluid.js"></script>
+    <script src="/tournois/fluid.js"></script>
     <?php include('../include/footer.php'); ?>
 </body>
 
