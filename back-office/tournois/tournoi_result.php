@@ -111,13 +111,13 @@ require('../head.php');
                             $stmt->execute([$id_tournoi, $id_tournoi]);
                         } else {
                             $stmt = $bdd->prepare("
-                                SELECT e.id_équipe AS participant_id, e.nom AS nom_equipe, 
+                                SELECT e.id_equipe AS participant_id, e.nom AS nom_equipe, 
                                        COALESCE(r.result_id, 0) AS result_id,
                                        COALESCE(r.position, '') AS position,
                                        COALESCE(r.credits_awarded, 0) AS credits_awarded
                                 FROM equipes_tournois et
-                                JOIN equipe e ON et.id_equipe = e.id_équipe
-                                LEFT JOIN tournament_results r ON r.tournament_id = ? AND r.team_id = e.id_équipe
+                                JOIN equipe e ON et.id_equipe = e.id_equipe
+                                LEFT JOIN tournament_results r ON r.tournament_id = ? AND r.team_id = e.id_equipe
                                 WHERE et.id_tournoi = ?
                                 ORDER BY r.position ASC, e.nom ASC
                             ");
