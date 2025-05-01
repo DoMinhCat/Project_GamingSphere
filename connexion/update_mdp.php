@@ -1,6 +1,11 @@
 <meta charset="UTF-8">
 <?php
-
+session_start();
+require_once __DIR__ . '/../path.php';
+if (!empty($_SESSION['user_email'])) {
+    header('location:' . index_front);
+    exit();
+}
 require '/var/www/PA/PHPMailer/src/PHPMailer.php';
 require '/var/www/PA/PHPMailer/src/SMTP.php';
 require '/var/www/PA/PHPMailer/src/Exception.php';

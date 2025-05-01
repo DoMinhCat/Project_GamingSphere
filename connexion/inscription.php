@@ -1,16 +1,18 @@
 <?php
-if (isset($_SESSION['user_email']) || !empty($_SESSION['user_email'])) {
+session_start();
+if (!empty($_SESSION['user_email'])) {
   header('location:' . index_front);
   exit();
 }
+require_once __DIR__ . '/../path.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
 <?php
 $title = 'S\'inscrire';
 include('../include/head.php');
-session_start();
 $error = isset($_GET['error']) ? $_GET['error'] : "";
 
 ?>

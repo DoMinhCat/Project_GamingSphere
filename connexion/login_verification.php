@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require_once __DIR__ . '/../path.php';
 function writeLogLine(string $email, bool $success): void
 {
     $stream = fopen('../log/log_login.txt', 'a+');

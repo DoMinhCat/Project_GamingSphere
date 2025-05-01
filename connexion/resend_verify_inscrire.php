@@ -1,16 +1,19 @@
 <?php
 session_start();
-if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
-  header('location: ../index.php?message=email_verifie');
+require_once __DIR__ . '/../path.php';
+if (!empty($_SESSION['user_email'])) {
+  header('location:' . index_front);
   exit();
 }
+?>
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<?php
 $title = 'Vérification de l\'email';
 include('../include/head.php');
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-
-</html>
 
 <body>
   <?php

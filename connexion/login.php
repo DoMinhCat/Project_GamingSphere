@@ -1,6 +1,7 @@
 <?php
+session_start();
 require_once __DIR__ . '/../path.php';
-if (isset($_SESSION['user_email']) || !empty($_SESSION['user_email'])) {
+if (!empty($_SESSION['user_email'])) {
     header('location:' . index_front);
     exit();
 }
