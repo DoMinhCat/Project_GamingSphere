@@ -17,7 +17,7 @@ require('../../include/head.php');
 
 <body>
     <?php
-    $page = index_back;
+    $page = article_back;
     include("../navbar.php"); ?>
 </body>
 

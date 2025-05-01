@@ -5,10 +5,21 @@ define('index_front', '/'); // index.php
 //connexion
 define('login', '/connexion'); // login.php
 define('inscription', '/inscription'); // inscription.php
+define('forgot_mdp', '/connexion/verify_email'); // forgot_mdp.php
+define('reset_mdp_err', '/connexion/reset_password/error'); // reset_mdp_err.php
+define('reset_mdp', '/connexion/reset_password'); // reset_mdp.php
+define('session_timeout', '/connexion/session_timeout'); // session_timeout.php
+define('status_verify', '/connexion/status_verify'); // status_verify.php
 
 //magasin
 define('magasin_main', '/magasin'); // magasin_main.php
 define('magasin_game', '/magasin/game'); // game_info.php
+
+//credits
+define('add_credits', '/credits/add'); // add_credits.php
+define('cancel', '/credits/cancel'); // cancel.php
+define('credits_main', '/credits'); // credits_main.php
+define('success', '/credits/paiement'); // success.php
 
 //tournois
 define('tournois_main', '/tournois'); // tournois_main.php
