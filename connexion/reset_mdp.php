@@ -1,4 +1,11 @@
 <?php
+session_start();
+require_once __DIR__ . '/../path.php';
+if (!empty($_SESSION['user_email'])) {
+  header('location:' . index_front);
+  exit();
+}
+
 if (!isset($_GET['token']) || empty($_GET['token'])) {
   header('Location: reset_mdp_err.php?message=' . urldecode("Cette page est actuellement indisponible"));
   exit();

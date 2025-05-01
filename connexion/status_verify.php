@@ -1,4 +1,10 @@
 <?php
+session_start();
+require_once __DIR__ . '/../path.php';
+if (!empty($_SESSION['user_email'])) {
+    header('location:' . index_front);
+    exit();
+}
 if (!isset($_GET['result'])) {
     header('../location:index.php');
     exit();

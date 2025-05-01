@@ -5,12 +5,13 @@ require '../vendor/autoload.php';
 require '/var/www/PA/PHPMailer/src/PHPMailer.php';
 require '/var/www/PA/PHPMailer/src/SMTP.php';
 require '/var/www/PA/PHPMailer/src/Exception.php';
+require_once __DIR__ . '/../path.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;
 
-include('../include/database.php');
+require('../include/database.php');
 
 $dotenv = Dotenv::createImmutable('/var/www/PA');
 $dotenv->load();
