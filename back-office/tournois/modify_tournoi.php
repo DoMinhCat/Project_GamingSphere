@@ -19,6 +19,10 @@ require('../head.php');
     $page = tournois_back;
     include('../navbar.php');
     ?>
+    <main class="container my-5">
+
+
+    </main>
 </body>
 
 </html>

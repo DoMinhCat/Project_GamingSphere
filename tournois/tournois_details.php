@@ -62,7 +62,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <p class="card-text"><strong>Statut :</strong> <?= htmlspecialchars($tournoi['status_ENUM']) ?></p>
             </div>
             <div class="card-footer text-center">
-                <a href="<?php tournois_main ?>" class="btn btn-secondary">Retour à la liste</a>
+                <a href="<?= tournois_main ?>" class="btn btn-secondary">Retour à la liste</a>
                 <?php if ($is_registered): ?>
                     <button class="btn btn-danger desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Se désinscrire</button>
                 <?php else: ?>

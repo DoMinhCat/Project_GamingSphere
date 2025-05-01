@@ -19,7 +19,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <?php
     include("../include/header.php");
     ?>
-    <main>
+    <main class="container my-5">
 
 
     </main>

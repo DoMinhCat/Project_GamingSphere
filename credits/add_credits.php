@@ -1,15 +1,19 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-  header("Location: /login.php");
-  exit();
-}
+$login_page = '../connexion/login.php';
+require('../include/check_session.php');
+require('../include/check_timeout.php');
+require_once __DIR__ . '/../path.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php $title = 'Ajouter des Crédits';
-include('../include/head.php'); ?>
+<?php $title = 'Ajouter des crédits';
+include('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+  echo '<script src="../include/check_timeout.js"></script>';
+}
+?>
 
 <body class="bg-light">
   <?php include('../include/header.php'); ?>

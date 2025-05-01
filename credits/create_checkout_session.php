@@ -1,12 +1,9 @@
 <?php
-require '../vendor/autoload.php';
-
 session_start();
-
-if (!isset($_SESSION['user_id'])) {
-  header("Location: /login.php");
-  exit();
-}
+$login_page = '../connexion/login.php';
+require('../include/check_session.php');
+require_once __DIR__ . '/../path.php';
+require '../vendor/autoload.php';
 
 \Stripe\Stripe::setApiKey('sk_test_51RDpJn2ZZkaFqUsQHx2eH0G1KDxUwLXWqIejLLUbLmvsuDk9hppSPkjUGv9BgOmkEcjHaDHZbbBMNmT2H5NPC1dI00cUBnBfto');
 
@@ -42,9 +39,7 @@ try {
 
   header('Content-Type: application/json');
   echo json_encode(['id' => $checkout_session->id]);
-
 } catch (Exception $e) {
   http_response_code(500);
   echo json_encode(['error' => 'Erreur lors de la création de la session : ' . $e->getMessage()]);
 }
-?>

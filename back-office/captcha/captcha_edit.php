@@ -17,7 +17,7 @@ require('../../include/head.php');
 
 <body>
     <?php
-    $page = index_back;
+    $page = captcha_back;
     include("../navbar.php"); ?>
 
 

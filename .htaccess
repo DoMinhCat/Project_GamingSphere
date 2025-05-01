@@ -22,6 +22,56 @@ RewriteCond %{THE_REQUEST} \s/connexion/inscription\.php [NC]
 RewriteRule ^connexion/inscription\.php$ /inscription [R=301,L,QSA]
 RewriteRule ^inscription/?$ connexion/inscription.php [L]
 
+# forgot_mdp.php
+RewriteCond %{THE_REQUEST} \s/connexion/forgot_mdp\.php [NC]
+RewriteRule ^connexion/forgot_mdp\.php$ /connexion/forgot_password [R=301,L,QSA]
+RewriteRule ^connexion/forgot_password/?$ connexion/forgot_mdp.php [L]
+
+# resend_verify_inscrire.php
+RewriteCond %{THE_REQUEST} \s/connexion/resend_verify_inscrire\.php [NC]
+RewriteRule ^connexion/resend_verify_inscrire\.php$ /connexion/verify_email [R=301,L,QSA]
+RewriteRule ^connexion/verify_email/?$ connexion/resend_verify_inscrire.php [L]
+
+# reset_mdp_err.php
+RewriteCond %{THE_REQUEST} \s/connexion/reset_mdp_err\.php [NC]
+RewriteRule ^connexion/reset_mdp_err\.php$ /connexion/reset_password/error [R=301,L,QSA]
+RewriteRule ^connexion/reset_password/error/?$ connexion/reset_mdp_err.php [L]
+
+# reset_mdp.php
+RewriteCond %{THE_REQUEST} \s/connexion/reset_mdp\.php [NC]
+RewriteRule ^connexion/reset_mdp\.php$ /connexion/reset_password [R=301,L,QSA]
+RewriteRule ^connexion/reset_password/?$ connexion/reset_mdp.php [L]
+
+# session_timeout.php
+RewriteCond %{THE_REQUEST} \s/connexion/session_timeout\.php [NC]
+RewriteRule ^connexion/session_timeout\.php$ /connexion/session_timeout [R=301,L,QSA]
+RewriteRule ^connexion/session_timeout/?$ connexion/session_timeout.php [L]
+
+# status_verify.php
+RewriteCond %{THE_REQUEST} \s/connexion/status_verify\.php [NC]
+RewriteRule ^connexion/status_verify\.php$ /connexion/status_verify [R=301,L,QSA]
+RewriteRule ^connexion/status_verify/?$ connexion/status_verify.php [L]
+
+# add_credits.php
+RewriteCond %{THE_REQUEST} \s/credits/add_credits\.php [NC]
+RewriteRule ^credits/add_credits\.php$ /credits/add [R=301,L,QSA]
+RewriteRule ^credits/add/?$ credits/add_credits.php [L]
+
+# cancel.php
+RewriteCond %{THE_REQUEST} \s/credits/cancel\.php [NC]
+RewriteRule ^credits/cancel\.php$ /credits/cancel [R=301,L,QSA]
+RewriteRule ^credits/cancel/?$ credits/cancel.php [L]
+
+# credits_main.php
+RewriteCond %{THE_REQUEST} \s/credits/credits_main\.php [NC]
+RewriteRule ^credits/credits_main\.php$ /credits [R=301,L,QSA]
+RewriteRule ^credits/?$ credits/credits_main.php [L]
+
+# success.php
+RewriteCond %{THE_REQUEST} \s/credits/success\.php [NC]
+RewriteRule ^credits/success\.php$ /credits/paiement [R=301,L,QSA]
+RewriteRule ^credits/paiement/?$ credits/success.php [L]
+
 # magasin_main.php
 
 RewriteCond %{THE_REQUEST} \s/magasin/magasin_main\.php [NC]

@@ -24,7 +24,7 @@ require('../head.php');
     $page = index_back;
     include('../navbar.php');
     ?>
-    <div class="container mt-4">
+    <div class="container my-5">
         <h1 class="text-center mb-3" style="font-size: 1.5rem;">Liste des jeux</h1>
 
         <div class="text-end mb-3">
