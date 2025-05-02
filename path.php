@@ -3,8 +3,8 @@
 define('index_front', '/'); // index.php
 
 //connexion
-define('login', '/connexion'); // login.php
-define('inscription', '/inscription'); // inscription.php
+define('login', '/connexion/login'); // login.php
+define('inscription', '/connexion/inscription'); // inscription.php
 define('forgot_mdp', '/connexion/forgot_password'); // forgot_mdp.php
 define('resend_verify_inscrire', '/connexion/verify_email'); // resend_verify_inscrire.php
 define('reset_mdp_err', '/connexion/reset_password_error'); // reset_mdp_err.php

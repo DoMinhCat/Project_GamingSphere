@@ -72,7 +72,7 @@ require('../../include/head.php');
             </div>
             <button type="submit" name="add_article" class="btn btn-primary">Ajouter l'article</button>
         </form>
-
+        <!-- add search bar -->
         <!-- Affichage des articles -->
         <h3>Liste des articles</h3>
         <table class="table">
