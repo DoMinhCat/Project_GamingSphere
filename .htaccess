@@ -14,13 +14,13 @@ RewriteRule ^/?$ index.php [L]
 
 # login.php
 RewriteCond %{THE_REQUEST} \s/connexion/login\.php [NC]
-RewriteRule ^connexion/login\.php$ /connexion [R=301,L,QSA]
-RewriteRule ^connexion/?$ connexion/login.php [L]
+RewriteRule ^connexion/login\.php$ /connexion/login [R=301,L,QSA]
+RewriteRule ^connexion/login/?$ connexion/login.php [L]
 
 # inscription.php
 RewriteCond %{THE_REQUEST} \s/connexion/inscription\.php [NC]
-RewriteRule ^connexion/inscription\.php$ /inscription [R=301,L,QSA]
-RewriteRule ^inscription/?$ connexion/inscription.php [L]
+RewriteRule ^connexion/inscription\.php$ /connexion/inscription [R=301,L,QSA]
+RewriteRule ^connexion/inscription/?$ connexion/inscription.php [L]
 
 # forgot_mdp.php
 RewriteCond %{THE_REQUEST} \s/connexion/forgot_mdp\.php [NC]

@@ -19,7 +19,7 @@ include('../include/head.php')
         <div class="d-flex justify-content-center my-5">
             <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
 
-                <div class="pb-3 my-3">
+                <div class="my-3">
                     <h1>Se connecter</h1>
                 </div>
 
@@ -34,13 +34,13 @@ include('../include/head.php')
 
 
                 <form method="post" action="login_verification.php">
-                    <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
+                    <div class="d-flex flex-column pt-2 py-3 row-gap-1">
+                        <label for="email" class="form-label d-block text-start mb-1">Identifiant/Email</label>
+                        <input type="email" name="email" id="email" placeholder="exemple@gmail.com" required aria-describedby="emailHelp" class="form-control input_field" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>">
+                        <label for="email" class="form-label d-block text-start mt-2 mb-1">Mot de passe</label>
+                        <input type="password" id="mdp" name="mdp" placeholder="Votre mot de passe" class="form-control input_field" required>
 
-                        <input type="email" name="email" id="email" placeholder="Identifiant/Email" required aria-describedby="emailHelp" class="form-control input_field" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>">
-
-                        <input type="password" id="mdp" name="mdp" placeholder="Mot de passe" class="form-control input_field mt-1" required>
-
-                        <div class="d-flex flex-column pt-3">
+                        <div class="d-flex flex-column pt-3 mt-3">
                             <input type="Submit" class="btn btn-primary" value="Me connecter">
                         </div>
                     </div>
@@ -80,8 +80,8 @@ include('../include/head.php')
                     <span class="line my-2"></span>
                 </div>
                 <div>
-                    <h6 style="margin-bottom: 0;">
-                        Vous êtes nouveau?
+                    <h6 class="mb-1">
+                        Vous êtes nouveau ?
                     </h6>
                     <a class="lato16" href="<?= inscription ?>" id="creer_compte">Créer un compte</a>
                 </div>
