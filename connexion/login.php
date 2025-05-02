@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/../path.php';
 if (!empty($_SESSION['user_email'])) {
-    header('location:' . index_front);
+    header('Location: ../' . index_front);
     exit();
 }
 ?>
@@ -73,7 +73,7 @@ include('../include/head.php')
 
 
                 <p class="lato16 my-2" style="margin:0.5rem;">
-                    <a href="forgot_mdp.php" id="creer_compte">Mot de passe oublié ?</a>
+                    <a href="<?= forgot_mdp ?>" id="creer_compte">Mot de passe oublié ?</a>
                 </p>
 
                 <div class="line-with-letters montserrat-titre32 pt-2 pb-3">
@@ -105,7 +105,7 @@ include('../include/head.php')
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                    <a href="resend_verify_inscrire.php" class="btn btn-primary">Vérifier mon email</a>
+                    <a href="<?= resend_verify_inscrire ?>" class="btn btn-primary">Vérifier mon email</a>
                 </div>
             </div>
         </div>

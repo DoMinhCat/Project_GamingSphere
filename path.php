@@ -6,7 +6,8 @@ define('index_front', '/'); // index.php
 define('login', '/connexion'); // login.php
 define('inscription', '/inscription'); // inscription.php
 define('forgot_mdp', '/connexion/verify_email'); // forgot_mdp.php
-define('reset_mdp_err', '/connexion/reset_password/error'); // reset_mdp_err.php
+define('resend_verify_inscrire', '/connexion/verify_email'); // resend_verify_inscrire.php
+define('reset_mdp_err', '/connexion/reset_password_error'); // reset_mdp_err.php
 define('reset_mdp', '/connexion/reset_password'); // reset_mdp.php
 define('session_timeout', '/connexion/session_timeout'); // session_timeout.php
 define('status_verify', '/connexion/status_verify'); // status_verify.php

@@ -27,7 +27,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
         $pseudo = $user['pseudo'];
 
         if ($user['reset_mdp_token'] && strtotime($user['token_expiry']) > time()) {
-            header('Location: forgot_mdp.php?return=already_requested');
+            header('Location' . forgot_mdp . '?return=already_requested');
             exit();
         }
 
@@ -37,7 +37,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
         $stmt = $bdd->prepare("UPDATE utilisateurs SET reset_mdp_token = :token, token_expiry = :expiry WHERE email = :email");
         $stmt->execute(['token' => $reset_token, 'expiry' => $expires, 'email' => $email]);
 
-        $reset_link = "http://213.32.90.110/connexion/reset_mdp.php?token=" . $reset_token;
+        $reset_link = 'http://213.32.90.110/connexion/' . reset_mdp . '?token=' . $reset_token;
         $subject = "Demande de réinitialisation de mot de passe";
         $message = "
         <p>Bonjour <strong>$pseudo</strong>,</p>
@@ -68,18 +68,18 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
             $mail->Body = $message;
             $mail->send();
 
-            header('Location: forgot_mdp.php?return=success');
+            header('Location: ' . forgot_mdp . '?return=success');
             exit();
         } catch (Exception $e) {
             $stmt = $bdd->prepare("UPDATE utilisateurs SET reset_mdp_token = NULL, token_expiry = NULL WHERE reset_mdp_token = :token");
             $stmt->execute([
                 'token' => $reset_token,
             ]);
-            header('Location: forgot_mdp.php?message=Erreur d\'envoi de l\'email: ' . urlencode($mail->ErrorInfo));
+            header('Location:' . forgot_mdp . '?message=Erreur d\'envoi de l\'email: ' . urlencode($mail->ErrorInfo));
             exit();
         }
     } else {
-        header('Location: forgot_mdp.php?return=not_found');
+        header('Location:' . forgot_mdp . '?return=not_found');
         exit();
     }
 }

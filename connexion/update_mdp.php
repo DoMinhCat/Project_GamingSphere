@@ -3,7 +3,7 @@
 session_start();
 require_once __DIR__ . '/../path.php';
 if (!empty($_SESSION['user_email'])) {
-    header('location:' . index_front);
+    header('Location: ../' . index_front);
     exit();
 }
 require '/var/www/PA/PHPMailer/src/PHPMailer.php';
@@ -27,27 +27,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $token = $_POST['token'];
 
         if ($_POST['new_mdp'] !== $_POST['confirm_mdp']) {
-            header('Location: reset_mdp.php?token=' . $token . '&message=' . urlencode("Veuillez reconfirmer votre mot de passe!"));
+            header('Location:  ' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Veuillez reconfirmer votre mot de passe!"));
             exit();
         }
 
         if (!preg_match('/[\W_]/', $_POST['new_mdp'])) {
-            header('Location: reset_mdp.php?token=' . $token . '&message=' . urlencode("Votre mot de passe ne contient pas un symbole spécial!"));
+            header('Location:  ' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Votre mot de passe ne contient pas un symbole spécial!"));
             exit();
         }
 
         if (!preg_match('/[A-Z]/', $_POST['new_mdp'])) {
-            header('Location: reset_mdp.php?token=' . $token . '&message=' . urlencode("Votre mot de passe ne contient pas une lettre majuscule!"));
+            header('Location: ' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Votre mot de passe ne contient pas une lettre majuscule!"));
             exit();
         }
 
         if (strlen($_POST['new_mdp']) < 8) {
-            header('Location: reset_mdp.php?token=' . $token . '&message=' . urlencode("Votre mot de passe doit avoir au moins 8 caractères!"));
+            header('Location: ' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Votre mot de passe doit avoir au moins 8 caractères!"));
             exit();
         }
 
         if (!preg_match('/\d/', $_POST['new_mdp'])) {
-            header('Location: reset_mdp.php?token=' . $token . '&message=' . urlencode("Votre mot de passe ne contient pas de chiffre!"));
+            header('Location: ' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Votre mot de passe ne contient pas de chiffre!"));
             exit();
         }
 
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 foreach ($last_passwords as $old_password) {
                     if (password_verify($_POST['new_mdp'], $old_password)) {
-                        header('Location: reset_mdp.php?token=' . $token . '&message=' . urlencode("Vous ne pouvez pas réutiliser un ancien mot de passe!"));
+                        header('Location:' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Vous ne pouvez pas réutiliser un ancien mot de passe!"));
                         exit();
                     }
                 }
@@ -111,23 +111,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->Body = $message;
                     $mail->send();
 
-                    header('Location: forgot_mdp.php?success=1');
+                    header('Location: ' . forgot_mdp . '?success=1');
                     exit();
                 } catch (Exception $e) {
-                    header('Location: forgot_mdp.php?message=' . urlencode("Erreur d'envoi de l'email de confirmation: " . $mail->ErrorInfo));
+                    header('Location:' . forgot_mdp . '?message=' . urlencode("Erreur d'envoi de l'email de confirmation: " . $mail->ErrorInfo));
                     exit();
                 }
             } else {
-                header('Location: reset_mdp_err.php?message=' . urlencode("Echec de la mise à jour du mot de passe"));
+                header('Location:' . reset_mdp_err . '?message=' . urlencode("Echec de la mise à jour du mot de passe"));
                 exit();
             }
         } catch (PDOException $e) {
             error_log($e->getMessage());
-            header('Location: forgot_mdp.php?message=' . urlencode("Impossible de connecter à la base de données"));
+            header('Location:' . forgot_mdp . '?message=' . urlencode("Impossible de connecter à la base de données"));
             exit();
         }
     } else {
-        header('Location: forgot_mdp.php?message=' . urlencode("Veuillez remplir tous les champs demandés"));
+        header('Location:' . forgot_mdp . '?message=' . urlencode("Veuillez remplir tous les champs demandés"));
         exit();
     }
 }

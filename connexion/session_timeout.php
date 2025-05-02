@@ -5,7 +5,7 @@ $timeout_duree = 60 * 30;
 $this_page = basename($_SERVER['PHP_SELF']);
 
 if ((isset($_SESSION['actif']) && time() - $_SESSION['actif'] < $timeout_duree)) {
-    header("Location: ../index.php");
+    header('Location: ../' . index_front);
     exit();
 }
 
@@ -34,7 +34,7 @@ include('../include/head.php');
             </div>
 
             <div class="d-flex flex-column pt-1">
-                <a href="login.php" class="btn btn-success">
+                <a href="<?= login ?>" class="btn btn-success">
                     Revenir à la page de connexion
                 </a>
             </div>

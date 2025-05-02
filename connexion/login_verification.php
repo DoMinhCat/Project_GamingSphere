@@ -16,14 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (!isset($_POST['email']) || !isset($_POST['mdp']) || empty($_POST['email']) || empty($_POST['mdp'])) {
-        header('location: login.php?message=Vous devez remplir les 2 champs.');
+        header('location:' . login . '?message=Vous devez remplir les 2 champs.');
         exit;
     }
 
 
     if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
         writeLogLine($_POST['email'], false);
-        header('location: login.php?message=Adresse email invalide.');
+        header('location: ' . login . '?message=Adresse email invalide.');
         exit;
     }
 
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result) {
         if ($result['email_verifie'] == 0) {
-            header('location:login.php?error=email_verification');
+            header('location:' . login . '?error=email_verification');
             exit();
         }
 
@@ -52,20 +52,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (isset($result['status_ENUm']) && trim(strtolower($result['status_ENUm'])) === 'admin') {
                 $_SESSION['admin'] = true;
-                header('location: ../back-office/index.php');
+                header('location: ../' . index_back);
                 exit;
             } else {
-                header('location: ../index.php?success=connected&user_pseudo=' . urlencode($result['pseudo']));
+                header('location: ../' . index_front . '?success=connected&user_pseudo=' . urlencode($result['pseudo']));
                 exit;
             }
         } else {
             writeLogLine($mail, false);
-            header('location: login.php?message=Identifiants incorrects');
+            header('location:' . login . '?message=Identifiants incorrects');
             exit;
         }
     } else {
         writeLogLine($mail, false);
-        header('location: login.php?message=Identifiants incorrects');
+        header('location:' . login . '?message=Identifiants incorrects');
         exit;
     }
 }
