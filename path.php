@@ -6,7 +6,7 @@ define('index_front', '/'); // index.php
 define('login', '/connexion/login'); // login.php
 define('inscription', '/connexion/inscription'); // inscription.php
 define('forgot_mdp', '/connexion/forgot_password'); // forgot_mdp.php
-define('resend_verify_inscrire', '/connexion/verify_email'); // resend_verify_inscrire.php
+define('resend_verify_inscrire', '/connexion/verify_email'); //resend_verify_inscrire.php
 define('reset_mdp_err', '/connexion/reset_password_error'); // reset_mdp_err.php
 define('reset_mdp', '/connexion/reset_password'); // reset_mdp.php
 define('session_timeout', '/connexion/session_timeout'); // session_timeout.php
@@ -63,6 +63,9 @@ define('tournament_list', '/mon_compte/tournament_list'); // tournament_list.php
 define('conversation', '/messages/conversation'); // conversation.php
 define('messagerie', '/messages'); // messagerie.php
 define('nouvelle_conversation', '/messages/new'); // nouvelle_conversation.php
+
+//search
+define('search', '/include/search'); // search.php
 
 
 

@@ -52,7 +52,7 @@ function renderResults(data, resultDiv) {
         `<a href="/tournois/tournois_details.php?id_tournoi=${item.id}">${item.nom_tournoi}</a>`,
     },
     {
-      key: "teams", // Nouvelle section pour les équipes
+      key: "teams",
       title: "Équipes",
       renderItem: (item) =>
         `<a href="/equipe/details.php?id_equipe=${item.id}">${item.nom_equipe}</a>`,

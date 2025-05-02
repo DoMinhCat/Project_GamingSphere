@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require_once __DIR__ . '/../path.php';
 $timeout_duree = 60 * 30;
 $this_page = basename($_SERVER['PHP_SELF']);
 

@@ -1,6 +1,8 @@
 <?php
-require('database.php');
-require('check_timeout.php');
+session_start();
+require_once('../include/database.php');
+require('../include/check_timeout.php');
+require_once __DIR__ . '/../path.php';
 
 $query = $_POST['query'] ?? '';
 $category = $_POST['category'] ?? '';
@@ -32,7 +34,7 @@ try {
         $stmtGames->execute(['%' . $query . '%']);
         $games = $stmtGames->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     if ($category == 'tournois' || empty($category)) {
         $stmtTournois = $bdd->prepare("SELECT id_tournoi, nom_tournoi FROM tournoi WHERE nom_tournoi LIKE ?");
         $stmtTournois->execute(['%' . $query . '%']);
@@ -48,8 +50,8 @@ try {
         WHERE e.nom LIKE ? OR u.pseudo LIKE ?
         GROUP BY e.id_equipe
     ");
-    $stmtTeams->execute(['%' . $query . '%', '%' . $query . '%']);
-    $teams = $stmtTeams->fetchAll(PDO::FETCH_ASSOC);
+        $stmtTeams->execute(['%' . $query . '%', '%' . $query . '%']);
+        $teams = $stmtTeams->fetchAll(PDO::FETCH_ASSOC);
     }
     $response = [
         'users' => $users,
@@ -96,7 +98,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?php foreach ($users as $user): ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <?php echo htmlspecialchars($user['pseudo']); ?>
-                            <a href="../profil/profil.php?user=<?php echo urlencode($user['pseudo']); ?>" class="btn btn-primary btn-sm">Voir le profil</a>
+                            <a href="<?= profil ?>?user=<?php echo urlencode($user['pseudo']); ?>" class="btn btn-primary btn-sm">Voir le profil</a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -111,7 +113,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?php foreach ($articles as $article): ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <?php echo htmlspecialchars($article['titre']); ?>
-                            <a href="article.php?title=<?php echo urlencode($article['titre']); ?>" class="btn btn-primary btn-sm">Lire l'article</a>
+                            <a href="<?= actualite_article ?>?title=<?php echo urlencode($article['titre']); ?>" class="btn btn-primary btn-sm">Lire l'article</a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -125,7 +127,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?php foreach ($tournois as $tournoi): ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <?php echo htmlspecialchars($tournoi['nom_tournoi']); ?>
-                            <a href="../tournois/tournois_details.php?id_tournoi=<?php echo urlencode($tournoi['id_tournoi']); ?>" class="btn btn-primary btn-sm">Voir le tournoi</a>
+                            <a href="<?= tournois_details ?>?id_tournoi=<?php echo urlencode($tournoi['id_tournoi']); ?>" class="btn btn-primary btn-sm">Voir le tournoi</a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -139,7 +141,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?php foreach ($games as $game): ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <?php echo htmlspecialchars($game['nom']); ?>
-                            <a href="game.php?name=<?php echo urlencode($game['nom']); ?>" class="btn btn-primary btn-sm">Voir le jeu</a>
+                            <a href="<?= magasin_game ?>?name=<?php echo urlencode($game['nom']); ?>" class="btn btn-primary btn-sm">Voir le jeu</a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -147,18 +149,18 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php endif; ?>
 
         <?php if ($teams): ?>
-    <div class="section mb-4">
-        <h3 class="search-title">Equipes</h3>
-        <ul class="list-group">
-            <?php foreach ($teams as $team): ?>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <?php echo htmlspecialchars($team['nom']); ?>
-                    <a href="../team/team_details.php?id_equipe=<?php echo urlencode($team['id']); ?>" class="btn btn-primary btn-sm">Voir l'équipe</a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-<?php endif; ?>
+            <div class="section mb-4">
+                <h3 class="search-title">Equipes</h3>
+                <ul class="list-group">
+                    <?php foreach ($teams as $team): ?>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <?php echo htmlspecialchars($team['nom']); ?>
+                            <a href="<?= team_details ?>?id_equipe=<?php echo urlencode($team['id']); ?>" class="btn btn-primary btn-sm">Voir l'équipe</a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
 
         <?php if (empty($users) && empty($articles) && empty($games)  && empty($tournois) && empty($teams)): ?>
             <div class="alert alert-info" role="alert">

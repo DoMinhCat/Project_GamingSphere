@@ -5,8 +5,7 @@ require('../include/check_session.php');
 require('../include/check_timeout.php');
 require('../include/database.php');
 require_once __DIR__ . '/../path.php';
-ini_set('display_errors', 1);  // Affiche les erreurs
-error_reporting(E_ALL); 
+
 $teamId = $_GET['id_equipe'] ?? null;
 
 if (!$teamId) {
@@ -120,12 +119,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         if ($isMember): ?>
 
             <p class="text-success mt-3">Vous êtes membre de cette équipe.</p>
-            <form action="../team/leave_team.php" method="POST" class="mt-3">
+            <form action="leave_team.php" method="POST" class="mt-3">
                 <input type="hidden" name="team_id" value="<?= htmlspecialchars($teamId) ?>">
                 <button type="submit" class="btn btn-danger">Quitter l'équipe</button>
             </form>
         <?php elseif (!$isMember && !$isInvitationPending): ?>
-            <form action="../team/send_invitation.php" method="POST" class="mt-3">
+            <form action="send_invitation.php" method="POST" class="mt-3">
                 <input type="hidden" name="team_id" value="<?= htmlspecialchars($teamId) ?>">
                 <button type="submit" class="btn btn-primary">Envoyer une demande pour rejoindre l'équipe</button>
             </form>
@@ -133,7 +132,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <p class="text-warning mt-3">Une demande pour rejoindre cette équipe est déjà en attente.</p>
         <?php endif; ?>
         <div class="text-center mt-4">
-            <a href="team/team_list.php" class="btn btn-secondary">Retour à la liste des équipes</a>
+            <a href="<?= team_list ?>" class="btn btn-secondary">Retour à la liste des équipes</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -19,10 +19,10 @@ if ($invitationId) {
         ");
         $stmt->execute([$invitationId]);
 
-        header('Location: ../profil/my_account.php?success=team_request_accepted');
+        header('Location:' . my_account . '?success=team_request_accepted');
         exit();
     } catch (PDOException $e) {
-        header('Location: ../profil/my_account.php?error=' . urlencode($e->getMessage()));
+        header('Location:' . my_account . '?error=' . urlencode($e->getMessage()));
         exit();
     }
 }

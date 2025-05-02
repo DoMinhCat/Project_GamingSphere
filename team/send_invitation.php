@@ -15,18 +15,18 @@ if ($teamId) {
         $isInvitationPending = $stmt->fetchColumn() > 0;
 
         if ($isInvitationPending) {
-            header('Location: team_details.php?id_equipe=' . $teamId . '&error=invitation_already_pending');
+            header('Location:' . team_details . '?id_equipe=' . $teamId . '&error=invitation_already_pending');
             exit();
         }
         $stmt = $bdd->prepare("INSERT INTO invitations (id_equipe, id_utilisateur, statut, date_invitation) VALUES (?, ?, 'en attente', NOW())");
         $stmt->execute([$teamId, $userId]);
-        header('Location: team_details.php?id_equipe=' . $teamId . '&success=invitation_sent');
+        header('Location:' . team_details . '?id_equipe=' . $teamId . '&success=invitation_sent');
         exit();
     } catch (PDOException $e) {
-        header('Location: team_details.php?id_equipe=' . $teamId . '&error=' . urlencode($e->getMessage()));
+        header('Location:' . team_details . '?id_equipe=' . $teamId . '&error=' . urlencode($e->getMessage()));
         exit();
     }
 } else {
-    header('Location: team_list.php?error=missing_team_id');
+    header('Location:' . team_list . '?error=missing_team_id');
     exit();
 }
