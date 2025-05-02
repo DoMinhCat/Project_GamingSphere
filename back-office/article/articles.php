@@ -72,31 +72,60 @@ require('../../include/head.php');
             </div>
             <button type="submit" name="add_article" class="btn btn-primary">Ajouter l'article</button>
         </form>
-        <!-- add search bar -->
+
         <!-- Affichage des articles -->
-        <h3>Liste des articles</h3>
-        <table class="table">
-            <thead>
-                <tr>
+        <h3 class="text-center">Liste des articles</h3>
+        <?php
+        echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
+            <input type="text" id="search_article" class="form-control" placeholder="Rechercher par nom d\'article">
+        </div>';
+
+        if (count($articles) > 0) {
+            echo '<div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">';
+            echo "<table class='table table-striped'>";
+            echo "<thead class='thead-dark'><tr>
                     <th>Titre</th>
                     <th>Date</th>
                     <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($articles as $article) : ?>
-                    <tr>
-                        <td><?= htmlspecialchars($article['titre']) ?></td>
-                        <td><?= htmlspecialchars($article['date_article']) ?></td>
+                </tr></thead>";
+            echo '<tbody id="article_results">';
+
+
+
+            foreach ($articles as $article) {
+                echo '<tr>
+                        <td>' . htmlspecialchars($article['titre']) . '</td>
+                        <td>' . htmlspecialchars($article['date_article']) . '</td>
                         <td>
-                            <a href="'<?= article_back . '?delete_id=' . $article['id_news'] ?>." class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">Supprimer</a>
-                            <a href="<?= article_edit_back . '?id=' . $article['id_news'] ?>" class="btn btn-warning">Modifier</a>
+                            <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-warning mb-1">Modifier</a>
+                            <a href=' . article_back . '?delete_id=' . $article['id_news'] . ' class="btn btn-danger" onclick="return confirm(\'Êtes-vous sûr de vouloir supprimer cet article ?\')">Supprimer</a>
                         </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
+                    </tr>';
+            }
+            echo '</tbody>
         </table>
+    </div>';
+        } else {
+            echo "<div class='alert alert-warning'>Aucun article trouvé.</div>";
+        }
+        ?>
     </div>
+
+    <script>
+        document.getElementById('search_article').addEventListener('input', function() {
+            const query = this.value;
+
+            fetch('search_article.php?search=' + encodeURIComponent(query), {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('article_results').innerHTML = data;
+                });
+        });
+    </script>
 </body>
 
 </html>

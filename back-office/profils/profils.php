@@ -66,6 +66,7 @@ require('../head.php');
 
                     echo "</tbody>";
                     echo "</table>";
+                    echo '</div>';
                 } else {
                     echo "<div class='alert alert-warning'>Aucun utilisateur trouvé.</div>";
                 }
