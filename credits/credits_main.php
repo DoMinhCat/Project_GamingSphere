@@ -63,7 +63,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
       </div>
 
       <div class="d-flex justify-content-center">
-        <a href="add_credits.php" class="btn btn-warning btn-lg">
+        <a href="<?= add_credits ?>" class="btn btn-warning btn-lg">
           <i class="bi bi-plus-circle"></i> Ajouter des crédits
         </a>
       </div>

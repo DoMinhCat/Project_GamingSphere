@@ -17,6 +17,11 @@ RewriteCond %{THE_REQUEST} \s/connexion/login\.php [NC]
 RewriteRule ^connexion/login\.php$ /connexion/login [R=301,L,QSA]
 RewriteRule ^connexion/login/?$ connexion/login.php [L]
 
+# connexion/
+RewriteCond %{THE_REQUEST} \s/connexion[\s/] [NC]
+RewriteRule ^connexion/?$ /connexion/login [R=301,L,QSA]
+RewriteRule ^connexion/login/?$ connexion/login.php [L]
+
 # inscription.php
 RewriteCond %{THE_REQUEST} \s/connexion/inscription\.php [NC]
 RewriteRule ^connexion/inscription\.php$ /connexion/inscription [R=301,L,QSA]
@@ -99,6 +104,11 @@ RewriteRule ^tournois/details/?$ tournois/tournois_details.php [L]
 RewriteCond %{THE_REQUEST} \s/tournois/tournois_jeux\.php [NC]
 RewriteRule ^tournois/tournois_jeux\.php$ /tournois/jeux [R=301,L,QSA]
 RewriteRule ^tournois/jeux/?$ tournois/tournois_jeux.php [L]
+
+# team/
+RewriteCond %{THE_REQUEST} \s/team[\s/] [NC]
+RewriteRule ^team/?$ /team/list [R=301,L,QSA]
+RewriteRule ^team/list/?$ team/team_list.php [L]
 
 # create_team.php
 RewriteCond %{THE_REQUEST} \s/team/create_team\.php [NC]
@@ -235,7 +245,11 @@ RewriteCond %{THE_REQUEST} \s/messages/nouvelle_conversation\.php [NC]
 RewriteRule ^messages/nouvelle_conversation\.php$ /messages/new [R=301,L,QSA]
 RewriteRule ^messages/new/?$ messages/nouvelle_conversation.php [L]
 
+# search.php 
 
+RewriteCond %{THE_REQUEST} \s/include/search\.php [NC]
+RewriteRule ^include/search\.php$ /include/search [R=301,L,QSA]
+RewriteRule ^include/search/?$ include/search.php [L]
 
 
 
@@ -370,7 +384,7 @@ RewriteRule ^back-office/tournois/result/?$ back-office/tournois/tournoi_result.
 # Pages d'erreur
 
 ErrorDocument 404 /error_pages/404.php
-ErrorDocument 403 /error_pages/500.php
+ErrorDocument 500 /error_pages/500.php
 
 # Bloquer acces aux fichiers config et env
 

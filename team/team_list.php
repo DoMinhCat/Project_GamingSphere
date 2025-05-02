@@ -1,8 +1,8 @@
 <?php
 session_start();
 $login_page = '../connexion/login.php';
-require('../include/check_timeout.php');
 require('../include/check_session.php');
+require('../include/check_timeout.php');
 require_once __DIR__ . '/../path.php';
 require('../include/database.php');
 
@@ -53,7 +53,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <td><?= htmlspecialchars($team['nom']) ?></td>
                             <td><?= htmlspecialchars($team['niveau']) ?></td>
                             <td>
-                                <a href="/team/team_details.php?id_equipe=<?=$team['id_equipe'] ?>" class="btn btn-sm btn-info">Voir</a>
+                                <a href="<?= team_details ?>?id_equipe=<?= $team['id_equipe'] ?>" class="btn btn-sm btn-info">Voir</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -63,7 +63,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <p class="text-center">Aucune équipe trouvée.</p>
         <?php endif; ?>
         <div class="text-center mt-4">
-            <a href="/team/create_team.php" class="btn btn-success">Créer une nouvelle équipe</a>
+            <a href="<?= create_team ?>" class="btn btn-success">Créer une nouvelle équipe</a>
         </div>
     </div>
 

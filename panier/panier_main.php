@@ -4,6 +4,7 @@ $login_page = '../connexion/login.php';
 require('../include/check_timeout.php');
 require('../include/database.php');
 require('../include/check_session.php');
+require_once __DIR__ . '/../path.php';
 
 $id_utilisateur = $_SESSION['user_id'];
 

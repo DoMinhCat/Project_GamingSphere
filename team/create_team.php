@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $teamId = $bdd->lastInsertId();
             $stmt = $bdd->prepare("INSERT INTO membres_equipe (id_equipe, id_utilisateur, role, date_rejoint) VALUES (?, ?, ?, NOW())");
             $stmt->execute([$teamId, $userId, 'capitaine']);
-            header('Location: team_details.php?id_équipe=' . $teamId);
+            header('Location:' . team_details . '?id_équipe=' . $teamId);
             exit();
         } catch (PDOException $e) {
             $error = "Erreur lors de la création de l'équipe : " . htmlspecialchars($e->getMessage());
@@ -62,7 +62,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Créer l'équipe</button>
-                <a href="team_list.php" class="btn btn-secondary">Retour</a>
+                <a href="<?= team_list ?>" class="btn btn-secondary">Retour</a>
             </div>
         </form>
     </div>

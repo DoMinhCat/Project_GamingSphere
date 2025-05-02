@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const participerButtons = document.querySelectorAll(".participer-btn");
     const desinscrireButtons = document.querySelectorAll(".desinscrire-btn");
 
-    // Gestion de l'inscription
     participerButtons.forEach((button) => {
       button.addEventListener("click", function () {
         const idTournoi = this.getAttribute("data-id");
@@ -26,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
               this.classList.add("desinscrire-btn");
               this.classList.remove("participer-btn");
               this.disabled = false;
-              attachEventListeners(); // Réattache les écouteurs
+              attachEventListeners();
             } else {
               this.disabled = false;
               this.textContent = "Participer";
@@ -42,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-    // Gestion de la désinscription
     desinscrireButtons.forEach((button) => {
       button.addEventListener("click", function () {
         const idTournoi = this.getAttribute("data-id");
@@ -65,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
               this.classList.add("participer-btn");
               this.classList.remove("desinscrire-btn");
               this.disabled = false;
-              attachEventListeners(); // Réattache les écouteurs
+              attachEventListeners();
             } else {
               this.disabled = false;
               this.textContent = "Se désinscrire";
@@ -82,6 +80,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Attache les écouteurs d'événements au chargement de la page
   attachEventListeners();
 });

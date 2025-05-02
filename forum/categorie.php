@@ -31,7 +31,7 @@ $categorie_nom = $_GET['nom'];
     <div class="container my-5">
         <h2 class="mb-4">Catégorie : <?= htmlspecialchars($categorie_nom) ?></h2>
 
-        <a href="nouveau_sujet.php?categorie=<?= urlencode($categorie_nom) ?>" class="btn btn-primary mb-4">+ Nouveau sujet</a>
+        <a href="<?= nouveau_sujet ?>?categorie=<?= urlencode($categorie_nom) ?>" class="btn btn-primary mb-4">+ Nouveau sujet</a>
 
         <?php
         // Récupération des sujets de la catégorie
@@ -52,7 +52,7 @@ $categorie_nom = $_GET['nom'];
             <div class="card mb-3">
                 <div class="card-body">
                     <h5>
-                        <a href="sujet.php?id=<?= $sujet['id_sujet'] ?>" class="text-decoration-none">
+                        <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] ?>" class="text-decoration-none">
                             <?= htmlspecialchars($sujet['titre']) ?>
                         </a>
                     </h5>

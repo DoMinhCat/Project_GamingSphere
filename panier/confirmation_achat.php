@@ -4,10 +4,10 @@ $login_page = '../connexion/login.php';
 require('../include/check_timeout.php');
 require('../include/database.php');
 require('../include/check_session.php');
+require_once __DIR__ . '/../path.php';
 
 $id_utilisateur = $_SESSION['user_id'];
 
-// Récupère les achats réalisés dans les 10 dernières minutes (plus précis que toute la journée)
 $stmt = $bdd->prepare("
     SELECT j.nom, j.prix, j.image, b.date_achat 
     FROM boutique b
@@ -24,7 +24,10 @@ $achats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <?php
 $title = 'Confirmation d\'Achat';
-include('../include/head.php');
+require('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
 ?>
 
 <body>
@@ -59,8 +62,8 @@ include('../include/head.php');
 
         <div class="text-center mt-4">
             <p>Merci pour votre achat ! Vos crédits ont été mis à jour avec succès.</p>
-            <a href="../magasin/magasin_main.php" class="btn btn-primary">🕹️ Voir d'autres jeux</a>
-            <a href="../profil/my_account.phps" class="btn btn-secondary">👤 Mon profil</a>
+            <a href="<?= magasin_main ?>" class="btn btn-primary">🕹️ Voir d'autres jeux</a>
+            <a href="<?= my_account ?>" class="btn btn-secondary">👤 Mon profil</a>
         </div>
     </div>
 </body>

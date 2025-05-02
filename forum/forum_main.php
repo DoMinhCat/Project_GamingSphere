@@ -55,7 +55,7 @@ if (!isset($bdd)) {
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
                         <h5 class="card-title mb-1">
-                            <a href="categorie.php?nom=<?= urlencode($categorie) ?>" class="text-decoration-none text-dark">
+                            <a href="<?= forum_category ?>?nom=<?= urlencode($categorie) ?>" class="text-decoration-none text-dark">
                                 <?= htmlspecialchars($categorie) ?>
                             </a>
                         </h5>

@@ -1,5 +1,7 @@
 <?php
 session_start();
+$login_page = '../connexion/login.php';
+require('../include/check_session.php');
 include('../include/database.php');
 require_once __DIR__ . '/../path.php';
 
@@ -17,7 +19,6 @@ $id_tournoi = intval($_POST['id_tournoi']);
 $user_id = intval($_SESSION['user_id']);
 
 try {
-    // Récupérer le type de tournoi (exemple : 'Solo' ou 'Équipe')
     $stmt = $bdd->prepare("SELECT type FROM tournoi WHERE id_tournoi = ?");
     $stmt->execute([$id_tournoi]);
     $tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -42,7 +43,6 @@ try {
             exit();
         }
 
-        // Vérifier si l'inscription a déjà été enregistrée
         $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
         $stmt->execute([$id_tournoi, $user_id]);
         $already_registered = $stmt->fetchColumn();
@@ -52,14 +52,12 @@ try {
             exit();
         }
 
-        // Inscription pour le tournoi par équipe (enregistrement du capitaine)
         $stmt = $bdd->prepare("INSERT INTO inscription_tournoi (id_tournoi, user_id, date_inscription) VALUES (?, ?, NOW())");
         $stmt->execute([$id_tournoi, $user_id]);
 
         echo json_encode(['success' => true, 'message' => 'Votre équipe a été inscrite avec succès au tournoi.']);
         exit();
-    } else { // Tournoi solo
-        // Vérifier si l'utilisateur est déjà inscrit pour ce tournoi solo
+    } else {
         $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
         $stmt->execute([$id_tournoi, $user_id]);
         $already_registered = $stmt->fetchColumn();
@@ -69,7 +67,6 @@ try {
             exit();
         }
 
-        // Inscription pour le tournoi solo
         $stmt = $bdd->prepare("INSERT INTO inscription_tournoi (id_tournoi, user_id, date_inscription) VALUES (?, ?, NOW())");
         $stmt->execute([$id_tournoi, $user_id]);
 

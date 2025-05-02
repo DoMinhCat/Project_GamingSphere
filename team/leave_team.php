@@ -15,18 +15,18 @@ if ($teamId) {
         $isMember = $stmt->fetchColumn() > 0;
 
         if (!$isMember) {
-            header('Location: team_details.php?id_equipe=' . $teamId . '&error=not_a_member');
+            header('Location:' . team_details . '?id_equipe=' . $teamId . '&error=not_a_member');
             exit();
         }
         $stmt = $bdd->prepare("DELETE FROM membres_equipe WHERE id_equipe = ? AND id_utilisateur = ?");
         $stmt->execute([$teamId, $userId]);
-        header('Location: team_details.php?success=left_team&id_equipe=' . $teamId);
+        header('Location:' . team_details . '?success=left_team&id_equipe=' . $teamId);
         exit();
     } catch (PDOException $e) {
-        header('Location: team_details.php?id_equipe=' . $teamId . '&error=' . urlencode($e->getMessage()));
+        header('Location:' . team_details . '?id_equipe=' . $teamId . '&error=' . urlencode($e->getMessage()));
         exit();
     }
 } else {
-    header('Location: team_list.php?error=missing_team_id');
+    header('Location:' . team_list . '?error=missing_team_id');
     exit();
 }

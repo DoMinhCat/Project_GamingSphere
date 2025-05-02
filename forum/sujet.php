@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['contenu']) && !empty(
     $stmt = $bdd->prepare("INSERT INTO forum_reponses (id_sujet, contenu, auteur) VALUES (?, ?, ?)");
     $stmt->execute([$id_sujet, $contenu_reponse, $auteur]);
 
-    header("Location: sujet.php?id=" . $id_sujet);
+    header('Location: ' . sujet . '?id=' . $id_sujet);
     exit;
 }
 
@@ -56,7 +56,7 @@ $reponses = $stmt->fetchAll();
         <h2 class="mb-3"><?= htmlspecialchars($sujet['titre']) ?></h2>
         <div class="mb-4">
             <div class="p-3 border rounded bg-light">
-                <p><?= nl2br(htmlspecialchars($sujet['contenu']??'')) ?></p>
+                <p><?= nl2br(htmlspecialchars($sujet['contenu'] ?? '')) ?></p>
                 <p class="text-muted text-end">Posté par <?= htmlspecialchars($sujet['auteur']) ?> le <?= date("d/m/Y à H:i", strtotime($sujet['date_msg'])) ?></p>
             </div>
         </div>

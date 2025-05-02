@@ -51,13 +51,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 $team = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if ($team && isset($team['id_equipe'], $team['nom_equipe'])): ?>
-                    <a href="../team/team_details.php?id_equipe=<?= htmlspecialchars($team['id_equipe']) ?>" class="btn btn-primary">
+                    <a href="<?= team_details ?>?id_equipe=<?= htmlspecialchars($team['id_equipe']) ?>" class="btn btn-primary">
                         Voir les détails de votre équipe : <?= htmlspecialchars($team['nom_equipe']) ?>
                     </a>
-                    <a href="../team/create_team.php" class="btn btn-secondary">Créer une autre équipe</a>
+                    <a href="<?= create_team ?>" class="btn btn-secondary">Créer une autre équipe</a>
                 <?php else: ?>
                     <a href="../team/join_team.php" class="btn btn-success">Rejoindre une équipe</a>
-                    <a href="../team/create_team.php" class="btn btn-secondary">Créer une équipe</a>
+                    <a href="<?= create_team ?>" class="btn btn-secondary">Créer une équipe</a>
             <?php endif;
             } else {
                 echo "<div class='alert alert-warning'>Vous devez être connecté pour gérer vos équipes.</div>";

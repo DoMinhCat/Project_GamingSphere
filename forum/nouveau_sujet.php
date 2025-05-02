@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                VALUES (?, ?, NOW(), ?, NULL, ?)");
         $stmt->execute([$titre, $contenu, $categorie_nom, $auteur]);
 
-        header("Location: categorie.php?nom=" . urlencode($categorie_nom));
+        header('Location:' . forum_category . '?nom=' . urlencode($categorie_nom));
         exit;
     }
 }
@@ -92,7 +92,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             counter.textContent = `${input.value.length} / 150`;
         }
 
-        // Mettre à jour dès le chargement (utile en cas de retour avec texte déjà rempli)
         document.addEventListener("DOMContentLoaded", updateCounter);
     </script>
     <script>

@@ -18,7 +18,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 ?>
 
 <body>
-  <a href="credits_main.php">Retour au credits</a>
+  <a href="<?= credits_main ?>">Retour au credits</a>
 </body>
 
 </html>

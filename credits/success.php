@@ -72,7 +72,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <?php
             }
             ?>
-            <a href="../index.php" class="btn btn-primary mt-4"><i class="bi bi-arrow-left"></i> Retour à l'Accueil</a>
+            <a href='<?= '../' . index_front ?>' class="btn btn-primary mt-4"><i class="bi bi-arrow-left"></i> Retour à l'Accueil</a>
           </div>
         </div>
       </div>
