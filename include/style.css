@@ -120,15 +120,7 @@ h1 {
   background-color: #3f3f3f;
   border-color: black;
 }
-.my-btn {
-  background-color: #ff6e40;
-  color: #f5f0e1;
-  padding: 0.46875rem 0.9375rem;
-}
-.my-btn:hover {
-  background-color: #ff3b20 !important;
-  transform: scale(1.02);
-}
+
 .btn-outline-dark:hover {
   background-color: #1e3d59;
   color: white;
@@ -147,15 +139,6 @@ h1 {
 }
 .m-f {
   padding: 0.9375rem;
-}
-.my_inscription {
-  margin-top: 2.25rem;
-  text-decoration-line: underline;
-  text-decoration-thickness: 0.234375rem;
-  text-underline-offset: 0.234375rem;
-  text-align: center;
-  display: flex;
-  justify-content: center;
 }
 
 .facebook_login {

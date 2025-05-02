@@ -28,7 +28,9 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
   <div class="d-flex justify-content-center my-5">
     <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
 
-      <h1 class="montserrat-titre40 my_inscription text-center">Inscription</h1>
+      <div class="pb-3 my-3">
+        <h1>Inscription</h1>
+      </div>
 
       <form class="row g-3 m-f" method="post" action="inscription_verification.php">
         <div class="col-md-4">
@@ -48,7 +50,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
             <?php endif; ?>
           </div>
         </div>
-        <div class="col-12">
+        <div class="col-12 mt-2">
           <?php
           $error = isset($_GET['error']) ? $_GET['error'] : "";
           ?>
@@ -61,13 +63,15 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           <?php endif; ?>
         </div>
 
-        <div class="col-12">
+        <div class="col-12 mb-2">
           <?php
           $error = isset($_GET['error']) ? $_GET['error'] : "";
           ?>
-          <label for="mdp_inscrire" class="form-label">Mot de passe</label>
           <input type="password" class="form-control f-inscription <?php echo ($error == 'password_length' || $error == 'password_special_char' || $error == 'password_number' || $error == 'password_upper') ? 'is-invalid' : ''; ?>" aria-describedby="passwordHelpBlock"
-            id="mdp_inscrire" name="mot_de_passe" placeholder="Plus que 8 caractères, un caractère spécial, une lettre majuscule et un chiffre." required>
+            id="mdp_inscrire" name="mot_de_passe" placeholder="Mot de passe" required>
+          <div id="passwordHelpBlock" class="form-text">
+            Plus que 8 caractères, un caractère spécial, une lettre majuscule et un chiffre.
+          </div>
           <?php
           if ($error == 'password_length') {
             echo '<div class="invalid-feedback">Le mot de passe doit avoir au moins 8 caractères, 1 caractère spéciale, 1 lettre majuscule et 1 chiffre</div>';
@@ -80,52 +84,53 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
 
         </div>
 
-        <div class="col-9">
-          <input
-            type="text" name="rue"
-            class="form-control f-inscription" id="rue_inscrire" required
-            placeholder="Rue"
-            value="<?php echo isset($_GET['rue']) ? htmlspecialchars($_GET['rue']) : ''; ?>">
-        </div>
-        <div class="col-3">
-          <input type="text" placeholder="Code postal" name="code_postal" id="cp_inscrire" class="form-control <?php echo ($error == 'invalid_cp') ? 'is-invalid' : ''; ?>" value="<?php echo isset($_GET['code_postal']) ? htmlspecialchars($_GET['code_postal']) : ''; ?>">
-          <?php
-          if ($error == 'invalid_cp') {
-            echo '<div class="invalid-feedback">Un code postal ne peut contenir que des chiffres</div>';
-          }
-          ?>
-        </div>
+        <div class="col-12">
+          <div class="col-12 col-lg-9">
+            <input
+              type="text" name="rue"
+              class="form-control f-inscription" id="rue_inscrire" required
+              placeholder="Rue"
+              value="<?php echo isset($_GET['rue']) ? htmlspecialchars($_GET['rue']) : ''; ?>">
+          </div>
+          <div class="col-12 col-lg-3">
+            <input type="text" placeholder="Code postal" name="code_postal" id="cp_inscrire" class="form-control <?php echo ($error == 'invalid_cp') ? 'is-invalid' : ''; ?>" value="<?php echo isset($_GET['code_postal']) ? htmlspecialchars($_GET['code_postal']) : ''; ?>">
+            <?php
+            if ($error == 'invalid_cp') {
+              echo '<div class="invalid-feedback">Un code postal ne peut contenir que des chiffres</div>';
+            }
+            ?>
+          </div>
 
-        <div class="col-6">
-          <input
-            type="text" name="ville"
-            placeholder="Ville"
-            class="form-control f-inscription" id="ville_inscrire" required
-            value="<?php echo isset($_GET['ville']) ? htmlspecialchars($_GET['ville']) : ''; ?>">
-        </div>
-        <div class="col-6">
-          <select class="form-select f-inscription" name="region"
-            id="region_inscrire" required
-            value="<?php echo isset($_GET['region']) ? htmlspecialchars($_GET['region']) : ''; ?>">
-            <option selected disabled value="">Choisir un région</option>
-            <option>Auvergne-Rhône-Alpes</option>
-            <option>Bourgogne-Franche-Comté</option>
-            <option>Bretagne</option>
-            <option>Centre-Val de Loire</option>
-            <option>Corse</option>
-            <option>Grand-Est</option>
-            <option>Hauts-De-France</option>
-            <option>Île-de-France</option>
-            <option>Normandie</option>
-            <option>Nouvelle-Aquitaine</option>
-            <option>Occitanie</option>
-            <option>Pays de la Loire</option>
-            <option>Provence-Alpes-Côte d'Azur (PACA)</option>
-          </select>
+          <div class="col-12 col-lg-6">
+            <input
+              type="text" name="ville"
+              placeholder="Ville"
+              class="form-control f-inscription" id="ville_inscrire" required
+              value="<?php echo isset($_GET['ville']) ? htmlspecialchars($_GET['ville']) : ''; ?>">
+          </div>
+          <div class="col-12 col-lg-6">
+            <select class="form-select f-inscription" name="region"
+              id="region_inscrire" required
+              value="<?php echo isset($_GET['region']) ? htmlspecialchars($_GET['region']) : ''; ?>">
+              <option selected disabled value="">Choisir un région</option>
+              <option>Auvergne-Rhône-Alpes</option>
+              <option>Bourgogne-Franche-Comté</option>
+              <option>Bretagne</option>
+              <option>Centre-Val de Loire</option>
+              <option>Corse</option>
+              <option>Grand-Est</option>
+              <option>Hauts-De-France</option>
+              <option>Île-de-France</option>
+              <option>Normandie</option>
+              <option>Nouvelle-Aquitaine</option>
+              <option>Occitanie</option>
+              <option>Pays de la Loire</option>
+              <option>Provence-Alpes-Côte d'Azur (PACA)</option>
+            </select>
+          </div>
         </div>
 
         <div class="col-12 mt-3">
-          <label for="captcha_question" class="form-label" id="captcha">CAPTCHA</label>
           <?php
           $questions = [
             "Combien font 3 + 5 ?" => 8,
@@ -137,7 +142,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           $random_question = $question_keys[array_rand($question_keys)];
           $_SESSION['captcha_answer'] = strtolower(trim($questions[$random_question]));
           ?>
-          <p class="text-start" id="captcha_question"><?= htmlspecialchars($random_question) ?></p>
+          <p class="text-start" id="captcha_question"><?= 'Question captcha : ' . htmlspecialchars($random_question) ?></p>
           <input type="text" id="captcha_answer" name="captcha_answer" class="form-control f-inscription mb-2 <?php echo ($error == 'captcha_invalid') ? 'is-invalid' : ''; ?>" required>
           <?php if ($error == 'captcha_invalid') {
             echo '<div class="invalid-feedback">La réponse au CAPTCHA est incorrecte.</div>';
@@ -149,10 +154,11 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
             </label>
           </div>
         </div>
-        <div class="col-12 d-flex justify-content-end">
-          <button type="submit" class="btn btn-lg my-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Créer mon compte
-          </button>
+
+        <div class="col-12 mt-4">
+          <input type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          Créer mon compte
+          </input>
         </div>
       </form>
     </div>
