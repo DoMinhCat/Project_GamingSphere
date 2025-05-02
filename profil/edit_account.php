@@ -32,7 +32,7 @@ try {
             $stmt = $bdd->prepare("UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, ville = ?, code_postal = ?, rue = ? WHERE id_utilisateurs = ?");
             $stmt->execute([$nom, $prenom, $email, $ville, $code_postal, $rue, $userId]);
 
-            header('Location: my_account.php');
+            header('Location:' . my_account);
             exit;
         }
     }
@@ -46,6 +46,9 @@ try {
 <html lang="fr">
 <?php $title = "Modifier mes informations";
 include('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
 include('../include/header.php');
 ?>
 
@@ -90,10 +93,11 @@ include('../include/header.php');
             </div>
             <div class="d-flex justify-content-between mt-4">
                 <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-                <a href="my_account.php" class="btn btn-secondary">Annuler</a>
+                <a href="<?= my_account ?>" class="btn btn-secondary">Annuler</a>
             </div>
         </form>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 <?php include('../include/footer.php'); ?>
 

@@ -23,42 +23,48 @@ $achats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php
 $title = 'Historique des Achats';
 include('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
 ?>
+
 <body>
-<?php include('../include/header.php'); ?>
+    <?php include('../include/header.php'); ?>
 
-<div class="container mt-4">
-    <h1 class="text-center mb-4">🧾 Historique de vos achats</h1>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">🧾 Historique de vos achats</h1>
 
-    <?php if (count($achats) > 0): ?>
-        <div class="row">
-            <?php foreach ($achats as $jeu): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <?php if (!empty($jeu['image'])): ?>
-                            <img src="../back-office/uploads/<?= htmlspecialchars($jeu['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($jeu['nom']) ?>" style="height: 250px; object-fit: cover;">
-                        <?php else: ?>
-                            <img src="../../assets/img/no_image.png" class="card-img-top" alt="Jeu" style="height: 250px; object-fit: cover;">
-                        <?php endif; ?>
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($jeu['nom']) ?></h5>
-                            <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($jeu['prix']) ?> €</p>
-                            <p class="text-muted"><small>Acheté le : <?= date('d/m/Y à H:i:s', strtotime($jeu['date_achat'])) ?></small></p>
+        <?php if (count($achats) > 0): ?>
+            <div class="row">
+                <?php foreach ($achats as $jeu): ?>
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <?php if (!empty($jeu['image'])): ?>
+                                <img src="../back-office/uploads/<?= htmlspecialchars($jeu['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($jeu['nom']) ?>" style="height: 250px; object-fit: cover;">
+                            <?php else: ?>
+                                <img src="../../assets/img/no_image.png" class="card-img-top" alt="Jeu" style="height: 250px; object-fit: cover;">
+                            <?php endif; ?>
+                            <div class="card-body">
+                                <h5 class="card-title"><?= htmlspecialchars($jeu['nom']) ?></h5>
+                                <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($jeu['prix']) ?> €</p>
+                                <p class="text-muted"><small>Acheté le : <?= date('d/m/Y à H:i:s', strtotime($jeu['date_achat'])) ?></small></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <p class="text-center text-muted">Vous n'avez encore acheté aucun jeu.</p>
-    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <p class="text-center text-muted">Vous n'avez encore acheté aucun jeu.</p>
+        <?php endif; ?>
 
-    <div class="text-center mt-4">
-        <a href="../jeux/index.php" class="btn btn-primary">🕹️ Parcourir les jeux</a>
-        <a href="../profil.php" class="btn btn-secondary">👤 Retour au profil</a>
+        <div class="text-center mt-4">
+            <a href="../jeux/index.php" class="btn btn-primary">🕹️ Parcourir les jeux</a>
+            <a href="../profil.php" class="btn btn-secondary">👤 Retour au profil</a>
+        </div>
     </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 <?php include('../include/footer.php'); ?>
+
 </html>

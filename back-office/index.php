@@ -12,9 +12,6 @@ require_once __DIR__ . '/../path.php';
 <?php
 $title = 'Acceuil';
 require('head.php');
-if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
-    echo '<script src="../../include/check_timeout.js"></script>';
-}
 ?>
 
 <body class="pb-4">
