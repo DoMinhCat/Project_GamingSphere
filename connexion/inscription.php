@@ -63,7 +63,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           <?php endif; ?>
         </div>
 
-        <div class="col-12 mt-2 mb-4">
+        <div class="col-12 mb-3">
           <?php
           $error = isset($_GET['error']) ? $_GET['error'] : "";
           ?>
@@ -85,15 +85,15 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
         </div>
 
         <div class="col-12">
-          <div class="row mb-3">
-            <div class="col-12 col-lg-9">
+          <div class="row mb-2">
+            <div class="col-12 col-lg-9 mb-3">
               <input
                 type="text" name="rue"
                 class="form-control f-inscription" id="rue_inscrire" required
                 placeholder="Rue"
                 value="<?php echo isset($_GET['rue']) ? htmlspecialchars($_GET['rue']) : ''; ?>">
             </div>
-            <div class="col-12 col-lg-3">
+            <div class="col-12 col-lg-3 mb-3">
               <input type="text" placeholder="Code postal" name="code_postal" id="cp_inscrire" class="form-control <?php echo ($error == 'invalid_cp') ? 'is-invalid' : ''; ?>" value="<?php echo isset($_GET['code_postal']) ? htmlspecialchars($_GET['code_postal']) : ''; ?>">
               <?php
               if ($error == 'invalid_cp') {
@@ -103,14 +103,14 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-6 mb-3">
               <input
                 type="text" name="ville"
                 placeholder="Ville"
                 class="form-control f-inscription" id="ville_inscrire" required
                 value="<?php echo isset($_GET['ville']) ? htmlspecialchars($_GET['ville']) : ''; ?>">
             </div>
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-6 mb-3">
               <select class="form-select f-inscription" name="region"
                 id="region_inscrire" required
                 value="<?php echo isset($_GET['region']) ? htmlspecialchars($_GET['region']) : ''; ?>">
@@ -133,7 +133,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           </div>
         </div>
 
-        <div class="col-12 mt-3">
+        <div class="col-12 mt-4">
           <?php
           $questions = [
             "Combien font 3 + 5 ?" => 8,
@@ -145,7 +145,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           $random_question = $question_keys[array_rand($question_keys)];
           $_SESSION['captcha_answer'] = strtolower(trim($questions[$random_question]));
           ?>
-          <p class="text-start" id="captcha_question"><?= 'Question captcha : ' . htmlspecialchars($random_question) ?></p>
+          <p class="text-start mb-1" id="captcha_question"><?= 'Question captcha : ' . htmlspecialchars($random_question) ?></p>
           <input type="text" id="captcha_answer" name="captcha_answer" class="form-control f-inscription mb-2 <?php echo ($error == 'captcha_invalid') ? 'is-invalid' : ''; ?>" required>
           <?php if ($error == 'captcha_invalid') {
             echo '<div class="invalid-feedback">La réponse au CAPTCHA est incorrecte.</div>';
@@ -158,8 +158,8 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           </div>
         </div>
 
-        <div class="col-12 mt-4">
-          <input type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" value="Créer mon compte">
+        <div class="col-12 mt-5">
+          <input type="submit" class="btn btn-primary container-fluid" data-bs-toggle="modal" data-bs-target="#staticBackdrop" value="Créer mon compte">
         </div>
       </form>
     </div>
