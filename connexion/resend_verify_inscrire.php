@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/../path.php';
 if (!empty($_SESSION['user_email'])) {
-  header('location:' . index_front);
+  header('Location: ../' . index_front);
   exit();
 }
 ?>
@@ -50,7 +50,7 @@ include('../include/head.php');
       </div>
 
       <div class="d-flex flex-column pt-1">
-        <a href="login.php" class="btn btn-success">
+        <a href="<?= login ?>" class="btn btn-success">
           Revenir à la page de connexion
         </a>
       </div>

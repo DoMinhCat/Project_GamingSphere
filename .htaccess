@@ -34,8 +34,8 @@ RewriteRule ^connexion/verify_email/?$ connexion/resend_verify_inscrire.php [L]
 
 # reset_mdp_err.php
 RewriteCond %{THE_REQUEST} \s/connexion/reset_mdp_err\.php [NC]
-RewriteRule ^connexion/reset_mdp_err\.php$ /connexion/reset_password/error [R=301,L,QSA]
-RewriteRule ^connexion/reset_password/error/?$ connexion/reset_mdp_err.php [L]
+RewriteRule ^connexion/reset_mdp_err\.php$ /connexion/reset_password_error [R=301,L,QSA]
+RewriteRule ^connexion/reset_password_error/?$ connexion/reset_mdp_err.php [L]
 
 # reset_mdp.php
 RewriteCond %{THE_REQUEST} \s/connexion/reset_mdp\.php [NC]

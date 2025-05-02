@@ -32,43 +32,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date = date('Y-m-d H:i:s');
 
     if (!isset($_POST['captcha_answer']) || !isset($_SESSION['captcha_answer'])) {
-        header("Location: inscription.php?error=captcha_missing&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        header('Location:' . inscription . '?error=captcha_missing&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     $user_answer = trim(strtolower($_POST['captcha_answer']));
     $correct_answer = trim(strtolower($_SESSION['captcha_answer']));
     if ($user_answer !== $correct_answer) {
-        header("Location: inscription.php?error=captcha_invalid&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        header('Location:' . inscription . '?error=captcha_invalid&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     unset($_SESSION['captcha_answer']);
 
     if (strlen($mot_de_passe) < 8) {
-        header("Location: inscription.php?error=password_length&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        header('Location:' . inscription . '?error=password_length&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (!preg_match('/[\W_]/', $mot_de_passe)) {
-        header("Location: inscription.php?error=password_special_char&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        header('Location:' . inscription . '?error=password_special_char&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (!preg_match('/\d/', $mot_de_passe)) {
-        header("Location: inscription.php?error=password_number&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        header('Location:' . inscription . 'error=password_number&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (!preg_match('/[A-Z]/', $mot_de_passe)) {
-        header("Location: inscription.php?error=password_upper&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        header('Location:' . inscription . '?error=password_upper&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (!ctype_digit($code_postal)) {
-        header("Location: inscription.php?error=invalid_cp&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        header('Location:' . inscription . '?error=invalid_cp&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) || preg_match('/[\r\n]/', $email)) {
-        header("Location: inscription.php?error=invalid_email&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom)  .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        header('Location:' . inscription . '?error=invalid_email&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom)  .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (empty($nom) || empty($prenom) || empty($email) || empty($mot_de_passe) || empty($pseudo) || empty($ville) || empty($rue) || empty($code_postal)) {
-        header("Location: inscription.php?error=empty_fields");
+        header('Location:' . inscription . '?error=empty_fields');
         exit();
     }
 
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_count = $stmt->fetchColumn();
 
     if ($email_count > 0) {
-        header("Location: inscription.php?error=email_exists&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        header('Location:' . inscription . '?error=email_exists&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
 
@@ -88,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pseudo_count = $stmt->fetchColumn();
 
     if ($pseudo_count > 0) {
-        header("Location: inscription.php?error=pseudo_exists&nom=" . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        header('Location:' . inscription . '?error=pseudo_exists&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
 
@@ -152,14 +152,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->Body = $message;
             $mail->send();
 
-            header('Location: inscription.php?result=success');
+            header('Location:' . inscription . '?result=success');
             exit();
         } catch (Exception $e) {
             $stmt = $bdd->prepare("UPDATE utilisateurs SET inscrire_token = NULL, inscrire_token_expiry = NULL WHERE inscrire_token = :token");
             $stmt->execute([
                 'token' => $token,
             ]);
-            header('Location: inscription.php?message=' . urlencode('Erreur d\'envoi de l\'email: ') . urlencode($mail->ErrorInfo));
+            header('Location:' . inscription . '?message=' . urlencode('Erreur d\'envoi de l\'email: ') . urlencode($mail->ErrorInfo));
             exit();
         }
     } catch (PDOException $e) {

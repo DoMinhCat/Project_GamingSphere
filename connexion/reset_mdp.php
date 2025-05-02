@@ -2,12 +2,12 @@
 session_start();
 require_once __DIR__ . '/../path.php';
 if (!empty($_SESSION['user_email'])) {
-  header('location:' . index_front);
+  header('Location: ../' . index_front);
   exit();
 }
 
 if (!isset($_GET['token']) || empty($_GET['token'])) {
-  header('Location: reset_mdp_err.php?message=' . urldecode("Cette page est actuellement indisponible"));
+  header('Location:' . reset_mdp_err . '?message=' . urldecode("Cette page est actuellement indisponible"));
   exit();
 }
 $token = $_GET['token'];
@@ -18,7 +18,7 @@ $stmt->execute(['token' => $token]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
-  header('Location: reset_mdp_err.php?message=' . urldecode("Cette page est actuellement indisponible"));
+  header('Location:' . reset_mdp_err . '?message=' . urldecode("Cette page est actuellement indisponible"));
   exit();
 }
 ?>
@@ -76,14 +76,14 @@ include('../include/head.php')
       </div>
 
       <div class="pb-2">
-        <a href="inscription.php" id="creer_compte">
+        <a href="<?= inscription ?>" id="creer_compte">
           Créer un compte
         </a>
       </div>
 
 
       <div class="d-flex flex-column pt-1">
-        <a href="login.php" class="btn btn-success">
+        <a href="<?= login ?>" class="btn btn-success">
           Revenir à la page de connexion
         </a>
       </div>

@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/../path.php';
 if (!empty($_SESSION['user_email'])) {
-  header('location:' . index_front);
+  header('Location: ../' . index_front);
   exit();
 }
 ?>
@@ -19,7 +19,7 @@ include('../include/head.php');
   include("../include/header.php");
   ?>
 
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center my-5">
     <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
 
       <?php if (!isset($_GET['success']) || empty($_GET['success'])): ?>

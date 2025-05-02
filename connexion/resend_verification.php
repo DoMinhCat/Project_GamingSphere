@@ -14,7 +14,7 @@ $dotenv->load();
 
 require('../include/database.php');
 if (!isset($_POST['email'])) {
-    header('Location: resend_verify_inscrire.php?message=' . urlencode('Aucune adresse email reçue.'));
+    header('Location:' . resend_verify_inscrire . '?message=' . urlencode('Aucune adresse email reçue.'));
     exit();
 }
 $email = strtolower(trim($_POST['email']));
@@ -26,7 +26,7 @@ if ($user) {
     $now = time();
     $last_resend = strtotime($user['last_resend_time']);
     if ($now - $last_resend < 60 * 5) {
-        header('Location: resend_verify_inscrire.php?message=' . urlencode('Veuillez attendre quelques minutes avant de renvoyer le lien.'));
+        header('Location: ' . resend_verify_inscrire . '?message=' . urlencode('Veuillez attendre quelques minutes avant de renvoyer le lien.'));
         exit();
     }
 
@@ -72,17 +72,17 @@ if ($user) {
         $mail->Body = $message;
         $mail->send();
 
-        header('Location: resend_verify_inscrire.php?result=success');
+        header('Location: ' . resend_verify_inscrire . '?result=success');
         exit();
     } catch (Exception $e) {
         $stmt = $bdd->prepare("UPDATE utilisateurs SET inscrire_token = NULL, inscrire_token_expiry = NULL WHERE inscrire_token = :token");
         $stmt->execute([
             'token' => $token,
         ]);
-        header('Location: resend_verify_inscrire.php?message=' . urlencode('Erreur d\'envoi de l\'email: ') . urlencode($mail->ErrorInfo) . '. Veuillez réessayer plus tard.');
+        header('Location:' . resend_verify_inscrire . '?message=' . urlencode('Erreur d\'envoi de l\'email: ') . urlencode($mail->ErrorInfo) . '. Veuillez réessayer plus tard.');
         exit();
     }
 } else {
-    header('Location: resend_verify_inscrire.php?message=' . urlencode('Email introuvable ou déjà vérifié'));
+    header('Location:' . resend_verify_inscrire . '?message=' . urlencode('Email introuvable ou déjà vérifié'));
     exit();
 }

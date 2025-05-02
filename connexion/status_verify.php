@@ -2,11 +2,11 @@
 session_start();
 require_once __DIR__ . '/../path.php';
 if (!empty($_SESSION['user_email'])) {
-    header('location:' . index_front);
+    header('Location: ../' . index_front);
     exit();
 }
 if (!isset($_GET['result'])) {
-    header('../location:index.php');
+    header('Location: ../' . index_front);
     exit();
 }
 ?>
@@ -51,12 +51,12 @@ include('../include/head.php')
             <div class="d-flex flex-column pt-1">
                 <?php
                 if (isset($_GET['result']) && ($_GET['result'] == 'token_invalid') || $_GET['result'] == 'token_expire') {
-                    echo '<a href="resend_verify_inscrire.php" class="btn btn-primary mt-2">
+                    echo '<a href="' . resend_verify_inscrire . '" class="btn btn-primary mt-2">
                     Renvoyer un email de vérification
                     </a>';
                 }
                 ?>
-                <a href="login.php" class="btn btn-success mt-2">
+                <a href="<?= login ?>" class="btn btn-success mt-2">
                     Revenir à la page de connexion
                 </a>
             </div>
