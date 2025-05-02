@@ -29,7 +29,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 ?>
 
 <body>
-    <?php include('../include/header.php'); ?>
+    <?php include('../include/header.php');
+    include('/profil/navbar.php'); ?>
 
     <div class="container my-5">
         <h1 class="text-center mb-4">🧾 Historique de vos achats</h1>

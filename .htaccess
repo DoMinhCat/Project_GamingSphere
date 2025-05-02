@@ -113,7 +113,7 @@ RewriteRule ^team/list/?$ team/team_list.php [L]
 # create_team.php
 RewriteCond %{THE_REQUEST} \s/team/create_team\.php [NC]
 RewriteRule ^team/create_team\.php$ /team/create [R=301,L,QSA]
-RewriteRule ^/team/create/?$ team/create_team.php [L]
+RewriteRule ^team/create/?$ team/create_team.php [L]
 
 # team_details.php
 RewriteCond %{THE_REQUEST} \s/team/team_details\.php [NC]
