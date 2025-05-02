@@ -15,7 +15,7 @@
           <a class="nav-link" href="<?= order_history ?>">Historique des commandes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?= team_list ?>">Mes équipes</a>
+          <a class="nav-link" href="<?= my_teams ?>">Mes équipes</a>
         </li>
       </ul>
     </div>
