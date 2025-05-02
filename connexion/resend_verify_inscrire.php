@@ -19,7 +19,7 @@ include('../include/head.php');
   <?php
   include("../include/header.php");
   ?>
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center my-5">
     <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
 
       <div class="pb-1 mb-2">
@@ -56,13 +56,13 @@ include('../include/head.php');
       </div>
 
     </div>
-
-
-
-    <?php
-    include("../include/footer.php");
-    ?>
   </div>
+
+
+  <?php
+  include("../include/footer.php");
+  ?>
+
 
   <div class="modal fade" id="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">

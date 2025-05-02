@@ -36,7 +36,7 @@ include('../include/head.php')
   ?>
 
 
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center my-5">
     <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
 
       <div class="pb-3">
