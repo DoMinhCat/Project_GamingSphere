@@ -50,6 +50,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
 }
 include('../include/header.php');
+include('navbar.php');
 ?>
 
 <body>

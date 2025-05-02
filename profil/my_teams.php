@@ -29,7 +29,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
 <body>
     <?php include('../include/header.php');
-    include('/profil/navbar.php');
+    include('navbar.php');
     ?>
 
     <div class="container my-5">
@@ -61,6 +61,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php else: ?>
             <p class="text-center">Vous n'avez rejoint aucune équipe pour le moment.</p>
         <?php endif; ?>
+        <div class="text-center mt-4">
+            <a href="<?= create_team ?>" class="btn btn-success">Créer une nouvelle équipe</a>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
