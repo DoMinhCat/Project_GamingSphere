@@ -50,7 +50,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
             <?php endif; ?>
           </div>
         </div>
-        <div class="col-12 mt-2">
+        <div class="col-12 mt-4">
           <?php
           $error = isset($_GET['error']) ? $_GET['error'] : "";
           ?>
@@ -63,13 +63,13 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           <?php endif; ?>
         </div>
 
-        <div class="col-12 mb-2">
+        <div class="col-12 mt-2 mb-4">
           <?php
           $error = isset($_GET['error']) ? $_GET['error'] : "";
           ?>
           <input type="password" class="form-control f-inscription <?php echo ($error == 'password_length' || $error == 'password_special_char' || $error == 'password_number' || $error == 'password_upper') ? 'is-invalid' : ''; ?>" aria-describedby="passwordHelpBlock"
             id="mdp_inscrire" name="mot_de_passe" placeholder="Mot de passe" required>
-          <div id="passwordHelpBlock" class="form-text">
+          <div id="passwordHelpBlock" class="form-text text-start">
             Plus que 8 caractères, un caractère spécial, une lettre majuscule et un chiffre.
           </div>
           <?php
@@ -85,48 +85,51 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
         </div>
 
         <div class="col-12">
-          <div class="col-12 col-lg-9">
-            <input
-              type="text" name="rue"
-              class="form-control f-inscription" id="rue_inscrire" required
-              placeholder="Rue"
-              value="<?php echo isset($_GET['rue']) ? htmlspecialchars($_GET['rue']) : ''; ?>">
+          <div class="row mb-3">
+            <div class="col-12 col-lg-9">
+              <input
+                type="text" name="rue"
+                class="form-control f-inscription" id="rue_inscrire" required
+                placeholder="Rue"
+                value="<?php echo isset($_GET['rue']) ? htmlspecialchars($_GET['rue']) : ''; ?>">
+            </div>
+            <div class="col-12 col-lg-3">
+              <input type="text" placeholder="Code postal" name="code_postal" id="cp_inscrire" class="form-control <?php echo ($error == 'invalid_cp') ? 'is-invalid' : ''; ?>" value="<?php echo isset($_GET['code_postal']) ? htmlspecialchars($_GET['code_postal']) : ''; ?>">
+              <?php
+              if ($error == 'invalid_cp') {
+                echo '<div class="invalid-feedback">Un code postal ne peut contenir que des chiffres</div>';
+              }
+              ?>
+            </div>
           </div>
-          <div class="col-12 col-lg-3">
-            <input type="text" placeholder="Code postal" name="code_postal" id="cp_inscrire" class="form-control <?php echo ($error == 'invalid_cp') ? 'is-invalid' : ''; ?>" value="<?php echo isset($_GET['code_postal']) ? htmlspecialchars($_GET['code_postal']) : ''; ?>">
-            <?php
-            if ($error == 'invalid_cp') {
-              echo '<div class="invalid-feedback">Un code postal ne peut contenir que des chiffres</div>';
-            }
-            ?>
-          </div>
-
-          <div class="col-12 col-lg-6">
-            <input
-              type="text" name="ville"
-              placeholder="Ville"
-              class="form-control f-inscription" id="ville_inscrire" required
-              value="<?php echo isset($_GET['ville']) ? htmlspecialchars($_GET['ville']) : ''; ?>">
-          </div>
-          <div class="col-12 col-lg-6">
-            <select class="form-select f-inscription" name="region"
-              id="region_inscrire" required
-              value="<?php echo isset($_GET['region']) ? htmlspecialchars($_GET['region']) : ''; ?>">
-              <option selected disabled value="">Choisir un région</option>
-              <option>Auvergne-Rhône-Alpes</option>
-              <option>Bourgogne-Franche-Comté</option>
-              <option>Bretagne</option>
-              <option>Centre-Val de Loire</option>
-              <option>Corse</option>
-              <option>Grand-Est</option>
-              <option>Hauts-De-France</option>
-              <option>Île-de-France</option>
-              <option>Normandie</option>
-              <option>Nouvelle-Aquitaine</option>
-              <option>Occitanie</option>
-              <option>Pays de la Loire</option>
-              <option>Provence-Alpes-Côte d'Azur (PACA)</option>
-            </select>
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <input
+                type="text" name="ville"
+                placeholder="Ville"
+                class="form-control f-inscription" id="ville_inscrire" required
+                value="<?php echo isset($_GET['ville']) ? htmlspecialchars($_GET['ville']) : ''; ?>">
+            </div>
+            <div class="col-12 col-lg-6">
+              <select class="form-select f-inscription" name="region"
+                id="region_inscrire" required
+                value="<?php echo isset($_GET['region']) ? htmlspecialchars($_GET['region']) : ''; ?>">
+                <option selected disabled value="">Choisir un région</option>
+                <option>Auvergne-Rhône-Alpes</option>
+                <option>Bourgogne-Franche-Comté</option>
+                <option>Bretagne</option>
+                <option>Centre-Val de Loire</option>
+                <option>Corse</option>
+                <option>Grand-Est</option>
+                <option>Hauts-De-France</option>
+                <option>Île-de-France</option>
+                <option>Normandie</option>
+                <option>Nouvelle-Aquitaine</option>
+                <option>Occitanie</option>
+                <option>Pays de la Loire</option>
+                <option>Provence-Alpes-Côte d'Azur (PACA)</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -156,9 +159,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
         </div>
 
         <div class="col-12 mt-4">
-          <input type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-          Créer mon compte
-          </input>
+          <input type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" value="Créer mon compte">
         </div>
       </form>
     </div>
