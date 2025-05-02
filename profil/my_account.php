@@ -163,6 +163,17 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
     <?php include('../include/footer.php'); ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-...your-integrity..." crossorigin="anonymous"></script>
+    <!-- debug dropdown -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdowns = document.querySelectorAll('.dropdown-toggle');
+            if (dropdowns.length === 0) {
+                console.warn("No dropdowns found.");
+            } else {
+                console.log("Bootstrap dropdowns loaded: ", dropdowns.length);
+            }
+        });
+    </script>
 </body>
 
 </html>
