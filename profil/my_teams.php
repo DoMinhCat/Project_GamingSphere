@@ -22,6 +22,9 @@ $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php
 $title = 'Mes équipes';
 require('../include/head.php');
+if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
+    echo '<script src="../include/check_timeout.js"></script>';
+}
 ?>
 
 <body>
@@ -57,7 +60,7 @@ require('../include/head.php');
             <p class="text-center">Vous n'avez rejoint aucune équipe pour le moment.</p>
         <?php endif; ?>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

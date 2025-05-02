@@ -98,7 +98,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php endif; ?>
     </div>
     <?php include('../include/footer.php'); ?>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
