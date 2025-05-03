@@ -605,7 +605,9 @@ body.offcanvas-backdrop {
   display: block;
   position: relative;
 }
-
+.forumBlockLink .card {
+  transition: transform 0.2s ease-in-out;
+}
 .article {
   background-color: rgb(250, 250, 250);
   border-radius: 10px;
@@ -614,6 +616,6 @@ body.offcanvas-backdrop {
 }
 
 .articleBlockLink:hover .article,
-.forumBlockLink {
+.forumBlockLink:hover .card {
   transform: scale(1.01);
 }
