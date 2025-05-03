@@ -23,7 +23,7 @@ require('../head.php');
         <?php
         if (isset($bdd)) {
             try {
-                $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs");
+                $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs ORDER BY nom ASC");
                 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 if (isset($_GET['message'])) {

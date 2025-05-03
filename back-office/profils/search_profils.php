@@ -9,10 +9,10 @@ $search = trim($_GET['search'] ?? '');
 
 try {
     if (!empty($search)) {
-        $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs WHERE pseudo LIKE :search OR email LIKE :search OR nom LIKE :search OR prenom LIKE :search");
+        $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs WHERE pseudo LIKE :search OR email LIKE :search OR nom LIKE :search OR prenom LIKE :search ORDER BY nom ASC");
         $stmt->execute(['search' => '%' . $search . '%']);
     } else {
-        $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs");
+        $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs ORDER BY nom ASC");
     }
 
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -26,8 +26,8 @@ try {
             echo "<td>" . htmlspecialchars($user['pseudo']) . "</td>";
             echo "<td>" . htmlspecialchars($user['prenom']) . "</td>";
             echo "<td>";
-            echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm'>Modifier</a> ";
-            echo "<a href='delete_user.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet utilisateur?\");'>Supprimer</a>";
+            echo "<a href='" . profils_edit_back . "?id=" . urlencode($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm'>Modifier</a> ";
+            echo "<a href='delete_user.php?id=" . urlencode($user['id_utilisateurs']) . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet utilisateur?\");'>Supprimer</a>";
             echo "</td>";
             echo "</tr>";
         }
