@@ -50,7 +50,9 @@ h1 {
   font-style: normal;
   font-size: 0.75rem;
 }
-
+a {
+  text-decoration: none;
+}
 .connexion_box {
   background-color: #ffc13b;
   border-radius: 2rem;
@@ -592,16 +594,27 @@ body.offcanvas-backdrop {
   color: inherit;
   transition: transform 0.2s ease-in-out;
 }
-
 #linkProfileFromConv:hover {
   transform: scale(1.03);
 }
-.articleBlockLink {
-  background-color: rgb(243, 243, 243) !important;
+.articleBlockLink,
+.forumBlockLink {
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s ease-in-out;
+  display: block;
+  position: relative;
 }
-.articleBlockLink:hover {
+
+.article {
+  background-color: rgb(243, 243, 243);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.articleBlockLink:hover .article,
+.forumBlockLink {
   transform: scale(1.05);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }

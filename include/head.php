@@ -12,9 +12,9 @@ function custom_error_handler($errno, $errstr, $errfile, $errline)
     // Log error details
     error_log("Error [$errno] $errstr in $errfile on line $errline");
 
-    // Set HTTP status code to 500 before redirecting
-    http_response_code(500);
-    header("Location: /error_pages/500.php");
+    // Set HTTP status code to 500 and allow Apache to serve the custom page
+    http_response_code(500);  // Ensures a 500 error is sent to the browser
+    // Do not force a redirect in PHP, let Apache handle this.
     exit();
 }
 set_error_handler("custom_error_handler");
@@ -26,9 +26,9 @@ register_shutdown_function(function () {
         // Log the fatal error details
         error_log("Fatal Error: {$error['message']} in {$error['file']} on line {$error['line']}");
 
-        // Set HTTP status code to 500 before redirecting
-        http_response_code(500);
-        header("Location: /error_pages/500.php");
+        // Set HTTP status code to 500 and allow Apache to serve the custom page
+        http_response_code(500);  // Ensures a 500 error is sent to the browser
+        // Let Apache handle the custom error page
         exit();
     }
 });
