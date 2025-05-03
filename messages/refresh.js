@@ -25,11 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (result.success) {
         // Create the message block to be added
         const messageDiv = document.createElement("div");
-        messageDiv.classList.add("message", "sent");
+        messageDiv.classList.add("message", "sent", "mb-3");
+
+        const col = document.createElement("div");
+        col.classList.add("d-flex", "flex-column");
 
         // Create the message bubble
         const bubble = document.createElement("div");
-        bubble.classList.add("message-bubble");
+        bubble.classList.add("message-bubble", "p-2");
 
         // Create the message content and add it inside the bubble
         const content = document.createElement("p");
@@ -42,8 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
         time.textContent = result.time;
 
         // Append both the bubble and time div to the messageDiv
-        messageDiv.appendChild(bubble); // Bubble first
-        messageDiv.appendChild(time); // Time outside and beneath the bubble
+        col.appendChild(bubble); // Bubble first
+        col.appendChild(time); // Time outside and beneath the bubble
+        messageDiv.appendChild(col);
 
         // Append the message div to the message list
         messageList.appendChild(messageDiv);
