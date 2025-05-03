@@ -33,13 +33,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const content = document.createElement("p");
         content.innerHTML = message.replace(/\n/g, "<br>");
 
+        // Append the content inside the bubble
+        bubble.appendChild(content);
+
+        // Create the time div and append it outside the bubble
         const time = document.createElement("div");
         time.classList.add("message-time");
         time.textContent = result.time;
 
-        bubble.appendChild(content);
-        bubble.appendChild(time);
+        // Append the bubble and time in order
         messageDiv.appendChild(bubble);
+        messageDiv.appendChild(time);
+
+        // Append the message to the message list
         messageList.appendChild(messageDiv);
 
         // Scroll automatique vers le bas
