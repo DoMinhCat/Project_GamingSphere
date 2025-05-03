@@ -103,14 +103,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="rounded-circle m-0" width="40" height="40">
 
                     <?php if ($isUserOnline): ?>
-                        <span class="position-absolute bottom-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle" style="width: 10px; height: 10px; font-size: 0.75rem;"></span>
+                        <span class="position-absolute bottom-0 start-100 bg-success border border-light translate-middle rounded-circle p-1" style="width: 10px; height: 10px; font-size: 0.75rem; margin-bottom: -5px; margin-right: -5px;"></span>
                     <?php else: ?>
-
-                        <span class="position-absolute bottom-0 start-100 translate-middle p-2 bg-secondary border border-light rounded-circle" style="width: 10px; height: 10px; font-size: 0.75rem;"></span>
+                        <span class="position-absolute bottom-0 start-100 bg-secondary border border-light rounded-circle translate-middle p-1" style="width: 10px; height: 10px; font-size: 0.75rem; margin-bottom: -5px; margin-right: -5px;"></span>
                     <?php endif; ?>
                 </div>
 
-                <h5 class="ms-2"><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
+                <h5 class="ms-4"><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
             </div>
 
 
