@@ -28,10 +28,16 @@ try {
             echo "<td>" . htmlspecialchars($user['email']) . "</td>";
             echo "<td>" . htmlspecialchars($user['pseudo']) . "</td>";
             echo "<td>" . htmlspecialchars($user['prenom']) . "</td>";
+            echo "<td>
+            <span class=\"user-status\" data-user=\"" . htmlspecialchars($user['pseudo']) . "\">" . (isOnline($user['last_active']) ? '<span style="color: green;">Online</span>' : '<span style="color: gray;">Offline</span>') . "</span>
+            </td>";
+
             echo "<td>";
-            echo "<a href='" . profils_edit_back . "?id=" . urlencode($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm my-1 me-1'>Modifier</a> ";
-            echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm my-1 me-1'>Exporter PDF</a> ";
-            echo "<a href='delete_user.php?id=" . urlencode($user['id_utilisateurs']) . "' class='btn btn-danger btn-sm my-1 me-1' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet utilisateur?\");'>Supprimer</a>";
+            echo "<div class='d-flex flex-wrap align-items-start flex-md-row align-items-start'>";
+            echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-md-0 me-sm-1'>Modifier</a> ";
+            echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-md-0 me-sm-1'>Exporter PDF</a> ";
+            echo "<a href='delete_user.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-danger btn-sm mb-1 mb-md-0 me-sm-1' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet utilisateur?\");'>Supprimer</a>";
+            echo '</div>';
             echo "</td>";
             echo "</tr>";
         }

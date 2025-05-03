@@ -15,4 +15,7 @@ require_once  __DIR__ . '/../path.php';
         echo '<script src="/include/check_timeout.js"></script>';
     }
     ?>
+    <?php if (!empty($_SESSION['user_email'])): ?>
+        <script src="/status_user/status_online.js"></script>
+    <?php endif; ?>
 </head>
