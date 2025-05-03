@@ -384,9 +384,6 @@ h1 {
 }
 .message {
   display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: flex-start;
 }
 .message.sent {
   justify-content: flex-end;
@@ -394,8 +391,6 @@ h1 {
 .message.sent .message-bubble {
   background-color: #ffc13b !important;
   color: white;
-  max-width: 70%; /* Restrict width of the bubble */
-  margin-left: auto;
 }
 .dark .message.sent .message-bubble {
   background-color: #2f608e !important;
