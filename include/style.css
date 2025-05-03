@@ -401,15 +401,20 @@ h1 {
 }
 .message-bubble {
   max-width: 70%;
-  border-radius: 20px;
+  border-radius: 10px;
   word-wrap: break-word;
   font-size: 14px;
   line-height: 1.5;
 }
-.message-time {
+.message.sent .message-time {
   font-size: 12px;
   color: #888;
   text-align: right;
+}
+.message.message.received .message-time {
+  font-size: 12px;
+  color: #888;
+  text-align: left;
 }
 .message-input-container {
   display: flex;

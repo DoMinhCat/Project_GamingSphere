@@ -26,8 +26,8 @@ try {
             echo "<td>" . htmlspecialchars($article['titre']) . "</td>";
             echo "<td>" . htmlspecialchars($article['date_article']) . "</td>";
             echo '<td>';
-            echo "<a href='" . article_edit_back . "?id=" . $article['id_news'] . "' class=\"btn btn-warning mb-1\">Modifier</a>";
-            echo "<a href='" . article_back . "?delete_id=" . $article['id_news'] . "' class=\"btn btn-danger\" onclick=\"return confirm(\'Êtes-vous sûr de vouloir supprimer cet article ?\')\">Supprimer</a>";
+            echo "<a href='" . article_edit_back . "?id=" . $article['id_news'] . "' class=\"btn btn-warning my-1 me-1\">Modifier</a>";
+            echo "<a href='" . article_back . "?delete_id=" . $article['id_news'] . "' class=\"btn btn-danger my-1 me-1\" onclick=\"return confirm(\'Êtes-vous sûr de vouloir supprimer cet article ?\')\">Supprimer</a>";
             echo '</td>';
             echo "</tr>";
         }

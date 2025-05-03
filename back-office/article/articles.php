@@ -97,8 +97,8 @@ require('../../include/head.php');
                         <td>' . htmlspecialchars($article['titre']) . '</td>
                         <td>' . htmlspecialchars($article['date_article']) . '</td>
                         <td>
-                            <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-warning mb-1">Modifier</a>
-                            <a href=' . article_back . '?delete_id=' . $article['id_news'] . ' class="btn btn-danger" onclick="return confirm(\'Êtes-vous sûr de vouloir supprimer cet article ?\')">Supprimer</a>
+                            <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-warning my-1 me-1">Modifier</a>
+                            <a href=' . article_back . '?delete_id=' . $article['id_news'] . ' class="btn btn-danger my-1 me-1" onclick="return confirm(\'Êtes-vous sûr de vouloir supprimer cet article ?\')">Supprimer</a>
                         </td>
                     </tr>';
             }

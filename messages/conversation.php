@@ -84,7 +84,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <div class="container">
         <div class="conversation-container message_box my-5">
             <div class="header-chat">
-                <a href="<?= messagerie ?>" class="btn btn-primary btn-sm me-1">
+                <a href="<?= messagerie ?>" class="btn btn-primary btn-sm me-2">
                     <i class="bi bi-chevron-left"></i>
                     <span>Retour</span>
                 </a>

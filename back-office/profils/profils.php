@@ -57,9 +57,9 @@ require('../head.php');
                         echo "<td>" . htmlspecialchars($user['pseudo']) . "</td>";
                         echo "<td>" . htmlspecialchars($user['prenom']) . "</td>";
                         echo "<td>";
-                        echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm'>Modifier</a> ";
-                        echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm'>Exporter PDF</a> ";
-                        echo "<a href='delete_user.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet utilisateur?\");'>Supprimer</a>";
+                        echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm my-1 me-1'>Modifier</a> ";
+                        echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm my-1 me-1'>Exporter PDF</a> ";
+                        echo "<a href='delete_user.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-danger btn-sm my-1 me-1' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet utilisateur?\");'>Supprimer</a>";
                         echo "</td>";
                         echo "</tr>";
                     }
