@@ -384,16 +384,22 @@ h1 {
 }
 .message {
   display: flex;
+  width: 100%;
 }
 .message.sent {
   justify-content: flex-end;
 }
+
 .message.sent .message-bubble {
   background-color: #ffc13b !important;
   color: white;
+  max-width: 70%;
+  margin-left: auto;
 }
 .dark .message.sent .message-bubble {
   background-color: #2f608e !important;
+  color: white;
+  max-width: 70%;
   margin-left: auto;
 }
 .message.received .message-bubble {
@@ -410,7 +416,6 @@ h1 {
 .message-time {
   font-size: 12px;
   color: #888;
-  text-align: left;
   margin-top: 5px;
 }
 
