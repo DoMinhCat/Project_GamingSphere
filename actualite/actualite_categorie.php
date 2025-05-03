@@ -1,7 +1,7 @@
 <?php
 session_start();
 require('../include/check_timeout.php');
-require_once __DIR__ . '/../../path.php';
+require_once __DIR__ . '/../path.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
