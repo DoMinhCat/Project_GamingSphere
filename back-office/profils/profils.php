@@ -46,7 +46,16 @@ require('../head.php');
 
 
                 echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
-                <input type="text" id="search" class="form-control" placeholder="Rechercher par pseudo ou email">
+                <div class="input-group">
+                    <input type="text" id="search" class="form-control" placeholder="Rechercher par pseudo ou email">
+                    <div class="input-group-append">
+                    <select id="statusFilter" class="form-select">
+                        <option value="">Tous</option>
+                        <option value="online">Online</option>
+                        <option value="offline">Offline</option>
+                    </select>
+                    </div>
+                </div>
                 </div>';
 
                 if (count($users) > 0) {
@@ -96,19 +105,24 @@ require('../head.php');
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.getElementById('search').addEventListener('input', function() {
-            const query = this.value;
+        function fetchFilteredUsers() {
+            const query = document.getElementById('search').value;
+            const status = document.getElementById('statusFilter').value;
 
-            fetch('search_profils.php?search=' + encodeURIComponent(query), {
+            fetch(`search_profils.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}`, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     }
                 })
-                .then(response => response.text())
+                .then(res => res.text())
                 .then(data => {
                     document.getElementById('user_results').innerHTML = data;
+                    fetchOnlineUsers();
                 });
-        });
+        }
+
+        document.getElementById('search').addEventListener('input', fetchFilteredUsers);
+        document.getElementById('statusFilter').addEventListener('change', fetchFilteredUsers);
     </script>
     <script>
         async function fetchOnlineUsers() {
@@ -129,9 +143,8 @@ require('../head.php');
             }
         }
 
-        // Initial + repeat every 30s
         fetchOnlineUsers();
-        setInterval(fetchOnlineUsers, 30000);
+        setInterval(fetchOnlineUsers, 30000); //30s
     </script>
 
 </body>
