@@ -127,7 +127,7 @@ require('../head.php');
     <script>
         async function fetchOnlineUsers() {
             try {
-                const res = await fetch('/status_user/reload_back-office.php');
+                const res = await fetch('../../status_user/reload_back-office.php');
                 const onlineUsers = await res.json();
 
                 document.querySelectorAll('.user-status').forEach(span => {

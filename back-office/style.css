@@ -1,19 +1,17 @@
 .tableau-card {
-    background-color: #212529;
-    color: white;
-    padding: 30px;
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-
+  background-color: #212529;
+  color: white;
+  padding: 30px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
 }
 .tableau-card:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .navbar-brand {
-    justify-content: center;
+  justify-content: center;
 }
-
