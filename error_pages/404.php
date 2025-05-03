@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/../path.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <?php
