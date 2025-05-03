@@ -100,17 +100,17 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </a>
 
                 <div class="avatar-container position-relative">
-                    <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="rounded-circle" width="40" height="40">
+                    <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="rounded-circle m-0" width="40" height="40">
 
                     <?php if ($isUserOnline): ?>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-success" style="width: 10px; height: 10px; font-size: 0;"></span>
+                        <span class="position-absolute bottom-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle" style="width: 10px; height: 10px; font-size: 0.75rem;"></span>
                     <?php else: ?>
 
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary" style="width: 10px; height: 10px; font-size: 0;"></span>
+                        <span class="position-absolute bottom-0 start-100 translate-middle p-2 bg-secondary border border-light rounded-circle" style="width: 10px; height: 10px; font-size: 0.75rem;"></span>
                     <?php endif; ?>
                 </div>
 
-                <h5><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
+                <h5 class="ms-2"><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
             </div>
 
 
