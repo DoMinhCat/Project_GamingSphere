@@ -59,7 +59,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?php foreach ($friends as $friend): ?>
                         <label class="list-group-item d-flex align-items-center">
                             <input type="radio" name="friend_id" value="<?= htmlspecialchars($friend['id_utilisateurs']) ?>" required class="form-check-input me-2">
-                            <img src="../profil/<?= htmlspecialchars($friend['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Profil" class="rounded-circle me-3" width="50" height="50">
+                            <img src="../profil/<?= htmlspecialchars($friend['photo_profil'] ?: 'default_profile_img.jpg') ?>" alt="Profil" class="rounded-circle me-3" width="50" height="50">
                             <span><?= htmlspecialchars($friend['pseudo']) ?></span>
                         </label>
                     <?php endforeach; ?>
