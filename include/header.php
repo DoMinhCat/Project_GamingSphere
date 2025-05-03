@@ -170,12 +170,12 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
 
                 <?php if ($notificationCount > 0): ?>
                   <?php foreach ($friendRequests as $request): ?>
-                    <li class="dropdown-item d-flex justify-content-between align-items-center">
+                    <li class="d-flex justify-content-between align-items-center">
                       <div>
-                        <a href="<?= profil . '?user=' . urlencode($request['pseudo']) ?>" class="text-dark">
+                        <a href="<?= profil . '?user=' . urlencode($request['pseudo']) ?>" class="dropdown-item text-dark">
                           <strong>Demande d'ami</strong> de <?= htmlspecialchars($request['pseudo']) ?> - <?= date('d/m/Y', strtotime($request['date_début'])) ?> </a>
                       </div>
-                      <div class="btn-group">
+                      <div class="btn-group ms-1">
                         <form action="/profil/accept_friend_request.php" method="POST">
                           <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
                           <button type="submit" class="btn btn-success btn-sm" title="Accepter">

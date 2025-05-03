@@ -84,8 +84,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <div class="container">
         <div class="conversation-container message_box my-5">
             <div class="header-chat">
-                <a href="<?= messagerie ?>" class="me-1">
+                <a href="<?= messagerie ?>" class="btn btn-primary btn-sm me-1">
                     <i class="bi bi-chevron-left"></i>
+                    <span>Retour</span>
                 </a>
                 <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil">
                 <h5><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
@@ -94,9 +95,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="message-list p-3">
                 <?php foreach ($messages as $message): ?>
                     <div class="message mb-3 <?= $message['expediteur'] == $otherUser['pseudo'] ? 'received' : 'sent' ?>">
-                        <div class="message-bubble p-2">
-                            <p><?= nl2br(htmlspecialchars($message['contenu'])) ?></p>
-                            <div class="message-time"><?= date('H:i', strtotime($message['date_envoi'])) ?></div>
+                        <div class="d-flex flex-column">
+                            <div class="message-bubble p-2">
+                                <p><?= nl2br(htmlspecialchars($message['contenu'])) ?></p>
+                            </div>
+                            <div class="message-time"><?= date('H:i', strtotime($message['date_envoi'])) ?>
+                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
