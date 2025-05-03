@@ -77,6 +77,8 @@ function isOnline($lastActive)
     return (time() - $lastActiveTime) <= $timeout;
 }
 $isUserOnline = isOnline($otherUserStatus['last_active']);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -94,22 +96,22 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <div class="container">
         <div class="conversation-container message_box my-5">
             <div class="header-chat">
-                <a href="<?= messagerie ?>" class="btn btn-primary btn-sm me-2">
+                <a href="<?= messagerie ?>" class="btn btn-primary btn-sm me-3">
                     <i class="bi bi-chevron-left"></i>
                     <span>Retour</span>
                 </a>
+                <a href="<?= profil ?>?user=<?php echo urlencode($otherUser['pseudo']); ?>">
+                    <div class="avatar-container position-relative">
+                        <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default_profile_img.jpg') ?>" alt="avt" class="rounded-circle m-0" width="40" height="40">
 
-                <div class="avatar-container position-relative">
-                    <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="rounded-circle m-0" width="40" height="40">
-
-                    <?php if ($isUserOnline): ?>
-                        <span class="position-absolute bottom-0 start-100 bg-success border border-light translate-middle rounded-circle p-1" style="width: 10px; height: 10px; font-size: 0.75rem; margin-bottom: -5px; margin-right: -5px;"></span>
-                    <?php else: ?>
-                        <span class="position-absolute bottom-0 start-100 bg-secondary border border-light rounded-circle translate-middle p-1" style="width: 10px; height: 10px; font-size: 0.75rem; margin-bottom: -5px; margin-right: -5px;"></span>
-                    <?php endif; ?>
-                </div>
-
-                <h5 class="ms-4"><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
+                        <?php if ($isUserOnline): ?>
+                            <span class="position-absolute bottom-0 start-100 bg-success border border-light translate-middle rounded-circle p-1" style="width: 10px; height: 10px; font-size: 0.75rem; margin-bottom: -5px; margin-right: -5px;"></span>
+                        <?php else: ?>
+                            <span class="position-absolute bottom-0 start-100 bg-secondary border border-light rounded-circle translate-middle p-1" style="width: 10px; height: 10px; font-size: 0.75rem; margin-bottom: -5px; margin-right: -5px;"></span>
+                        <?php endif; ?>
+                    </div>
+                </a>
+                <h5 class="ms-2 mb-0"><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
             </div>
 
 
