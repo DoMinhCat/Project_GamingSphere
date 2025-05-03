@@ -102,7 +102,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </a>
                 <a href="<?= profil ?>?user=<?php echo urlencode($otherUser['pseudo']); ?>" id="linkProfileFromConv" class="d-flex align-items-center">
                     <div class="avatar-container position-relative">
-                        <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default_profile_img.jpg') ?>" alt="avt" class="rounded-circle m-0" width="40" height="40">
+                        <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="avt" class="rounded-circle m-0" width="40" height="40">
 
                         <?php if ($isUserOnline): ?>
                             <span class="position-absolute bottom-0 start-100 bg-success border border-light translate-middle rounded-circle p-1" style="width: 10px; height: 10px; font-size: 0.75rem; margin-bottom: -5px; margin-right: -5px;"></span>
