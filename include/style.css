@@ -350,7 +350,7 @@ h1 {
   margin-bottom: 1rem;
 }
 .message_box {
-  background: #fff;
+  background: #e4e4e4;
   border-radius: 8px;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -394,6 +394,7 @@ h1 {
 }
 .dark .message.sent .message-bubble {
   background-color: #2f608e !important;
+  margin-left: auto;
 }
 .message.received .message-bubble {
   background-color: #e5e5ea;
@@ -406,14 +407,18 @@ h1 {
   font-size: 14px;
   line-height: 1.5;
 }
-.message.sent .message-time {
+.message-time {
   font-size: 12px;
   color: #888;
+  text-align: left;
+  margin-top: 5px;
+}
+
+.message.sent .message-time {
   text-align: right;
 }
-.message.message.received .message-time {
-  font-size: 12px;
-  color: #888;
+
+.message.received .message-time {
   text-align: left;
 }
 .message-input-container {
