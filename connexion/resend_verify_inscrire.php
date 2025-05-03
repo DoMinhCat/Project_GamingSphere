@@ -43,6 +43,7 @@ include('../include/head.php');
           <div class="d-flex flex-column pt-3">
             <input type="submit" class="btn btn-primary" value="Envoyer le lien de vérification">
           </div>
+        </div>
       </form>
 
       <div class="line-with-letters montserrat-titre32 py-3 my-2">
@@ -83,12 +84,34 @@ include('../include/head.php');
     </div>
   </div>
 
+  <div class="modal fade" id="modal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal2">Email non trouvable ou déjà vérifié</h1>
+        </div>
+
+        <div class="modal-body">
+          Veuillez connectez-vous ou vérifier l'adresse d'email
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal2">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const returnParam = urlParams.get('result');
 
     if (returnParam == 'success') {
       var modal = new bootstrap.Modal(document.getElementById('modal'), {
+        keyboard: false
+      });
+      modal.show();
+    } else if (returnParam == 'unknown') {
+      var modal = new bootstrap.Modal(document.getElementById('modal2'), {
         keyboard: false
       });
       modal.show();
