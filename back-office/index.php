@@ -34,51 +34,69 @@ require('head.php');
     <div class="container my-5">
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
-                <a href="<?= event_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des évènements
-                </a>
+                <div class="h-100">
+                    <a href="<?= event_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Gestion des évènements
+                    </a>
+                </div>
             </div>
             <div class="col">
-                <a href="<?= tournois_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des tournois
-                </a>
+                <div class="h-100">
+                    <a href="<?= tournois_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Gestion des tournois
+                    </a>
+                </div>
             </div>
             <div class="col">
-                <a href="<?= paris_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des paris
-                </a>
-            </div>
-
-            <div class="col">
-                <a href="<?= forum_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion du forum
-                </a>
-            </div>
-            <div class="col">
-                <a href="<?= article_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des articles
-                </a>
-            </div>
-            <div class="col">
-                <a href="<?= jeux_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des jeux
-                </a>
+                <div class="h-100">
+                    <a href="<?= paris_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Gestion des paris
+                    </a>
+                </div>
             </div>
 
             <div class="col">
-                <a href="<?= profils_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des profils
-                </a>
+                <div class="h-100">
+                    <a href="<?= forum_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Gestion du forum
+                    </a>
+                </div>
             </div>
             <div class="col">
-                <a href="<?= captcha_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des captchas
-                </a>
+                <div class="h-100">
+                    <a href="<?= article_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Gestion des articles
+                    </a>
+                </div>
             </div>
             <div class="col">
-                <a href="<?= communication_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                    Gestion des canaux de communication
-                </a>
+                <div class="h-100">
+                    <a href="<?= jeux_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Gestion des jeux
+                    </a>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="h-100">
+                    <a href="<?= profils_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Gestion des profils
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100">
+                    <a href="<?= captcha_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Gestion des captchas
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100">
+                    <a href="<?= communication_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Gestion des canaux de communication
+                    </a>
+                </div>
             </div>
 
         </div>

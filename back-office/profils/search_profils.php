@@ -9,13 +9,14 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 $search = trim($_GET['search'] ?? '');
+$statusFilter = trim($_GET['status'] ?? '');
 
 try {
     if (!empty($search)) {
-        $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs WHERE pseudo LIKE :search OR email LIKE :search OR nom LIKE :search OR prenom LIKE :search ORDER BY nom ASC");
+        $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email, last_active FROM utilisateurs WHERE pseudo LIKE :search OR email LIKE :search OR nom LIKE :search OR prenom LIKE :search ORDER BY nom ASC");
         $stmt->execute(['search' => '%' . $search . '%']);
     } else {
-        $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs ORDER BY nom ASC");
+        $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email, last_active FROM utilisateurs ORDER BY nom ASC");
     }
 
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
