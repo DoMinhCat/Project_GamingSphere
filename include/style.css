@@ -587,3 +587,10 @@ body.offcanvas-backdrop {
 #category_mobile:hover {
   background-color: #f5f0e1;
 }
+#linkProfileFromConv {
+  transition: transform 0.2s ease-in-out;
+}
+
+#linkProfileFromConv:hover {
+  transform: scale(1.01);
+}
