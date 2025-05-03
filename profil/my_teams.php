@@ -63,19 +63,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php endif; ?>
         <div class="text-center mt-4">
             <a href="<?= create_team ?>" class="btn btn-success">Créer une nouvelle équipe</a>
+            <a href="<?= team_list ?>" class="btn btn-success">Liste des équipes</a>
         </div>
     </div>
-    <!-- debug dropdown -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropdowns = document.querySelectorAll('.dropdown-toggle');
-            if (dropdowns.length === 0) {
-                console.warn("No dropdowns found.");
-            } else {
-                console.log("Bootstrap dropdowns loaded: ", dropdowns.length);
-            }
-        });
-    </script>
+
 </body>
 
 </html>

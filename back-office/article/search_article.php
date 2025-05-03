@@ -9,10 +9,10 @@ $search = trim($_GET['search'] ?? '');
 
 try {
     if (!empty($search)) {
-        $stmt = $bdd->prepare("SELECT titre FROM news WHERE titre LIKE :search ");
+        $stmt = $bdd->prepare("SELECT titre, date_article FROM news WHERE titre LIKE :search ORDER BY date_article DESC");
         $stmt->execute(['search' => '%' . $search . '%']);
     } else {
-        $stmt = $bdd->query("SELECT titre, date_article FROM news");
+        $stmt = $bdd->query("SELECT titre, date_article FROM news ORDER BY date_article DESC");
     }
 
     $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -22,10 +22,10 @@ try {
             echo "<tr>";
             echo "<td>" . htmlspecialchars($article['titre']) . "</td>";
             echo "<td>" . htmlspecialchars($article['date_article']) . "</td>";
-            echo '<td>
-            <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-warning mb-1">Modifier</a>
-            <a href=' . article_back . '?delete_id=' . $article['id_news'] . ' class="btn btn-danger" onclick="return confirm(\'Êtes-vous sûr de vouloir supprimer cet article ?\')">Supprimer</a>
-            </td>';
+            echo '<td>';
+            echo "<a href='" . article_edit_back . "?id=" . $article['id_news'] . "' class=\"btn btn-warning mb-1\">Modifier</a>";
+            echo "<a href='" . article_back . "?delete_id=" . $article['id_news'] . "' class=\"btn btn-danger\" onclick=\"return confirm(\'Êtes-vous sûr de vouloir supprimer cet article ?\')\">Supprimer</a>";
+            echo '</td>';
             echo "</tr>";
         }
     } else {

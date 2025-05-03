@@ -36,7 +36,7 @@ include('../include/head.php');
         }
         ?>
 
-        <form method="post" action="forgot_verification.php">
+        <form method="post" action="/connexion/forgot_verification.php">
           <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
             <input type="email" name="email" placeholder="Votre email" required aria-describedby="emailHelp" class="form-control input_field">
 
@@ -52,7 +52,7 @@ include('../include/head.php');
         </div>
 
         <div class="pb-2">
-          <a href="inscription.php" id="creer_compte">
+          <a href="<?= inscription ?>" id="creer_compte">
             Créer un compte
           </a>
         </div>
@@ -65,7 +65,7 @@ include('../include/head.php');
       <?php endif; ?>
 
       <div class="d-flex flex-column pt-1">
-        <a href="login.php" class="btn btn-success">
+        <a href="<?= login ?>" class="btn btn-success">
           Revenir à la page de connexion
         </a>
       </div>
