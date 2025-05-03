@@ -2,30 +2,38 @@
 $this_page = basename($_SERVER['PHP_SELF']);
 
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
-ini_set('log_errors', 1);
-ini_set('error_log', '/var/log/apache2/php_errors.log');
+ini_set('display_errors', 0);  // Suppress errors from showing in the browser
+ini_set('log_errors', 1);      // Log errors
+ini_set('error_log', '/var/log/apache2/php_errors.log');  // Custom log location
 
+// Custom error handler for non-fatal errors
 function custom_error_handler($errno, $errstr, $errfile, $errline)
 {
+    // Log error details
     error_log("Error [$errno] $errstr in $errfile on line $errline");
 
-    header("Location: /error_pages/500.php", true, 500);
+    // Set HTTP status code to 500 before redirecting
+    http_response_code(500);
+    header("Location: /error_pages/500.php");
     exit();
 }
 set_error_handler("custom_error_handler");
 
+// Shutdown function to handle fatal errors
 register_shutdown_function(function () {
     $error = error_get_last();
     if ($error) {
-
+        // Log the fatal error details
         error_log("Fatal Error: {$error['message']} in {$error['file']} on line {$error['line']}");
 
-        header("Location: /error_pages/500.php", true, 500);
+        // Set HTTP status code to 500 before redirecting
+        http_response_code(500);
+        header("Location: /error_pages/500.php");
         exit();
     }
 });
 ?>
+
 
 
 <head>

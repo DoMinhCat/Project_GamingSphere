@@ -594,7 +594,7 @@ body.offcanvas-backdrop {
 }
 
 #linkProfileFromConv:hover {
-  transform: scale(1.01);
+  transform: scale(1.03);
 }
 .articleBlockLink {
   background-color: rgb(243, 243, 243) !important;
@@ -603,5 +603,5 @@ body.offcanvas-backdrop {
   transition: transform 0.2s ease-in-out;
 }
 .articleBlockLink:hover {
-  transform: scale(1.01) !important;
+  transform: scale(1.05);
 }
