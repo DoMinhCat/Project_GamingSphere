@@ -4,6 +4,6 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require('../include/database.php');
 if (!empty($_SESSION['user_email'])) {
-    $stmt = $bdd->prepare("UPDATE utilisateurs SET last_active = NOW() WHERE id = ?");
+    $stmt = $bdd->prepare("UPDATE utilisateurs SET last_active = NOW() WHERE id_utilisateurs = ?");
     $stmt->execute([$_SESSION['user_id']]);
 }
