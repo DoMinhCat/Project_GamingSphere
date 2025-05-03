@@ -47,7 +47,7 @@ require('../head.php');
 
                 echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
                 <div class="input-group">
-                    <input type="text" id="search" class="form-control" placeholder="Rechercher par pseudo ou email">
+                    <input type="text" id="search" class="form-control" placeholder="Rechercher par pseudo, email, nom ou prénom">
                     <div class="input-group-append">
                     <select id="statusFilter" class="form-select">
                         <option value="">Tous</option>
