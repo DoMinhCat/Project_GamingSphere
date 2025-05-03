@@ -28,7 +28,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         ?>
-                <a href="actualite_article.php?id=<?= $row['id_news'] ?>">
+                <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink">
                     <div class="article border rounded p-3 mb-4 shadow-sm">
                         <h2>
                             <?= htmlspecialchars($row['titre']) ?>

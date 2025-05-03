@@ -1,5 +1,25 @@
 <?php
 $this_page = basename($_SERVER['PHP_SELF']);
+
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
+ini_set('log_errors', 1);
+ini_set('error_log', '/var/log/apache2/php_errors.log');
+
+function custom_error_handler($errno, $errstr, $errfile, $errline)
+{
+    header("Location: /error_pages/500.php", true, 500);
+    exit();
+}
+set_error_handler("custom_error_handler");
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error) {
+        header("Location: /error_pages/500.php", true, 500);
+        exit();
+    }
+});
 ?>
 
 <head>
