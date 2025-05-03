@@ -46,11 +46,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             echo "Erreur de connexion à la base de données : " . $e->getMessage();
         }
         ?>
-        <main class="container my-5">
 
-            <?php
-            include("../include/footer.php");
-            ?>
+    </main>
+    <?php
+    include("../include/footer.php");
+    ?>
 </body>
 
 </html>
