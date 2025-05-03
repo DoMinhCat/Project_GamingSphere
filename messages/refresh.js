@@ -23,35 +23,35 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
 
       if (result.success) {
-        // Crée le bloc du message à ajouter
+        // Create the message block to be added
         const messageDiv = document.createElement("div");
         messageDiv.classList.add("message", "sent");
 
+        // Create the message bubble
         const bubble = document.createElement("div");
         bubble.classList.add("message-bubble");
 
+        // Create the message content and add it inside the bubble
         const content = document.createElement("p");
         content.innerHTML = message.replace(/\n/g, "<br>");
-
-        // Append the content inside the bubble
         bubble.appendChild(content);
 
-        // Create the time div and append it outside the bubble
+        // Create the time div (outside the bubble) and append it after the bubble
         const time = document.createElement("div");
         time.classList.add("message-time");
         time.textContent = result.time;
 
-        // Append the bubble and time in order
-        messageDiv.appendChild(bubble);
-        messageDiv.appendChild(time);
+        // Append both the bubble and time div to the messageDiv
+        messageDiv.appendChild(bubble); // Bubble first
+        messageDiv.appendChild(time); // Time outside and beneath the bubble
 
-        // Append the message to the message list
+        // Append the message div to the message list
         messageList.appendChild(messageDiv);
 
-        // Scroll automatique vers le bas
+        // Auto scroll to the bottom of the message list
         messageList.scrollTop = messageList.scrollHeight;
 
-        // Vide le champ
+        // Clear the input field
         textarea.value = "";
       }
     } catch (error) {
