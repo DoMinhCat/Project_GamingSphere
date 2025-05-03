@@ -82,8 +82,11 @@ a {
   box-shadow: 0 0 0 2px #ff6e40 !important;
   border-color: #ff6e40 !important;
 }
+.btn-warning {
+  transition: transform 0.2s ease-in-out;
+}
 .btn-warning:hover {
-  transform: scale(1.01);
+  transform: scale(1.02);
   background-color: #fcbd02;
 }
 .btn-primary {

@@ -83,6 +83,6 @@ if ($user) {
         exit();
     }
 } else {
-    header('Location:' . resend_verify_inscrire . '?message=' . urlencode('Email introuvable ou déjà vérifié'));
+    header('Location:' . resend_verify_inscrire . '?return=' . urlencode('unknown'));
     exit();
 }
