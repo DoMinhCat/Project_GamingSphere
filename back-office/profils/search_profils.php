@@ -8,6 +8,12 @@ if ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest' || !isset($_GET['sear
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+function isOnline($lastActive)
+{
+    $timeout = 60;
+    $lastActiveTime = strtotime($lastActive);
+    return (time() - $lastActiveTime) <= $timeout;
+}
 $search = trim($_GET['search'] ?? '');
 $statusFilter = trim($_GET['status'] ?? '');
 
@@ -23,7 +29,12 @@ try {
 
     if (count($users) > 0) {
         foreach ($users as $user) {
+            $isUserOnline = isOnline($user['last_active']);
+            if ($statusFilter === 'online' && !$isUserOnline) continue;
+            if ($statusFilter === 'offline' && $isUserOnline) continue;
+
             echo "<tr>";
+
             echo "<td>" . htmlspecialchars($user['id_utilisateurs']) . "</td>";
             echo "<td>" . htmlspecialchars($user['nom']) . "</td>";
             echo "<td>" . htmlspecialchars($user['email']) . "</td>";

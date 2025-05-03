@@ -35,21 +35,21 @@ require('head.php');
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= event_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= event_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Gestion des évènements
                     </a>
                 </div>
             </div>
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= tournois_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= tournois_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Gestion des tournois
                     </a>
                 </div>
             </div>
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= paris_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= paris_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Gestion des paris
                     </a>
                 </div>
@@ -57,21 +57,21 @@ require('head.php');
 
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= forum_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= forum_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Gestion du forum
                     </a>
                 </div>
             </div>
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= article_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= article_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Gestion des articles
                     </a>
                 </div>
             </div>
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= jeux_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= jeux_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Gestion des jeux
                     </a>
                 </div>
@@ -79,21 +79,21 @@ require('head.php');
 
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= profils_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= profils_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Gestion des profils
                     </a>
                 </div>
             </div>
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= captcha_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= captcha_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Gestion des captchas
                     </a>
                 </div>
             </div>
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= communication_back ?>" class="tableau-card d-block text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= communication_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Gestion des canaux de communication
                     </a>
                 </div>
