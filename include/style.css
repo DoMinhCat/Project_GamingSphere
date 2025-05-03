@@ -607,7 +607,7 @@ body.offcanvas-backdrop {
 }
 
 .article {
-  background-color: rgb(243, 243, 243);
+  background-color: rgb(250, 250, 250);
   border-radius: 10px;
   padding: 1.5rem;
   transition: transform 0.2s ease-in-out;
@@ -615,6 +615,5 @@ body.offcanvas-backdrop {
 
 .articleBlockLink:hover .article,
 .forumBlockLink {
-  transform: scale(1.05);
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
 }

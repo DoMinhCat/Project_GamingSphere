@@ -49,7 +49,7 @@ $categorie_nom = $_GET['nom'];
             $stmt_reponses->execute([$sujet['id_sujet']]);
             $nb_reponses = $stmt_reponses->fetchColumn();
         ?>
-            <div class="card mb-3">
+            <div class="card mx-0 mb-3">
                 <div class="card-body">
                     <h5>
                         <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] ?>" class="text-decoration-none">
