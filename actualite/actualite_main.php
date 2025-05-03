@@ -28,14 +28,14 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         ?>
-                <a href="actualite_article.php?id=<?= $row['id_news'] ?>"></a>
-                <div class="article border rounded p-3 mb-4 shadow-sm">
-                    <h2>
-                        <?= htmlspecialchars($row['titre']) ?>
-                    </h2>
-                    <p><strong>Publié le :</strong> <?= htmlspecialchars($row['date_article']) ?></p>
-                    <p><?= nl2br(htmlspecialchars($row['contenue'])) ?></p>
-                </div>
+                <a href="actualite_article.php?id=<?= $row['id_news'] ?>">
+                    <div class="article border rounded p-3 mb-4 shadow-sm">
+                        <h2>
+                            <?= htmlspecialchars($row['titre']) ?>
+                        </h2>
+                        <p><strong>Publié le :</strong> <?= htmlspecialchars($row['date_article']) ?></p>
+                        <p><?= nl2br(htmlspecialchars($row['contenue'])) ?></p>
+                    </div>
                 </a>
         <?php
             }

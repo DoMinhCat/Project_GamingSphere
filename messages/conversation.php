@@ -100,9 +100,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <i class="bi bi-chevron-left"></i>
                     <span>Retour</span>
                 </a>
-                <a href="<?= profil ?>?user=<?php echo urlencode($otherUser['pseudo']); ?>">
+                <a href="<?= profil ?>?user=<?php echo urlencode($otherUser['pseudo']); ?>" id="linkProfileFromConv">
                     <div class="avatar-container position-relative">
-                        <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default_profile_img.jpg') ?>" alt="avt" class="rounded-circle m-0" width="40" height="40">
+                        <img src="<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default_profile_img.jpg') ?>" alt="avt" class="rounded-circle m-0" width="40" height="40">
 
                         <?php if ($isUserOnline): ?>
                             <span class="position-absolute bottom-0 start-100 bg-success border border-light translate-middle rounded-circle p-1" style="width: 10px; height: 10px; font-size: 0.75rem; margin-bottom: -5px; margin-right: -5px;"></span>
@@ -110,8 +110,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <span class="position-absolute bottom-0 start-100 bg-secondary border border-light rounded-circle translate-middle p-1" style="width: 10px; height: 10px; font-size: 0.75rem; margin-bottom: -5px; margin-right: -5px;"></span>
                         <?php endif; ?>
                     </div>
+                    <h5 class="ms-2 mb-0"><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
                 </a>
-                <h5 class="ms-2 mb-0"><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
             </div>
 
 
