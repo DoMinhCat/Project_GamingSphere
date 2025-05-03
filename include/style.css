@@ -382,6 +382,11 @@ h1 {
   overflow-y: auto;
   background: #f9f9f9;
 }
+.dark .message-list {
+  height: 400px;
+  overflow-y: auto;
+  background: #121212;
+}
 .message {
   display: flex;
   width: 100%;
