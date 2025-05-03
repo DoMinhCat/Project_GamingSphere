@@ -14,6 +14,8 @@ $this_page = basename($_SERVER['PHP_SELF']);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/include/night_mode.js"></script>
-
+    <?php if (!empty($_SESSION['user_email'])): ?>
+        <script src="/status_user/status_online.js"></script>
+    <?php endif; ?>
     <title><?= $title ?></title>
 </head>

@@ -9,11 +9,17 @@ include('../include/head.php');
 ?>
 
 <body>
-    <main class="container">
+    <?php
+    include('../include/header.php');
+    ?>
+    <main class="container my-5">
         <h1>500</h1>
-        <a href="'<?= index_front ?>'" class="btn btn-primary">Retour à l'acueil</a>
+        <a href="<?= index_front ?>" class="btn btn-primary">Retour à l'acueil</a>
 
     </main>
+    <?php
+    include('../include/footer.php');
+    ?>
 </body>
 
 </html>

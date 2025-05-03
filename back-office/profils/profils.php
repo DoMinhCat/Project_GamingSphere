@@ -5,6 +5,12 @@ require('../check_session.php');
 require('../../include/database.php');
 require('../../include/check_timeout.php');
 require_once __DIR__ . '/../../path.php';
+function isOnline($lastActive)
+{
+    $timeout = 60;
+    $lastActiveTime = strtotime($lastActive);
+    return (time() - $lastActiveTime) <= $timeout;
+}
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +29,7 @@ require('../head.php');
         <?php
         if (isset($bdd)) {
             try {
-                $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email FROM utilisateurs ORDER BY nom ASC");
+                $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email, last_active FROM utilisateurs ORDER BY nom ASC");
                 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 if (isset($_GET['message'])) {
@@ -46,7 +52,7 @@ require('../head.php');
                 if (count($users) > 0) {
                     echo '<div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">';
                     echo "<table class='table table-striped'>";
-                    echo "<thead class='thead-dark'><tr><th>ID</th><th>Nom</th><th>Email</th><th>Pseudo</th><th>Prénom</th><th>Actions</th></tr></thead>";
+                    echo "<thead class='thead-dark'><tr><th>ID</th><th>Nom</th><th>Email</th><th>Pseudo</th><th>Prénom</th><th>Statut</th><th>Actions</th></tr></thead>";
                     echo "<tbody id='user_results'>";
 
                     foreach ($users as $user) {
@@ -56,10 +62,17 @@ require('../head.php');
                         echo "<td>" . htmlspecialchars($user['email']) . "</td>";
                         echo "<td>" . htmlspecialchars($user['pseudo']) . "</td>";
                         echo "<td>" . htmlspecialchars($user['prenom']) . "</td>";
+                        echo "<td>
+                        <span class=\"user-status\" data-user=\"" . htmlspecialchars($user['pseudo']) . "\">" . (isOnline($user['last_active']) ? '<span style="color: green;">Online</span>' : '<span style="color: gray;">Offline</span>') . "
+                        </span>
+                        </td>";
+
                         echo "<td>";
-                        echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm my-1 me-1'>Modifier</a> ";
-                        echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm my-1 me-1'>Exporter PDF</a> ";
-                        echo "<a href='delete_user.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-danger btn-sm my-1 me-1' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet utilisateur?\");'>Supprimer</a>";
+                        echo "<div class='d-flex flex-wrap align-items-start flex-md-row align-items-start'>";
+                        echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-md-0 me-sm-1'>Modifier</a> ";
+                        echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-md-0 me-sm-1'>Exporter PDF</a> ";
+                        echo "<a href='delete_user.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-danger btn-sm mb-1 mb-md-0 me-sm-1' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet utilisateur?\");'>Supprimer</a>";
+                        echo '</div>';
                         echo "</td>";
                         echo "</tr>";
                     }
@@ -97,6 +110,30 @@ require('../head.php');
                 });
         });
     </script>
+    <script>
+        async function fetchOnlineUsers() {
+            try {
+                const res = await fetch('/status_user/reload_back-office.php');
+                const onlineUsers = await res.json();
+
+                document.querySelectorAll('.user-status').forEach(span => {
+                    const username = span.dataset.user;
+                    const isOnline = onlineUsers.includes(username);
+
+                    span.innerHTML = isOnline ?
+                        '<span style="color: green;">Online</span>' :
+                        '<span style="color: gray;">Offline</span>';
+                });
+            } catch (err) {
+                console.error('Failed to fetch user statuses:', err);
+            }
+        }
+
+        // Initial + repeat every 30s
+        fetchOnlineUsers();
+        setInterval(fetchOnlineUsers, 30000);
+    </script>
+
 </body>
 
 </html>
