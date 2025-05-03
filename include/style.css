@@ -385,6 +385,8 @@ h1 {
 .message {
   display: flex;
   width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
 }
 .message.sent {
   justify-content: flex-end;
