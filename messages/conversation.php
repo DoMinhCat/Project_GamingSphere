@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
         }
     }
 }
-$stmt = $bdd->prepare("SELECT last_active FROM utilisateurs WHERE id=?");
+$stmt = $bdd->prepare("SELECT last_active FROM utilisateurs WHERE id_utilisateurs=?");
 $stmt->execute([$otherUserId]);
 $otherUserStatus = $stmt->fetch(PDO::FETCH_ASSOC);
 function isOnline($lastActive)
