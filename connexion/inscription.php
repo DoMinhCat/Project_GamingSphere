@@ -179,7 +179,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
         <h6 class="mb-1">
           Vous avez déjà un compte ?
         </h6>
-        <a class="lato16" href="<?= inscription ?>" id="creer_compte">Connectez-vous</a>
+        <a class="lato16" href="<?= login ?>" id="creer_compte">Connectez-vous</a>
       </div>
     </div>
   </div>

@@ -100,14 +100,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </a>
 
                 <div class="avatar-container position-relative">
-                    <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="rounded-circle" width="40">
-                    <!-- Green dot if user is online, change condition as needed -->
+                    <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="rounded-circle" width="40" height="40">
+
                     <?php if ($isUserOnline): ?>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-success" style="font-size: 0.5rem;"></span>
-                    <?php else : ?>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary" style="font-size: 0.5rem;"></span>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-success" style="width: 10px; height: 10px; font-size: 0;"></span>
+                    <?php else: ?>
+
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary" style="width: 10px; height: 10px; font-size: 0;"></span>
                     <?php endif; ?>
                 </div>
+
                 <h5><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
             </div>
 
