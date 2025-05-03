@@ -82,16 +82,19 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <body>
     <?php include('../include/header.php'); ?>
     <div class="container">
-        <div class="conversation-container message_box">
+        <div class="conversation-container message_box my-5">
             <div class="header-chat">
+                <a href="<?= messagerie ?>" class="me-1">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
                 <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil">
                 <h5><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
             </div>
 
-            <div class="message-list">
+            <div class="message-list p-3">
                 <?php foreach ($messages as $message): ?>
-                    <div class="message <?= $message['expediteur'] == $otherUser['pseudo'] ? 'received' : 'sent' ?>">
-                        <div class="message-bubble">
+                    <div class="message mb-3 <?= $message['expediteur'] == $otherUser['pseudo'] ? 'received' : 'sent' ?>">
+                        <div class="message-bubble p-2">
                             <p><?= nl2br(htmlspecialchars($message['contenu'])) ?></p>
                             <div class="message-time"><?= date('H:i', strtotime($message['date_envoi'])) ?></div>
                         </div>
@@ -100,13 +103,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
 
             <form action="<?= conversation . '?user=' . $otherUserId ?>" method="POST" class="message-input-container">
-                <textarea name="message" rows="2" placeholder="Écrivez un message..." required></textarea>
+                <textarea name="message" rows="1" placeholder="Écrivez un message..." class="p-2 me-2"></textarea>
                 <button type="submit" class="send-button">Envoyer</button>
             </form>
         </div>
     </div>
     <script src="refresh.js"></script>
-    <?php include('../include/footer.php'); ?>
 </body>
 
 </html>
