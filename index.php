@@ -102,7 +102,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         </ul>
                         <div class="card-body text-center">
                             <a href="#" class="card-link montserrat-titre32">Plus d'infos ...</a>
-                            <button class="btn-primary" onclick="window.location.href='tournois.php'">S'inscrire</button>
+                            <button class="btn-primary" onclick="window.location.href='<?= tournois_main ?>'">S'inscrire</button>
                         </div>
                     </div>
                 </div>
