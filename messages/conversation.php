@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
                 ]);
                 exit;
             }
-            header('Location:' . conversation . '?user=$otherUserId');
+            header('Location:' . conversation . '?user=' . $otherUserId);
             exit;
         } catch (PDOException $e) {
             echo "Erreur : " . htmlspecialchars($e->getMessage());
