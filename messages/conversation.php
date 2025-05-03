@@ -67,6 +67,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
         }
     }
 }
+$stmt = $bdd->prepare("SELECT last_active FROM utilisateurs WHERE id=?");
+$stmt->execute([$otherUserId]);
+$otherUserStatus = $stmt->fetch(PDO::FETCH_ASSOC);
+function isOnline($lastActive)
+{
+    $timeout = 60;
+    $lastActiveTime = strtotime($lastActive);
+    return (time() - $lastActiveTime) <= $timeout;
+}
+$isUserOnline = isOnline($otherUserStatus['last_active']);
 ?>
 
 <!DOCTYPE html>
@@ -88,9 +98,19 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <i class="bi bi-chevron-left"></i>
                     <span>Retour</span>
                 </a>
-                <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil">
+
+                <div class="avatar-container position-relative">
+                    <img src="../profil/<?= htmlspecialchars($otherUser['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="rounded-circle" width="40">
+                    <!-- Green dot if user is online, change condition as needed -->
+                    <?php if ($isUserOnline): ?>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-success" style="font-size: 0.5rem;"></span>
+                    <?php else : ?>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary" style="font-size: 0.5rem;"></span>
+                    <?php endif; ?>
+                </div>
                 <h5><?= htmlspecialchars($otherUser['pseudo']) ?></h5>
             </div>
+
 
             <div class="message-list p-3">
                 <?php foreach ($messages as $message): ?>
