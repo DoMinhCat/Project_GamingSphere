@@ -1,18 +1,21 @@
 <?php
 require('../../include/database.php');
+require_once __DIR__ . '/../../path.php';
 if ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest' || !isset($_GET['search'])) {
     http_response_code(403);
     exit('Accès non-autorisé');
 }
-
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 $search = trim($_GET['search'] ?? '');
 
 try {
     if (!empty($search)) {
-        $stmt = $bdd->prepare("SELECT titre, date_article FROM news WHERE titre LIKE :search ORDER BY date_article DESC");
+        $stmt = $bdd->prepare("SELECT id_news, titre, date_article FROM news WHERE titre LIKE :search ORDER BY date_article DESC");
         $stmt->execute(['search' => '%' . $search . '%']);
     } else {
-        $stmt = $bdd->query("SELECT titre, date_article FROM news ORDER BY date_article DESC");
+        $stmt = $bdd->query("SELECT id_news, titre, date_article FROM news ORDER BY date_article DESC");
     }
 
     $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
