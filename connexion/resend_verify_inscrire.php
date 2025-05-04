@@ -95,7 +95,7 @@ include('../include/head.php');
           Veuillez connectez-vous ou vérifier l'adresse d'email
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal2">Fermer</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
         </div>
       </div>
     </div>

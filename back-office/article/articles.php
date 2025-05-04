@@ -15,7 +15,7 @@ if (isset($_POST['add_article'])) {
     $query = $bdd->prepare("INSERT INTO news (titre, date_article, contenue) VALUES (?, ?, ?)");
     $query->execute([$titre, $date_article, $contenu]);
 
-    header('Location:' . article_back);
+    header('Location:' . article_back . '?return=add_success');
     exit();
 }
 
@@ -24,7 +24,7 @@ if (isset($_GET['delete_id'])) {
     $query = $bdd->prepare("DELETE FROM news WHERE id_news = ?");
     $query->execute([$delete_id]);
 
-    header('Location:' . article_back);
+    header('Location:' . article_back . '?return=delete_success');
     exit();
 }
 
@@ -36,7 +36,7 @@ if (isset($_POST['update_article'])) {
     $query = $bdd->prepare("UPDATE news SET titre = ?, contenue = ? WHERE id_news = ?");
     $query->execute([$titre, $contenu, $update_id]);
 
-    header('Location:' . article_back);
+    header('Location:' . article_back . '?return=update_success');
     exit();
 }
 
@@ -57,12 +57,12 @@ require('../../include/head.php');
     include("../navbar.php"); ?>
 
     <div class="container my-5">
-        <h1 class="mb-4">Gestion des Articles</h1>
+        <h1 class="mb-5">Gestion des Articles</h1>
 
         <!-- Formulaire d'ajout d'article -->
         <form method="POST" action="<?= article_back ?>" class="mb-5">
             <h3>Ajouter un nouvel article</h3>
-            <div class="mb-3">
+            <div class="my-3">
                 <label for="titre" class="form-label">Titre</label>
                 <input type="text" class="form-control" id="titre" name="titre" required>
             </div>

@@ -109,3 +109,6 @@ define('tournois_back', '/back-office/tournois'); // tournois_main.php
 define('tournois_add_back', '/back-office/tournois/add'); // add_tournoi.php
 define('tournois_edit_back', '/back-office/tournois/edit'); // modify_tournoi.php
 define('tournois_result_back', '/back-office/tournois/result'); // tournoi_result.php
+
+//stats
+define('stats_main', '/back-office/stats'); // stats.php

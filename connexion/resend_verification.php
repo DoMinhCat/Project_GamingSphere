@@ -83,6 +83,6 @@ if ($user) {
         exit();
     }
 } else {
-    header('Location:' . resend_verify_inscrire . '?return=' . urlencode('unknown'));
+    header('Location:' . resend_verify_inscrire . '?result=' . urlencode('unknown'));
     exit();
 }
