@@ -31,7 +31,7 @@ require('../head.php');
             <a href="<?= jeux_add_back ?>" class="btn btn-primary">Ajouter un jeu</a>
         </div>
 
-        <table class="table table-bordered mt-3">
+        <table class="table table-bordered mt-3 table-responsive" style="max-height: 70vh; overflow-y: auto;">
             <thead class="table-dark">
                 <tr>
                     <th>Nom</th>

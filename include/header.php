@@ -80,7 +80,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
 
 
 
-<header>
+<header class="sticky-top">
 
   <!-- uppper -->
   <div id="upper_header">

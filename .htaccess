@@ -373,6 +373,13 @@ RewriteCond %{THE_REQUEST} \s/back-office/tournois/tournoi_result\.php [NC]
 RewriteRule ^back-office/tournois/tournoi_result\.php$ /back-office/tournois/result [R=301,L,QSA]
 RewriteRule ^back-office/tournois/result/?$ back-office/tournois/tournoi_result.php [L]
 
+# back-office stats.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/stats/stats\.php [NC]
+RewriteRule ^back-office/stats/stats\.php$ /back-office/stats/ [R=301,L,QSA]
+RewriteRule ^back-office/stats/?$ back-office/stats/stats.php [L]
+
+
 
 
 

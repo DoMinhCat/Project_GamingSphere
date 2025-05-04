@@ -19,7 +19,7 @@ require('../head.php');
     include('../navbar.php'); ?>
 
     <div class="container my-5">
-        <h1 class="mb-4 text-center">Ajouter un Nouveau Tournoi</h1>
+        <h1 class="mb-5 text-center">Ajouter un Nouveau Tournoi</h1>
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nom_tournoi = $_POST['nom_tournoi'] ?? '';
@@ -37,7 +37,9 @@ require('../head.php');
                     header('Location:' . tournois_back . '?message=tournoi_added');
                     exit();
                 } catch (PDOException $e) {
-                    echo "<div class='alert alert-danger'>Erreur lors de l'ajout du tournoi : " . htmlspecialchars($e->getMessage()) . "</div>";
+                    $_SESSION['error'] = htmlspecialchars($e->getMessage());
+                    header('Location:' . tournois_back . '?message=error');
+                    exit();
                 }
             }
         }
@@ -67,7 +69,7 @@ require('../head.php');
                     <option value="Terminé">Terminé</option>
                 </select>
             </div>
-            <div class="mb-3">
+            <div class="mb-4">
                 <label for="type_tournoi" class="form-label">Type de Tournoi</label>
                 <select class="form-select" id="type_tournoi" name="type_tournoi" required>
                     <option value="Solo">Solo</option>
@@ -75,7 +77,7 @@ require('../head.php');
                 </select>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Ajouter le Tournoi</button>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
                 <a href="<?= tournois_back ?>" class="btn btn-secondary">Retour</a>
             </div>
         </form>
