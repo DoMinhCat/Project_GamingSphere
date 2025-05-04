@@ -30,47 +30,47 @@ require('../head.php');
         <div class="text-end mb-3">
             <a href="<?= jeux_add_back ?>" class="btn btn-primary">Ajouter un jeu</a>
         </div>
-
-        <table class="table table-bordered mt-3 table-responsive" style="max-height: 70vh; overflow-y: auto;">
-            <thead class="table-dark">
-                <tr>
-                    <th>Nom</th>
-                    <th>Date de sortie</th>
-                    <th>Catégorie</th>
-                    <th>Note</th>
-                    <th>Plateforme</th>
-                    <th>Prix (€)</th>
-                    <th>Type</th>
-                    <th>Éditeur</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (count($games) > 0): ?>
-                    <?php foreach ($games as $game): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($game['nom']) ?></td>
-                            <td><?= htmlspecialchars($game['date_sortie']) ?></td>
-                            <td><?= htmlspecialchars($game['catégorie']) ?></td>
-                            <td><?= htmlspecialchars($game['note_jeu']) ?></td>
-                            <td><?= htmlspecialchars($game['plateforme']) ?></td>
-                            <td><?= htmlspecialchars($game['prix']) ?></td>
-                            <td><?= htmlspecialchars($game['type']) ?></td>
-                            <td><?= htmlspecialchars($game['éditeur']) ?></td>
-                            <td class="text-center">
-                                <a href="delete_game.php?id=$game['id_jeu'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce jeu ?');">Supprimer</a>
-                                <a href="<?= jeux_edit_back . '?id=' . $game['id_jeu'] ?>" class="btn btn-warning btn-sm">Modifier</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
+        <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
+            <table class="table table-bordered">
+                <thead class="table-dark">
                     <tr>
-                        <td colspan="9" class="text-center">Aucun jeu trouvé.</td>
+                        <th>Nom</th>
+                        <th>Date de sortie</th>
+                        <th>Catégorie</th>
+                        <th>Note</th>
+                        <th>Plateforme</th>
+                        <th>Prix (€)</th>
+                        <th>Type</th>
+                        <th>Éditeur</th>
+                        <th>Actions</th>
                     </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-
+                </thead>
+                <tbody>
+                    <?php if (count($games) > 0): ?>
+                        <?php foreach ($games as $game): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($game['nom']) ?></td>
+                                <td><?= htmlspecialchars($game['date_sortie']) ?></td>
+                                <td><?= htmlspecialchars($game['catégorie']) ?></td>
+                                <td><?= htmlspecialchars($game['note_jeu']) ?></td>
+                                <td><?= htmlspecialchars($game['plateforme']) ?></td>
+                                <td><?= htmlspecialchars($game['prix']) ?></td>
+                                <td><?= htmlspecialchars($game['type']) ?></td>
+                                <td><?= htmlspecialchars($game['éditeur']) ?></td>
+                                <td class="text-center">
+                                    <a href="delete_game.php?id=$game['id_jeu'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce jeu ?');">Supprimer</a>
+                                    <a href="<?= jeux_edit_back . '?id=' . $game['id_jeu'] ?>" class="btn btn-warning btn-sm">Modifier</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="9" class="text-center">Aucun jeu trouvé.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
         <?php if (isset($_GET['message']) && $_GET['message'] === 'success'): ?>
             <div class="alert alert-success mt-3" role="alert">
                 Jeu ajouté avec succès !
