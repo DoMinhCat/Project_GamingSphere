@@ -18,7 +18,7 @@ try {
     $stmt = $bdd->prepare("DELETE FROM tournoi WHERE id_tournoi = ?");
     $stmt->execute([$id_tournoi]);
 
-    header('Location: ' . profils_edit_back . '?message=tournoi_deleted');
+    header('Location: ' . tournois_back . '?message=tournoi_deleted');
     exit();
 } catch (PDOException $e) {
     $_SESSION['error'] = htmlspecialchars($e->getMessage());

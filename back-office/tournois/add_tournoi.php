@@ -19,7 +19,7 @@ require('../head.php');
     include('../navbar.php'); ?>
 
     <div class="container my-5">
-        <h1 class="mb-5 text-center">Ajouter un Nouveau Tournoi</h1>
+        <h1 class="my-5 text-center">Ajouter un Nouveau Tournoi</h1>
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nom_tournoi = $_POST['nom_tournoi'] ?? '';
