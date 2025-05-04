@@ -156,7 +156,7 @@ require('../head.php');
                         }
                     } catch (PDOException $e) {
                         $_SESSION['error'] = htmlspecialchars($e->getMessage());
-                        header('Location:' . tournois_result_back . '?error=result');
+                        header('Location:' . tournois_result_back . '?id_tournois=' . $id_tournoi . '&error=result');
                         exit();
                     }
                     ?>
