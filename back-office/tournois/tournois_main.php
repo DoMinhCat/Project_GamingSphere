@@ -58,42 +58,62 @@ require('../head.php');
         <div class="mb-3 text-end">
             <a href="<?= tournois_add_back ?>" class="btn btn-primary">Ajouter un tournoi</a>
         </div>
+        <div class="form-group my-2 sticky-top pt-3 pb-2">
+            <div class="input-group">
+                <input type="text" id="search_tournois" class="form-control" placeholder="Rechercher par nom du tournoi">
+                <div class="input-group-append">
+                    <select id="statusFilter" class="form-select">
+                        <option value="">Tous</option>
+                        <option value="attente">En attente</option>
+                        <option value="encours">En cours</option>
+                        <option value="termine">Terminé</option>
+                    </select>
+                    <select id="typeFilter" class="form-select">
+                        <option value="">Tous</option>
+                        <option value="solo">Solo</option>
+                        <option value="equipe">Equipe</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <?php
         try {
             $stmt = $bdd->query("SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu, status_ENUM, type FROM tournoi ORDER BY date_debut DESC");
             $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if (count($tournois) > 0): ?>
-                <table class="table table-striped table-bordered table-responsive" style="max-height: 70vh; overflow-y: auto;">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>#</th>
-                            <th>Nom</th>
-                            <th>Date de Début</th>
-                            <th>Date de Fin</th>
-                            <th>Statut</th>
-                            <th>Type</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($tournois as $tournoi): ?>
+                <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
+                    <table class="table table-striped table-bordered">
+                        <thead class="table-dark">
                             <tr>
-                                <td><?= htmlspecialchars($tournoi['id_tournoi']) ?></td>
-                                <td><?= htmlspecialchars($tournoi['nom_tournoi']) ?></td>
-                                <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
-                                <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
-                                <td><?= htmlspecialchars($tournoi['status_ENUM']) ?></td>
-                                <td><?= htmlspecialchars($tournoi['type']) ?></td>
-                                <td>
-                                    <a href="<?= tournois_edit_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning">Modifier</a>
-                                    <a href="/back-office/tournois/delete_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</a>
-                                    <a href="<?= tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-success">Éditer les Résultats</a>
-                                </td>
+                                <th>#</th>
+                                <th>Nom</th>
+                                <th>Date de Début</th>
+                                <th>Date de Fin</th>
+                                <th>Statut</th>
+                                <th>Type</th>
+                                <th>Actions</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($tournois as $tournoi): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($tournoi['id_tournoi']) ?></td>
+                                    <td><?= htmlspecialchars($tournoi['nom_tournoi']) ?></td>
+                                    <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
+                                    <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
+                                    <td><?= htmlspecialchars($tournoi['status_ENUM']) ?></td>
+                                    <td><?= htmlspecialchars($tournoi['type']) ?></td>
+                                    <td>
+                                        <a href="<?= tournois_edit_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning">Modifier</a>
+                                        <a href="/back-office/tournois/delete_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</a>
+                                        <a href="<?= tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-success">Éditer les Résultats</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php else: ?>
                 <div class="alert alert-info text-center">Aucun tournoi disponible pour le moment.</div>
         <?php endif;
