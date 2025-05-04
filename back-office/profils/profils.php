@@ -46,10 +46,10 @@ require('../head.php');
 
 
                 echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
-                <div class="input-group">
-                    <input type="text" id="search" class="form-control" placeholder="Rechercher par pseudo, email, nom ou prénom">
-                    <div class="input-group-append">
-                    <select id="statusFilter" class="form-select">
+                <div class="d-flex gap-2">
+                    <input type="text" id="search" class="form-control searchBoxBack" placeholder="Rechercher par pseudo, email, nom ou prénom">
+                    <div class="d-flex ms-2" style="gap: 0.5rem;">
+                    <select id="statusFilter" class="form-select searchBoxBack">
                         <option value="">Tous</option>
                         <option value="online">Online</option>
                         <option value="offline">Offline</option>

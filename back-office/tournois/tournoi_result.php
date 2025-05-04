@@ -97,8 +97,9 @@ require('../head.php');
 
         <h1 class="my-5 text-center">Résultats du Tournoi : <?= htmlspecialchars($tournoi['nom_tournoi']); ?></h1>
         <div class="form-group mb-2 sticky-top pt-3 pb-2">
-            <input type="text" id="search_results" class="form-control" placeholder="Rechercher par nom des gagnants">
+            <input type="text" id="search_results" class="form-control searchBoxBack" placeholder="Rechercher par nom des gagnants">
         </div>
+
         <form method="post">
             <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
                 <table class="table table-striped table-bordered">
