@@ -38,7 +38,7 @@ require('../head.php');
                     exit();
                 } catch (PDOException $e) {
                     $_SESSION['error'] = htmlspecialchars($e->getMessage());
-                    header('Location:' . tournois_back . '?message=error');
+                    header('Location:' . tournois_back . '?error=add');
                     exit();
                 }
             }

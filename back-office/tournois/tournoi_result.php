@@ -13,15 +13,16 @@ if (isset($_GET['id_tournoi'])) {
         $stmt->execute([$id_tournoi]);
         $tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$tournoi) {
-            echo "<div class='alert alert-danger'>Tournoi non trouvé.</div>";
+            header('Location:' . tournois_result_back . '?error=no_id');
             exit();
         }
     } catch (PDOException $e) {
-        echo "<div class='alert alert-danger'>Erreur : " . htmlspecialchars($e->getMessage()) . "</div>";
+        $_SESSION['error'] = htmlspecialchars($e->getMessage());
+        header('Location:' . tournois_result_back . '?error=db');
         exit();
     }
 } else {
-    echo "<div class='alert alert-danger'>Aucun ID de tournoi spécifié.</div>";
+    header('Location:' . tournois_result_back . '?error=no_id');
     exit();
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['credits'], $_POST['result_id'])) {
@@ -80,9 +81,25 @@ require('../head.php');
     $page = tournois_back;
     include('../navbar.php'); ?>
 
-    <div class="container my-5">
-        <h1 class="mb-4 text-center">Résultats du Tournoi : <?= htmlspecialchars($tournoi['nom_tournoi']); ?></h1>
-        <h3>Participants et Résultats</h3>
+    <div class="container mb-5">
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'db') {
+            $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
+            unset($_SESSION['error']);
+        } elseif (isset($_GET['error']) && $_GET['error'] === 'result') {
+            $noti_Err = 'Erreur lors de la récuperation des résultats : ' . $_SESSION['error'];
+            unset($_SESSION['error']);
+        } elseif (isset($_GET['error']) && $_GET['error'] === 'no_id') {
+            $noti_Err = 'Tournoi non trouvé ! ';
+        }
+        ?>
+
+        <?php if (!empty($noti_Err)) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= $noti_Err ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
+        <h1 class="mb-5 mt-3 text-center">Résultats du Tournoi : <?= htmlspecialchars($tournoi['nom_tournoi']); ?></h1>
         <form method="post">
             <table class="table table-striped table-bordered">
                 <thead class="table-dark">
@@ -143,7 +160,9 @@ require('../head.php');
                     <?php endforeach;
                         }
                     } catch (PDOException $e) {
-                        echo "<tr><td colspan='4'>Erreur lors de la récupération des résultats : " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+                        $_SESSION['error'] = htmlspecialchars($e->getMessage());
+                        header('Location:' . tournois_result_back . '?error=result');
+                        exit();
                     }
                     ?>
                 </tbody>

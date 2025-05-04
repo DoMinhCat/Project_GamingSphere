@@ -8,7 +8,7 @@ $login_page = '../../connexion/login.php';
 require('../check_session.php');
 
 if (!isset($_GET['id_tournoi']) || empty($_GET['id_tournoi'])) {
-    header('Location: ' . tournois_back . '?message=missing_id');
+    header('Location: ' . tournois_back . '?error=missing_id');
     exit();
 }
 
@@ -21,5 +21,7 @@ try {
     header('Location: ' . profils_edit_back . '?message=tournoi_deleted');
     exit();
 } catch (PDOException $e) {
-    echo "<div class='alert alert-danger'>Erreur lors de la suppression du tournoi : " . htmlspecialchars($e->getMessage()) . "</div>";
+    $_SESSION['error'] = htmlspecialchars($e->getMessage());
+    header('Location:' . tournois_back . '?error=delete');
+    exit();
 }
