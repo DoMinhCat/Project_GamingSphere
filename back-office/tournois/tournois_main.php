@@ -87,7 +87,7 @@ require('../head.php');
                                 <td><?= htmlspecialchars($tournoi['type']) ?></td>
                                 <td>
                                     <a href="<?= tournois_edit_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning">Modifier</a>
-                                    <a href="/back-office/tournois/delete_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce tournoi ?');">Supprimer</a>
+                                    <a href="/back-office/tournois/delete_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</a>
                                     <a href="<?= tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-success">Éditer les Résultats</a>
                                 </td>
                             </tr>
@@ -101,6 +101,23 @@ require('../head.php');
             echo "<div class='alert alert-danger'>Erreur lors de la récupération des tournois : " . htmlspecialchars($e->getMessage()) . "</div>";
         }
         ?>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                </div>
+                <div class="modal-body">
+                    Êtes-vous sûr de vouloir supprimer ce tournoi ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-danger">Supprimer</button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
