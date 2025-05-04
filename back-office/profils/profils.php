@@ -139,7 +139,7 @@ require('../head.php');
                         '<span style="color: gray;">Offline</span>';
                 });
             } catch (err) {
-                console.error('Failed to fetch user statuses:', err);
+                console.error('Echec de récuperation du statut des utilisateurs :', err);
             }
         }
 

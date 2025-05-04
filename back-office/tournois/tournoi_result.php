@@ -94,22 +94,27 @@ require('../head.php');
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
+
         <h1 class="my-5 text-center">Résultats du Tournoi : <?= htmlspecialchars($tournoi['nom_tournoi']); ?></h1>
+        <div class="form-group mb-2 sticky-top pt-3 pb-2">
+            <input type="text" id="search_results" class="form-control" placeholder="Rechercher par nom des gagnants">
+        </div>
         <form method="post">
-            <table class="table table-striped table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th><?= strtolower($tournoi['type']) === 'solo' ? 'Pseudo Joueur' : 'Nom de l\'Équipe' ?></th>
-                        <th>Position</th>
-                        <th>Crédits Attribués</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    try {
-                        if (strtolower($tournoi['type']) === 'solo') {
-                            $stmt = $bdd->prepare("
+            <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th><?= strtolower($tournoi['type']) === 'solo' ? 'Pseudo Joueur' : 'Nom de l\'Équipe' ?></th>
+                            <th>Position</th>
+                            <th>Crédits Attribués</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        try {
+                            if (strtolower($tournoi['type']) === 'solo') {
+                                $stmt = $bdd->prepare("
                                 SELECT u.id_utilisateurs AS participant_id, u.pseudo, 
                                        COALESCE(r.result_id, 0) AS result_id,
                                        COALESCE(r.position, '') AS position,
@@ -120,9 +125,9 @@ require('../head.php');
                                 WHERE it.id_tournoi = ?
                                 ORDER BY r.position ASC, u.pseudo ASC
                             ");
-                            $stmt->execute([$id_tournoi, $id_tournoi]);
-                        } else {
-                            $stmt = $bdd->prepare("
+                                $stmt->execute([$id_tournoi, $id_tournoi]);
+                            } else {
+                                $stmt = $bdd->prepare("
                                 SELECT e.id_equipe AS participant_id, e.nom AS nom_equipe, 
                                        COALESCE(r.result_id, 0) AS result_id,
                                        COALESCE(r.position, '') AS position,
@@ -133,42 +138,43 @@ require('../head.php');
                                 WHERE et.id_tournoi = ?
                                 ORDER BY r.position ASC, e.nom ASC
                             ");
-                            $stmt->execute([$id_tournoi, $id_tournoi]);
-                        }
-                        $participants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                $stmt->execute([$id_tournoi, $id_tournoi]);
+                            }
+                            $participants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                        if (count($participants) === 0) {
-                            echo "<tr><td colspan='4' class='text-center'>Aucun participant enregistré pour ce tournoi.</td></tr>";
-                        } else {
-                            foreach ($participants as $participant): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($participant['result_id'] > 0 ? $participant['result_id'] : $participant['participant_id']) ?></td>
-                                    <td><?= htmlspecialchars($participant['pseudo'] ?? $participant['nom_equipe']) ?></td>
-                                    <td>
-                                        <input type="number" name="position[<?= $participant['participant_id'] ?>]" value="<?= htmlspecialchars($participant['position']) ?>" class="form-control" min="1" required>
-                                    </td>
-                                    <td>
-                                        <input type="number" name="credits[<?= $participant['participant_id'] ?>]" value="<?= htmlspecialchars($participant['credits_awarded']) ?>" class="form-control" min="0" required>
-                                    </td>
-                                    <input type="hidden" name="result_id[<?= $participant['participant_id'] ?>]" value="<?= htmlspecialchars($participant['result_id']) ?>">
-                                </tr>
-                    <?php endforeach;
+                            if (count($participants) === 0) {
+                                echo "<tr><td colspan='4' class='text-center'>Aucun participant enregistré pour ce tournoi.</td></tr>";
+                            } else {
+                                foreach ($participants as $participant): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($participant['result_id'] > 0 ? $participant['result_id'] : $participant['participant_id']) ?></td>
+                                        <td><?= htmlspecialchars($participant['pseudo'] ?? $participant['nom_equipe']) ?></td>
+                                        <td>
+                                            <input type="number" name="position[<?= $participant['participant_id'] ?>]" value="<?= htmlspecialchars($participant['position']) ?>" class="form-control" min="1" required>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="credits[<?= $participant['participant_id'] ?>]" value="<?= htmlspecialchars($participant['credits_awarded']) ?>" class="form-control" min="0" required>
+                                        </td>
+                                        <input type="hidden" name="result_id[<?= $participant['participant_id'] ?>]" value="<?= htmlspecialchars($participant['result_id']) ?>">
+                                    </tr>
+                        <?php endforeach;
+                            }
+                        } catch (PDOException $e) {
+                            $_SESSION['error'] = htmlspecialchars($e->getMessage());
+                            header('Location:' . tournois_result_back . '?id_tournois=' . $id_tournoi . '&error=result');
+                            exit();
                         }
-                    } catch (PDOException $e) {
-                        $_SESSION['error'] = htmlspecialchars($e->getMessage());
-                        header('Location:' . tournois_result_back . '?id_tournois=' . $id_tournoi . '&error=result');
-                        exit();
-                    }
-                    ?>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-center">
-                            <button type="submit" class="btn btn-success">Enregistrer les changements</button>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+                        ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                <button type="submit" class="btn btn-success">Enregistrer les changements</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </form>
     </div>
 </body>
