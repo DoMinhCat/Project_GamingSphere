@@ -13,16 +13,16 @@ if (isset($_GET['id_tournoi'])) {
         $stmt->execute([$id_tournoi]);
         $tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$tournoi) {
-            header('Location:' . tournois_result_back . '?error=no_id');
+            header('Location:' . tournois_back . '?error=no_id');
             exit();
         }
     } catch (PDOException $e) {
         $_SESSION['error'] = htmlspecialchars($e->getMessage());
-        header('Location:' . tournois_result_back . '?error=db');
+        header('Location:' . tournois_back . '?error=db');
         exit();
     }
 } else {
-    header('Location:' . tournois_result_back . '?error=no_id');
+    header('Location:' . tournois_back . '?error=no_id');
     exit();
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['credits'], $_POST['result_id'])) {
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
     $updateStatus = $bdd->prepare("UPDATE tournoi SET status_ENUM = 'Terminé' WHERE id_tournoi = ?");
     $updateStatus->execute([$id_tournoi]);
 
-    header('Location:' . tournois_back . '?id_tournoi=' . $id_tournoi . "&updated=1");
+    header('Location:' . tournois_back . "?updated=1");
     exit();
 }
 ?>
@@ -82,14 +82,9 @@ require('../head.php');
     include('../navbar.php'); ?>
 
     <div class="container mb-5">
-        <?php if (isset($_GET['error']) && $_GET['error'] === 'db') {
-            $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
-            unset($_SESSION['error']);
-        } elseif (isset($_GET['error']) && $_GET['error'] === 'result') {
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'result') {
             $noti_Err = 'Erreur lors de la récuperation des résultats : ' . $_SESSION['error'];
             unset($_SESSION['error']);
-        } elseif (isset($_GET['error']) && $_GET['error'] === 'no_id') {
-            $noti_Err = 'Tournoi non trouvé ! ';
         }
         ?>
 
@@ -99,7 +94,7 @@ require('../head.php');
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
-        <h1 class="mb-5 mt-3 text-center">Résultats du Tournoi : <?= htmlspecialchars($tournoi['nom_tournoi']); ?></h1>
+        <h1 class="my-5 text-center">Résultats du Tournoi : <?= htmlspecialchars($tournoi['nom_tournoi']); ?></h1>
         <form method="post">
             <table class="table table-striped table-bordered">
                 <thead class="table-dark">
@@ -168,7 +163,7 @@ require('../head.php');
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="4" class="text-end">
+                        <td colspan="4" class="text-center">
                             <button type="submit" class="btn btn-success">Enregistrer les changements</button>
                         </td>
                     </tr>

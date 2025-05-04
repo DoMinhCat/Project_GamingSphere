@@ -34,6 +34,12 @@ require('../head.php');
             unset($_SESSION['error']);
         } elseif (isset($_GET['error']) && $_GET['error'] === 'missing_id')
             $noti_Err = 'Aucun ID spécifié';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'no_id')
+            $noti_Err = 'Tournoi non trouvé ! ';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'db') {
+            $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
+            unset($_SESSION['error']);
+        }
         ?>
         <?php if (!empty($noti_Err)) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -48,7 +54,7 @@ require('../head.php');
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
-        <h1 class="mb-5 mt-3 text-center">Liste des Tournois Disponibles</h1>
+        <h1 class="my-5 text-center">Liste des Tournois Disponibles</h1>
         <div class="mb-3 text-end">
             <a href="<?= tournois_add_back ?>" class="btn btn-primary">Ajouter un tournoi</a>
         </div>
