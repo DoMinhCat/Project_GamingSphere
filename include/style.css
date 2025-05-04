@@ -622,3 +622,6 @@ body.offcanvas-backdrop {
 .forumBlockLink:hover .card {
   transform: scale(1.01);
 }
+.searchBoxBack:hover {
+  background-color: #e0e0e0;
+}

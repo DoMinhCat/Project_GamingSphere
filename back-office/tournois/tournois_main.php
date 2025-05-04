@@ -59,17 +59,17 @@ require('../head.php');
             <a href="<?= tournois_add_back ?>" class="btn btn-primary">Ajouter un tournoi</a>
         </div>
         <div class="form-group my-2 sticky-top pt-3 pb-2">
-            <div class="input-group">
-                <input type="text" id="search_tournois" class="form-control" placeholder="Rechercher par nom du tournoi ou jeu">
-                <div class="input-group-append">
-                    <select id="statusFilter" class="form-select">
-                        <option value="">Tous</option>
-                        <option value="attente">En attente</option>
-                        <option value="encours">En cours</option>
-                        <option value="termine">Terminé</option>
+            <div class="d-flex gap-2">
+                <input type="text" id="search_tournois" class="form-control searchBoxBack" placeholder="Rechercher par nom du tournoi ou jeu">
+                <div class="d-flex ms-2" style="gap: 0.5rem;">
+                    <select id="statusFilter" class="form-select searchBoxBack">
+                        <option value="">Statut</option>
+                        <option value="En attente">En attente</option>
+                        <option value="En cours">En cours</option>
+                        <option value="Terminé">Terminé</option>
                     </select>
-                    <select id="typeFilter" class="form-select">
-                        <option value="">Tous</option>
+                    <select id="typeFilter" class="form-select searchBoxBack">
+                        <option value="">Type</option>
                         <option value="solo">Solo</option>
                         <option value="equipe">Equipe</option>
                     </select>
@@ -88,6 +88,7 @@ require('../head.php');
                             <tr>
                                 <th>#</th>
                                 <th>Nom</th>
+                                <th>Jeu</th>
                                 <th>Date de Début</th>
                                 <th>Date de Fin</th>
                                 <th>Statut</th>
