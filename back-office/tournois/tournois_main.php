@@ -60,7 +60,7 @@ require('../head.php');
         </div>
         <div class="form-group my-2 sticky-top pt-3 pb-2">
             <div class="input-group">
-                <input type="text" id="search_tournois" class="form-control" placeholder="Rechercher par nom du tournoi">
+                <input type="text" id="search_tournois" class="form-control" placeholder="Rechercher par nom du tournoi ou jeu">
                 <div class="input-group-append">
                     <select id="statusFilter" class="form-select">
                         <option value="">Tous</option>
@@ -95,11 +95,12 @@ require('../head.php');
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tournois_results">
                             <?php foreach ($tournois as $tournoi): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($tournoi['id_tournoi']) ?></td>
                                     <td><?= htmlspecialchars($tournoi['nom_tournoi']) ?></td>
+                                    <td><?= htmlspecialchars($tournoi['jeu']) ?></td>
                                     <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
                                     <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
                                     <td><?= htmlspecialchars($tournoi['status_ENUM']) ?></td>
@@ -139,6 +140,28 @@ require('../head.php');
             </div>
         </div>
     </div>
+
+    <script>
+        function fetchFilteredUsers() {
+            const query = document.getElementById('search_tournois').value;
+            const status = document.getElementById('statusFilter').value;
+            const type = document.getElementById('typeFilter').value;
+
+            fetch(`search_tournois.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}&type=${encodeURIComponent(type)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('tournois_results').innerHTML = data;
+                });
+        }
+
+        document.getElementById('search_tournois').addEventListener('input', fetchFilteredUsers);
+        document.getElementById('statusFilter').addEventListener('change', fetchFilteredUsers);
+        document.getElementById('typeFilter').addEventListener('change', fetchFilteredUsers);
+    </script>
 </body>
 
 </html>
