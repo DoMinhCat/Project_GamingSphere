@@ -58,7 +58,7 @@ require('../head.php');
         <div class="mb-3 text-end">
             <a href="<?= tournois_add_back ?>" class="btn btn-primary">Ajouter un tournoi</a>
         </div>
-        <div class="form-group my-2 sticky-top pt-3 pb-2">
+        <div class="form-group mb-2 sticky-top pt-3 pb-2">
             <div class="d-flex gap-2">
                 <input type="text" id="search_tournois" class="form-control searchBoxBack" placeholder="Rechercher par nom du tournoi ou jeu">
                 <div class="d-flex ms-2" style="gap: 0.5rem;">
