@@ -47,13 +47,13 @@ require('../head.php');
             </div>
         <?php endif; ?>
 
-        <h1 class="text-center my-3" style="font-size: 1.5rem;">Liste des jeux</h1>
+        <h1 class="text-center mt-5 mb-3">Liste des jeux</h1>
 
         <div class="text-end mb-2">
             <a href="<?= jeux_add_back ?>" class="btn btn-primary">Ajouter un jeu</a>
         </div>
 
-        <div class="form-group my-2 sticky-top pt-3 pb-2">
+        <div class="form-group mb-2 sticky-top pt-3 pb-2">
             <div class="d-flex gap-2">
                 <input type="text" id="search" class="form-control searchBoxBack" placeholder="Rechercher par nom, catégorie, plateforme, type ou éditeur">
                 <div class="d-flex ms-2" style="gap: 0.5rem;">

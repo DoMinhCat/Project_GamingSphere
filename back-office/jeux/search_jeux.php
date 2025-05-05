@@ -1,6 +1,6 @@
 <?php
 require('../../include/database.php');
-
+require_once __DIR__ . '/../../path.php';
 if ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest' || !isset($_GET['search'])) {
     http_response_code(403);
     exit('Accès non-autorisé');

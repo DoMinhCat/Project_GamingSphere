@@ -26,24 +26,13 @@ require('../head.php');
     include('../navbar.php');
     ?>
     <main class="container my-5">
+
+        <h1 class="text-center mt-5 mb-3">Liste des utilisateurs</h1>
         <?php
         if (isset($bdd)) {
             try {
                 $stmt = $bdd->query("SELECT id_utilisateurs, pseudo, nom, prenom, email, last_active FROM utilisateurs ORDER BY nom ASC");
                 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                if (isset($_GET['message'])) {
-                    if ($_GET['message'] == 'success') {
-                        echo "<div class='alert alert-success'>Modifications effectuées avec succès.</div>";
-                    } elseif ($_GET['message'] == 'delete') {
-                        echo "<div class='alert alert-success'>Utilisateur supprimé avec succès.</div>";
-                    } elseif ($_GET['message'] == 'user_non_exist') {
-                        echo "<div class='alert alert-danger'>Utilisateur non trouvé.</div>";
-                    } elseif ($_GET['message'] == 'id_invalid') {
-                        echo "<div class='alert alert-danger'>ID utilisateur invalide</div>";
-                    }
-                }
-
 
                 echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
                 <div class="d-flex gap-2">

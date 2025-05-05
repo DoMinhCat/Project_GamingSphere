@@ -57,7 +57,7 @@ require('../../include/head.php');
     include("../navbar.php"); ?>
 
     <div class="container my-5">
-        <h1 class="mb-5">Gestion des Articles</h1>
+        <h1 class="mb-5 text-center">Gestion des Articles</h1>
 
         <!-- Formulaire d'ajout d'article -->
         <form method="POST" action="<?= article_back ?>" class="mb-5">
