@@ -19,19 +19,19 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
 
 <body>
   <?php include('../include/header.php');
-  if (isset($_GET['message']) && !empty($_GET['message'])) {
-    echo '<div class="lato24 my-2">';
-    echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
-    echo '</div>';
-  }
   ?>
+
   <div class="d-flex justify-content-center my-5">
     <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
 
-      <div class="my-3">
-        <h1>Inscription</h1>
-      </div>
+      <h1 class="my-3">Inscription</h1>
 
+      <?php if (isset($_GET['message']) && !empty($_GET['message'])) : ?>
+        <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+          <?= htmlspecialchars($_GET['message']) ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <?php endif ?>
       <form class="row g-3 m-f" method="post" action="inscription_verification.php">
         <div class="col-md-4">
           <label for="prenom_inscrire" class="form-label d-block text-start">Prénom</label>
@@ -157,7 +157,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           <p class="text-start mb-1" id="captcha_question"><?= 'Question captcha : ' . htmlspecialchars($random_question) ?></p>
           <input type="text" id="captcha_answer" name="captcha_answer" class="form-control f-inscription mb-2 <?php echo ($error == 'captcha_invalid') ? 'is-invalid' : ''; ?>" required>
           <?php if ($error == 'captcha_invalid') {
-            echo '<div class="invalid-feedback">La réponse au CAPTCHA est incorrecte.</div>';
+            echo '<div class="invalid-feedback text-start">La réponse au CAPTCHA est incorrecte.</div>';
           } ?>
           <div class="form-check text-start mt-2">
             <input class="form-check-input" type="checkbox" value="1" id="checkbox_inscrire" required>

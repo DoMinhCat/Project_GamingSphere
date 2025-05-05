@@ -24,12 +24,49 @@ require('../head.php');
     $page = index_back;
     include('../navbar.php');
     ?>
-    <div class="container my-5">
-        <h1 class="text-center mb-3" style="font-size: 1.5rem;">Liste des jeux</h1>
+    <div class="container mb-5">
+        <?php if (isset($_GET['message']) && $_GET['message'] === 'success'): ?>
+            <div class="alert alert-success mb-3" role="alert">
+                Jeu ajouté avec succès !
+            </div>
 
-        <div class="text-end mb-3">
+        <?php endif;
+        if (isset($_GET['message']) && $_GET['message'] === 'delete'): ?>
+            <div class="alert alert-success mb-3" role="alert">
+                Jeu supprimé avec succès !
+            </div>
+        <?php endif;
+        if (isset($_GET['message']) && $_GET['message'] === 'updated'): ?>
+            <div class="alert alert-success mb-3" role="alert">
+                Jeu modifié avec succès !
+            </div>
+        <?php endif;
+        if (isset($_GET['message_err']) && !empty($_GET['message_err'])): ?>
+            <div class="alert alert-danger mb-3" role="alert">
+                <?= htmlspecialchars($_GET['message_err']); ?>
+            </div>
+        <?php endif; ?>
+
+        <h1 class="text-center my-3" style="font-size: 1.5rem;">Liste des jeux</h1>
+
+        <div class="text-end mb-2">
             <a href="<?= jeux_add_back ?>" class="btn btn-primary">Ajouter un jeu</a>
         </div>
+
+        <div class="form-group my-2 sticky-top pt-3 pb-2">
+            <div class="d-flex gap-2">
+                <input type="text" id="search" class="form-control searchBoxBack" placeholder="Rechercher par nom, catégorie, plateforme, type ou éditeur">
+                <div class="d-flex ms-2" style="gap: 0.5rem;">
+                    <select id="prixFilter" class="form-select searchBoxBack">
+                        <option value="">Prix</option>
+                        <option value="0-20">0-20</option>
+                        <option value="20-40">20-40</option>
+                        <option value="40+">40+</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
             <table class="table table-bordered">
                 <thead class="table-dark">
@@ -45,7 +82,7 @@ require('../head.php');
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="jeux">
                     <?php if (count($games) > 0): ?>
                         <?php foreach ($games as $game): ?>
                             <tr>
@@ -58,7 +95,7 @@ require('../head.php');
                                 <td><?= htmlspecialchars($game['type']) ?></td>
                                 <td><?= htmlspecialchars($game['éditeur']) ?></td>
                                 <td class="text-center">
-                                    <a href="delete_game.php?id=$game['id_jeu'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce jeu ?');">Supprimer</a>
+                                    <a href="delete_game.php?id=<?= $game['id_jeu'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce jeu ?');">Supprimer</a>
                                     <a href="<?= jeux_edit_back . '?id=' . $game['id_jeu'] ?>" class="btn btn-warning btn-sm">Modifier</a>
                                 </td>
                             </tr>
@@ -71,30 +108,28 @@ require('../head.php');
                 </tbody>
             </table>
         </div>
-        <?php if (isset($_GET['message']) && $_GET['message'] === 'success'): ?>
-            <div class="alert alert-success mt-3" role="alert">
-                Jeu ajouté avec succès !
-            </div>
-
-        <?php endif;
-        if (isset($_GET['message']) && $_GET['message'] === 'delete'): ?>
-            <div class="alert alert-success mt-3" role="alert">
-                Jeu supprimé avec succès !
-            </div>
-        <?php endif;
-        if (isset($_GET['message']) && $_GET['message'] === 'updated'): ?>
-            <div class="alert alert-success mt-3" role="alert">
-                Jeu modifié avec succès !
-            </div>
-        <?php endif;
-        if (isset($_GET['message_err']) && !empty($_GET['message_err'])): ?>
-            <div class="alert alert-danger mt-3" role="alert">
-                <?= htmlspecialchars($_GET['message_err']); ?>
-            </div>
-        <?php endif; ?>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function fetchFilteredUsers() {
+            const query = document.getElementById('search').value;
+            const prix = document.getElementById('prixFilter').value;
+
+            fetch(`search_jeux.php?search=${encodeURIComponent(query)}&prix=${encodeURIComponent(prix)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('jeux').innerHTML = data;
+                });
+        }
+
+        document.getElementById('search').addEventListener('input', fetchFilteredUsers);
+        document.getElementById('prixFilter').addEventListener('change', fetchFilteredUsers);
+    </script>
 </body>
 
 </html>

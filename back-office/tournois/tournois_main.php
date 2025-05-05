@@ -55,7 +55,7 @@ require('../head.php');
             </div>
         <?php endif ?>
         <h1 class="my-5 text-center">Liste des Tournois Disponibles</h1>
-        <div class="mb-3 text-end">
+        <div class="mb-2 text-end">
             <a href="<?= tournois_add_back ?>" class="btn btn-primary">Ajouter un tournoi</a>
         </div>
         <div class="form-group mb-2 sticky-top pt-3 pb-2">

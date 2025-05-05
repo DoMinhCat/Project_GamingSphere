@@ -623,5 +623,5 @@ body.offcanvas-backdrop {
   transform: scale(1.01);
 }
 .searchBoxBack:hover {
-  background-color: #e0e0e0;
+  background-color: #cbcbcb !important;
 }

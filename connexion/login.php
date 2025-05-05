@@ -19,19 +19,14 @@ include('../include/head.php')
         <div class="d-flex justify-content-center my-5">
             <div class="col-10 col-sm-10 col-md-10 col-lg-8 col-xl-6 justify-content-center text-center p-5 my-5 connexion_box">
 
-                <div class="my-3">
-                    <h1>Se connecter</h1>
-                </div>
+                <h1 class="my-3">Se connecter</h1>
 
-
-                <?php
-                if (isset($_GET['message']) && !empty($_GET['message'])) {
-                    echo '<div class="lato24 mb-2">';
-                    echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
-                    echo '</div>';
-                }
-                ?>
-
+                <?php if (isset($_GET['message']) && !empty($_GET['message'])) : ?>
+                    <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                        <?= htmlspecialchars($_GET['message']) ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif ?>
 
                 <form method="post" action="login_verification.php">
                     <div class="d-flex flex-column pt-2 py-3 row-gap-1">
@@ -97,6 +92,7 @@ include('../include/head.php')
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modal">Vérification de l'email requis</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
@@ -104,7 +100,6 @@ include('../include/head.php')
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                     <a href="<?= resend_verify_inscrire ?>" class="btn btn-primary">Vérifier mon email</a>
                 </div>
             </div>
