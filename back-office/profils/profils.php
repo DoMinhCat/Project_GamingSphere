@@ -97,6 +97,7 @@ require('../head.php');
             }
         } else {
             echo "<div class='alert alert-danger'>Erreur lors de la connexion à la base de donnée.</div>";
+            echo "<div class='alert alert-danger'>Erreur lors de la connexion à la base de donnée.</div>";
         }
         ?>
 
@@ -147,6 +148,56 @@ require('../head.php');
         setInterval(fetchOnlineUsers, 30000); //30s
     </script>
 
+    ?>
+
+    </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function fetchFilteredUsers() {
+            const query = document.getElementById('search').value;
+            const status = document.getElementById('statusFilter').value;
+
+            fetch(`search_profils.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('user_results').innerHTML = data;
+                    fetchOnlineUsers();
+                });
+        }
+
+        document.getElementById('search').addEventListener('input', fetchFilteredUsers);
+        document.getElementById('statusFilter').addEventListener('change', fetchFilteredUsers);
+    </script>
+    <script>
+        async function fetchOnlineUsers() {
+            try {
+                const res = await fetch('../../status_user/reload_back-office.php');
+                const onlineUsers = await res.json();
+
+                document.querySelectorAll('.user-status').forEach(span => {
+                    const username = span.dataset.user;
+                    const isOnline = onlineUsers.includes(username);
+
+                    span.innerHTML = isOnline ?
+                        '<span style="color: green;">Online</span>' :
+                        '<span style="color: gray;">Offline</span>';
+                });
+            } catch (err) {
+                console.error('Echec de récuperation du statut des utilisateurs :', err);
+            }
+        }
+
+        fetchOnlineUsers();
+        setInterval(fetchOnlineUsers, 30000); //30s
+    </script>
+
 </body>
+
 
 </html>
