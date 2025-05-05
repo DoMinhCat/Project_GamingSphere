@@ -1,9 +1,6 @@
 log/log_login.txt
 log/log_inscription.txt
 log/log_reset_mdp.txt
-back-office/php_error.log
-log/log_login.txt
-log/log_inscription.txt
-log/log_reset_mdp.txt
+.env
 back-office/php_error.log
 include/database.php
