@@ -111,7 +111,7 @@ require('../head.php');
                             <th>Crédits Attribués</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tournois_results">
                         <?php
                         try {
                             if (strtolower($tournoi['type']) === 'solo') {
@@ -178,6 +178,25 @@ require('../head.php');
             </div>
         </form>
     </div>
+    <script>
+        function fetchFilteredUsers() {
+            const query = document.getElementById('search_results').value;
+            const idTournoi = <?= json_encode($id_tournoi) ?>;
+            const type = <?= json_encode(strtolower($tournoi['type'])) ?>;
+
+            fetch(`search_results.php?search=${encodeURIComponent(query)}&id_tournoi=${idTournoi}&type=${type}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('tournois_results').innerHTML = data;
+                });
+        }
+
+        document.getElementById('search_results').addEventListener('input', fetchFilteredUsers);
+    </script>
 </body>
 
 </html>
