@@ -99,11 +99,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 </div>
                                 <div class='card-footer text-center'>";
                         if ($is_registered): ?>
-                            <button class="btn btn-outline-danger desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">
+                            <button class="btn btn-outline-danger btn-sm desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">
                                 <i class="bi bi-x-circle"></i> Se désinscrire
                             </button>
                         <?php else: ?>
-                            <button class="btn btn-outline-warning participer-btn" data-id="<?= $tournoi['id_tournoi'] ?>">
+                            <button class="btn btn-outline-warning btn-sm participer-btn" data-id="<?= $tournoi['id_tournoi'] ?>">
                                 <i class="bi bi-check-circle"></i> Participer
                             </button>
         <?php endif;

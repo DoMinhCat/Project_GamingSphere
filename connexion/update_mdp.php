@@ -21,32 +21,48 @@ include('../include/database.php');
 $dotenv = Dotenv::createImmutable('/var/www/PA');
 $dotenv->load();
 
+function writeLogResetMdp(string $email, bool $success, string $return): void
+{
+    $stream = fopen('../log/log_inscription.txt', 'a+');
+    if ($success)
+        $line = date('Y/m/d - H:i:s') . ' -  Initialisation de mot de passe réussie de ' . $email . $return . "\n";
+    else
+        $line = date('Y/m/d - H:i:s') . ' - Initialisation de mot de passe échouée de ' . $email . ' - en raison de : ' . $return . "\n";
+    fputs($stream, $line);
+    fclose($stream);
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($_POST['token']) && !empty($_POST['new_mdp']) && !empty($_POST['confirm_mdp'])) {
 
         $token = $_POST['token'];
 
         if ($_POST['new_mdp'] !== $_POST['confirm_mdp']) {
+            writeLogResetMdp($email,  false,  "confirmation de mot de passe échouée");
             header('Location:  ' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Veuillez reconfirmer votre mot de passe!"));
             exit();
         }
 
         if (!preg_match('/[\W_]/', $_POST['new_mdp'])) {
+            writeLogResetMdp($email,  false,  "critères de mot de passe non remplis");
             header('Location:  ' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Votre mot de passe ne contient pas un symbole spécial!"));
             exit();
         }
 
         if (!preg_match('/[A-Z]/', $_POST['new_mdp'])) {
+            writeLogResetMdp($email,  false,  "critères de mot de passe non remplis");
             header('Location: ' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Votre mot de passe ne contient pas une lettre majuscule!"));
             exit();
         }
 
         if (strlen($_POST['new_mdp']) < 8) {
+            writeLogResetMdp($email,  false,  "critères de mot de passe non remplis");
             header('Location: ' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Votre mot de passe doit avoir au moins 8 caractères!"));
             exit();
         }
 
         if (!preg_match('/\d/', $_POST['new_mdp'])) {
+            writeLogResetMdp($email,  false,  "critères de mot de passe non remplis");
             header('Location: ' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Votre mot de passe ne contient pas de chiffre!"));
             exit();
         }
@@ -65,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 foreach ($last_passwords as $old_password) {
                     if (password_verify($_POST['new_mdp'], $old_password)) {
+                        writeLogResetMdp($email,  false,  "utilisation d'un mot de passe ancien");
                         header('Location:' . reset_mdp . '?token=' . $token . '&message=' . urlencode("Vous ne pouvez pas réutiliser un ancien mot de passe!"));
                         exit();
                     }
@@ -110,23 +127,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->isHTML(true);
                     $mail->Body = $message;
                     $mail->send();
-
+                    writeLogResetMdp($email,  true,  "");
                     header('Location: ' . forgot_mdp . '?success=1');
                     exit();
                 } catch (Exception $e) {
-                    header('Location:' . forgot_mdp . '?message=' . urlencode("Erreur d'envoi de l'email de confirmation: " . $mail->ErrorInfo));
+                    writeLogResetMdp($email,  true,  " - erreur lors de l'envoi de l'email de confirmation : " . $mail->ErrorInfo);
+                    header('Location:' . forgot_mdp . '?message=' . urlencode("Erreur d'envoi de l'email de confirmation."));
                     exit();
                 }
             } else {
+                writeLogResetMdp($email,  false,  "utilisateur non trouvé");
                 header('Location:' . reset_mdp_err . '?message=' . urlencode("Echec de la mise à jour du mot de passe"));
                 exit();
             }
         } catch (PDOException $e) {
-            error_log($e->getMessage());
+            writeLogResetMdp($email,  false,  "erreur de la bdd : " . $e->getMessage());
             header('Location:' . forgot_mdp . '?message=' . urlencode("Impossible de connecter à la base de données"));
             exit();
         }
     } else {
+        writeLogResetMdp($email,  false,  "champ non rempli");
         header('Location:' . forgot_mdp . '?message=' . urlencode("Veuillez remplir tous les champs demandés"));
         exit();
     }

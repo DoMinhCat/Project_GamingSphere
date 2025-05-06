@@ -24,17 +24,16 @@ include('../include/head.php');
 
       <?php if (!isset($_GET['success']) || empty($_GET['success'])): ?>
         <div class="pb-1 mb-2">
-          <h1>Mot de passe oublié ?</h1>
+          <h1 class="my-3">Mot de passe oublié ?</h1>
         </div>
+        <?php if (isset($_GET['message']) && !empty($_GET['message'])) : ?>
+          <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+            <?= htmlspecialchars($_GET['message']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php endif ?>
+        <span class="lato16 my-3">Entrez votre email enregistrée et nous vous enverrons un email pour réinitialiser votre mot de passe</span>
 
-        <span class="lato16 mb-3">Entrez votre adresse email enregistrée et nous vous enverrons un email pour réinitialiser votre mot de passe</span>
-        <?php
-        if (isset($_GET['message']) && !empty($_GET['message'])) {
-          echo '<div class="lato24 mb-3">';
-          echo '<p class="m-0 py-2">' . htmlspecialchars($_GET['message']) . '</p>';
-          echo '</div>';
-        }
-        ?>
 
         <form method="post" action="/connexion/forgot_verification.php">
           <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
@@ -58,7 +57,7 @@ include('../include/head.php');
         </div>
 
       <?php else: ?>
-        <h2>Votre mot de passe a été réinitialisé</h2>
+        <h1 class="my-3">Votre mot de passe a été réinitialisé</h1>
         <div class="line-with-letters my-3">
           <span class="line"></span>
         </div>

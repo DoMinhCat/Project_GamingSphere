@@ -17,6 +17,16 @@ $dotenv = Dotenv::createImmutable('/var/www/PA', null, false);
 $dotenv->load();
 
 require('../include/database.php');
+function writeLogInscrire(string $email, bool $success, string $error_inscript): void
+{
+    $stream = fopen('../log/log_inscription.txt', 'a+');
+    if ($success)
+        $line = date('Y/m/d - H:i:s') . ' - Création du compte réussie de ' . $email . ' - ' . $error_inscript . "\n";
+    else
+        $line = date('Y/m/d - H:i:s') . ' - Création du compte échouée de ' . $email . ' - en raison de : ' . $error_inscript . "\n";
+    fputs($stream, $line);
+    fclose($stream);
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -33,42 +43,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date = date('Y-m-d H:i:s');
 
     if (!isset($_POST['captcha_answer']) || !isset($_SESSION['captcha_answer'])) {
+        writeLogInscrire($email, false, 'réponse captcha manquantes');
         header('Location:' . inscription . '?error=captcha_missing&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     $user_answer = trim(strtolower($_POST['captcha_answer']));
     $correct_answer = trim(strtolower($_SESSION['captcha_answer']));
     if ($user_answer !== $correct_answer) {
+        writeLogInscrire($email, false, 'mauvaise réponse de captcha');
         header('Location:' . inscription . '?error=captcha_invalid&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     unset($_SESSION['captcha_answer']);
 
     if (strlen($mot_de_passe) < 8) {
+        writeLogInscrire($email, false, 'critères de mot de passe non remplis');
         header('Location:' . inscription . '?error=password_length&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (!preg_match('/[\W_]/', $mot_de_passe)) {
+        writeLogInscrire($email, false, 'critères de mot de passe non remplis');
         header('Location:' . inscription . '?error=password_special_char&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (!preg_match('/\d/', $mot_de_passe)) {
+        writeLogInscrire($email, false, 'critères de mot de passe non remplis');
         header('Location:' . inscription . 'error=password_number&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (!preg_match('/[A-Z]/', $mot_de_passe)) {
+        writeLogInscrire($email, false, 'critères de mot de passe non remplis');
         header('Location:' . inscription . '?error=password_upper&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (!ctype_digit($code_postal)) {
+        writeLogInscrire($email, false, 'mauvais format de code postal');
         header('Location:' . inscription . '?error=invalid_cp&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) || preg_match('/[\r\n]/', $email)) {
+        writeLogInscrire($email, false, 'mauvais format de l\'email');
         header('Location:' . inscription . '?error=invalid_email&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom)  .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
     if (empty($nom) || empty($prenom) || empty($email) || empty($mot_de_passe) || empty($pseudo) || empty($ville) || empty($rue) || empty($code_postal)) {
+        writeLogInscrire($email, false, 'informations personnelles manquantes');
         header('Location:' . inscription . '?error=empty_fields');
         exit();
     }
@@ -79,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email_count = $stmt->fetchColumn();
 
     if ($email_count > 0) {
+        writeLogInscrire($email, false, 'adresse email dèjà inscrite');
         header('Location:' . inscription . '?error=email_exists&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
@@ -89,6 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pseudo_count = $stmt->fetchColumn();
 
     if ($pseudo_count > 0) {
+        writeLogInscrire($email, false, 'pseudo dèjà inscrit');
         header('Location:' . inscription . '?error=pseudo_exists&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
@@ -152,7 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->isHTML(true);
             $mail->Body = $message;
             $mail->send();
-
+            writeLogInscrire($email, true, 'email de vérification envoyé');
             header('Location:' . inscription . '?result=success');
             exit();
         } catch (Exception $e) {
@@ -160,11 +181,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute([
                 'token' => $token,
             ]);
-            header('Location:' . inscription . '?message=' . urlencode('Erreur d\'envoi de l\'email: ') . urlencode($mail->ErrorInfo));
+            writeLogInscrire($email, true, 'erreur lors de l\'envoi de l\'email de vérification : ' . $mail->ErrorInfo);
+            header('Location:' . inscription . '?message=' . urlencode('Votre compte a été crée. Mais il y a une erreur lors de l\'envoi de l\'email de vérification, veuillez redemander l\'email plus tard.'));
             exit();
         }
     } catch (PDOException $e) {
-        die("Erreur lors de la création de compte : " . $e->getMessage());
+        writeLogInscrire($email, false, 'Erreur de bdd : ' . $e->getMessage());
+        header('Location:' . inscription . '?message=' . urlencode("Erreur lors de la création de compte"));
+        exit();
     }
 }
 ?>

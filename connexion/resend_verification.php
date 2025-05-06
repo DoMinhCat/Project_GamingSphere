@@ -13,7 +13,20 @@ $dotenv = Dotenv::createImmutable('/var/www/PA');
 $dotenv->load();
 
 require('../include/database.php');
+function writeLogDemandVerifyEmail(string $email, bool $success, string $return): void
+{
+    $stream = fopen('../log/log_inscription.txt', 'a+');
+    if ($success)
+        $line = date('Y/m/d - H:i:s') . ' -  Demande de renvoi d\'e-mail de vérification réussie de ' . $email . "\n";
+    else
+        $line = date('Y/m/d - H:i:s') . ' - Demande de renvoi d\'e-mail de vérification échouée de ' . $email . ' - en raison de : ' . $return . "\n";
+    fputs($stream, $line);
+    fclose($stream);
+}
+
+
 if (!isset($_POST['email'])) {
+    writeLogDemandVerifyEmail("visiteur", false,  "adresse de l'email non spécifiée");
     header('Location:' . resend_verify_inscrire . '?message=' . urlencode('Aucune adresse email reçue.'));
     exit();
 }
@@ -26,6 +39,7 @@ if ($user) {
     $now = time();
     $last_resend = strtotime($user['last_resend_time']);
     if ($now - $last_resend < 60 * 5) {
+        writeLogDemandVerifyEmail($email, false,  "demande trop fréquente");
         header('Location: ' . resend_verify_inscrire . '?message=' . urlencode('Veuillez attendre quelques minutes avant de renvoyer le lien.'));
         exit();
     }
@@ -71,7 +85,7 @@ if ($user) {
         $mail->isHTML(true);
         $mail->Body = $message;
         $mail->send();
-
+        writeLogDemandVerifyEmail($email, true, "");
         header('Location: ' . resend_verify_inscrire . '?result=success');
         exit();
     } catch (Exception $e) {
@@ -79,10 +93,12 @@ if ($user) {
         $stmt->execute([
             'token' => $token,
         ]);
-        header('Location:' . resend_verify_inscrire . '?message=' . urlencode('Erreur d\'envoi de l\'email: ') . urlencode($mail->ErrorInfo) . '. Veuillez réessayer plus tard.');
+        writeLogDemandVerifyEmail($email, false, "erreur lors de l'envoi de l'email : " . $mail->ErrorInfo);
+        header('Location:' . resend_verify_inscrire . '?message=' . urlencode('Erreur d\'envoi de l\'email. Veuillez réessayer plus tard.'));
         exit();
     }
 } else {
+    writeLogDemandVerifyEmail($email, false, "l'adresse de l'email non existe ");
     header('Location:' . resend_verify_inscrire . '?result=' . urlencode('unknown'));
     exit();
 }

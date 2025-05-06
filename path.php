@@ -111,4 +111,4 @@ define('tournois_edit_back', '/back-office/tournois/edit'); // modify_tournoi.ph
 define('tournois_result_back', '/back-office/tournois/result'); // tournoi_result.php
 
 //stats
-define('stats_main', '/back-office/stats'); // stats.php
+define('stats_main', '/back-office/stats'); // stats_main.php

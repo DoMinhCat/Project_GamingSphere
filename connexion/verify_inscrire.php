@@ -13,25 +13,38 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable('/var/www/PA', null, false);
 $dotenv->load();
 
+function writeLogVerifyMail(string $email, bool $success, string $return): void
+{
+    $stream = fopen('../log/log_inscription.txt', 'a+');
+    if ($success)
+        $line = date('Y/m/d - H:i:s') . ' -  Vérification de l\'email réussie de ' . $email . $return . "\n";
+    else
+        $line = date('Y/m/d - H:i:s') . ' - Vérification de l\'email échouée de ' . $email . ' - en raison de : ' . $return . "\n";
+    fputs($stream, $line);
+    fclose($stream);
+}
 
 if (isset($_GET['token']) && !empty($_GET['token'])) {
     $token = $_GET['token'];
-
-    $stmt = $bdd->prepare("SELECT id_utilisateurs, inscrire_token_expiry, pseudo, email FROM utilisateurs WHERE inscrire_token = ? LIMIT 1");
-    $stmt->execute([$token]);
-    $user = $stmt->fetch();
-
-    if ($user) {
-        if (strtotime($user['inscrire_token_expiry']) < time()) {
-            header('location: status_verify.php?result=token_invalid');
-            exit();
-        }
-        $stmt = $bdd->prepare("UPDATE utilisateurs SET email_verifie=1, inscrire_token=NULL WHERE id_utilisateurs = ?");
-        $stmt->execute([$user['id_utilisateurs']]);
+    try {
+        $stmt = $bdd->prepare("SELECT id_utilisateurs, inscrire_token_expiry, pseudo, email FROM utilisateurs WHERE inscrire_token = ? LIMIT 1");
+        $stmt->execute([$token]);
+        $user = $stmt->fetch();
 
 
-        $subject = "Bienvenue sur Gaming Sphère – Email vérifié avec succès !";
-        $message = "<p>Bonjour <strong>{$user['pseudo']}</strong>,</p>
+        if ($user) {
+            $email = $user['email'];
+            if (strtotime($user['inscrire_token_expiry']) < time()) {
+                writeLogVerifyMail($email, false,  "token invalid");
+                header('location:' . status_verify . '?result=token_invalid');
+                exit();
+            }
+            $stmt = $bdd->prepare("UPDATE utilisateurs SET email_verifie=1, inscrire_token=NULL WHERE id_utilisateurs = ?");
+            $stmt->execute([$user['id_utilisateurs']]);
+
+
+            $subject = "Bienvenue sur Gaming Sphère – Email vérifié avec succès !";
+            $message = "<p>Bonjour <strong>{$user['pseudo']}</strong>,</p>
 
     <p>Votre adresse email a bien été vérifiée <br>
         Bienvenue dans l’univers de Gaming Sphère !</p>
@@ -51,37 +64,45 @@ if (isset($_GET['token']) && !empty($_GET['token'])) {
         À très bientôt sur Gaming Sphere, <br>
         L’équipe Gaming Sphere</p>";
 
-        $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = $_ENV['SMTP_USER'];
-            $mail->Password = $_ENV['SMTP_PASS'];
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = $_ENV['SMTP_USER'];
+                $mail->Password = $_ENV['SMTP_PASS'];
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
 
-            $mail->CharSet = 'UTF-8';
-            $mail->Encoding = 'base64';
+                $mail->CharSet = 'UTF-8';
+                $mail->Encoding = 'base64';
 
-            $mail->setFrom($_ENV['SMTP_USER'], 'Gaming Sphère');
-            $mail->addAddress($user['email']);
-            $mail->Subject = $subject;
-            $mail->isHTML(true);
-            $mail->Body = $message;
-            $mail->send();
-
-            header('location: status_verify.php?result=success');
-            exit();
-        } catch (Exception $e) {
-            header('Location: status_verify.php?message=' . urlencode('Erreur d\'envoi de l\'email: ') . urlencode($mail->ErrorInfo) . '. Veuillez réessayer plus tard.');
+                $mail->setFrom($_ENV['SMTP_USER'], 'Gaming Sphère');
+                $mail->addAddress($user['email']);
+                $mail->Subject = $subject;
+                $mail->isHTML(true);
+                $mail->Body = $message;
+                $mail->send();
+                writeLogVerifyMail($email, true,  "");
+                header('location: ' . status_verify . '?result=success');
+                exit();
+            } catch (Exception $e) {
+                writeLogVerifyMail($email, true,  " - erreur de l'envoi de l'email de confirmation : " . $mail->ErrorInfo);
+                header('Location:' . status_verify . '?result=success');
+                exit();
+            }
+        } else {
+            writeLogVerifyMail($email, false,  "token expiré");
+            header('location: ' . status_verify . '?result=token_expire');
             exit();
         }
-    } else {
-        header('location: status_verify.php?result=token_expire');
+    } catch (Exception $e) {
+        writeLogVerifyMail($email, false,  "erreur de la bdd : " . $e->getMessage());
+        header('Location: ' . status_verify . '?message=' . urlencode("Erreur lors de la vérification de l'email. Veuillez réessayer plus tard."));
         exit();
     }
 } else {
-    header('location: status_verify.php?result=token_invalid');
+    writeLogVerifyMail($email, false,  "token manquant");
+    header('location: ' . status_verify . '?result=token_invalid');
     exit();
 }
