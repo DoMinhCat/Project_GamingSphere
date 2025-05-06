@@ -42,6 +42,7 @@ try {
     if (count($games) > 0) {
         foreach ($games as $game) {
             echo '<tr>
+                <td class="align-middle">' . htmlspecialchars($game['id_jeu']) . '</td>  
                 <td class="align-middle">' . htmlspecialchars($game['nom']) . '</td>
                 <td class="align-middle">' . htmlspecialchars($game['date_sortie']) . '</td>
                 <td class="align-middle">' . htmlspecialchars($game['catégorie']) . '</td>

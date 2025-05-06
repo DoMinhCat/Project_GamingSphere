@@ -5,9 +5,14 @@ require('../check_session.php');
 require('../../include/check_timeout.php');
 require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
-
-$stmt = $bdd->query("SELECT id_jeu, catégorie, date_sortie, image, nom, note_jeu, plateforme, prix, type, éditeur FROM jeu");
-$games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+try {
+    $stmt = $bdd->query("SELECT id_jeu, catégorie, date_sortie, image, nom, note_jeu, plateforme, prix, type, éditeur FROM jeu");
+    $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $_SESSION['error'] = htmlspecialchars($e->getMessage());
+    header('Location:' . jeux_back . '?error=bdd');
+    exit();
+}
 
 ?>
 

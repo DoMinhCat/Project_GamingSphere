@@ -9,6 +9,8 @@ require_once __DIR__ . '/../../path.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     $category = trim($_POST['category']);
     $releaseDate = $_POST['releaseDate'];
+    $dateObj = DateTime::createFromFormat('Y-m-d', $_POST['releaseDate']);
+    $releaseDate = $dateObj ? $dateObj->format('Y-m-d') : null;
     $gameName = trim($_POST['gameName']);
     $gameRating = $_POST['gameRating'];
     $platform = trim($_POST['platform']);

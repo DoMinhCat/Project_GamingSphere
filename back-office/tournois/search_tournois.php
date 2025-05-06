@@ -51,7 +51,7 @@ try {
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                                        <a type="button" class="btn btn-danger" href="delete_tournois.php?id_tournoi=' . $tournoi['id_tournoi'] . '">Supprimer</a>
+                                                        <a type="button" class="btn btn-danger" href="delete_tournoi.php?id_tournoi=' . $tournoi['id_tournoi'] . '">Supprimer</a>
                                                     </div>
                                                 </div>
                                             </div>
