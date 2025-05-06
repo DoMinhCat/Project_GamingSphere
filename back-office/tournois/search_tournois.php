@@ -34,12 +34,28 @@ try {
             echo "<td>" . htmlspecialchars($tournoi['date_fin']) . "</td>";
             echo "<td>" . htmlspecialchars($tournoi['status_ENUM']) . "</td>";
             echo "<td>" . htmlspecialchars($tournoi['type']) . "</td>";
-            echo "<td>";
+            echo "<td class='align-middle'>";
             echo "<div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>";
             echo "<a href=" . tournois_edit_back . "?id_tournoi=" . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-warning mb-1 mb-lg-0 me-sm-1\">Modifier</a>";
-            echo "<button type=\"button\" class=\"btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">Supprimer</button>
-                                        <a href=" . tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-success\">Éditer les Résultats</a>";
-            echo "<div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>";
+            echo '<button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModalLabel' . $tournoi['id_tournoi'] . '">Supprimer</button>';
+            echo "<a href=" . tournois_result_back . "?id_tournoi=" . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-success\">Éditer les Résultats</a>";
+            echo "</div>";
+            echo '<div class="modal fade" id="deleteModal' . $tournoi['id_tournoi'] . '" tabindex="-1" aria-labelledby="deleteModalLabel' . $tournoi['id_tournoi'] . '" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="deleteModalLabel' . $tournoi['id_tournoi']  . '">Confirmation</h1>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Êtes-vous sûr de vouloir supprimer ce tournois ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                        <a type="button" class="btn btn-danger" href="delete_tournois.php?id_tournoi=' . $tournoi['id_tournoi'] . '">Supprimer</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>';
             echo "</td>";
 
             echo "</tr>";

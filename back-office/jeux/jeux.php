@@ -26,7 +26,10 @@ require('../head.php');
     ?>
     <div class="container mb-5 col-lg-10">
 
-        <?php if (isset($_GET['message']) && $_GET['message'] === 'deleted')
+        <?php
+        $noti = '';
+        $noti_Err = '';
+        if (isset($_GET['message']) && $_GET['message'] === 'deleted')
             $noti = 'Le jeu a été supprimé avec succès !';
         elseif (isset($_GET['message']) && $_GET['message'] === 'success')
             $noti = 'Le jeu a été ajouté avec succès !';
@@ -77,6 +80,7 @@ require('../head.php');
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
+                        <th>ID</th>
                         <th>Nom</th>
                         <th>Date de sortie</th>
                         <th>Catégorie</th>
@@ -92,6 +96,7 @@ require('../head.php');
                     <?php if (count($games) > 0): ?>
                         <?php foreach ($games as $game): ?>
                             <tr>
+                                <td class="align-middle"><?= htmlspecialchars($game['id_jeu']) ?></td>
                                 <td class="align-middle"><?= htmlspecialchars($game['nom']) ?></td>
                                 <td class="align-middle"><?= htmlspecialchars($game['date_sortie']) ?></td>
                                 <td class="align-middle"><?= htmlspecialchars($game['catégorie']) ?></td>
@@ -102,8 +107,24 @@ require('../head.php');
                                 <td class="align-middle"><?= htmlspecialchars($game['éditeur']) ?></td>
                                 <td>
                                     <div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>
-                                        <a href="delete_game.php?id=<?= $game['id_jeu'] ?>" class="btn btn-danger btn-sm mb-1 mb-lg-0 me-sm-1" onclick="return confirm('Voulez-vous vraiment supprimer ce jeu ?');">Supprimer</a>
-                                        <button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</button>
+                                        <a href="<?= jeux_edit_back . '?id=' . $game['id_jeu'] ?>" class="btn btn-warning btn-sm">Modifier</a>
+                                        <button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $game['id_jeu'] ?>">Supprimer</button>
+                                    </div>
+                                    <div class="modal fade" id="deleteModal<?= $game['id_jeu'] ?>" tabindex="-1" aria-labelledby="deleteModalLabel<?= $game['id_jeu'] ?>" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="deleteModalLabel<?= $game['id_jeu'] ?>">Confirmation</h1>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Êtes-vous sûr de vouloir supprimer ce jeu du magasin ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    <a type="button" class="btn btn-danger" href="delete_game.php?id=<?= $game['id_jeu'] ?>">Supprimer</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -115,23 +136,6 @@ require('../head.php');
                     <?php endif; ?>
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
-                </div>
-                <div class="modal-body">
-                    Êtes-vous sûr de vouloir supprimer ce jeu du magasin ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <a type="button" class="btn btn-danger" href="delete_game.php?id=<?= $game['id_jeu'] ?>">Supprimer</a>
-                </div>
-            </div>
         </div>
     </div>
 

@@ -48,8 +48,24 @@ try {
             echo "<div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>";
             echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-lg-0 me-sm-1'>Modifier</a> ";
             echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-md-0 me-sm-1'>Exporter PDF</a> ";
-            echo '<button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</button>';
+            echo '<button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModal' . $user['id_utilisateurs'] . '">Supprimer</button>';
             echo '</div>';
+            echo '<div class="modal fade" id="deleteModal' . $user['id_utilisateurs'] . '" tabindex="-1" aria-labelledby="deleteModalLabel' . $user['id_utilisateurs'] . '" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="deleteModalLabel' . $user['id_utilisateurs'] . '">Confirmation</h1>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Êtes-vous sûr de vouloir supprimer cet utilisateur ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    <a type="button" class="btn btn-danger" href="delete_user.php?id=' . $user['id_utilisateurs'] . '">Supprimer</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>';
             echo "</td>";
             echo "</tr>";
         }

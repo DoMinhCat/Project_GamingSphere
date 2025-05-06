@@ -8,8 +8,8 @@ require_once __DIR__ . '/../../path.php';
 
 
 if (isset($_POST['add_article'])) {
-    $titre = $_POST['titre'];
-    $contenu = $_POST['contenu'];
+    $titre = trim($_POST['titre']);
+    $contenu = trim($_POST['contenu']);
     $date_article = date('Y-m-d');
     try {
         $query = $bdd->prepare("INSERT INTO news (titre, date_article, contenue) VALUES (?, ?, ?)");
@@ -73,21 +73,30 @@ require('../head.php');
 ?>
 
 <body>
+
     <?php
     $page = index_back;
-    include("../navbar.php"); ?>
-
+    include("../navbar.php");
+    //debug
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        var_dump($_POST);
+        exit();
+    } ?>
     <div class="container my-5 col-lg-10">
-        <?php if (isset($_GET['message']) && $_GET['message'] === 'delete_success')
-            $noti = 'L\article a été supprimé avec succès !';
+        <?php
+        $noti = '';
+        $noti_Err = '';
+        if (isset($_GET['message']) && $_GET['message'] === 'delete_success')
+            $noti = 'L\'article a été supprimé avec succès !';
         elseif (isset($_GET['message']) && $_GET['message'] === 'add_success')
-            $noti = 'L\article a été ajouté avec succès !';
+            $noti = 'L\'article a été ajouté avec succès !';
         elseif (isset($_GET['message']) && $_GET['message'] === 'update_success')
-            $noti = 'L\article a été modifié avec succès !';
+            $noti = 'L\'article a été modifié avec succès !';
         elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
             $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
             unset($_SESSION['error']);
         }
+
         ?>
         <?php if (!empty($noti_Err)) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -105,7 +114,7 @@ require('../head.php');
         <h1 class="mb-5 text-center">Gestion des Articles</h1>
 
         <!-- Formulaire d'ajout d'article -->
-        <form method="POST" action="<?= article_back ?>" class="mb-5">
+        <form method="POST" action="" class="mb-5">
             <h3>Ajouter un nouvel article</h3>
             <div class="my-3">
                 <label for="titre" class="form-label">Titre</label>
@@ -129,6 +138,7 @@ require('../head.php');
             echo '<div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">';
             echo "<table class='table table-striped'>";
             echo "<thead class='thead-dark'><tr>
+                    <th>ID</th>
                     <th>Titre</th>
                     <th>Date</th>
                     <th>Actions</th>
@@ -139,12 +149,29 @@ require('../head.php');
 
             foreach ($articles as $article) {
                 echo '<tr>
+                        <td class="align-middle">' . htmlspecialchars($article['id_news']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($article['titre']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($article['date_article']) . '</td>
                         <td>
-                            <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-warning my-1 me-1">Modifier</a>
-                            <button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</button>
-                        </td>
+                            <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
+                            <button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $article['id_news'] . '">';
+                echo '<div class="modal fade" id="modal' . $article['id_news'] . '" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-5">Confirmation</h1>
+                                </div>
+                                <div class="modal-body">
+                                  Êtes-vous sûr de vouloir supprimer cet article ?
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                  <a href="' . article_back . '?delete_id=' . $article['id_news'] . '" class="btn btn-danger">Supprimer</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>';
+                echo '</td>
                     </tr>';
             }
             echo '</tbody>
@@ -156,22 +183,7 @@ require('../head.php');
         ?>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
-                </div>
-                <div class="modal-body">
-                    Êtes-vous sûr de vouloir supprimer cet article ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <a href="<?= article_back . '?delete_id=' . $article['id_news'] ?>" type="button" class="btn btn-danger">Supprimer</a>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <script>
         document.getElementById('search_article').addEventListener('input', function() {
             const query = this.value;

@@ -82,7 +82,9 @@ require('../head.php');
     include('../navbar.php'); ?>
 
     <div class="container mb-5 col-lg-10">
-        <?php if (isset($_GET['error']) && $_GET['error'] === 'result') {
+        <?php
+        $noti_Err = '';
+        if (isset($_GET['error']) && $_GET['error'] === 'result') {
             $noti_Err = 'Erreur lors de la récuperation des résultats : ' . $_SESSION['error'];
             unset($_SESSION['error']);
         }

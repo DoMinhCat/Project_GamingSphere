@@ -53,8 +53,24 @@ try {
                 <td>
                 <div class="d-flex flex-wrap align-items-start flex-lg-row align-items-start">
                     <a href="delete_game.php?id=' . $game['id_jeu'] . '" class="btn btn-danger btn-sm mb-1 mb-lg-0 me-sm-1" onclick="return confirm(\'Voulez-vous vraiment supprimer ce jeu ?\');">Supprimer</a>
-                    <button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</button>
-                    </div>
+                    <button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModal' . $game['id_jeu'] . '">Supprimer</button>
+                </div>
+                                    <div class="modal fade" id="deleteModal' . $game['id_jeu'] . '" tabindex="-1" aria-labelledby="deleteModalLabel' . $game['id_jeu'] . '" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="deleteModalLabel' . $game['id_jeu'] . '">Confirmation</h1>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Êtes-vous sûr de vouloir supprimer ce jeu du magasin ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    <a type="button" class="btn btn-danger" href="delete_game.php?id=' . $game['id_jeu'] . '">Supprimer</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                 </td>
             </tr>';
         }

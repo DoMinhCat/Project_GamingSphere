@@ -15,6 +15,6 @@
 .navbar-brand {
   justify-content: center;
 }
-.dark .modal {
+.dark .modal-content {
   background-color: #3e80bd;
 }

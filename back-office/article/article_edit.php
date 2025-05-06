@@ -7,13 +7,11 @@ require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
 ?>
 
-
 <!DOCTYPE html>
 <html lang="fr">
 <?php
 $title = 'Modification des Articles';
-require('../../include/head.php');
-?>
+require('../head.php'); ?>
 
 <body>
     <?php

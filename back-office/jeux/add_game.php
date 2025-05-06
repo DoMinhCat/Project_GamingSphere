@@ -7,15 +7,15 @@ require('../../include/check_timeout.php');
 require_once __DIR__ . '/../../path.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
-    $category = $_POST['category'];
+    $category = trim($_POST['category']);
     $releaseDate = $_POST['releaseDate'];
-    $gameName = $_POST['gameName'];
+    $gameName = trim($_POST['gameName']);
     $gameRating = $_POST['gameRating'];
-    $platform = $_POST['platform'];
-    $gamePrice = $_POST['gamePrice'];
-    $gameType = $_POST['gameType'];
-    $gamePublisher = $_POST['gamePublisher'];
-    $gameDescription = $_POST['gameDescription'];
+    $platform = trim($_POST['platform']);
+    $gamePrice = trim($_POST['gamePrice']);
+    $gameType = trim($_POST['gameType']);
+    $gamePublisher = trim($_POST['gamePublisher']);
+    $gameDescription = trim($_POST['gameDescription']);
 
 
     if (isset($_FILES['gameImage']) && $_FILES['gameImage']['error'] === UPLOAD_ERR_OK) {

@@ -22,14 +22,31 @@ try {
 
     if (count($articles) > 0) {
         foreach ($articles as $article) {
-            echo "<tr>";
-            echo "<td class='align-middle'>" . htmlspecialchars($article['titre']) . "</td>";
-            echo "<td class='align-middle'>" . htmlspecialchars($article['date_article']) . "</td>";
-            echo '<td>';
-            echo "<a href='" . article_edit_back . "?id=" . $article['id_news'] . "' class=\"btn btn-warning my-1 me-1\">Modifier</a>";
-            echo "<a href='" . article_back . "?delete_id=" . $article['id_news'] . "' class=\"btn btn-danger my-1 me-1\" onclick=\"return confirm(\'Êtes-vous sûr de vouloir supprimer cet article ?\')\">Supprimer</a>";
-            echo '</td>';
-            echo "</tr>";
+            echo '<tr>
+                        <td class="align-middle">' . htmlspecialchars($article['id_news']) . '</td>
+                        <td class="align-middle">' . htmlspecialchars($article['titre']) . '</td>
+                        <td class="align-middle">' . htmlspecialchars($article['date_article']) . '</td>
+                        <td>
+                            <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
+                            <button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $article['id_news'] . '">';
+            echo '<div class="modal fade" id="modal' . $article['id_news'] . '" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-5">Confirmation</h1>
+                                </div>
+                                <div class="modal-body">
+                                  Êtes-vous sûr de vouloir supprimer cet article ?
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                  <a href="' . article_back . '?delete_id=' . $article['id_news'] . '" class="btn btn-danger">Supprimer</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>';
+            echo '</td>
+                    </tr>';
         }
     } else {
         echo "<tr><td colspan='6'>Aucun article trouvé.</td></tr>";

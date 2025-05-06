@@ -333,7 +333,9 @@ a {
   left: 0;
   z-index: 1000;
 }
-
+.dark .nav_profil {
+  background-color: #1e3d59;
+}
 .under_nav {
   display: flex;
   justify-content: space-between;
@@ -628,6 +630,6 @@ body.offcanvas-backdrop {
 .dark .mon_compte_card {
   background-color: #1e3d59;
 }
-.dark .modal {
+.dark .modal-content {
   background-color: #3e80bd;
 }
