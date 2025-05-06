@@ -23,8 +23,8 @@ try {
     if (count($articles) > 0) {
         foreach ($articles as $article) {
             echo "<tr>";
-            echo "<td>" . htmlspecialchars($article['titre']) . "</td>";
-            echo "<td>" . htmlspecialchars($article['date_article']) . "</td>";
+            echo "<td class='align-middle'>" . htmlspecialchars($article['titre']) . "</td>";
+            echo "<td class='align-middle'>" . htmlspecialchars($article['date_article']) . "</td>";
             echo '<td>';
             echo "<a href='" . article_edit_back . "?id=" . $article['id_news'] . "' class=\"btn btn-warning my-1 me-1\">Modifier</a>";
             echo "<a href='" . article_back . "?delete_id=" . $article['id_news'] . "' class=\"btn btn-danger my-1 me-1\" onclick=\"return confirm(\'Êtes-vous sûr de vouloir supprimer cet article ?\')\">Supprimer</a>";

@@ -19,7 +19,7 @@ require('../head.php');
     $page = index_back;
     include('../navbar.php'); ?>
 
-    <div class="container mb-5">
+    <div class="container mb-5 col-lg-10">
         <?php if (isset($_GET['message']) && $_GET['message'] === 'tournoi_deleted')
             $noti = 'Le tournoi a été supprimé avec succès !';
         elseif (isset($_GET['message']) && $_GET['message'] === 'tournoi_added')
@@ -99,17 +99,19 @@ require('../head.php');
                         <tbody id="tournois_results">
                             <?php foreach ($tournois as $tournoi): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($tournoi['id_tournoi']) ?></td>
-                                    <td><?= htmlspecialchars($tournoi['nom_tournoi']) ?></td>
-                                    <td><?= htmlspecialchars($tournoi['jeu']) ?></td>
-                                    <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
-                                    <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
-                                    <td><?= htmlspecialchars($tournoi['status_ENUM']) ?></td>
-                                    <td><?= htmlspecialchars($tournoi['type']) ?></td>
+                                    <td class="align-middle"><?= htmlspecialchars($tournoi['id_tournoi']) ?></td>
+                                    <td class="align-middle"><?= htmlspecialchars($tournoi['nom_tournoi']) ?></td>
+                                    <td class="align-middle"><?= htmlspecialchars($tournoi['jeu']) ?></td>
+                                    <td class="align-middle"><?= htmlspecialchars($tournoi['date_debut']) ?></td>
+                                    <td class="align-middle"><?= htmlspecialchars($tournoi['date_fin']) ?></td>
+                                    <td class="align-middle"><?= htmlspecialchars($tournoi['status_ENUM']) ?></td>
+                                    <td class="align-middle"><?= htmlspecialchars($tournoi['type']) ?></td>
                                     <td>
-                                        <a href="<?= tournois_edit_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning">Modifier</a>
-                                        <a href="/back-office/tournois/delete_tournoi.php?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</a>
-                                        <a href="<?= tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-success">Éditer les Résultats</a>
+                                        <div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>
+                                            <a href="<?= tournois_edit_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning mb-1 mb-lg-0 me-sm-1">Modifier</a>
+                                            <button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</button>
+                                            <a href="<?= tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-success mb-1 mb-lg-0 me-sm-1">Éditer les Résultats</a>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -136,7 +138,7 @@ require('../head.php');
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-danger">Supprimer</button>
+                    <a type="button" class="btn btn-danger" href="<?= 'delete_tournoi.php?id_tournoi=' . $tournoi['id_tournoi'] ?>">Supprimer</a>
                 </div>
             </div>
         </div>

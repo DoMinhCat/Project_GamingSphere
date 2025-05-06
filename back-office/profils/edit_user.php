@@ -9,54 +9,59 @@ require_once __DIR__ . '/../../path.php';
 if (!empty($_GET['id'])) {
     $user_id = $_GET['id'];
 } else {
-    header('location:' . profils_back . '?message=id_invalid');
+    header('location:' . profils_back . '?error=id_invalid');
     exit();
 }
-
-$stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email, photo_profil, ville, rue, code_postal FROM utilisateurs WHERE id_utilisateurs = ?");
-$stmt->bindValue(1, $user_id, PDO::PARAM_INT);
-$stmt->execute();
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-if (!$user) {
-    header('location:' . profils_back . '?message=user_non_exist');
-    exit();
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $pseudo = $_POST['pseudo'];
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $email = $_POST['email'];
-    $ville = $_POST['ville'];
-    $rue = $_POST['rue'];
-    $code_postal = $_POST['code_postal'];
-    $photo = "profil/uploads/profiles_pictures/" . basename($_FILES["photo"]["name"]);
-    if (!empty($_FILES['photo']['tmp_name'])) {
-        $target_dir = "../profil/uploads/profiles_pictures";
-        $target_file = $target_dir . basename($_FILES["photo"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
-
-        if (in_array($imageFileType, $allowed_types)) {
-            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
-                $photo = $target_file;
-            }
-        }
+try {
+    $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email, photo_profil, ville, rue, code_postal FROM utilisateurs WHERE id_utilisateurs = ?");
+    $stmt->bindValue(1, $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$user) {
+        header('location:' . profils_back . '?error=user_non_exist');
+        exit();
     }
 
-    $update_stmt = $bdd->prepare("UPDATE utilisateurs SET pseudo = ?, nom = ?, prenom = ?, email = ?, photo_profil = ?, ville = ?, rue = ?, code_postal = ? WHERE id_utilisateurs = ?");
-    $update_stmt->bindValue(1, $pseudo, PDO::PARAM_STR);
-    $update_stmt->bindValue(2, $nom, PDO::PARAM_STR);
-    $update_stmt->bindValue(3, $prenom, PDO::PARAM_STR);
-    $update_stmt->bindValue(4, $email, PDO::PARAM_STR);
-    $update_stmt->bindValue(5, $photo, PDO::PARAM_STR);
-    $update_stmt->bindValue(6, $ville, PDO::PARAM_STR);
-    $update_stmt->bindValue(7, $rue, PDO::PARAM_STR);
-    $update_stmt->bindValue(8, $code_postal, PDO::PARAM_STR);
-    $update_stmt->bindValue(9, $user_id, PDO::PARAM_INT);
-    $update_stmt->execute();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $pseudo = $_POST['pseudo'];
+        $nom = $_POST['nom'];
+        $prenom = $_POST['prenom'];
+        $email = $_POST['email'];
+        $ville = $_POST['ville'];
+        $rue = $_POST['rue'];
+        $code_postal = $_POST['code_postal'];
+        $photo = "profil/uploads/profiles_pictures/" . basename($_FILES["photo"]["name"]);
+        if (!empty($_FILES['photo']['tmp_name'])) {
+            $target_dir = "../profil/uploads/profiles_pictures";
+            $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+            $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
 
-    header('Location: ' . profils_back . '?message=success');
+            if (in_array($imageFileType, $allowed_types)) {
+                if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
+                    $photo = $target_file;
+                }
+            }
+        }
+
+        $update_stmt = $bdd->prepare("UPDATE utilisateurs SET pseudo = ?, nom = ?, prenom = ?, email = ?, photo_profil = ?, ville = ?, rue = ?, code_postal = ? WHERE id_utilisateurs = ?");
+        $update_stmt->bindValue(1, $pseudo, PDO::PARAM_STR);
+        $update_stmt->bindValue(2, $nom, PDO::PARAM_STR);
+        $update_stmt->bindValue(3, $prenom, PDO::PARAM_STR);
+        $update_stmt->bindValue(4, $email, PDO::PARAM_STR);
+        $update_stmt->bindValue(5, $photo, PDO::PARAM_STR);
+        $update_stmt->bindValue(6, $ville, PDO::PARAM_STR);
+        $update_stmt->bindValue(7, $rue, PDO::PARAM_STR);
+        $update_stmt->bindValue(8, $code_postal, PDO::PARAM_STR);
+        $update_stmt->bindValue(9, $user_id, PDO::PARAM_INT);
+        $update_stmt->execute();
+
+        header('Location: ' . profils_back . '?message=success');
+        exit();
+    }
+} catch (PDOException $e) {
+    $_SESSION['error'] = htmlspecialchars($e->getMessage());
+    header('Location:' . profils_back . '?error=bdd');
     exit();
 }
 ?>
@@ -69,7 +74,7 @@ require('../head.php');
 ?>
 
 
-<body class="pb-4">
+<body class="pb-4 col-lg-10">
     <?php
     $page = profils_back;
     include('../navbar.php');

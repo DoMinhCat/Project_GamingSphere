@@ -5,6 +5,7 @@ $login_page = '../../connexion/login.php';
 require('../check_session.php');
 require('../../include/database.php');
 require_once '../../vendor/autoload.php';
+require_once __DIR__ . '/../../path.php';
 
 use Dompdf\Dompdf;
 
@@ -13,7 +14,7 @@ $dompdf = new Dompdf();
 if (!empty($_GET['id'])) {
     $id = $_GET['id'];
 } else {
-    header('location:' . profils_back . '?message=id_invalid');
+    header('location:' . profils_back . '?error=id_invalid');
     exit();
 }
 
@@ -21,7 +22,7 @@ $stmt = $bdd->prepare("SELECT id_utilisateurs, email, pseudo, nom, prenom, monna
 $stmt->execute([$id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) {
-    header('location:' . profils_back . '?message=user_non_exist');
+    header('location:' . profils_back . '?error=user_non_exist');
     exit();
 }
 

@@ -42,17 +42,19 @@ try {
     if (count($games) > 0) {
         foreach ($games as $game) {
             echo '<tr>
-                <td>' . htmlspecialchars($game['nom']) . '</td>
-                <td>' . htmlspecialchars($game['date_sortie']) . '</td>
-                <td>' . htmlspecialchars($game['catégorie']) . '</td>
-                <td>' . htmlspecialchars($game['note_jeu']) . '</td>
-                <td>' . htmlspecialchars($game['plateforme']) . '</td>
-                <td>' . htmlspecialchars($game['prix']) . '</td>
-                <td>' . htmlspecialchars($game['type']) . '</td>
-                <td>' . htmlspecialchars($game['éditeur']) . '</td>
-                <td class="text-center">
-                    <a href="delete_game.php?id=' . $game['id_jeu'] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Voulez-vous vraiment supprimer ce jeu ?\');">Supprimer</a>
-                    <a href="' . jeux_edit_back . '?id=' . $game['id_jeu'] . '" class="btn btn-warning btn-sm">Modifier</a>
+                <td class="align-middle">' . htmlspecialchars($game['nom']) . '</td>
+                <td class="align-middle">' . htmlspecialchars($game['date_sortie']) . '</td>
+                <td class="align-middle">' . htmlspecialchars($game['catégorie']) . '</td>
+                <td class="align-middle">' . htmlspecialchars($game['note_jeu']) . '</td>
+                <td class="align-middle">' . htmlspecialchars($game['plateforme']) . '</td>
+                <td class="align-middle">' . htmlspecialchars($game['prix']) . '</td>
+                <td class="align-middle">' . htmlspecialchars($game['type']) . '</td>
+                <td class="align-middle">' . htmlspecialchars($game['éditeur']) . '</td>
+                <td>
+                <div class="d-flex flex-wrap align-items-start flex-lg-row align-items-start">
+                    <a href="delete_game.php?id=' . $game['id_jeu'] . '" class="btn btn-danger btn-sm mb-1 mb-lg-0 me-sm-1" onclick="return confirm(\'Voulez-vous vraiment supprimer ce jeu ?\');">Supprimer</a>
+                    <button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</button>
+                    </div>
                 </td>
             </tr>';
         }

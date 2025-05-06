@@ -81,7 +81,7 @@ require('../head.php');
     $page = tournois_back;
     include('../navbar.php'); ?>
 
-    <div class="container mb-5">
+    <div class="container mb-5 col-lg-10">
         <?php if (isset($_GET['error']) && $_GET['error'] === 'result') {
             $noti_Err = 'Erreur lors de la récuperation des résultats : ' . $_SESSION['error'];
             unset($_SESSION['error']);
@@ -148,12 +148,12 @@ require('../head.php');
                             } else {
                                 foreach ($participants as $participant): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($participant['result_id'] > 0 ? $participant['result_id'] : $participant['participant_id']) ?></td>
-                                        <td><?= htmlspecialchars($participant['pseudo'] ?? $participant['nom_equipe']) ?></td>
-                                        <td>
+                                        <td class="align-middle"><?= htmlspecialchars($participant['result_id'] > 0 ? $participant['result_id'] : $participant['participant_id']) ?></td>
+                                        <td class="align-middle"><?= htmlspecialchars($participant['pseudo'] ?? $participant['nom_equipe']) ?></td>
+                                        <td class="align-middle">
                                             <input type="number" name="position[<?= $participant['participant_id'] ?>]" value="<?= htmlspecialchars($participant['position']) ?>" class="form-control" min="1" required>
                                         </td>
-                                        <td>
+                                        <td class="align-middle">
                                             <input type="number" name="credits[<?= $participant['participant_id'] ?>]" value="<?= htmlspecialchars($participant['credits_awarded']) ?>" class="form-control" min="0" required>
                                         </td>
                                         <input type="hidden" name="result_id[<?= $participant['participant_id'] ?>]" value="<?= htmlspecialchars($participant['result_id']) ?>">

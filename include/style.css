@@ -625,3 +625,9 @@ body.offcanvas-backdrop {
 .searchBoxBack:hover {
   background-color: #cbcbcb !important;
 }
+.dark .mon_compte_card {
+  background-color: #1e3d59;
+}
+.dark .modal {
+  background-color: #3e80bd;
+}

@@ -112,7 +112,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php endif; ?>
             </div>
 
-            <div class="card shadow-sm p-3 mb-4">
+            <div class="card shadow-sm p-3 mb-4 mon_compte_card">
                 <h4 class="card-title montserrat-titre40">Informations personnelles</h4>
                 <hr>
                 <p class="montserrat-titre32"><strong>Pseudo :</strong> <?php echo htmlspecialchars($user['pseudo']); ?></p>
@@ -123,7 +123,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
 
 
-            <div class="card shadow-sm p-3">
+            <div class="card shadow-sm p-3 mon_compte_card">
                 <h4 class="card-title montserrat-titre40">Adresse</h4>
                 <hr>
                 <p class="montserrat-titre32"><strong>Ville :</strong> <?php echo htmlspecialchars($user['ville']); ?></p>

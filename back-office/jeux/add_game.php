@@ -35,13 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
     }
 
 
-
-    $stmt = $bdd->prepare("INSERT INTO jeu (catégorie, date_sortie, nom, note_jeu, plateforme, prix, type, éditeur, image, description)
+    try {
+        $stmt = $bdd->prepare("INSERT INTO jeu (catégorie, date_sortie, nom, note_jeu, plateforme, prix, type, éditeur, image, description)
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$category, $releaseDate, $gameName, $gameRating, $platform, $gamePrice, $gameType, $gamePublisher, $imagePath, $gameDescription]);
-    echo "<div class='alert alert-success text-center'>Jeu ajouté avec succès !</div>";
-    header("Location: jeux.php?message=success");
-    exit();
+        $stmt->execute([$category, $releaseDate, $gameName, $gameRating, $platform, $gamePrice, $gameType, $gamePublisher, $imagePath, $gameDescription]);
+        echo "<div class='alert alert-success text-center'>Jeu ajouté avec succès !</div>";
+        header("Location:" . jeux_back . "?message=success");
+        exit();
+    } catch (PDOException $e) {
+        $_SESSION['error'] = htmlspecialchars($e->getMessage());
+        header('Location:' . jeux_back . '?error=bdd');
+        exit();
+    }
 }
 ?>
 

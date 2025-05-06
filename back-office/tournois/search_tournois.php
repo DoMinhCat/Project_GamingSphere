@@ -35,11 +35,14 @@ try {
             echo "<td>" . htmlspecialchars($tournoi['status_ENUM']) . "</td>";
             echo "<td>" . htmlspecialchars($tournoi['type']) . "</td>";
             echo "<td>";
-            echo "<a href=" . tournois_edit_back . "?id_tournoi=" . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-warning\">Modifier</a>";
-            echo "<a href=\"/back-office/tournois/delete_tournoi.php?id_tournoi=" . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-danger\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">Supprimer</a>
-                                        <a href=" . tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-success\">Éditer les Résultats</a>
-                                    </td>
-                                </tr>";
+            echo "<div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>";
+            echo "<a href=" . tournois_edit_back . "?id_tournoi=" . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-warning mb-1 mb-lg-0 me-sm-1\">Modifier</a>";
+            echo "<button type=\"button\" class=\"btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">Supprimer</button>
+                                        <a href=" . tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-success\">Éditer les Résultats</a>";
+            echo "<div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>";
+            echo "</td>";
+
+            echo "</tr>";
         }
     } else {
         echo "<tr><td colspan='6'>Aucun utilisateur trouvé.</td></tr>";

@@ -25,9 +25,35 @@ require('../head.php');
     $page = index_back;
     include('../navbar.php');
     ?>
-    <main class="container my-5">
+    <main class="container mb-5 col-lg-10">
+        <?php if (isset($_GET['message']) && $_GET['message'] === 'deleted')
+            $noti = 'L\'utilisateur a été supprimé avec succès !';
+        elseif (isset($_GET['message']) && $_GET['message'] === 'success')
+            $noti = 'Les informations de l\'utilisateur ont été modifiées';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'user_non_exist')
+            $noti_Err = 'Utilisateur non trouvé';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'id_invalid')
+            $noti_Err = 'ID utilisateur invalid';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
+            $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
+            unset($_SESSION['error']);
+        }
+        ?>
+        <?php if (!empty($noti_Err)) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= $noti_Err ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
 
-        <h1 class="text-center mt-5 mb-3">Liste des utilisateurs</h1>
+        <?php if (!empty($noti)) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= $noti ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
+
+        <h1 class="text-center my-5">Liste des utilisateurs</h1>
         <?php
         if (isset($bdd)) {
             try {
@@ -66,10 +92,10 @@ require('../head.php');
                         </td>";
 
                         echo "<td>";
-                        echo "<div class='d-flex flex-wrap align-items-start flex-md-row align-items-start'>";
-                        echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-md-0 me-sm-1'>Modifier</a> ";
-                        echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-md-0 me-sm-1'>Exporter PDF</a> ";
-                        echo "<a href='delete_user.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-danger btn-sm mb-1 mb-md-0 me-sm-1' onclick='return confirm(\"Êtes-vous sûr de vouloir supprimer cet utilisateur?\");'>Supprimer</a>";
+                        echo "<div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>";
+                        echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-lg-0 me-sm-1'>Modifier</a> ";
+                        echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-lg-0 me-sm-1'>Exporter PDF</a> ";
+                        echo '<button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</button>';
                         echo '</div>';
                         echo "</td>";
                         echo "</tr>";
@@ -91,6 +117,23 @@ require('../head.php');
         ?>
 
     </main>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                </div>
+                <div class="modal-body">
+                    Êtes-vous sûr de vouloir supprimer cet utilisateur ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <a type="button" class="btn btn-danger" href="<?= "delete_user.php?id=" . htmlspecialchars($user['id_utilisateurs']) ?>">Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -137,54 +180,9 @@ require('../head.php');
         setInterval(fetchOnlineUsers, 30000); //30s
     </script>
 
-    ?>
 
-    </main>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        function fetchFilteredUsers() {
-            const query = document.getElementById('search').value;
-            const status = document.getElementById('statusFilter').value;
 
-            fetch(`search_profils.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}`, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(res => res.text())
-                .then(data => {
-                    document.getElementById('user_results').innerHTML = data;
-                    fetchOnlineUsers();
-                });
-        }
 
-        document.getElementById('search').addEventListener('input', fetchFilteredUsers);
-        document.getElementById('statusFilter').addEventListener('change', fetchFilteredUsers);
-    </script>
-    <script>
-        async function fetchOnlineUsers() {
-            try {
-                const res = await fetch('../../status_user/reload_back-office.php');
-                const onlineUsers = await res.json();
-
-                document.querySelectorAll('.user-status').forEach(span => {
-                    const username = span.dataset.user;
-                    const isOnline = onlineUsers.includes(username);
-
-                    span.innerHTML = isOnline ?
-                        '<span style="color: green;">Online</span>' :
-                        '<span style="color: gray;">Offline</span>';
-                });
-            } catch (err) {
-                console.error('Echec de récuperation du statut des utilisateurs :', err);
-            }
-        }
-
-        fetchOnlineUsers();
-        setInterval(fetchOnlineUsers, 30000); //30s
-    </script>
 
 </body>
 

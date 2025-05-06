@@ -24,30 +24,36 @@ require('../head.php');
     $page = index_back;
     include('../navbar.php');
     ?>
-    <div class="container mb-5">
-        <?php if (isset($_GET['message']) && $_GET['message'] === 'success'): ?>
-            <div class="alert alert-success mb-3" role="alert">
-                Jeu ajouté avec succès !
-            </div>
+    <div class="container mb-5 col-lg-10">
 
-        <?php endif;
-        if (isset($_GET['message']) && $_GET['message'] === 'delete'): ?>
-            <div class="alert alert-success mb-3" role="alert">
-                Jeu supprimé avec succès !
+        <?php if (isset($_GET['message']) && $_GET['message'] === 'deleted')
+            $noti = 'Le jeu a été supprimé avec succès !';
+        elseif (isset($_GET['message']) && $_GET['message'] === 'success')
+            $noti = 'Le jeu a été ajouté avec succès !';
+        elseif (isset($_GET['message']) && $_GET['message'] === 'updated')
+            $noti = 'Le jeu a été modifié avec succès !';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'id_invalid')
+            $noti_Err = 'ID du jeu fourni invalid !';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
+            $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
+            unset($_SESSION['error']);
+        }
+        ?>
+        <?php if (!empty($noti_Err)) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= $noti_Err ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        <?php endif;
-        if (isset($_GET['message']) && $_GET['message'] === 'updated'): ?>
-            <div class="alert alert-success mb-3" role="alert">
-                Jeu modifié avec succès !
-            </div>
-        <?php endif;
-        if (isset($_GET['message_err']) && !empty($_GET['message_err'])): ?>
-            <div class="alert alert-danger mb-3" role="alert">
-                <?= htmlspecialchars($_GET['message_err']); ?>
-            </div>
-        <?php endif; ?>
+        <?php endif ?>
 
-        <h1 class="text-center mt-5 mb-3">Liste des jeux</h1>
+        <?php if (!empty($noti)) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= $noti ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
+
+        <h1 class="text-center my-5">Liste des jeux</h1>
 
         <div class="text-end mb-2">
             <a href="<?= jeux_add_back ?>" class="btn btn-primary">Ajouter un jeu</a>
@@ -86,17 +92,19 @@ require('../head.php');
                     <?php if (count($games) > 0): ?>
                         <?php foreach ($games as $game): ?>
                             <tr>
-                                <td><?= htmlspecialchars($game['nom']) ?></td>
-                                <td><?= htmlspecialchars($game['date_sortie']) ?></td>
-                                <td><?= htmlspecialchars($game['catégorie']) ?></td>
-                                <td><?= htmlspecialchars($game['note_jeu']) ?></td>
-                                <td><?= htmlspecialchars($game['plateforme']) ?></td>
-                                <td><?= htmlspecialchars($game['prix']) ?></td>
-                                <td><?= htmlspecialchars($game['type']) ?></td>
-                                <td><?= htmlspecialchars($game['éditeur']) ?></td>
-                                <td class="text-center">
-                                    <a href="delete_game.php?id=<?= $game['id_jeu'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce jeu ?');">Supprimer</a>
-                                    <a href="<?= jeux_edit_back . '?id=' . $game['id_jeu'] ?>" class="btn btn-warning btn-sm">Modifier</a>
+                                <td class="align-middle"><?= htmlspecialchars($game['nom']) ?></td>
+                                <td class="align-middle"><?= htmlspecialchars($game['date_sortie']) ?></td>
+                                <td class="align-middle"><?= htmlspecialchars($game['catégorie']) ?></td>
+                                <td class="align-middle"><?= htmlspecialchars($game['note_jeu']) ?></td>
+                                <td class="align-middle"><?= htmlspecialchars($game['plateforme']) ?></td>
+                                <td class="align-middle"><?= htmlspecialchars($game['prix']) ?></td>
+                                <td class="align-middle"><?= htmlspecialchars($game['type']) ?></td>
+                                <td class="align-middle"><?= htmlspecialchars($game['éditeur']) ?></td>
+                                <td>
+                                    <div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>
+                                        <a href="delete_game.php?id=<?= $game['id_jeu'] ?>" class="btn btn-danger btn-sm mb-1 mb-lg-0 me-sm-1" onclick="return confirm('Voulez-vous vraiment supprimer ce jeu ?');">Supprimer</a>
+                                        <button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Supprimer</button>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -107,6 +115,23 @@ require('../head.php');
                     <?php endif; ?>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                </div>
+                <div class="modal-body">
+                    Êtes-vous sûr de vouloir supprimer ce jeu du magasin ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <a type="button" class="btn btn-danger" href="delete_game.php?id=<?= $game['id_jeu'] ?>">Supprimer</a>
+                </div>
+            </div>
         </div>
     </div>
 

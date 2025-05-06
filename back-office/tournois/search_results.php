@@ -47,10 +47,10 @@ try {
     if (count($participants) > 0) {
         foreach ($participants as $participant) {
             echo '<tr>
-                <td>' . htmlspecialchars($participant['result_id'] > 0 ? $participant['result_id'] : $participant['participant_id']) . '</td>
-                <td>' . htmlspecialchars($participant['pseudo'] ?? $participant['nom_equipe']) . '</td>
-                <td><input type="number" name="position[' . $participant['participant_id'] . ']" value="' . htmlspecialchars($participant['position']) . '" class="form-control" min="1" required></td>
-                <td><input type="number" name="credits[' . $participant['participant_id'] . ']" value="' . htmlspecialchars($participant['credits_awarded']) . '" class="form-control" min="0" required></td>
+                <td class="align-middle">' . htmlspecialchars($participant['result_id'] > 0 ? $participant['result_id'] : $participant['participant_id']) . '</td>
+                <td class="align-middle">' . htmlspecialchars($participant['pseudo'] ?? $participant['nom_equipe']) . '</td>
+                <td class="align-middle"><input type="number" name="position[' . $participant['participant_id'] . ']" value="' . htmlspecialchars($participant['position']) . '" class="form-control" min="1" required></td>
+                <td class="align-middle"> <input type="number" name="credits[' . $participant['participant_id'] . ']" value="' . htmlspecialchars($participant['credits_awarded']) . '" class="form-control" min="0" required></td>
                 <input type="hidden" name="result_id[' . $participant['participant_id'] . ']" value="' . htmlspecialchars($participant['result_id']) . '">
             </tr>';
         }
