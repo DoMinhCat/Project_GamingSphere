@@ -18,3 +18,6 @@
 .dark .modal-content {
   background-color: #3e80bd;
 }
+.searchBoxBack:hover {
+  background-color: #f2f2f2;
+}

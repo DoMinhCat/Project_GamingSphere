@@ -81,8 +81,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
     <div class="container mt-4">
 
-        <div class="card shadow-sm p-4 connexion_box">
-            <h3 class="card-title montserrat-titre40">Mon compte</h3>
+        <div class="card shadow-sm p-4 connexion_box mt-4">
+            <h3 class="card-title montserrat-titre40 text-center">Mon compte</h3>
             <hr>
             <div class="text-center mb-4">
                 <h4>Photo de profil</h4>

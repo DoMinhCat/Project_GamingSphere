@@ -81,7 +81,7 @@ require('../head.php');
     $page = tournois_back;
     include('../navbar.php'); ?>
 
-    <div class="container mb-5 col-lg-10">
+    <div class="container mb-5">
         <?php
         $noti_Err = '';
         if (isset($_GET['error']) && $_GET['error'] === 'result') {

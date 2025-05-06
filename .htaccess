@@ -395,10 +395,14 @@ ErrorDocument 500 /error_pages/500.php
 
 # Bloquer acces aux fichiers config et env
 
-<FilesMatch "\.(env|ini|log|sh|sql|bak)$">
-Order allow,deny
-Deny from all
+<FilesMatch "\.(env|ini|sql|bak|inc|log|conf)$">
+    Require all denied
 </FilesMatch>
+
+<FilesMatch "(^\.|wp-config|phpinfo|debug|test|xmlrpc)">
+    Require all denied
+</FilesMatch>
+
 
 # Security Headers
 

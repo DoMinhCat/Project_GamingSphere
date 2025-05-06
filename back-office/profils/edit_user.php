@@ -74,46 +74,46 @@ require('../head.php');
 ?>
 
 
-<body class="pb-4 col-lg-10">
+<body class="pb-4">
     <?php
     $page = profils_back;
     include('../navbar.php');
     ?>
     <div class="container">
-        <h2 class="mt-5">Modifier Utilisateur</h2>
+        <h2 class="my-5 text-center">Modifier Utilisateur</h2>
         <form method="post" enctype="multipart/form-data" class="mt-3">
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="pseudo">Pseudo:</label>
                 <input type="text" class="form-control" id="pseudo" name="pseudo" value="<?php echo htmlspecialchars($user['pseudo']); ?>" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="nom">Nom:</label>
                 <input type="text" class="form-control" id="nom" name="nom" value="<?php echo htmlspecialchars($user['nom']); ?>" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="prenom">Prénom:</label>
                 <input type="text" class="form-control" id="prenom" name="prenom" value="<?php echo htmlspecialchars($user['prenom']); ?>" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="email">Email:</label>
                 <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="photo">Photo de profil:</label>
                 <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
                 <?php if (!empty($user['photo_profil'])): ?>
                     <img src="/PA/<?php echo htmlspecialchars($user['photo_profil']); ?>" class="mt-2" width="100">
                 <?php endif; ?>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="ville">Ville:</label>
                 <input type="text" class="form-control" id="ville" name="ville" value="<?php echo htmlspecialchars($user['ville']); ?>" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="rue">Rue:</label>
                 <input type="text" class="form-control" id="rue" name="rue" value="<?php echo htmlspecialchars($user['rue']); ?>" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="code_postal">Code Postal:</label>
                 <input type="text" class="form-control" id="code_postal" name="code_postal" value="<?php echo htmlspecialchars($user['code_postal']); ?>" required>
             </div>

@@ -27,17 +27,17 @@ try {
     if (count($tournois) > 0) {
         foreach ($tournois as $tournoi) {
             echo '<tr>';
-            echo "<td>" . htmlspecialchars($tournoi['id_tournoi']) . "</td>";
-            echo "<td>" . htmlspecialchars($tournoi['nom_tournoi']) . "</td>";
-            echo "<td>" . htmlspecialchars($tournoi['jeu']) . "</td>";
-            echo "<td>" . htmlspecialchars($tournoi['date_debut']) . "</td>";
-            echo "<td>" . htmlspecialchars($tournoi['date_fin']) . "</td>";
-            echo "<td>" . htmlspecialchars($tournoi['status_ENUM']) . "</td>";
-            echo "<td>" . htmlspecialchars($tournoi['type']) . "</td>";
+            echo "<td class=\"align-middle\">" . htmlspecialchars($tournoi['id_tournoi']) . "</td>";
+            echo "<td class=\"align-middle\">" . htmlspecialchars($tournoi['nom_tournoi']) . "</td>";
+            echo "<td class=\"align-middle\">" . htmlspecialchars($tournoi['jeu']) . "</td>";
+            echo "<td class=\"align-middle\">" . htmlspecialchars($tournoi['date_debut']) . "</td>";
+            echo "<td class=\"align-middle\">" . htmlspecialchars($tournoi['date_fin']) . "</td>";
+            echo "<td class=\"align-middle\">" . htmlspecialchars($tournoi['status_ENUM']) . "</td>";
+            echo "<td class=\"align-middle\">" . htmlspecialchars($tournoi['type']) . "</td>";
             echo "<td class='align-middle'>";
-            echo "<div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>";
-            echo "<a href=" . tournois_edit_back . "?id_tournoi=" . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-warning mb-1 mb-lg-0 me-sm-1\">Modifier</a>";
-            echo '<button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModalLabel' . $tournoi['id_tournoi'] . '">Supprimer</button>';
+            echo "<div class='d-flex flex-wrap align-items-start flex-xl-row align-items-start'>";
+            echo "<a href=" . tournois_edit_back . "?id_tournoi=" . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-warning mb-1 mb-xl-0 me-sm-1\">Modifier</a>";
+            echo '<button type="button" class="btn btn-sm btn-danger mb-1 mb-xl-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModal' . $tournoi['id_tournoi'] . '">Supprimer</button>';
             echo "<a href=" . tournois_result_back . "?id_tournoi=" . $tournoi['id_tournoi'] . " class=\"btn btn-sm btn-success\">Éditer les Résultats</a>";
             echo "</div>";
             echo '<div class="modal fade" id="deleteModal' . $tournoi['id_tournoi'] . '" tabindex="-1" aria-labelledby="deleteModalLabel' . $tournoi['id_tournoi'] . '" aria-hidden="true">
@@ -61,8 +61,8 @@ try {
             echo "</tr>";
         }
     } else {
-        echo "<tr><td colspan='6'>Aucun utilisateur trouvé.</td></tr>";
+        echo "<tr><td colspan='12' class=\"text-center\">Aucun utilisateur trouvé.</td></tr>";
     }
 } catch (PDOException $e) {
-    echo "<tr><td colspan='6'>Erreur : " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+    echo "<tr><td colspan='12' class=\"text-center\">Erreur : " . htmlspecialchars($e->getMessage()) . "</td></tr>";
 }

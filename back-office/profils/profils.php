@@ -25,7 +25,7 @@ require('../head.php');
     $page = index_back;
     include('../navbar.php');
     ?>
-    <main class="container mb-5 col-lg-10">
+    <main class="container mb-5">
         <?php
         $noti = '';
         $noti_Err = '';
@@ -95,10 +95,10 @@ require('../head.php');
                         </td>";
 
                         echo "<td>";
-                        echo "<div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>";
-                        echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-lg-0 me-sm-1'>Modifier</a> ";
-                        echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-lg-0 me-sm-1'>Exporter PDF</a> ";
-                        echo '<button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModal' . $user['id_utilisateurs'] . '">Supprimer</button>';
+                        echo "<div class='d-flex flex-wrap align-items-start flex-xl-row align-items-start'>";
+                        echo "<a href='" . profils_edit_back . "?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-xl-0 me-sm-1'>Modifier</a> ";
+                        echo "<a href='export_pdf.php?id=" . htmlspecialchars($user['id_utilisateurs']) . "' class='btn btn-primary btn-sm mb-1 mb-xl-0 me-sm-1'>Exporter PDF</a> ";
+                        echo '<button type="button" class="btn btn-sm btn-danger mb-1 mb-xl-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModal' . $user['id_utilisateurs'] . '">Supprimer</button>';
                         echo '</div>';
                         echo '<div class="modal fade" id="deleteModal' . $user['id_utilisateurs'] . '" tabindex="-1" aria-labelledby="deleteModalLabel' . $user['id_utilisateurs'] . '" aria-hidden="true">
                                         <div class="modal-dialog">

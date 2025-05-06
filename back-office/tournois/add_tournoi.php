@@ -18,7 +18,7 @@ require('../head.php');
     $page = tournois_back;
     include('../navbar.php'); ?>
 
-    <div class="container my-5 col-lg-10">
+    <div class="container my-5">
         <h1 class="my-5 text-center">Ajouter un Nouveau Tournoi</h1>
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

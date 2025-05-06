@@ -19,7 +19,7 @@ require('../head.php');
     $page = index_back;
     include('../navbar.php'); ?>
 
-    <div class="container mb-5 col-lg-10">
+    <div class="container mb-5">
         <?php
         $noti = '';
         $noti_Err = '';
@@ -110,10 +110,10 @@ require('../head.php');
                                     <td class="align-middle"><?= htmlspecialchars($tournoi['status_ENUM']) ?></td>
                                     <td class="align-middle"><?= htmlspecialchars($tournoi['type']) ?></td>
                                     <td class="align-middle">
-                                        <div class='d-flex flex-wrap align-items-start flex-lg-row align-items-start'>
-                                            <a href="<?= tournois_edit_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning mb-1 mb-lg-0 me-sm-1">Modifier</a>
-                                            <button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="<?= '#deleteModalLabel' . $tournoi['id_tournoi'] ?>">Supprimer</button>
-                                            <a href="<?= tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-success mb-1 mb-lg-0 me-sm-1">Résultats</a>
+                                        <div class='d-flex flex-wrap align-items-start flex-xl-row align-items-start'>
+                                            <a href="<?= tournois_edit_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-warning mb-1 mb-xl-0 me-sm-1">Modifier</a>
+                                            <button type="button" class="btn btn-sm btn-danger mb-1 mb-xl-0 me-sm-1" data-bs-toggle="modal" data-bs-target="<?= '#deleteModal' . $tournoi['id_tournoi'] ?>">Supprimer</button>
+                                            <a href="<?= tournois_result_back . '?id_tournoi=' . $tournoi['id_tournoi'] ?>" class="btn btn-sm btn-success mb-1 mb-xl-0 me-sm-1">Résultats</a>
                                         </div>
                                         <div class="modal fade" id="<?= 'deleteModal' . $tournoi['id_tournoi']  ?>" tabindex="-1" aria-labelledby="<?= 'deleteModalLabel' . $tournoi['id_tournoi']  ?>" aria-hidden="true">
                                             <div class="modal-dialog">

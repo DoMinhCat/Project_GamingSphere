@@ -51,9 +51,9 @@ try {
                 <td class="align-middle">' . htmlspecialchars($game['type']) . '</td>
                 <td class="align-middle">' . htmlspecialchars($game['éditeur']) . '</td>
                 <td>
-                <div class="d-flex flex-wrap align-items-start flex-lg-row align-items-start">
-                    <a href="delete_game.php?id=' . $game['id_jeu'] . '" class="btn btn-danger btn-sm mb-1 mb-lg-0 me-sm-1" onclick="return confirm(\'Voulez-vous vraiment supprimer ce jeu ?\');">Supprimer</a>
-                    <button type="button" class="btn btn-sm btn-danger mb-1 mb-lg-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModal' . $game['id_jeu'] . '">Supprimer</button>
+                <div class="d-flex flex-wrap align-items-start flex-xl-row align-items-start">
+                    <a href="' . jeux_edit_back . '?id=' . $game['id_jeu'] . '" class="btn btn-warning btn-sm mb-1 mb-xl-0 me-sm-1">Modifier</a>
+                    <button type="button" class="btn btn-sm btn-danger mb-1 mb-xl-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModal' . $game['id_jeu'] . '">Supprimer</button>
                 </div>
                                     <div class="modal fade" id="deleteModal' . $game['id_jeu'] . '" tabindex="-1" aria-labelledby="deleteModalLabel' . $game['id_jeu'] . '" aria-hidden="true">
                                         <div class="modal-dialog">

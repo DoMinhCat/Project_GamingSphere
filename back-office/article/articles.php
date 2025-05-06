@@ -30,7 +30,7 @@ if (isset($_GET['delete_id'])) {
         $query = $bdd->prepare("DELETE FROM news WHERE id_news = ?");
         $query->execute([$delete_id]);
 
-        header('Location:' . article_back . '?return=delete_success');
+        header('Location:' . article_back . '?message=delete_success');
         exit();
     } catch (PDOException $e) {
         $_SESSION['error'] = htmlspecialchars($e->getMessage());
@@ -77,12 +77,8 @@ require('../head.php');
     <?php
     $page = index_back;
     include("../navbar.php");
-    //debug
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        var_dump($_POST);
-        exit();
-    } ?>
-    <div class="container my-5 col-lg-10">
+    ?>
+    <div class="container my-5">
         <?php
         $noti = '';
         $noti_Err = '';
@@ -154,7 +150,7 @@ require('../head.php');
                         <td class="align-middle">' . htmlspecialchars($article['date_article']) . '</td>
                         <td>
                             <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
-                            <button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $article['id_news'] . '">';
+                            <button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $article['id_news'] . '">Supprimer</button>';
                 echo '<div class="modal fade" id="modal' . $article['id_news'] . '" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
