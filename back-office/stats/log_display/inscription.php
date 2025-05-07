@@ -11,14 +11,14 @@ require_once('../../../path.php');
 <html lang="fr">
 <?php
 $title = 'Log des inscriptions';
-require('../head.php');
+require('../../head.php');
 $lines = file('/log/log_inscription.txt');
 ?>
 
 <body>
     <?php
     $page = stats_main;
-    include('../navbar.php'); ?>
+    include('../../navbar.php'); ?>
 
     <main class="container my-5">
         <h1 class="text-center my-5">Inscriptions | Vérification | Initialisation de mot de passe</h1>
