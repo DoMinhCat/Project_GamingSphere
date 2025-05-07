@@ -9,6 +9,7 @@ require_once __DIR__ . '/../path.php';
 $userId = $_SESSION['user_id'];
 
 try {
+
     $stmt = $bdd->prepare("SELECT pseudo, email, date_inscription, nom, prenom, ville, rue, code_postal, photo_profil FROM utilisateurs WHERE id_utilisateurs = ?");
     $stmt->execute([$userId]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -28,8 +29,9 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
         if ($_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = 'uploads/profiles_pictures/';
-            $uploadFile = $uploadDir . basename($_FILES['profile_picture']['name']);
+            $uploadDir = __DIR__ . '../uploads/profiles_pictures/';
+            $filename = str_replace(' ', '_', $_FILES['profile_picture']['name']);
+            $uploadFile = $uploadDir . basename($filename);
             $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
 
             $check = getimagesize($_FILES['profile_picture']['tmp_name']);
@@ -38,13 +40,16 @@ try {
                 exit;
             }
 
+            // Vérifiez les extensions autorisées
             $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             if (!in_array($imageFileType, $allowedExtensions)) {
                 echo "Seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.";
                 exit;
             }
 
+            // Déplacez le fichier téléchargé
             if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $uploadFile)) {
+                // Mettez à jour la base de données
                 $stmt = $bdd->prepare("UPDATE utilisateurs SET photo_profil = ? WHERE id_utilisateurs = ?");
                 $stmt->execute([$uploadFile, $userId]);
                 $user['photo_profil'] = $uploadFile;
@@ -78,17 +83,14 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include('navbar.php');
     ?>
 
-
     <div class="container mt-4">
-
         <div class="card shadow-sm p-4 connexion_box mt-4">
             <h3 class="card-title montserrat-titre40 text-center">Mon compte</h3>
             <hr>
             <div class="text-center mb-4">
                 <h4>Photo de profil</h4>
                 <?php if (!empty($user['photo_profil'])): ?>
-                    <img src="<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
-                    <form method="POST" enctype="multipart/form-data" class="mt-3">
+                    <img src="<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">                    <form method="POST" enctype="multipart/form-data" class="mt-3">
                         <button type="button" class="btn btn-dark" onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
                             Modifier la photo de profil
                         </button>
@@ -115,20 +117,19 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="card shadow-sm p-3 mb-4 mon_compte_card">
                 <h4 class="card-title montserrat-titre40">Informations personnelles</h4>
                 <hr>
-                <p class="montserrat-titre32"><strong>Pseudo :</strong> <?php echo htmlspecialchars($user['pseudo']); ?></p>
-                <p class="montserrat-titre32"><strong>Email :</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-                <p class="montserrat-titre32"><strong>Nom :</strong> <?php echo htmlspecialchars($user['nom']); ?></p>
-                <p class="montserrat-titre32"><strong>Prénom :</strong> <?php echo htmlspecialchars($user['prenom']); ?></p>
-                <p class="montserrat-titre32"><strong>Date d'inscription :</strong> <?php echo htmlspecialchars($user['date_inscription']); ?></p>
+                <p class="montserrat-titre32"><strong>Pseudo :</strong> <?= htmlspecialchars($user['pseudo']); ?></p>
+                <p class="montserrat-titre32"><strong>Email :</strong> <?= htmlspecialchars($user['email']); ?></p>
+                <p class="montserrat-titre32"><strong>Nom :</strong> <?= htmlspecialchars($user['nom']); ?></p>
+                <p class="montserrat-titre32"><strong>Prénom :</strong> <?= htmlspecialchars($user['prenom']); ?></p>
+                <p class="montserrat-titre32"><strong>Date d'inscription :</strong> <?= htmlspecialchars($user['date_inscription']); ?></p>
             </div>
-
 
             <div class="card shadow-sm p-3 mon_compte_card">
                 <h4 class="card-title montserrat-titre40">Adresse</h4>
                 <hr>
-                <p class="montserrat-titre32"><strong>Ville :</strong> <?php echo htmlspecialchars($user['ville']); ?></p>
-                <p class="montserrat-titre32"><strong>Code Postal :</strong> <?php echo htmlspecialchars($user['code_postal']); ?></p>
-                <p class="montserrat-titre32"><strong>Rue :</strong> <?php echo htmlspecialchars($user['rue']); ?></p>
+                <p class="montserrat-titre32"><strong>Ville :</strong> <?= htmlspecialchars($user['ville']); ?></p>
+                <p class="montserrat-titre32"><strong>Code Postal :</strong> <?= htmlspecialchars($user['code_postal']); ?></p>
+                <p class="montserrat-titre32"><strong>Rue :</strong> <?= htmlspecialchars($user['rue']); ?></p>
             </div>
 
             <hr>
@@ -162,7 +163,5 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     </div>
 
     <?php include('../include/footer.php'); ?>
-
 </body>
-
 </html>

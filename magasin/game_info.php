@@ -27,7 +27,7 @@ include('../include/head.php');
 ?>
 <body>
 <?php include('../include/header.php'); ?>
-
+<div id="alert-container"></div>
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -42,20 +42,52 @@ include('../include/head.php');
                     <h2 class="card-title"><?= htmlspecialchars($jeu['nom']) ?></h2>
                     <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($jeu['prix']) ?> €</p>
                     <p class="card-text"><strong>Description :</strong><br> <?= nl2br(htmlspecialchars($jeu['description'] ?? "Aucune description disponible.")) ?></p>
-                    <a href="../panier/add_to_cart.php?id=<?= $jeu['id_jeu'] ?>" class="btn btn-success mt-3">Acheter ce jeu</a>
+                    <button class="btn btn-success mt-3 btn-add-to-cart" data-id="<?= $jeu['id_jeu'] ?>">Acheter ce jeu</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const successMsg = document.querySelector(".achat-success");
-    if (successMsg) {
-        successMsg.classList.add("show");
-        setTimeout(() => successMsg.classList.remove("show"), 5000);
-    }
+        document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".btn-add-to-cart").forEach(button => {
+        button.addEventListener("click", async () => {
+            const gameId = button.getAttribute("data-id");
+
+            try {
+                const response = await fetch(`../panier/add_to_cart.php?id=${gameId}`);
+                const data = await response.json();
+
+                const alertBox = document.createElement("div");
+                alertBox.className = `alert mt-3 text-center alert-${data.status === "success" ? "success" : "danger"}`;
+                alertBox.textContent = data.message;
+
+                const alertContainer = document.getElementById("alert-container");
+                alertContainer.appendChild(alertBox);
+
+                setTimeout(() => alertBox.remove(), 5000);
+
+                if (data.panierCount !== undefined) {
+                    updatePanierBadge(data.panierCount);
+                }
+            } catch (error) {
+                console.error("Erreur lors de l'ajout au panier :", error);
+            }
+        });
+    });
 });
-</script>
+
+function updatePanierBadge(count) {
+    const badge = document.querySelector(".panier-badge");
+    if (badge) {
+        if (count > 0) {
+            badge.textContent = count;
+            badge.style.display = 'inline';
+                } else {
+            badge.style.display = 'none'; 
+        }
+    }
+}
+    </script>
 </body>
 </html>
