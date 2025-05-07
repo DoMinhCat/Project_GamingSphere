@@ -29,9 +29,10 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
         if ($_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '../uploads/profiles_pictures/';
+            $uploadDir = __DIR__ . '/../uploads/profiles_pictures/';
             $filename = str_replace(' ', '_', $_FILES['profile_picture']['name']);
             $uploadFile = $uploadDir . basename($filename);
+            $relativePath = '/uploads/profiles_pictures/' . basename($filename);
             $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
 
             $check = getimagesize($_FILES['profile_picture']['tmp_name']);
@@ -40,20 +41,18 @@ try {
                 exit;
             }
 
-            // Vérifiez les extensions autorisées
             $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             if (!in_array($imageFileType, $allowedExtensions)) {
                 echo "Seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.";
                 exit;
             }
 
-            // Déplacez le fichier téléchargé
             if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $uploadFile)) {
-                // Mettez à jour la base de données
                 $stmt = $bdd->prepare("UPDATE utilisateurs SET photo_profil = ? WHERE id_utilisateurs = ?");
-                $stmt->execute([$uploadFile, $userId]);
-                $user['photo_profil'] = $uploadFile;
+                $stmt->execute([$relativePath, $userId]);
+                $user['photo_profil'] = $relativePath;
             } else {
+                error_log("Erreur lors du déplacement du fichier : " . $_FILES['profile_picture']['tmp_name'] . " vers " . $uploadFile);
                 echo "Erreur lors du téléchargement de l'image.";
                 exit;
             }
