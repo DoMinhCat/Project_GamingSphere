@@ -34,11 +34,16 @@ try {
             exit;
         }
 
-        $uploadDir = __DIR__ . '/uploads/profiles_pictures/';
+        $uploadDir = __DIR__ . '/../uploads/profiles_pictures/';
         $filename = uniqid() . '_' . str_replace(' ', '_', $_FILES['profile_picture']['name']); // Nom unique pour éviter les conflits
         $uploadFile = $uploadDir . basename($filename);
         $relativePath = '/uploads/profiles_pictures/' . basename($filename);
         $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
+
+        // Vérifiez si le dossier cible existe, sinon créez-le
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
 
         // Vérifiez si le fichier temporaire existe
         if (!file_exists($_FILES['profile_picture']['tmp_name'])) {
@@ -98,29 +103,24 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <hr>
             <div class="text-center mb-4">
                 <h4>Photo de profil</h4>
-                <?php if (!empty($user['photo_profil'])): ?>
-                    <img src="../<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">                    <form method="POST" enctype="multipart/form-data" class="mt-3">
-                        <button type="button" class="btn btn-dark" onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
-                            Modifier la photo de profil
-                        </button>
-                    </form>
-                    <form id="profile_picture_form" method="POST" enctype="multipart/form-data" style="display: none;" class="mt-3">
-                        <div class="mb-3">
-                            <label for="profile_picture" class="form-label">Changer votre photo de profil :</label>
-                            <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Télécharger</button>
-                    </form>
-                <?php else: ?>
-                    <p>Aucune photo de profil.</p>
-                    <form method="POST" enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <label for="profile_picture" class="form-label">Ajouter une photo de profil :</label>
-                            <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Télécharger</button>
-                    </form>
-                <?php endif; ?>
+                <?php
+                $profilePicturePath = !empty($user['photo_profil']) && file_exists(__DIR__ . '/../' . $user['photo_profil'])
+                    ? '../' . htmlspecialchars($user['photo_profil'])
+                    : '/path/to/default_image.jpg'; // Remplacez par le chemin de votre image par défaut
+                ?>
+                <img src="<?= $profilePicturePath ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
+                <form method="POST" enctype="multipart/form-data" class="mt-3">
+                    <button type="button" class="btn btn-dark" onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
+                        Modifier la photo de profil
+                    </button>
+                </form>
+                <form id="profile_picture_form" method="POST" enctype="multipart/form-data" style="display: none;" class="mt-3">
+                    <div class="mb-3">
+                        <label for="profile_picture" class="form-label">Changer votre photo de profil :</label>
+                        <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Télécharger</button>
+                </form>
             </div>
 
             <div class="card shadow-sm p-3 mb-4 mon_compte_card">
