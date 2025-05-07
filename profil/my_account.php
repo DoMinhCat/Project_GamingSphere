@@ -29,7 +29,7 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
         if ($_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = 'uploads/profiles_pictures/';
+            $uploadDir = __DIR__ . '../uploads/profiles_pictures/';
             $filename = str_replace(' ', '_', $_FILES['profile_picture']['name']);
             $uploadFile = $uploadDir . basename($filename);
             $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
@@ -90,7 +90,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="text-center mb-4">
                 <h4>Photo de profil</h4>
                 <?php if (!empty($user['photo_profil'])): ?>
-                    <img src="/<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">                    <form method="POST" enctype="multipart/form-data" class="mt-3">
+                    <img src="<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">                    <form method="POST" enctype="multipart/form-data" class="mt-3">
                         <button type="button" class="btn btn-dark" onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
                             Modifier la photo de profil
                         </button>
