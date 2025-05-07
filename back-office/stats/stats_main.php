@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../path.php';
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-$title = 'Gestion de statistiques et log';
+$title = 'Gestion de statistiques et logs';
 require('../head.php');
 ?>
 
