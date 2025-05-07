@@ -33,10 +33,11 @@ try {
             exit;
         }
 
-        $uploadDir = __DIR__ . '/../uploads/profiles_pictures/';
+
+        $uploadDir = __DIR__ . 'uploads/profiles_pictures/';
         $filename = uniqid() . '_' . str_replace(' ', '_', $_FILES['profile_picture']['name']); // Nom unique pour éviter les conflits
         $uploadFile = $uploadDir . basename($filename);
-        $relativePath = '/uploads/profiles_pictures/' . basename($filename);
+        $relativePath = 'uploads/profiles_pictures/' . basename($filename);
         $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
 
         // Vérifiez si le dossier cible existe, sinon créez-le
@@ -119,7 +120,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Télécharger</button>
-                </form>
+                </form>        
             </div>
 
             <div class="card shadow-sm p-3 mb-4 mon_compte_card">
