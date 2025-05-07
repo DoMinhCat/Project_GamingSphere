@@ -9,7 +9,6 @@ require_once __DIR__ . '/../path.php';
 $userId = $_SESSION['user_id'];
 
 try {
-
     $stmt = $bdd->prepare("SELECT pseudo, email, date_inscription, nom, prenom, ville, rue, code_postal, photo_profil FROM utilisateurs WHERE id_utilisateurs = ?");
     $stmt->execute([$userId]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
