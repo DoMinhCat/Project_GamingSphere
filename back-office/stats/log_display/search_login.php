@@ -35,12 +35,12 @@ foreach ($lines as $line) {
 }
 
 if (!empty($results)) {
-    foreach ($lines as $line) {
+    foreach ($results as $result) {
         echo '<tr>';
-        echo "<td class=\"align-middle\">" . $dateTime . "</td>";
-        echo "<td class=\"align-middle\">" . $action . "</td>";
-        echo "<td class=\"align-middle\">" . $email . "</td>";
-        echo "<td class=\"align-middle\">" . $status . "</td>";
+        echo "<td class=\"align-middle\">" . htmlspecialchars($result['datetime']) . "</td>";
+        echo "<td class=\"align-middle\">" .  htmlspecialchars($result['action'])  . "</td>";
+        echo "<td class=\"align-middle\">" .  htmlspecialchars($result['email'])  . "</td>";
+        echo "<td class=\"align-middle\">" .  htmlspecialchars($result['status'])  . "</td>";
         echo "</td>";
         echo "</tr>";
     }

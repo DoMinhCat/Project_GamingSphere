@@ -34,7 +34,7 @@ $lines = file('../../../log/log_transaction.txt');
         </div>
         <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
             <table class="table table-striped table-bordered">
-                <thead class="table-dark">
+                <thead class="table-dark" style="position: sticky; top: 0; z-index: 1;">
                     <tr>
                         <th>Date/heure</th>
                         <th>Action</th>

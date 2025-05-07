@@ -35,7 +35,7 @@ foreach ($lines as $line) {
 }
 
 if (!empty($results)) {
-    foreach ($lines as $line) {
+    foreach ($results as $result) {
         echo '<tr>';
         echo "<td class=\"align-middle\">" . $dateTime . "</td>";
         echo "<td class=\"align-middle\">" . $action . "</td>";
