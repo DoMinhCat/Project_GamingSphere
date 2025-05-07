@@ -46,7 +46,7 @@ $lines = file('../../../log/log_transaction.txt');
                 <tbody id="log_transaction">
                     <?php foreach ($lines as $line) {
                         preg_match(
-                            '/^(\d{4}\/\d{2}\/\d{2}) - (\d{2}:\d{2}:\d{2}) - (.+?) (réussie|échouée) de (.+?)(?: - (?:en raison de : )?(.+))?$/',
+                            '/^(\d{4}\/\d{2}\/\d{2}) - (\d{2}:\d{2}:\d{2}) - (.+?) (réussi|échoué|annulé) de (.+?)(?: - (?:en raison de : )?(.+))?$/',
                             trim($line),
                             $match
                         );
@@ -68,6 +68,8 @@ $lines = file('../../../log/log_transaction.txt');
                 </tbody>
             </table>
         </div>
+
+        <h1 class="text-center my-5">Statistiques</h1>
     </main>
 
     <script>

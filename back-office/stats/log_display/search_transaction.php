@@ -4,8 +4,8 @@ if ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest' || !isset($_GET['sear
     http_response_code(403);
     exit('Accès non-autorisé');
 }
-$lines = file('../../../log/log_login.txt');
-$pattern = '/^(\d{4}\/\d{2}\/\d{2}) - (\d{2}:\d{2}:\d{2}) - (.+?) (réussie|échouée) de (.+?)$/';
+$lines = file('../../../log/log_transaction.txt');
+$pattern = '/^(\d{4}\/\d{2}\/\d{2}) - (\d{2}:\d{2}:\d{2}) - (.+?) (réussie|échouée) de (.+?)(?: - (?:en raison de : )?(.+))?$/';
 $results = [];
 
 $search = trim($_GET['search'] ?? '');
@@ -20,6 +20,8 @@ foreach ($lines as $line) {
         $action = $match[3];
         $status = strtolower($match[4]);
         $email = strtolower($match[5]);
+        $note = '';
+        if ($match[6]) $note = ucfirst($match[6]);
         if (
             ($search === '' || str_contains($email, $search)) &&
             ($statusFilter === '' || $status === $statusFilter)
@@ -29,6 +31,7 @@ foreach ($lines as $line) {
                 'action' => $action,
                 'status' => ucfirst($status),
                 'email' => $email,
+                'note' => $note,
             ];
         }
     }
@@ -41,6 +44,7 @@ if (!empty($results)) {
         echo "<td class=\"align-middle\">" . $action . "</td>";
         echo "<td class=\"align-middle\">" . $email . "</td>";
         echo "<td class=\"align-middle\">" . $status . "</td>";
+        echo "<td class=\"align-middle\">" . $note . "</td>";
         echo "</td>";
         echo "</tr>";
     }
