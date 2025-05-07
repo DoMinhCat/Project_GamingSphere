@@ -24,8 +24,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
   <div class="container my-5">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <div class="card shadow rounded border-0" style="background-color:#FAF9F6;">
-          <div class="card-body text-center py-5">
+        <div class="card shadow rounded border-0 px-5" style="background-color:#FAF9F6;">
+          <div class="card-body text-center py-5 d-flex flex-column">
             <h1 class="mt-5 mb-2">Paiement annulé.</h1>
             <span class="lato16 my-3">Vous n'avez pas été débité. Veuillez réessayer si nécessaire.</span>
             <a href='<?= credits_main ?>' class="btn btn-primary"><i class="bi bi-arrow-left mb-3"></i> Retour au Crédits</a>
