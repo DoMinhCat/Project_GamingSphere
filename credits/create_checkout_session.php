@@ -7,13 +7,12 @@ require '../vendor/autoload.php';
 
 \Stripe\Stripe::setApiKey('sk_test_51RDpJn2ZZkaFqUsQHx2eH0G1KDxUwLXWqIejLLUbLmvsuDk9hppSPkjUGv9BgOmkEcjHaDHZbbBMNmT2H5NPC1dI00cUBnBfto');
 
-
 $data = json_decode(file_get_contents('php://input'), true);
 $amount = isset($data['amount']) ? (float)$data['amount'] : 0;
 $amountInCents = intval($amount * 100);
 
 $credits_ajoutes = $amount * 10;
-
+$email = $_SESSION['user_email'];
 try {
   $checkout_session = \Stripe\Checkout\Session::create([
     'payment_method_types' => ['card'],
@@ -24,16 +23,16 @@ try {
           'product_data' => [
             'name' => 'Ajout de crédits',
           ],
-          'unit_amount' => $amountInCents, // Montant en centimes
+          'unit_amount' => $amountInCents,
         ],
         'quantity' => 1,
       ],
     ],
     'mode' => 'payment',
-    'success_url' => 'https://213.32.90.110/credits/' . success . '?session_id={CHECKOUT_SESSION_ID}',
-    'cancel_url' => 'https://213.32.90.110/credits/' . cancel,
+    'success_url' => 'https://gamingsphere.duckdns.org/' . success . '?session_id={CHECKOUT_SESSION_ID}',
+    'cancel_url' => 'https://gamingsphere.duckdns.org/' . cancel,
     'metadata' => [
-      'credits_ajoutes' => $credits_ajoutes // Ajout des crédits dans les métadonnées
+      'credits_ajoutes' => $credits_ajoutes
     ]
   ]);
 

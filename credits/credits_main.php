@@ -11,9 +11,6 @@ try {
   $stmt->execute([$_SESSION['user_id']]);
   $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  // Pour le débogage
-  // var_dump($userData);
-
   if (!$userData) {
     throw new Exception("Utilisateur introuvable.");
   }
@@ -50,7 +47,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <body>
   <?php include('../include/header.php'); ?>
   <div class="container py-5">
-    <div class="card shadow-lg p-4">
+    <div class="card shadow-lg p-4" style="background-color:#FAF9F6;">
       <h2 class="mb-4 text-center">💻 Espace Crédits</h2>
 
       <div class="text-center mb-3">

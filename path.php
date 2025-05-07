@@ -112,3 +112,6 @@ define('tournois_result_back', '/back-office/tournois/result'); // tournoi_resul
 
 //stats
 define('stats_main', '/back-office/stats'); // stats_main.php
+define('log_inscription', '/back-office/stats/log/inscription'); // log_display/inscription.php
+define('log_login', '/back-office/stats/log/login'); // log_display/login.php
+define('log_transaction', '/back-office/stats/log/transaction'); // log_display/transaction.php

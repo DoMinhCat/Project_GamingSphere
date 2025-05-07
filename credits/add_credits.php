@@ -15,13 +15,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 }
 ?>
 
-<body class="bg-light">
+<body>
   <?php include('../include/header.php'); ?>
 
   <div class="container my-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <div class="card shadow rounded">
+        <div class="card shadow rounded py-5 px-3" style="background-color:#FAF9F6;">
           <div class="card-body">
             <h3 class="card-title text-center mb-4">Ajouter des crédits</h3>
             <form id="payment-form">
@@ -34,7 +34,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                   <i class="bi bi-credit-card me-2"></i> Payer
                 </button>
               </div>
-              <div id="error-message" class="mt-3 text-danger" style="display: none;"></div> <!-- Zone pour afficher les erreurs -->
+              <div id="error-message" class="mt-3 text-danger" style="display: none;"></div>
             </form>
           </div>
         </div>

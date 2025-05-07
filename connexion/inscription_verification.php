@@ -41,24 +41,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $region = trim($_POST['region']);
     $code_postal = trim($_POST['code_postal']);
     $date = date('Y-m-d H:i:s');
+    $captcha_rep = trim($_POST['captcha_answer']);
 
-    if (!isset($_POST['captcha_answer']) || !isset($_SESSION['captcha_answer'])) {
-        writeLogInscrire($email, false, 'réponse captcha manquantes');
-        header('Location:' . inscription . '?error=captcha_missing&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+    if (empty($nom) || empty($prenom) || empty($email) || empty($mot_de_passe) || empty($pseudo) || empty($ville) || empty($rue) || empty($code_postal) || empty($captcha_rep)) {
+        writeLogInscrire($email, false, 'informations personnelles manquantes');
+        header('Location:' . inscription . '?error=empty_fields');
         exit();
     }
-    $user_answer = trim(strtolower($_POST['captcha_answer']));
-    $correct_answer = trim(strtolower($_SESSION['captcha_answer']));
-    if ($user_answer !== $correct_answer) {
-        writeLogInscrire($email, false, 'mauvaise réponse de captcha');
-        header('Location:' . inscription . '?error=captcha_invalid&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL) || preg_match('/[\r\n]/', $email)) {
+        writeLogInscrire($email, false, 'mauvais format de l\'email');
+        header('Location:' . inscription . '?error=invalid_email&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom)  .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
-    unset($_SESSION['captcha_answer']);
+    try {
+        $stmt = $bdd->prepare("SELECT COUNT(email) FROM utilisateurs WHERE email = :email");
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $email_count = $stmt->fetchColumn();
 
-    if (strlen($mot_de_passe) < 8) {
-        writeLogInscrire($email, false, 'critères de mot de passe non remplis');
-        header('Location:' . inscription . '?error=password_length&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        if ($email_count > 0) {
+            writeLogInscrire($email, false, 'adresse email dèjà inscrite');
+            header('Location:' . inscription . '?error=email_exists&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+            exit();
+        }
+    } catch (PDOException $e) {
+        writeLogInscrire($email, false, 'Erreur de bdd : ' . $e->getMessage());
+        header('Location:' . inscription . '?message=' . urlencode("Erreur lors de la création de compte"));
+        exit();
+    }
+    try {
+        $stmt = $bdd->prepare("SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo");
+        $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
+        $stmt->execute();
+        $pseudo_count = $stmt->fetchColumn();
+
+        if ($pseudo_count > 0) {
+            writeLogInscrire($email, false, 'pseudo dèjà inscrit');
+            header('Location:' . inscription . '?error=pseudo_exists&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+            exit();
+        }
+    } catch (PDOException $e) {
+        writeLogInscrire($email, false, 'Erreur de bdd : ' . $e->getMessage());
+        header('Location:' . inscription . '?message=' . urlencode("Erreur lors de la création de compte"));
         exit();
     }
     if (!preg_match('/[\W_]/', $mot_de_passe)) {
@@ -81,38 +105,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location:' . inscription . '?error=invalid_cp&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL) || preg_match('/[\r\n]/', $email)) {
-        writeLogInscrire($email, false, 'mauvais format de l\'email');
-        header('Location:' . inscription . '?error=invalid_email&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom)  .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+    if (!isset($captcha_rep) || !isset($_SESSION['captcha_answer'])) {
+        writeLogInscrire($email, false, 'réponse captcha manquantes');
+        header('Location:' . inscription . '?error=captcha_missing&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
-    if (empty($nom) || empty($prenom) || empty($email) || empty($mot_de_passe) || empty($pseudo) || empty($ville) || empty($rue) || empty($code_postal)) {
-        writeLogInscrire($email, false, 'informations personnelles manquantes');
-        header('Location:' . inscription . '?error=empty_fields');
+    $user_answer = trim(strtolower($captcha_rep));
+    $correct_answer = trim(strtolower($_SESSION['captcha_answer']));
+    if ($user_answer !== $correct_answer) {
+        writeLogInscrire($email, false, 'mauvaise réponse de captcha');
+        header('Location:' . inscription . '?error=captcha_invalid&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
+        exit();
+    }
+    unset($_SESSION['captcha_answer']);
+
+    if (strlen($mot_de_passe) < 8) {
+        writeLogInscrire($email, false, 'critères de mot de passe non remplis');
+        header('Location:' . inscription . '?error=password_length&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
         exit();
     }
 
-    $stmt = $bdd->prepare("SELECT COUNT(email) FROM utilisateurs WHERE email = :email");
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    $stmt->execute();
-    $email_count = $stmt->fetchColumn();
 
-    if ($email_count > 0) {
-        writeLogInscrire($email, false, 'adresse email dèjà inscrite');
-        header('Location:' . inscription . '?error=email_exists&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) .  "&pseudo=" . urlencode($pseudo) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
-        exit();
-    }
 
-    $stmt = $bdd->prepare("SELECT COUNT(pseudo) FROM utilisateurs WHERE pseudo = :pseudo");
-    $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
-    $stmt->execute();
-    $pseudo_count = $stmt->fetchColumn();
 
-    if ($pseudo_count > 0) {
-        writeLogInscrire($email, false, 'pseudo dèjà inscrit');
-        header('Location:' . inscription . '?error=pseudo_exists&nom=' . urlencode($nom) . "&prenom=" . urlencode($prenom) . "&email=" . urlencode($email) . "&ville=" . urlencode($ville) . "&rue=" . urlencode($rue) . "&code_postal=" . urlencode($code_postal) . "&region=" . urlencode($region));
-        exit();
-    }
 
     $token = bin2hex(random_bytes(32));
     $expire_inscrire = date("Y-m-d H:i:s", strtotime("+30 minutes"));

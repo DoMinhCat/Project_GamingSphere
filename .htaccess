@@ -379,10 +379,23 @@ RewriteCond %{THE_REQUEST} \s/back-office/stats/stats_main\.php [NC]
 RewriteRule ^back-office/stats/stats_main\.php$ /back-office/stats/ [R=301,L,QSA]
 RewriteRule ^back-office/stats/?$ back-office/stats/stats_main.php [L]
 
+# back-office stats/log_display/inscription.php/
 
+RewriteCond %{THE_REQUEST} \s/back-office/stats/log_display/inscription\.php [NC]
+RewriteRule ^back-office/stats/log_display/inscription\.php$ /back-office/stats/log/inscription [R=301,L,QSA]
+RewriteRule ^back-office/stats/log/inscription/?$ back-office/stats/log_display/inscription.php [L]
 
+# back-office stats/log_display/login.php/
 
+RewriteCond %{THE_REQUEST} \s/back-office/stats/log_display/login\.php [NC]
+RewriteRule ^back-office/stats/log_display/login\.php$ /back-office/stats/log/login [R=301,L,QSA]
+RewriteRule ^back-office/stats/log/login/?$ back-office/stats/log_display/login.php [L]
 
+# back-office stats/log_display/transaction.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/stats/log_display/transaction\.php [NC]
+RewriteRule ^back-office/stats/log_display/transaction\.php$ /back-office/stats/log/transaction [R=301,L,QSA]
+RewriteRule ^back-office/stats/log/transaction/?$ back-office/stats/log_display/transaction.php [L]
 
 
 
