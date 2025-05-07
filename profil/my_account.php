@@ -102,12 +102,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <hr>
             <div class="text-center mb-4">
                 <h4>Photo de profil</h4>
-                <?php
-                $profilePicturePath = !empty($user['photo_profil']) && file_exists(__DIR__ . '/../' . $user['photo_profil'])
-                    ? '../' . htmlspecialchars($user['photo_profil'])
-                    : '/path/to/default_image.jpg'; // Remplacez par le chemin de votre image par défaut
-                ?>
-                <img src="<?= $profilePicturePath ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
+                <?php if (!empty($user['photo_profil']) && file_exists(__DIR__ . '/../' . $user['photo_profil'])): ?>
+                    <img src="../<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
+                <?php endif; ?>
                 <form method="POST" enctype="multipart/form-data" class="mt-3">
                     <button type="button" class="btn btn-dark" onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
                         Modifier la photo de profil
