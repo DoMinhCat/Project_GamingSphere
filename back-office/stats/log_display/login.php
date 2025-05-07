@@ -11,14 +11,14 @@ require_once('../../../path.php');
 <html lang="fr">
 <?php
 $title = 'Log des connexions';
-require('../head.php');
+require('../../head.php');
 $lines = file('/log/log_login.text');
 ?>
 
 <body>
     <?php
     $page = stats_main;
-    include('../navbar.php'); ?>
+    include('../../navbar.php'); ?>
     <main class="container my-5">
         <h1 class="text-center my-5">Connexions</h1>
 
@@ -37,7 +37,7 @@ $lines = file('/log/log_login.text');
                 <tbody id="log_login">
                     <?php foreach ($lines as $line) {
                         preg_match(
-                            '/^(\d{4}\/\d{2}\/\d{2}) - (\d{2}:\d{2}:\d{2}) - (.+?) (réussie|échouée) de (.+?)(?: - (?:en raison de : )?(.+))?$/',
+                            '/^(\d{4}\/\d{2}\/\d{2}) - (\d{2}:\d{2}:\d{2}) - (.+?) (réussie|échouée) de (.+?)$/',
                             trim($line),
                             $match
                         );

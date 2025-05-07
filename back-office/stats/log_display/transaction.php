@@ -10,14 +10,14 @@ require_once('../../../path.php');
 <html lang="fr">
 <?php
 $title = 'Log des transactions';
-require('../head.php');
+require('../../head.php');
 $lines = file('/log/log_transaction.txt');
 ?>
 
 <body>
     <?php
     $page = stats_main;
-    include('../navbar.php'); ?>
+    include('../../navbar.php'); ?>
     <main class="container my-5">
         <h1 class="text-center my-5">Transactions</h1>
 
@@ -25,7 +25,6 @@ $lines = file('/log/log_transaction.txt');
             <table class="table table-striped table-bordered">
                 <thead class="table-dark">
                     <tr>
-
                         <th>Date/heure</th>
                         <th>Action</th>
                         <th>Email</th>
