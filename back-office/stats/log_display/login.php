@@ -78,7 +78,7 @@ $lines = file('../../../log/log_login.txt');
             const query = document.getElementById('search_login').value;
             const status = document.getElementById('statusFilter').value;
 
-            fetch(`search_login.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}`, {
+            fetch(`/back-office/stats/search_login.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}`, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     }

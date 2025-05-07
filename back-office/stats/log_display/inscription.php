@@ -22,6 +22,18 @@ $lines = file('../../../log/log_inscription.txt');
 
     <main class="container my-5">
         <h1 class="text-center my-5">Inscriptions | Vérification | Initialisation de mot de passe</h1>
+        <div class="form-group mb-2 pt-3 pb-2">
+            <div class="d-flex gap-2">
+                <input type="text" id="search_login" class="form-control searchBoxBack" placeholder="Rechercher par email">
+                <div class="d-flex ms-2" style="gap: 0.5rem;">
+                    <select id="statusFilter" class="form-select searchBoxBack">
+                        <option value="">Statut</option>
+                        <option value="Réussie">Réussi</option>
+                        <option value="échouée">Echoué</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
             <table class="table table-striped table-bordered">
                 <thead class="table-dark">
