@@ -32,7 +32,8 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
         if ($_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = 'uploads/profiles_pictures/';
-            $uploadFile = $uploadDir . basename($_FILES['profile_picture']['name']);
+            $filename = str_replace(' ', '_', $_FILES['profile_picture']['name']); // Remplacer les espaces
+            $uploadFile = $uploadDir . basename($filename);
             $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
 
             // Vérifiez si le fichier est une image
