@@ -24,7 +24,7 @@ $lines = file('../../../log/log_inscription.txt');
         <h1 class="text-center my-5">Inscriptions | Vérification | Initialisation de mot de passe</h1>
         <div class="form-group mb-2 pt-3 pb-2">
             <div class="d-flex gap-2">
-                <input type="text" id="search_login" class="form-control searchBoxBack" placeholder="Rechercher par email">
+                <input type="text" id="search_inscription" class="form-control searchBoxBack" placeholder="Rechercher par email">
                 <div class="d-flex ms-2" style="gap: 0.5rem;">
                     <select id="statusFilter" class="form-select searchBoxBack">
                         <option value="">Statut</option>
@@ -72,6 +72,26 @@ $lines = file('../../../log/log_inscription.txt');
             </table>
         </div>
     </main>
+
+    <script>
+        function fetchLogConnexion() {
+            const query = document.getElementById('search_inscription').value;
+            const status = document.getElementById('statusFilter').value;
+
+            fetch(`/back-office/stats/log_display/search_inscription.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('log_inscription').innerHTML = data;
+                });
+        }
+
+        document.getElementById('search_inscription').addEventListener('input', fetchLogConnexion);
+        document.getElementById('statusFilter').addEventListener('change', fetchLogConnexion);
+    </script>
 </body>
 
 </html>

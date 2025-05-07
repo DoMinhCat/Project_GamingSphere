@@ -22,7 +22,7 @@ $lines = file('../../../log/log_transaction.txt');
         <h1 class="text-center my-5">Transactions</h1>
         <div class="form-group mb-2 pt-3 pb-2">
             <div class="d-flex gap-2">
-                <input type="text" id="search_login" class="form-control searchBoxBack" placeholder="Rechercher par email">
+                <input type="text" id="search_transaction" class="form-control searchBoxBack" placeholder="Rechercher par email">
                 <div class="d-flex ms-2" style="gap: 0.5rem;">
                     <select id="statusFilter" class="form-select searchBoxBack">
                         <option value="">Statut</option>
@@ -69,6 +69,26 @@ $lines = file('../../../log/log_transaction.txt');
             </table>
         </div>
     </main>
+
+    <script>
+        function fetchLogConnexion() {
+            const query = document.getElementById('search_transaction').value;
+            const status = document.getElementById('statusFilter').value;
+
+            fetch(`/back-office/stats/log_display/search_transaction.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('log_transaction').innerHTML = data;
+                });
+        }
+
+        document.getElementById('search_transaction').addEventListener('input', fetchLogConnexion);
+        document.getElementById('statusFilter').addEventListener('change', fetchLogConnexion);
+    </script>
 </body>
 
 </html>
