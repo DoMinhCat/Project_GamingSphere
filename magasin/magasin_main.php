@@ -79,7 +79,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
                             <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                            <div class="mt-auto d-flex justify-content-between gap-2">
+                            <div class="mt-auto d-flex justify-content-between gap-2 align-items-center">
                                 <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>" class="btn btn-outline-primary w-50 mt-3">Voir détails</a>
                                 <button class="btn btn-success mt-3 btn-add-to-cart" data-id="<?= $game['id_jeu'] ?>">Ajouter au panier</button>
                             </div>
