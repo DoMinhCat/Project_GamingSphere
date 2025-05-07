@@ -34,7 +34,7 @@ try {
             exit;
         }
 
-        $uploadDir = __DIR__ . '/../uploads/profiles_pictures/';
+        $uploadDir = __DIR__ . '/uploads/profiles_pictures/';
         $filename = uniqid() . '_' . str_replace(' ', '_', $_FILES['profile_picture']['name']); // Nom unique pour éviter les conflits
         $uploadFile = $uploadDir . basename($filename);
         $relativePath = '/uploads/profiles_pictures/' . basename($filename);
