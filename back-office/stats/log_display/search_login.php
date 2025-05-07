@@ -9,7 +9,7 @@ $pattern = '/^(\d{4}\/\d{2}\/\d{2}) - (\d{2}:\d{2}:\d{2}) - (.+?) (réussie|éch
 $results = [];
 
 $search = trim($_GET['search'] ?? '');
-$statusFilter = trim($_GET['status'] ?? '');
+$statusFilter = strtolower(trim($_GET['status'] ?? ''));
 
 
 
@@ -18,7 +18,7 @@ foreach ($lines as $line) {
     if (preg_match($pattern, trim($line), $match)) {
         $dateTime = $match[1] . ' - ' . $match[2];
         $action = $match[3];
-        $status = ucfirst($match[4]);
+        $status = strtolower($match[4]);
         $email = strtolower($match[5]);
         if (
             ($search === '' || str_contains($email, $search)) &&
@@ -35,13 +35,15 @@ foreach ($lines as $line) {
 }
 
 if (!empty($results)) {
-    echo '<tr>';
-    echo "<td class=\"align-middle\">" . $dateTime . "</td>";
-    echo "<td class=\"align-middle\">" . $action . "</td>";
-    echo "<td class=\"align-middle\">" . $email . "</td>";
-    echo "<td class=\"align-middle\">" . $status . "</td>";
-    echo "</td>";
-    echo "</tr>";
+    foreach ($lines as $line) {
+        echo '<tr>';
+        echo "<td class=\"align-middle\">" . $dateTime . "</td>";
+        echo "<td class=\"align-middle\">" . $action . "</td>";
+        echo "<td class=\"align-middle\">" . $email . "</td>";
+        echo "<td class=\"align-middle\">" . $status . "</td>";
+        echo "</td>";
+        echo "</tr>";
+    }
 } else {
     echo "<tr><td colspan='12' class=\"text-center\">Aucun log trouvé.</td></tr>";
 }
