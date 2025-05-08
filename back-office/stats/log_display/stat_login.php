@@ -17,6 +17,8 @@ $nb = 0;
 $rate = 0;
 $max = 0;
 $dayMax = 0;
+$monthMax = 0;
+$yearMax = 0;
 $total = 0;
 $count = 1;
 $dayTemp = 0;
@@ -42,6 +44,8 @@ foreach ($lines as $line) {
                 if ($max < $count) {
                     $max = $count;
                     $dayMax = $logDay;
+                    $monthMax = $logMonth;
+                    $yearMax = $logYear;
                 }
                 $dayTemp = $logDay;
             } else {
@@ -52,7 +56,7 @@ foreach ($lines as $line) {
     }
 }
 $rate = $total > 0 ? round($nb / $total * 100, 2) . '%' : '0%';
-
+$dayMax = $logYear . '/' . $monthMax . '/' . $dayMax;
 echo json_encode([
     'nb' => $nb,
     'rate' => $rate,
