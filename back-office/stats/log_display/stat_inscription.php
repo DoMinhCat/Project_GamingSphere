@@ -11,7 +11,8 @@ $month = $_GET['month'] ?? '';
 $year = $_GET['year'] ?? '';
 
 $lines = file('../../../log/log_inscription.txt');
-$pattern = '/^(\d{4})\/(\d{2})\/\d{2} - \d{2}:\d{2}:\d{2} - (.+?) (réussie|échouée) de (.+?)(?: - (?:en raison de : )?(.+))?$/';
+$pattern = '/^(\d{4})\/(\d{2})\/\d{2} - \d{2}:\d{2}:\d{2} - (.+?) (réussie|échouée) de (.+?)(?: - (?:en raison de : )?(.+))?$/u';
+
 
 $new = 0;
 $deleted = 0;
@@ -20,7 +21,7 @@ foreach ($lines as $line) {
     if (preg_match($pattern, trim($line), $match)) {
         $logYear = $match[1];
         $logMonth = $match[2];
-        $action = strtolower($match[3]);
+        $action = $match[3];
         $status = $match[4];
         if (($month === '' || $logMonth === $month) &&
             ($year === '' || $logYear === $year)
