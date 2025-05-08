@@ -57,6 +57,7 @@ $lines = file('../../../log/log_inscription.txt');
                         $action = $match[3];
                         $status = ucfirst($match[4]);
                         $email = strtolower($match[5]);
+                        $note = '';
                         if ($match[6])
                             $note = ucfirst($match[6]);
                     ?>

@@ -21,12 +21,12 @@ foreach ($lines as $line) {
         $logYear = $match[1];
         $logMonth = $match[2];
         $action = strtolower($match[3]);
-
+        $status = $match[4];
         if (($month === '' || $logMonth === $month) &&
             ($year === '' || $logYear === $year)
         ) {
 
-            if (str_contains($action, 'Création')) {
+            if (str_contains($action, 'Création') && $status == 'réussie') {
                 $new++;
             } elseif (str_contains($action, 'Suppression')) {
                 $deleted++;
