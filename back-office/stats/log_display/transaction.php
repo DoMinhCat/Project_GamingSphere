@@ -72,7 +72,7 @@ $lines = file('../../../log/log_transaction.txt');
         <h1 class="text-center my-5">Statistiques</h1>
 
         <div class="d-flex flex-column">
-            <div class="d-flex align-items-center mb-3">
+            <div class="d-flex align-items-center mb-3 gap-2">
                 <select id="monthStats" class="form-select searchBoxBack">
                     <option value="">Tout</option>
                     <option value="01">Janvier</option>
@@ -95,22 +95,22 @@ $lines = file('../../../log/log_transaction.txt');
                 </select>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>Nombre total de connexions : </h4>
-                <p id="nbCon"></p>
+                <h4>Nombre de transactions éffectuées/annulées : </h4>
+                <p id="nb"></p>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>Taux de connexion réussie : </h4>
+                <h4>Taux de transaction réussie : </h4>
                 <p id="rate"></p>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>10 jours avec le plus grand nombre de connexions : </h4>
-                <p id="10max"></p>
+                <h4>Revenue totale : </h4>
+                <p id="revenue"></p>
             </div>
         </div>
     </main>
 
     <script>
-        function fetchLogConnexion() {
+        function fetchLogTransaction() {
             const query = document.getElementById('search_transaction').value;
             const status = document.getElementById('statusFilter').value;
 
@@ -125,8 +125,8 @@ $lines = file('../../../log/log_transaction.txt');
                 });
         }
 
-        document.getElementById('search_transaction').addEventListener('input', fetchLogConnexion);
-        document.getElementById('statusFilter').addEventListener('change', fetchLogConnexion);
+        document.getElementById('search_transaction').addEventListener('input', fetchLogTransaction);
+        document.getElementById('statusFilter').addEventListener('change', fetchLogTransaction);
     </script>
 </body>
 

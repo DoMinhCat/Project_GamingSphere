@@ -71,6 +71,41 @@ $lines = file('../../../log/log_inscription.txt');
                 </tbody>
             </table>
         </div>
+
+        <h1 class="text-center my-5">Statistiques</h1>
+
+        <div class="d-flex flex-column">
+            <div class="d-flex align-items-center mb-3 gap-2">
+                <select id="monthStats" class="form-select searchBoxBack">
+                    <option value="">Tout</option>
+                    <option value="01">Janvier</option>
+                    <option value="02">Février</option>
+                    <option value="03">Mars</option>
+                    <option value="04">Avril</option>
+                    <option value="05">Mai</option>
+                    <option value="06">Juin</option>
+                    <option value="07">Juillet</option>
+                    <option value="08">Août</option>
+                    <option value="09">Septembre</option>
+                    <option value="10">Octobre</option>
+                    <option value="11">Novembre</option>
+                    <option value="12">Décembre</option>
+                </select>
+                <select id="yearStats" class="form-select searchBoxBack">
+                    <option value="">Tout</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+                <h4>Nombre de nouveaux comptes crées: </h4>
+                <p id="nbNew"></p>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+                <h4>Nombre de comptes supprimés : </h4>
+                <p id="nbDel"></p>
+            </div>
+        </div>
     </main>
 
     <script>

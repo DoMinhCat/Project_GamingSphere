@@ -9,13 +9,13 @@ require_once __DIR__ . '/../path.php';
 $pseudo = $_GET['user'] ?? '';
 
 if (empty($pseudo)) {
-    header('Location: profil.php?error=no_user_specified');
+    header('Location: ' . profil . '?error=no_user_specified');
     exit();
 }
 
 
 if (isset($_SESSION['user_pseudo']) && $_SESSION['user_pseudo'] === $pseudo) {
-    header('Location: my_account.php');
+    header('Location:' . my_account);
     exit;
 }
 

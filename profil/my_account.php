@@ -21,8 +21,13 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_account'])) {
         $stmt = $bdd->prepare("DELETE FROM utilisateurs WHERE id_utilisateurs = ?");
         $stmt->execute([$userId]);
+        $stream = fopen('../log/log_inscription.txt', 'a+');
+
+        $line = date('Y/m/d - H:i:s') . ' - Suppression du compte réussie de ' . $email . "\n";
+        fputs($stream, $line);
+        fclose($stream);
         session_destroy();
-        header('Location: ../index.php');
+        header('Location:' . index_front);
         exit;
     }
 
@@ -96,8 +101,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include('navbar.php');
     ?>
 
-    <div class="container mt-4">
-        <div class="card shadow-sm p-4 connexion_box mt-4">
+    <div class="container my-5">
+        <div class="card shadow-sm p-4 connexion_box my-5">
             <h3 class="card-title montserrat-titre40 text-center">Mon compte</h3>
             <hr>
             <div class="text-center mb-4">
@@ -169,4 +174,5 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
     <?php include('../include/footer.php'); ?>
 </body>
+
 </html>
