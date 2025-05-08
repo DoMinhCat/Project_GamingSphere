@@ -95,15 +95,15 @@ $lines = file('../../../log/log_transaction.txt');
                 </select>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>Nombre de transactions éffectuées/annulées : </h4>
+                <h5>Nombre de transactions éffectuées/annulées : </h5>
                 <p id="nb"></p>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>Taux de transaction réussie : </h4>
+                <h5>Taux de transaction réussie : </h5>
                 <p id="rate"></p>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>Revenue totale : </h4>
+                <h5>Revenue totale : </h5>
                 <p id="revenue"></p>
             </div>
         </div>

@@ -95,15 +95,15 @@ $lines = file('../../../log/log_login.txt');
                 </select>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>Nombre total de connexions : </h4>
+                <h5>Nombre total de connexions : </h5>
                 <p id="nbCon"></p>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>Taux de connexion réussie : </h4>
+                <h5>Taux de connexion réussie : </h5>
                 <p id="rate"></p>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>10 jours avec le plus grand nombre de connexions : </h4>
+                <h5>10 jours avec le plus grand nombre de connexions : </h5>
                 <p id="10max"></p>
             </div>
         </div>

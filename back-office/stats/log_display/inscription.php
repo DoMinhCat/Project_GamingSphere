@@ -98,11 +98,11 @@ $lines = file('../../../log/log_inscription.txt');
                 </select>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>Nombre de nouveaux comptes crées: </h4>
+                <h5>Nombre de nouveaux comptes crées: </h5>
                 <p id="nbNew"></p>
             </div>
             <div class="d-flex align-items-center mb-3">
-                <h4>Nombre de comptes supprimés : </h4>
+                <h5>Nombre de comptes supprimés : </h5>
                 <p id="nbDel"></p>
             </div>
         </div>
@@ -127,6 +127,32 @@ $lines = file('../../../log/log_inscription.txt');
         document.getElementById('search_inscription').addEventListener('input', fetchLogConnexion);
         document.getElementById('statusFilter').addEventListener('change', fetchLogConnexion);
     </script>
+    <script>
+        function fetchStats() {
+            const month = document.getElementById('monthStats').value;
+            const year = document.getElementById('yearStats').value;
+
+            fetch(`/back-office/stats/log_display/stats_inscription.php?month=${month}&year=${year}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('nbNew').textContent = data.new ?? '0';
+                    document.getElementById('nbDel').textContent = data.deleted ?? '0';
+                })
+                .catch(error => {
+                    console.error('Erreur fetch:', error);
+                    document.getElementById('nbNew').textContent = 'Erreur lors de la récuperation de statistiques';
+                    document.getElementById('nbDel').textContent = 'Erreur lors de la récuperation de statistiques';
+                });
+        }
+
+        document.getElementById('monthStats').addEventListener('change', fetchStats);
+        document.getElementById('yearStats').addEventListener('change', fetchStats);
+    </script>
+
 </body>
 
 </html>
