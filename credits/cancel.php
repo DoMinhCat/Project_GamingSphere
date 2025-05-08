@@ -6,7 +6,7 @@ require('../include/check_timeout.php');
 require_once __DIR__ . '/../path.php';
 $email = $_SESSION['user_email'];
 $stream = fopen('../log/log_transaction.txt', 'a+');
-$line = date('Y/m/d - H:i:s') . ' - Paiement annulé par ' . $email . "\n";
+$line = date('Y/m/d - H:i:s') . ' - Paiement annulé de ' . $email . "\n";
 fputs($stream, $line);
 fclose($stream);
 ?>

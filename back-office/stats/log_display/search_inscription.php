@@ -40,12 +40,11 @@ foreach ($lines as $line) {
 if (!empty($results)) {
     foreach ($results as $result) {
         echo '<tr>';
-        echo "<td class=\"align-middle\">" . $dateTime . "</td>";
-        echo "<td class=\"align-middle\">" . $action . "</td>";
-        echo "<td class=\"align-middle\">" . $email . "</td>";
-        echo "<td class=\"align-middle\">" . $status . "</td>";
-        echo "<td class=\"align-middle\">" . $note . "</td>";
-        echo "</td>";
+        echo "<td class=\"align-middle\">" . $result['datetime'] . "</td>";
+        echo "<td class=\"align-middle\">" . $result['action'] . "</td>";
+        echo "<td class=\"align-middle\">" . $result['email'] . "</td>";
+        echo "<td class=\"align-middle\">" . $result['status'] . "</td>";
+        echo "<td class=\"align-middle\">" . $result['note'] . "</td>";
         echo "</tr>";
     }
 } else {
