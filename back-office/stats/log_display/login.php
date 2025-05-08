@@ -72,7 +72,7 @@ $lines = file('../../../log/log_login.txt');
         <h1 class="text-center my-5">Statistiques</h1>
 
         <div class="d-flex flex-column">
-            <div class="d-flex align-items-center mb-3 gap-2">
+            <div class="d-flex align-items-center mb-4 gap-2">
                 <select id="monthStats" class="form-select searchBoxBack">
                     <option value="">Tout</option>
                     <option value="01">Janvier</option>
@@ -94,17 +94,17 @@ $lines = file('../../../log/log_login.txt');
                     <option value="2025">2025</option>
                 </select>
             </div>
-            <div class="d-flex align-items-center mb-3">
-                <h5>Nombre total de connexions : </h5>
-                <p id="nbCon"></p>
+            <div class="d-flex align-items-center mb-3 gap-2">
+                <h5>Nombre de connexions réussies : </h5>
+                <h5 id="nbCon"></h5>
             </div>
-            <div class="d-flex align-items-center mb-3">
+            <div class="d-flex align-items-center mb-3 gap-2">
                 <h5>Taux de connexion réussie : </h5>
-                <p id="rate"></p>
+                <h5 id="rate"></h5>
             </div>
-            <div class="d-flex align-items-center mb-3">
-                <h5>10 jours avec le plus grand nombre de connexions : </h5>
-                <p id="10max"></p>
+            <div class="d-flex align-items-center mb-3 gap-2">
+                <h5>Le jour avec le plus grand nombre de connexions : </h5>
+                <h5 id="max"></h5>
             </div>
         </div>
     </main>
@@ -127,6 +127,33 @@ $lines = file('../../../log/log_login.txt');
 
         document.getElementById('search_login').addEventListener('input', fetchLogConnexion);
         document.getElementById('statusFilter').addEventListener('change', fetchLogConnexion);
+    </script>
+    <script>
+        function fetchStats() {
+            const month = document.getElementById('monthStats').value;
+            const year = document.getElementById('yearStats').value;
+
+            fetch(`/back-office/stats/log_display/stat_login.php?month=${month}&year=${year}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('nbCon').textContent = data.nb ?? '0';
+                    document.getElementById('rate').textContent = data.rate ?? '0';
+                    document.getElementById('max').textContent = data.max ?? '0';
+                })
+                .catch(error => {
+                    console.error('Erreur fetch:', error);
+                    document.getElementById('nbCon').textContent = 'Erreur lors de la récuperation de statistiques';
+                    document.getElementById('rate').textContent = 'Erreur lors de la récuperation de statistiques';
+                    document.getElementById('max').textContent = 'Erreur lors de la récuperation de statistiques';
+                });
+        }
+
+        document.getElementById('monthStats').addEventListener('change', fetchStats);
+        document.getElementById('yearStats').addEventListener('change', fetchStats);
     </script>
 </body>
 
