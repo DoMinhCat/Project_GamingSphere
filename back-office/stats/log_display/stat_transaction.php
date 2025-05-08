@@ -11,7 +11,7 @@ $month = $_GET['month'] ?? '';
 $year = $_GET['year'] ?? '';
 
 $lines = file('../../../log/log_transaction.txt');
-$pattern = '/^(\d{4})\/(\d{2})\/(\d{2}) - \d{2}:\d{2}:\d{2} - Paiement (réussi|échoué||annulé) de (.+?)(?: - (?:(\d+)\s+credits\s+ajoutés\.|en raison de : (.+)))?$/';
+$pattern = '/^(\d{4})\/(\d{2})\/(\d{2}) - \d{2}:\d{2}:\d{2} - Paiement (réussi|échoué|annulé) de (.+?)(?: - (?:(\d+)\s+credits\s+ajoutés\.|en raison de : (.+)))?$/';
 
 
 $nb = 0;
@@ -24,7 +24,7 @@ foreach ($lines as $line) {
 
         $logYear = $match[1];
         $logMonth = $match[2];
-        $status = strtolower($match[5]);
+        $status = strtolower($match[4]);
 
         if (($month === '' || $logMonth === $month) &&
             ($year === '' || $logYear === $year)

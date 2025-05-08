@@ -26,7 +26,7 @@ foreach ($lines as $line) {
             ($year === '' || $logYear === $year)
         ) {
 
-            if (str_contains($action, 'Création') && $status == 'réussie') {
+            if (str_contains($action, 'Création du compte') && $status == 'réussie') {
                 $new++;
             } elseif (str_contains($action, 'Suppression')) {
                 $deleted++;
