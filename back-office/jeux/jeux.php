@@ -82,8 +82,8 @@ require('../head.php');
         </div>
 
         <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
-            <table class="table table-bordered">
-                <thead class="table-dark">
+            <table class="table table-bordered table-striped">
+                <thead class='table-dark' style="position: sticky; top: 0; z-index: 1;">
                     <tr>
                         <th>ID</th>
                         <th>Nom</th>
@@ -96,7 +96,7 @@ require('../head.php');
                         <th>Éditeur</th>
                         <th>Actions</th>
                     </tr>
-                </thead>
+                    </t>
                 <tbody id="jeux">
                     <?php if (count($games) > 0): ?>
                         <?php foreach ($games as $game): ?>

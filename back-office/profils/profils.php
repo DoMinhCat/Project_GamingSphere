@@ -79,7 +79,7 @@ require('../head.php');
                 if (count($users) > 0) {
                     echo '<div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">';
                     echo "<table class='table table-striped table-bordered'>";
-                    echo "<thead class='thead-dark'><tr><th>ID</th><th>Nom</th><th>Email</th><th>Pseudo</th><th>Prénom</th><th>Statut</th><th>Actions</th></tr></thead>";
+                    echo "<thead class='table-dark' style=\"position: sticky; top: 0; z-index: 1;\"><tr><th>ID</th><th>Nom</th><th>Email</th><th>Pseudo</th><th>Prénom</th><th>Statut</th><th>Actions</th></tr></thead>";
                     echo "<tbody id='user_results'>";
 
                     foreach ($users as $user) {

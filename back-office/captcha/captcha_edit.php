@@ -12,7 +12,7 @@ require('../../include/check_timeout.php');
 <html lang="fr">
 <?php
 $title = 'Modification des Captchas';
-require('../../include/head.php');
+require('../include/head.php');
 ?>
 
 <body>

@@ -78,7 +78,7 @@ require('../head.php');
     $page = index_back;
     include("../navbar.php");
     ?>
-    <div class="container my-5">
+    <main class="container my-5">
         <?php
         $noti = '';
         $noti_Err = '';
@@ -124,16 +124,16 @@ require('../head.php');
         </form>
 
         <!-- Affichage des articles -->
-        <h3 class="text-center">Liste des articles</h3>
+        <h3 class="text-center mb-4">Liste des articles</h3>
         <?php
         echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
-            <input type="text" id="search_article" class="form-control" placeholder="Rechercher par nom d\'article">
+            <input type="text" id="search_article" class="form-control searchBoxBack" placeholder="Rechercher par nom d\'article">
         </div>';
 
         if (count($articles) > 0) {
             echo '<div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">';
-            echo "<table class='table table-striped'>";
-            echo "<thead class='thead-dark'><tr>
+            echo "<table class='table table-striped table-bordered'>";
+            echo "<thead class='table-dark' style=\"position: sticky; top: 0; z-index: 1;\"><tr>
                     <th>ID</th>
                     <th>Titre</th>
                     <th>Date</th>
@@ -177,7 +177,7 @@ require('../head.php');
             echo "<div class='alert alert-warning'>Aucun article trouvé.</div>";
         }
         ?>
-    </div>
+    </main>
 
 
     <script>
