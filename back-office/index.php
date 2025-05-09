@@ -25,7 +25,7 @@ require('head.php');
             <div class="mx-auto text-center">
                 <span class="navbar-brand">Back Office</span>
             </div>
-            <div class="ms-auto">
+            <div>
                 <a href="<?= '..' . index_front ?>" class="btn btn-primary">Front Office</a>
             </div>
         </div>

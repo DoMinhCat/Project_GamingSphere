@@ -18,7 +18,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <body>
     <?php include("../include/header.php"); ?>
 
-    <div class="container my-5">
+    <main class="container my-5">
         <h1 class="text-center mb-4">Actualités</h1>
 
         <?php
@@ -28,7 +28,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         ?>
-                <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink">
+                <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark mb-4">
                     <div class="article border rounded p-3 mb-4 shadow-sm">
                         <h2>
                             <?= htmlspecialchars($row['titre']) ?>
@@ -43,7 +43,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             echo "<div class='alert alert-danger'>Une erreur est survenue lors de la récupération des actualités.</div>";
         }
         ?>
-    </div>
+    </main>
 
     <?php include("../include/footer.php"); ?>
 </body>

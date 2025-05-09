@@ -62,6 +62,10 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
             header('Location:' . forgot_mdp . '?message=Erreur de la base de donnée');
             exit();
         }
+    } else {
+        writeLogDemandResetMdp("visiteur", false,  "l'adresse de l'email non existe");
+        header('Location:' . forgot_mdp . '?return=not_found');
+        exit();
     }
 
     $mail = new PHPMailer(true);
@@ -96,9 +100,10 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
         exit();
     }
 } else {
-    writeLogDemandResetMdp("visiteur", false,  "l'adresse de l'email non existe");
+    writeLogDemandResetMdp("visiteur", false,  "l'adresse de l'email non précisée");
     header('Location:' . forgot_mdp . '?return=not_found');
     exit();
 }
+
 
 ?>

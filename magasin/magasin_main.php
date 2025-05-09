@@ -25,7 +25,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <body>
     <?php include('../include/header.php'); ?>
 
-    <div class="container mt-4">
+    <main class="container my-5">
         <h1 class="text-center mb-4">Boutique de jeux</h1>
 
         <?php if (count($carouselGames) > 0): ?>
@@ -88,7 +88,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             <?php endforeach; ?>
         </div>
-    </div>
+    </main>
+    <?php include('../include/footer.php'); ?>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll(".btn-add-to-cart").forEach(button => {

@@ -39,7 +39,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     }
     ?>
 
-    <main>
+    <main class="mb-5">
         <div class="carousel-container">
             <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel">
                 <div class="carousel-indicators">
@@ -84,7 +84,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <a href="<?= tournois_main ?>" style="text-decoration: none;">
             <h3 class="montserrat-titre40 tournament_title mt-3">TOURNOIS EN COURS</h3>
         </a>
-        <div class="b_l">
+        <div class="b_l mx-5">
             <div class="row justify-content-center">
                 <div class="col-md-5 mb-5">
                     <div class="card my_card d-flex flex-colum">
@@ -177,7 +177,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <h3 class="montserrat-titre40 tournament_title">MAGASIN</h3>
         </a>
         <h2 class="montserrat-titre32 title_selling_item_index">Meilleurs Ventes</h2>
-        <div class="d-flex flex-row flex-wrap justify-content-start g-2 sell_card_index">
+        <div class="d-flex flex-row flex-wrap justify-content-start g-2 sell_card_index mx-5">
             <?php
             $max_cards = 6;
             $count = 0;

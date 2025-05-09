@@ -51,7 +51,7 @@ if (!isset($bdd)) {
                 $nb_messages = $stmt->fetchColumn();
             }
         ?>
-            <a href="<?= forum_category ?>?nom=<?= urlencode($categorie) ?>" class="text-decoration-none text-dark forumBlockLink">
+            <a href="<?= forum_category ?>?nom=<?= urlencode($categorie) ?>" class="text-decoration-none text-dark forumBlockLink mb-3">
                 <div class="card mb-3 shadow-sm border-0">
                     <div class="card-body d-flex justify-content-between align-items-center">
                         <div>
