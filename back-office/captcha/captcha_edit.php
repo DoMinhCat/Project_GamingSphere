@@ -58,13 +58,13 @@ require('../head.php');
 
                 <div class="mb-3">
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" value="1" name="statut" id="statut_actif" <?php if ($captcha['status'] == 1) echo 'checked' ?>>
+                        <input class="form-check-input" type="radio" value="1" name="statut" id="statut_actif" <?php if ($captcha['status'] == 1) echo 'checked'; ?>>
                         <label class="form-check-label" for="statut_actif">
                             Actif
                         </label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" value="0" name="statut" id="statut_inactif" <?php if ($captcha['status'] == 0) echo 'checked' ?>>
+                        <input class="form-check-input" type="radio" value="0" name="statut" id="statut_inactif" <?php if ($captcha['status'] == 0) echo 'checked'; ?>>
                         <label class="form-check-label" for="statut_inactif">
                             Inactif
                         </label>
