@@ -28,7 +28,7 @@ try {
                         <td class="align-middle">' . htmlspecialchars($captcha['question']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($captcha['answer']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($captcha['email']) . '</td>
-                        <td class="align-middle">' . htmlspecialchars($captcha['status']) == 1 ? 'Actif' : 'Inactif' . '</td>
+                        <td class="align-middle">' . ($captcha['status'] == 1 ? 'Actif' : 'Inactif') . '</td>
                         
                         <td>
                             <a href=' . captcha_edit_back . '?id=' . $captcha['id_news'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
