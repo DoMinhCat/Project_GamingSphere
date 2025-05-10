@@ -33,7 +33,7 @@ if (isset($_GET['id'])) {
 <html lang="fr">
 <?php
 $title = 'Modification des Captchas';
-require('../include/head.php');
+require('../head.php');
 ?>
 
 <body>
