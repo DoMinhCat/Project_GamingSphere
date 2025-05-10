@@ -159,6 +159,7 @@ require('../head.php');
 
         document.getElementById('search').addEventListener('input', fetchFilteredUsers);
         document.getElementById('statusFilter').addEventListener('change', fetchFilteredUsers);
+        document.addEventListener('DOMContentLoaded', fetchFilteredUsers);
 
         async function fetchOnlineUsers() {
             try {

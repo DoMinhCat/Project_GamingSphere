@@ -198,6 +198,7 @@ require('../head.php');
         }
 
         document.getElementById('search_results').addEventListener('input', fetchFilteredUsers);
+        document.addEventListener('DOMContentLoaded', fetchfetchFilteredUsersStats);
     </script>
 </body>
 

@@ -181,7 +181,7 @@ require('../head.php');
 
 
     <script>
-        document.getElementById('search_article').addEventListener('input', function() {
+        function fetchArticle() {
             const query = this.value;
 
             fetch('search_article.php?search=' + encodeURIComponent(query), {
@@ -193,7 +193,9 @@ require('../head.php');
                 .then(data => {
                     document.getElementById('article_results').innerHTML = data;
                 });
-        });
+        };
+        document.getElementById('search_article').addEventListener('input', fetchArticle);
+        document.addEventListener('DOMContentLoaded', fetchArticle);
     </script>
 
 </body>

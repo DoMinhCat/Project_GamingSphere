@@ -163,6 +163,7 @@ require('../head.php');
 
         document.getElementById('search').addEventListener('input', fetchFilteredUsers);
         document.getElementById('prixFilter').addEventListener('change', fetchFilteredUsers);
+        document.addEventListener('DOMContentLoaded', fetchFilteredUsers);
     </script>
 </body>
 

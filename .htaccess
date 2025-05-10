@@ -405,7 +405,11 @@ RewriteCond %{THE_REQUEST} \s/back-office/stats/log_display[\s/] [NC]
 RewriteRule ^back-office/stats/log_display/?$ /back-office/stats [R=301,L,QSA]
 RewriteRule ^back-office/stats/?$ back-office/stats/stats_main.php [L]
 
+# back-office stats/log_display/duree_visite.php/
 
+RewriteCond %{THE_REQUEST} \s/back-office/stats/duree_visite\.php [NC]
+RewriteRule ^back-office/stats/duree_visite\.php$ /back-office/stats/duree [R=301,L,QSA]
+RewriteRule ^back-office/stats/duree/?$ back-office/stats/duree_visite.php [L]
 
 
 # Pages d'erreur

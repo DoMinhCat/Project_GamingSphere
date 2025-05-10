@@ -152,6 +152,7 @@ $lines = file('../../../log/log_inscription.txt');
 
         document.getElementById('monthStats').addEventListener('change', fetchStats);
         document.getElementById('yearStats').addEventListener('change', fetchStats);
+        document.addEventListener('DOMContentLoaded', fetchStats);
     </script>
 
 </body>

@@ -211,6 +211,7 @@ require('../head.php');
 
         document.getElementById('search_captcha').addEventListener('input', fetchFilteredCaptchas);
         document.getElementById('statusFilter').addEventListener('change', fetchFilteredCaptchas);
+        document.addEventListener('DOMContentLoaded', fetchFilteredCaptchas);
     </script>
 </body>
 
