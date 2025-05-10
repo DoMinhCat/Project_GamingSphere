@@ -55,7 +55,7 @@ $lines = file('../../../log/log_transaction.txt');
                         $status = ucfirst($match[4]);
                         $email = strtolower($match[5]);
                         $note = '';
-                        if ($match[6])
+                        if (isset($match[6]))
                             $note = ucfirst($match[6]);
                     ?>
                         <tr>

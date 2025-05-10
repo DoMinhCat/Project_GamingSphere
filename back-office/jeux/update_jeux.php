@@ -1,0 +1,108 @@
+<?php
+session_start();
+$login_page = '../../connexion/login.php';
+require('../check_session.php');
+require('../../include/database.php');
+require_once __DIR__ . '/../../path.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameId'])) {
+    $gameId = htmlspecialchars($_POST['gameId']);
+    $category = htmlspecialchars($_POST['category']);
+    $releaseDate = htmlspecialchars($_POST['releaseDate']);
+    $gameName = htmlspecialchars($_POST['gameName']);
+    $gameRating = htmlspecialchars($_POST['gameRating']);
+    $platform = htmlspecialchars($_POST['platform']);
+    $gamePrice = htmlspecialchars($_POST['gamePrice']);
+    $gameType = htmlspecialchars($_POST['gameType']);
+    $gamePublisher = htmlspecialchars($_POST['gamePublisher']);
+    $gameDescription = htmlspecialchars($_POST['gameDescription']);
+
+    $imagePath = null;
+
+    if (isset($_FILES['gameImage']) && $_FILES['gameImage']['error'] === UPLOAD_ERR_OK) {
+        $type_accept = ['image/png', 'image/gif', 'image/jpeg'];
+        if (!in_array($_FILES['gameImage']['type'], $type_accept)) {
+            header('location:' . jeux_edit_back . '?message=' . urlencode('Le fichier doit être du type jpeg , png, ou gif !'));
+            exit();
+        }
+        $size_accept = 4 * 1024 * 1024; //4MB
+        if ($_FILES['gameImage']['size'] > $size_accept) {
+            header('location:' . jeux_edit_back . '?message=' . urlencode('La taille de l\'image ne doit pas dépasser 4Mo !'));
+            exit();
+        }
+        $uploadDir = '../uploads/';
+        $filename = basename($_FILES['gameImage']['name']);
+        $imagePath = $uploadDir . $filename;
+
+        if (file_exists($uploadDir . $filename)) {
+            $filename = uniqid() . "_" . $filename;
+            $imagePath = $uploadDir . $filename;
+        }
+
+        if (move_uploaded_file($_FILES['gameImage']['tmp_name'], $imagePath)) {
+            try {
+                $stmt = $bdd->prepare("SELECT image FROM jeu WHERE id_jeu = ?");
+                $stmt->execute([$gameId]);
+                $oldImage = $stmt->fetchColumn();
+
+                if (!empty($oldImage) && file_exists($uploadDir . $oldImage)) {
+                    unlink($uploadDir . $oldImage);
+                }
+
+                $imagePath = $filename;
+            } catch (PDOException $e) {
+                $_SESSION['error'] = htmlspecialchars($e->getMessage());
+                header('Location:' . jeux_back . '?error=bdd');
+                exit();
+            }
+        } else {
+            header('location:' . jeux_edit_back . '?message=' . urlencode('Erreur lors de l\'upload de l\'image !'));
+            exit();
+        }
+    } else {
+        $stmt = $bdd->prepare("SELECT image FROM jeu WHERE id_jeu = ?");
+        $stmt->execute([$gameId]);
+        $imagePath = $stmt->fetchColumn();
+    }
+
+    $query = "UPDATE jeu SET 
+    nom = ?, catégorie = ?, date_sortie = ?, note_jeu = ?, plateforme = ?, prix = ?, type = ?, éditeur = ?, description = ?";
+
+    if ($imagePath) {
+        $query .= ", image = ?";
+    }
+
+    $query .= " WHERE id_jeu = ?";
+
+    $params = [
+        $gameName,
+        $category,
+        $releaseDate,
+        $gameRating,
+        $platform,
+        $gamePrice,
+        $gameType,
+        $gamePublisher,
+        $gameDescription,
+    ];
+
+    if ($imagePath) {
+        $params[] = $imagePath;
+    }
+
+    $params[] = $gameId;
+
+    try {
+        $stmt = $bdd->prepare($query);
+        $stmt->execute($params);
+        header('Location:' . jeux_back . '?message=updated');
+        exit();
+    } catch (PDOException $e) {
+        $_SESSION['error'] = htmlspecialchars($e->getMessage());
+        header('Location:' . jeux_back . '?error=bdd');
+        exit();
+    }
+} else {
+    header('Location: ' . jeux_back . '?error=id_invalid');
+    exit();
+}

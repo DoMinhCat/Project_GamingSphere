@@ -7,8 +7,8 @@ require('../../include/check_timeout.php');
 require_once __DIR__ . '/../../path.php';
 
 try {
-    $query = $bdd->query("SELECT * FROM captcha ORDER BY id_captcha");
-    $captchas = $query->fetchAll();
+    $query = $bdd->query("SELECT id_captcha, question,answer,status,id_auteur,email FROM captcha join utilisateurs where id_utilisateurs=captcha.id_auteur ORDER BY id_captcha");
+    $captchas = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $_SESSION['error'] = htmlspecialchars($e->getMessage());
     header('Location:' . captcha_back . '?error=bdd');
@@ -23,6 +23,34 @@ if (isset($_POST['add_captcha'])) {
         $query->execute([$question, $answer, $_SESSION['user_id']]);
 
         header('Location:' . captcha_back . '?message=add_success');
+        exit();
+    } catch (PDOException $e) {
+        $_SESSION['error'] = htmlspecialchars($e->getMessage());
+        header('Location:' . captcha_back . '?error=bdd');
+        exit();
+    }
+}
+if (!empty($_GET['delete_id'])) {
+    $id_delete = htmlspecialchars($_GET['delete_id']);
+    try {
+        $query = $bdd->prepare("select id_captcha from captcha WHERE id_captcha=?");
+        $query->execute([$id_delete]);
+        $captcha = $query->fetch();
+        if (!$captcha) {
+            header('Location:' . captcha_back . '?message=id_invalid');
+            exit();
+        }
+    } catch (PDOException $e) {
+        $_SESSION['error'] = htmlspecialchars($e->getMessage());
+        header('Location:' . captcha_back . '?error=bdd');
+        exit();
+    }
+
+    try {
+        $query = $bdd->prepare("DELETE from captcha WHERE id_captcha=?");
+        $query->execute([$id_delete]);
+
+        header('Location:' . captcha_back . '?message=delete_success');
         exit();
     } catch (PDOException $e) {
         $_SESSION['error'] = htmlspecialchars($e->getMessage());
@@ -50,19 +78,20 @@ require('../head.php');
 
     <main class="container mb-5">
         <?php
-        /*$noti = '';
-            $noti_Err = '';
-            if (isset($_GET['message']) && $_GET['message'] === 'delete_success')
-                $noti = 'La question a été supprimée avec succès !';
-            elseif (isset($_GET['message']) && $_GET['message'] === 'add_success')
-                $noti = 'La question a été ajoutée avec succès !';
-            elseif (isset($_GET['message']) && $_GET['message'] === 'update_success')
-                $noti = 'La question a été modifiée avec succès !';
-            elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
-                $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
-                unset($_SESSION['error']);
-            }
-*/
+        $noti = '';
+        $noti_Err = '';
+        if (isset($_GET['message']) && $_GET['message'] === 'delete_success')
+            $noti = 'La question a été supprimée avec succès !';
+        elseif (isset($_GET['message']) && $_GET['message'] === 'add_success')
+            $noti = 'La question a été ajoutée avec succès !';
+        elseif (isset($_GET['message']) && $_GET['message'] === 'update_success')
+            $noti = 'La question a été modifiée avec succès !';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
+            $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
+            unset($_SESSION['error']);
+        } elseif (isset($_GET['error']) && $_GET['error'] === 'id_invalid')
+            $noti_Err = 'ID de la question fourni invalid !';
+
         ?>
         <?php if (!empty($noti_Err)) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -77,7 +106,7 @@ require('../head.php');
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
-        <h1 class="mb-5 text-center">Gestion des Captchas</h1>
+        <h1 class="my-5 text-center">Gestion des Captchas</h1>
 
         <!-- Formulaire d'ajout de captcha -->
         <form method="POST" action="" class="my-5">
@@ -113,7 +142,7 @@ require('../head.php');
         if (count($captchas) > 0) {
             echo '<div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">';
             echo "<table class='table table-striped table-bordered'>";
-            echo "<thead class='thead-dark' style=\"position: sticky; top: 0; z-index: 1;\"><tr>
+            echo "<thead class='table-dark' style=\"position: sticky; top: 0; z-index: 1;\"><tr>
                     <th>ID</th>
                     <th>Question</th>
                     <th>Bonne réponse</th>
@@ -130,11 +159,11 @@ require('../head.php');
                         <td class="align-middle">' . htmlspecialchars($captcha['id_captcha']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($captcha['question']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($captcha['answer']) . '</td>
-                        <td class="align-middle">' . htmlspecialchars($captcha['id_auteur']) . '</td>
-                        <td class="align-middle">' . htmlspecialchars($captcha['status']) . '</td>
+                        <td class="align-middle">' . htmlspecialchars($captcha['email']) . '</td>
+                        <td class="align-middle">' . htmlspecialchars($captcha['status']) == 1 ? 'Actif' : 'Inactif' . '</td>
                         
                         <td>
-                            <a href=' . captcha_edit_back . '?id=' . $captcha['id_news'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
+                            <a href=' . captcha_edit_back . '?id=' . $captcha['id_captcha'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
                             <button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $captcha['id_captcha'] . '">Supprimer</button>';
                 echo '<div class="modal fade" id="modal' . $captcha['id_captcha'] . '" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog">
@@ -164,8 +193,25 @@ require('../head.php');
         ?>
     </main>
 
+    <script>
+        function fetchFilteredCaptchas() {
+            const query = document.getElementById('search_captcha').value;
+            const status = document.getElementById('statusFilter').value;
 
+            fetch(`search_captcha.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('captcha_results').innerHTML = data;
+                });
+        }
 
+        document.getElementById('search_captcha').addEventListener('input', fetchFilteredCaptchas);
+        document.getElementById('statusFilter').addEventListener('change', fetchFilteredCaptchas);
+    </script>
 </body>
 
 </html>

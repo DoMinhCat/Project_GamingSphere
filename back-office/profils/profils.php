@@ -159,8 +159,7 @@ require('../head.php');
 
         document.getElementById('search').addEventListener('input', fetchFilteredUsers);
         document.getElementById('statusFilter').addEventListener('change', fetchFilteredUsers);
-    </script>
-    <script>
+
         async function fetchOnlineUsers() {
             try {
                 const res = await fetch('../../status_user/reload_back-office.php');
