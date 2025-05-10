@@ -74,6 +74,9 @@ require('../head.php');
     <?php
     $page = index_back;
     include('../navbar.php');
+    echo '<pre>';
+    var_dump($statusFilter); // Debugging to check the value of statusFilter
+    echo '</pre>';
     ?>
 
     <main class="container mb-5">
@@ -211,6 +214,8 @@ require('../head.php');
 
         document.getElementById('search_captcha').addEventListener('input', fetchFilteredCaptchas);
         document.getElementById('statusFilter').addEventListener('change', fetchFilteredCaptchas);
+
+        document.addEventListener('DOMContentLoaded', fetchFilteredCaptchas);
     </script>
 </body>
 
