@@ -7,7 +7,8 @@ if ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest' || !isset($_GET['sear
 }
 $search = trim($_GET['search'] ?? '');
 $statusFilter = trim($_GET['status'] ?? '');
-
+var_dump($_GET['search']);
+var_dump($_GET['status']);
 try {
     if (!empty($search)) {
         $stmt = $bdd->prepare("SELECT id_captcha, question,answer,status,id_auteur,email FROM captcha join utilisateurs where id_utilisateurs=captcha.id_auteur AND (question LIKE :search OR answer LIKE :search) ORDER BY id_captcha");

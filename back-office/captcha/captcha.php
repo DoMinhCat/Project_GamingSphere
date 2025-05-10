@@ -74,9 +74,6 @@ require('../head.php');
     <?php
     $page = index_back;
     include('../navbar.php');
-    echo '<pre>';
-    var_dump($statusFilter); // Debugging to check the value of statusFilter
-    echo '</pre>';
     ?>
 
     <main class="container mb-5">
@@ -87,7 +84,7 @@ require('../head.php');
             $noti = 'La question a été supprimée avec succès !';
         elseif (isset($_GET['message']) && $_GET['message'] === 'add_success')
             $noti = 'La question a été ajoutée avec succès !';
-        elseif (isset($_GET['message']) && $_GET['message'] === 'update_success')
+        elseif (isset($_GET['message']) && $_GET['message'] === 'updated')
             $noti = 'La question a été modifiée avec succès !';
         elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
             $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
@@ -200,7 +197,9 @@ require('../head.php');
         function fetchFilteredCaptchas() {
             const query = document.getElementById('search_captcha').value;
             const status = document.getElementById('statusFilter').value;
-
+            // Log the parameters to check if they're being passed correctly
+            console.log("Search:", query);
+            console.log("Status:", status);
             fetch(`search_captcha.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}`, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
