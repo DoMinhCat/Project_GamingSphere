@@ -22,12 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameId'])) {
     if (isset($_FILES['gameImage']) && $_FILES['gameImage']['error'] === UPLOAD_ERR_OK) {
         $type_accept = ['image/png', 'image/gif', 'image/jpeg'];
         if (!in_array($_FILES['gameImage']['type'], $type_accept)) {
-            header('location:' . jeux_edit_back . '?message=' . urlencode('Le fichier doit être du type jpeg , png, ou gif !'));
+            $_SESSION['message'] = "Le fichier doit être du type jpeg , png, ou gif !";
+            header('location:' . jeux_edit_back);
             exit();
         }
         $size_accept = 4 * 1024 * 1024; //4MB
         if ($_FILES['gameImage']['size'] > $size_accept) {
-            header('location:' . jeux_edit_back . '?message=' . urlencode('La taille de l\'image ne doit pas dépasser 4Mo !'));
+            $_SESSION['message'] = "La taille de l'image ne doit pas dépasser 4Mo !";
+            header('location:' . jeux_edit_back);
             exit();
         }
         $uploadDir = '../uploads/';

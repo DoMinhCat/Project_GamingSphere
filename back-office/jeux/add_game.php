@@ -21,7 +21,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameName'])) {
 
 
     if (isset($_FILES['gameImage']) && $_FILES['gameImage']['error'] === UPLOAD_ERR_OK) {
-
+        $type_accept = ['image/png', 'image/gif', 'image/jpeg'];
+        if (!in_array($_FILES['gameImage']['type'], $type_accept)) {
+            $_SESSION['message'] = "Le fichier doit être du type jpeg , png, ou gif !";
+            header('location:' . jeux_add_back);
+            exit();
+        }
+        $size_accept = 4 * 1024 * 1024; //4MB
+        if ($_FILES['gameImage']['size'] > $size_accept) {
+            $_SESSION['message'] = "La taille de l'image ne doit pas dépasser 4Mo !";
+            header('location:' . jeux_add_back);
+            exit();
+        }
         $uploadDir = "../uploads/";
 
         $filename = preg_replace("/[^a-zA-Z0-9\._-]/", "_", $_FILES['gameImage']['name']);
@@ -59,13 +70,26 @@ $title = 'Gestions des jeux';
 require('../head.php');
 ?>
 
-<body class="pb-4">
+<body>
     <?php
     $page = jeux_back;
     include('../navbar.php');
     ?>
-    <div class="container my-5">
-        <h1 class="text-center mb-3" style="font-size: 1.5rem;">Ajouter un jeu</h1>
+    <main class="container mb-5">
+        <?php if (!empty($_GET['message'])) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_GET['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
+        <?php if (!empty($_SESSION['message'])) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_SESSION['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php unset($_SESSION['message']);
+        endif ?>
+        <h1 class="text-center mt-5 mb-3" style="font-size: 1.5rem;">Ajouter un jeu</h1>
 
         <form action="" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
             <div class="mb-2">
@@ -104,7 +128,7 @@ require('../head.php');
                 <label for="gameImage" class="form-label">Image du jeu :</label>
                 <input type="file" id="gameImage" name="gameImage" class="form-control" accept="image/*" required>
             </div>
-            <div class="mb-2">
+            <div class="mb-5">
                 <label for="gameDescription" class="form-label">Description:</label>
                 <input type="text" id="gameDescription" name="gameDescription" class="form-control" required>
             </div>
@@ -112,7 +136,7 @@ require('../head.php');
                 <button type="submit" class="btn btn-primary">Ajouter le jeu</button>
             </div>
         </form>
-    </div>
+    </main>
 </body>
 
 </html>

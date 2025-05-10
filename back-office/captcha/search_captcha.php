@@ -17,9 +17,15 @@ try {
     }
 
     $captchas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $filtered = [];
 
-    if (count($captchas) > 0) {
-        foreach ($captchas as $captcha) {
+    foreach ($captchas as $captcha) {
+        if ($statusFilter === '' || $statusFilter == $captcha['status']) {
+            $filtered[] = $captcha;
+        }
+    }
+    if (count($filtered) > 0) {
+        foreach ($filtered as $captcha) {
             if ($statusFilter != $captcha['status']) continue;
 
 
@@ -31,7 +37,7 @@ try {
                         <td class="align-middle">' . ($captcha['status'] == 1 ? 'Actif' : 'Inactif') . '</td>
                         
                         <td>
-                            <a href=' . captcha_edit_back . '?id=' . $captcha['id_news'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
+                            <a href=' . captcha_edit_back . '?id=' . $captcha['id_captcha'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
                             <button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $captcha['id_captcha'] . '">Supprimer</button>';
             echo '<div class="modal fade" id="modal' . $captcha['id_captcha'] . '" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog">

@@ -117,7 +117,7 @@ require('../head.php');
             </div>
             <div class="mb-3">
                 <label for="answer" class="form-label">La bonne réponse</label>
-                <textarea class="form-control" id="answer" name="answer" rows="1" required></textarea>
+                <textarea class="form-control" id="answer" name="answer" rows="1" placeholder="Sananes" required></textarea>
             </div>
             <button type="submit" name="add_captcha" class="btn btn-primary">Ajouter captcha</button>
         </form>

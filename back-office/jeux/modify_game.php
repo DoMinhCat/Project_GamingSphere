@@ -49,6 +49,13 @@ require('../head.php');
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
+        <?php if (!empty($_SESSION['message'])) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_SESSION['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php unset($_SESSION['message']);
+        endif ?>
         <h1 class="text-center mt-5 mb-4">Modifier le jeu</h1>
         <?php if (isset($game)): ?>
             <form action="update_jeux.php" method="POST" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
