@@ -131,7 +131,7 @@ require('../head.php');
                     <input type="text" id="search_captcha" class="form-control searchBoxBack" placeholder="Rechercher par question ou réponse">
                     <div class="d-flex ms-2" style="gap: 0.5rem;">
                     <select id="statusFilter" class="form-select searchBoxBack">
-                        <option value="">Tous</option>
+                        <option value="Tout">Tout</option>
                         <option value="1">Actif</option>
                         <option value="0">Inactif</option>
                     </select>

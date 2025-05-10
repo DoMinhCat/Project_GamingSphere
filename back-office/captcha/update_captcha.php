@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_captcha'])) {
     $answer = htmlspecialchars($_POST['answer']);
     $status = htmlspecialchars($_POST['status']);
     try {
-        $stmt = $bdd->prepare("UPDATE captcha SET question=?, answer=?, statut=? WHERE id_captcha = ?");
+        $stmt = $bdd->prepare("UPDATE captcha SET question=?, answer=?, status=? WHERE id_captcha = ?");
         $stmt->execute([$question, $answer, $status, $id]);
         header('Location:' . captcha_back . '?message=updated');
         exit();

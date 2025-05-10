@@ -108,7 +108,7 @@ require('../head.php');
 
                 <div class="mb-3">
                     <label for="gameImage" class="form-label">Image du jeu (png, gif, jpeg autorisé)</label>
-                    <input type="file" class="form-control" id="gameImage" name="gameImage">
+                    <input type="file" class="form-control" id="gameImage" name="gameImage" accept="image/*">
                     <?php if (!empty($game['image'])): ?>
                         <p class="mt-2">Image actuelle : <img src="../uploads/<?php echo htmlspecialchars($game['image']); ?>" alt="Image du jeu" class="img-thumbnail" style="max-width: 100%;"></p>
                     <?php endif; ?>

@@ -20,7 +20,7 @@ try {
     $filtered = [];
 
     foreach ($captchas as $captcha) {
-        if ($statusFilter === '' || $statusFilter == $captcha['status']) {
+        if ($statusFilter === '' || $statusFilter === 'Tout' || $statusFilter == $captcha['status']) {
             $filtered[] = $captcha;
         }
     }
