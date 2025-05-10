@@ -197,9 +197,7 @@ require('../head.php');
         function fetchFilteredCaptchas() {
             const query = document.getElementById('search_captcha').value;
             const status = document.getElementById('statusFilter').value;
-            // Log the parameters to check if they're being passed correctly
-            console.log("Search:", query);
-            console.log("Status:", status);
+
             fetch(`search_captcha.php?search=${encodeURIComponent(query)}&status=${encodeURIComponent(status)}`, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
