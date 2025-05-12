@@ -32,7 +32,6 @@ try {
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
-        // Vérifiez les erreurs d'upload
         if ($_FILES['profile_picture']['error'] !== UPLOAD_ERR_OK) {
             error_log("Erreur d'upload : " . $_FILES['profile_picture']['error']);
             echo "Erreur lors du téléchargement : " . $_FILES['profile_picture']['error'];
@@ -45,32 +44,27 @@ try {
         $relativePath = '/uploads/profiles_pictures/' . basename($filename);
         $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
 
-
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
 
-        // Vérifiez si le fichier temporaire existe
         if (!file_exists($_FILES['profile_picture']['tmp_name'])) {
             echo "Le fichier temporaire n'existe pas.";
             exit;
         }
 
-        // Vérifiez si le fichier est une image
         $check = getimagesize($_FILES['profile_picture']['tmp_name']);
         if ($check === false) {
             echo "Le fichier n'est pas une image.";
             exit;
         }
 
-        // Vérifiez les extensions autorisées
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
         if (!in_array($imageFileType, $allowedExtensions)) {
             echo "Seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.";
             exit;
         }
 
-        // Déplacez le fichier
         if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $uploadFile)) {
             $stmt = $bdd->prepare("UPDATE utilisateurs SET photo_profil = ? WHERE id_utilisateurs = ?");
             $stmt->execute([$relativePath, $userId]);
@@ -107,13 +101,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <h3 class="card-title montserrat-titre40 text-center">Mon compte</h3>
             <hr>
             <div class="text-center mb-4">
-                    <h4>Photo de profil</h4>
-                    <?php if (!empty($user['photo_profil']) && file_exists(__DIR__ . '/../' . $user['photo_profil'])): ?>
-                        <img src="<?php = htmlspecialchars($relativePath) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
-                    <?php else: ?>
-                        <p>Aucune photo de profil disponible.</p>
-                    <?php endif; ?>
-                </div>
+                <h4>Photo de profil</h4>
+                <?php if (!empty($user['photo_profil'])): ?>
+                    <img src="../<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
+                <?php else: ?>
+                    <p>Aucune photo de profil disponible.</p>
+                <?php endif; ?>
                 <form method="POST" enctype="multipart/form-data" class="mt-3">
                     <button type="button" class="btn btn-dark" onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
                         Modifier la photo de profil
