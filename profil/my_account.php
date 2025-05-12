@@ -34,6 +34,7 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
         // Vérifiez les erreurs d'upload
         if ($_FILES['profile_picture']['error'] !== UPLOAD_ERR_OK) {
+            error_log("Erreur d'upload : " . $_FILES['profile_picture']['error']);
             echo "Erreur lors du téléchargement : " . $_FILES['profile_picture']['error'];
             exit;
         }
@@ -44,7 +45,7 @@ try {
         $relativePath = '/uploads/profiles_pictures/' . basename($filename);
         $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
 
-        // Vérifiez si le dossier cible existe, sinon créez-le
+      
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
