@@ -107,10 +107,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <h3 class="card-title montserrat-titre40 text-center">Mon compte</h3>
             <hr>
             <div class="text-center mb-4">
-                <h4>Photo de profil</h4>
-                <?php if (!empty($user['photo_profil']) && file_exists(__DIR__ . '/../' . $user['photo_profil'])): ?>
-                    <img src="../<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
-                <?php endif; ?>
+                    <h4>Photo de profil</h4>
+                    <?php if (!empty($user['photo_profil']) && file_exists(__DIR__ . '/../' . $user['photo_profil'])): ?>
+                        <img src="/PA<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
+                    <?php else: ?>
+                        <p>Aucune photo de profil disponible.</p>
+                    <?php endif; ?>
+                </div>
                 <form method="POST" enctype="multipart/form-data" class="mt-3">
                     <button type="button" class="btn btn-dark" onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
                         Modifier la photo de profil
