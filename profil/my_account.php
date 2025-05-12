@@ -41,7 +41,7 @@ try {
         $uploadDir = __DIR__ . '/uploads/profiles_pictures/';
         $filename = uniqid() . '_' . str_replace(' ', '_', $_FILES['profile_picture']['name']); // Nom unique pour éviter les conflits
         $uploadFile = $uploadDir . basename($filename);
-        $relativePath = '/uploads/profiles_pictures/' . basename($filename);
+        $relativePath = 'uploads/profiles_pictures/' . basename($filename);
         $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
 
         if (!is_dir($uploadDir)) {
@@ -103,7 +103,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="text-center mb-4">
                 <h4>Photo de profil</h4>
                 <?php if (!empty($user['photo_profil'])): ?>
-                    <img src="../<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
+                    <img src="<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
                 <?php else: ?>
                     <p>Aucune photo de profil disponible.</p>
                 <?php endif; ?>
