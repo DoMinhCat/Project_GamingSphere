@@ -1,17 +1,15 @@
 let startTime = Date.now();
 let totalTime = 0;
 
-function sendTime(duration) {
-  navigator.sendBeacon(
-    "/include/visit_duration.php",
-    JSON.stringify({
-      category: pageCategory,
-      duration: duration,
-    })
-  );
+async function sendTime(duration) {
+  const data = new FormData();
+  data.append("category", pageCategory);
+  data.append("duration", duration);
+
+  navigator.sendBeacon("/include/visit_duration.php", data);
 }
 
-function pauseTimer() {
+async function pauseTimer() {
   const now = Date.now();
   const duration = Math.round((now - startTime) / 1000);
   totalTime += duration;

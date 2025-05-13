@@ -9,17 +9,16 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$data = json_decode(file_get_contents("php://input"), true);
+$category = $_POST['category'] ?? null;
+$duration = isset($_POST['duration']) ? (int)$_POST['duration'] : null;
 
-if (!isset($data['category'], $data['duration'])) {
+if (!$category || $duration === null) {
     http_response_code(400);
     exit;
 }
 
-$userId = $_SESSION['user_id'];
-$category = $data['category'];
-$duration = (int)$data['duration'];
 
+$userId = $_SESSION['user_id'];
 $query = $bdd->prepare("SELECT id FROM visit_duration WHERE id_utilisateur = ? AND category = ?");
 $query->execute([$userId, $category]);
 
