@@ -37,6 +37,8 @@ $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="fr">
 <?php
 $title = 'Détails de l\'équipe';
+$pageCategory = 'equipe';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 require('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';

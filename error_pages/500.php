@@ -5,6 +5,8 @@ require_once __DIR__ . '/../path.php';
 <html lang="fr">
 <?php
 $title = '500 INTERNAL SERVER ERROR';
+$pageCategory = 'error';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
 ?>
 

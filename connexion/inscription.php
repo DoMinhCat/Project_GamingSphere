@@ -12,6 +12,8 @@ require_once __DIR__ . '/../path.php';
 
 <?php
 $title = 'S\'inscrire';
+$pageCategory = 'connexion';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
 $error = isset($_GET['error']) ? $_GET['error'] : "";
 

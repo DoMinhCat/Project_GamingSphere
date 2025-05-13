@@ -38,6 +38,8 @@ try {
 <html lang="fr">
 <?php
 $title = "Profil de " . htmlspecialchars($pseudo);
+$pageCategory = 'profil';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 require('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';

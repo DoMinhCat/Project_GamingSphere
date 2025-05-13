@@ -12,7 +12,9 @@ fclose($stream);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
-<?php $title = 'Annuler le transfert';
+<?php $title = 'Annulation du transfert';
+$pageCategory = 'credits';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
   echo '<script src="../include/check_timeout.js"></script>';

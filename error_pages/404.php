@@ -5,6 +5,8 @@ require_once __DIR__ . '/../path.php';
 <html lang="fr">
 <?php
 $title = '404 NOT FOUND';
+$pageCategory = 'error';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
 ?>
 

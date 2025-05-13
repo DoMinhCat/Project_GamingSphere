@@ -8,6 +8,8 @@ require('../include/check_timeout.php');
 <html lang="fr">
 <?php
 $title = 'Forum - catégorie';
+$pageCategory = 'forum';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 require('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';

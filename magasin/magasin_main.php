@@ -16,6 +16,8 @@ $games = $stmtAllGames->fetchAll(PDO::FETCH_ASSOC);
 
 <?php
 $title = 'Boutique';
+$pageCategory = 'magasin';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';

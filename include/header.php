@@ -249,7 +249,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
               <li><button id="theme-btn" class="dropdown-item btn btn-sm py-3">Activer/Désactiver le mode nuit</button></li>
               <?php
               if (isset($_SESSION['user_email'])): ?>
-                <li><a href="/connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">
+                <li><a id="btn-deconnexion" href="/connexion/deconnexion.php" class="dropdown-item btn btn-sm py-3">
                     Déconnexion
                   </a></li>
               <?php endif ?>

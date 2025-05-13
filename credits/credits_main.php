@@ -37,8 +37,10 @@ try {
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php $title = 'Mes Crédits'; ?>
-<?php include('../include/head.php');
+<?php $title = 'Mes Crédits';
+$pageCategory = 'credits';
+echo "<script>const pageCategory = '$pageCategory';</script>";
+include('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
   echo '<script src="../include/check_timeout.js"></script>';
 }

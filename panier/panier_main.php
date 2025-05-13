@@ -26,6 +26,8 @@ $credits = $utilisateur['credits'] ?? 0;
 
 <?php
 $title = 'Mon Panier';
+$pageCategory = 'panier';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';

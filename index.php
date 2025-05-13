@@ -13,6 +13,8 @@ $pseudo = htmlspecialchars($_GET['pseudo'] ?? "");
 <html lang="fr">
 <?php
 $title = 'Acceuil';
+$pageCategory = 'accueil';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 require('include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="include/check_timeout.js"></script>';
@@ -63,7 +65,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="include/img/Valorant-Skin-Hub.avif" class="d-block c-img img-fluid" alt="Skin Valorant" onclick="window.location.href='magasin.php'">
+                        <img src="include/img/Valorant-Skin-Hub.avif" class="d-block c-img img-fluid" alt="Skin Valorant" onclick="window.location.href='<?= magasin_main ?>'">
                         <div class="carousel-caption d-none d-md-block lato24">
                             <h5>Valorant Skins</h5>
                             <p>Explore the newest skins available in Valorant.</p>

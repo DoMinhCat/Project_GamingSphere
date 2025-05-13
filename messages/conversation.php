@@ -85,6 +85,8 @@ $isUserOnline = isOnline($otherUserStatus['last_active']);
 <html lang="fr">
 <?php
 $title = 'Conversation avec ' . htmlspecialchars($otherUser['pseudo']);
+$pageCategory = 'message';
+echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
 if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
