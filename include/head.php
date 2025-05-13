@@ -1,6 +1,6 @@
 <?php
 $this_page = basename($_SERVER['PHP_SELF']);
-include('/include/visit_duration.php');
+include(__DIR__ . '/visit_duration.php');
 ?>
 
 <head>

@@ -3,7 +3,7 @@ let totalTime = 0;
 
 function sendTime(seconds) {
   navigator.sendBeacon(
-    "/track_time.php",
+    "/include/visit_duration.php",
     JSON.stringify({
       category: pageCategory,
       seconds: seconds,
