@@ -11,22 +11,22 @@ if (!isset($_SESSION['user_id'])) {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (!isset($data['category'], $data['seconds'])) {
+if (!isset($data['category'], $data['duration'])) {
     http_response_code(400);
     exit;
 }
 
 $userId = $_SESSION['user_id'];
 $category = $data['category'];
-$seconds = (int)$data['seconds'];
+$duration = (int)$data['duration'];
 
 $query = $bdd->prepare("SELECT id FROM visit_duration WHERE id_utilisateur = ? AND category = ?");
 $query->execute([$userId, $category]);
 
 if ($query->rowCount() > 0) {
     $update = $bdd->prepare("UPDATE visit_duration SET duration = duration + ? WHERE id_utilisateur = ? AND category = ?");
-    $update->execute([$seconds, $userId, $category]);
+    $update->execute([$duration, $userId, $category]);
 } else {
     $insert = $bdd->prepare("INSERT INTO visit_duration (id_utilisateur, category, duration) VALUES (?, ?, ?)");
-    $insert->execute([$userId, $category, $seconds]);
+    $insert->execute([$userId, $category, $duration]);
 }

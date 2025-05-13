@@ -1,12 +1,12 @@
 let startTime = Date.now();
 let totalTime = 0;
 
-function sendTime(seconds) {
+function sendTime(duration) {
   navigator.sendBeacon(
     "/include/visit_duration.php",
     JSON.stringify({
       category: pageCategory,
-      seconds: seconds,
+      duration: duration,
     })
   );
 }
