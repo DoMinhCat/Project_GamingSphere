@@ -6,7 +6,7 @@ require_once(__DIR__ . '/database.php');
 
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
-    exit;
+    exit();
 }
 
 $category = $_POST['category'] ?? null;
@@ -16,7 +16,7 @@ file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true));
 
 if (!$category || $duration === null) {
     http_response_code(400);
-    exit;
+    exit();
 }
 
 $userId = $_SESSION['user_id'];
