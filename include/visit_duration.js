@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let totalTime = 0;
 
   function sendTime(duration) {
-    const data = new FormData();
-    data.append("category", pageCategory);
-    data.append("duration", duration);
-    console.log("Sending:", pageCategory, duration); //DEBUG
-    navigator.sendBeacon("/include/visit_duration.php", data);
+    const params = new URLSearchParams();
+    params.append("category", pageCategory);
+    params.append("duration", duration);
+
+    navigator.sendBeacon("/include/visit_duration.php", params.toString());
   }
 
   function pauseTimer() {
