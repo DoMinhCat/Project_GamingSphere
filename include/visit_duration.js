@@ -3,13 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let totalTime = 0;
 
   function sendTime(duration) {
-    const params = new URLSearchParams();
-    params.append("category", pageCategory);
-    params.append("duration", duration);
+    const data = new URLSearchParams();
+    data.append("category", pageCategory);
+    data.append("duration", duration);
 
-    const blob = new Blob([params.toString()], {
+    const blob = new Blob([data.toString()], {
       type: "application/x-www-form-urlencoded;charset=UTF-8",
     });
+
     navigator.sendBeacon("/include/visit_duration.php", blob);
   }
 
