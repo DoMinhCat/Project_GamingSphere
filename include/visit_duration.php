@@ -9,8 +9,11 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$category = $_POST['category'] ?? null;
-$duration = isset($_POST['duration']) ? (int)$_POST['duration'] : null;
+parse_str(file_get_contents("php://input"), $parsedData);
+
+$category = $parsedData['category'] ?? null;
+$duration = isset($parsedData['duration']) ? (int)$parsedData['duration'] : null;
+
 
 file_put_contents(__DIR__ . '/debug.log', file_get_contents("php://input"));
 
