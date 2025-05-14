@@ -15,7 +15,8 @@ $category = $parsedData['category'] ?? null;
 $duration = isset($parsedData['duration']) ? (int)$parsedData['duration'] : null;
 
 
-file_put_contents(__DIR__ . '/debug.log', file_get_contents("php://input"));
+file_put_contents(__DIR__ . '/debug.log', print_r($parsedData, true));
+
 
 
 if (!$category || $duration === null) {

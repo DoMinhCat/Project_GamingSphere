@@ -7,7 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     params.append("category", pageCategory);
     params.append("duration", duration);
 
-    navigator.sendBeacon("/include/visit_duration.php", params.toString());
+    const blob = new Blob([params.toString()], {
+      type: "application/x-www-form-urlencoded;charset=UTF-8",
+    });
+    navigator.sendBeacon("/include/visit_duration.php", blob);
   }
 
   function pauseTimer() {
