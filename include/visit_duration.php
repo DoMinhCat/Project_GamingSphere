@@ -12,6 +12,11 @@ if (!isset($_SESSION['user_id'])) {
 $category = $_POST['category'] ?? null;
 $duration = isset($_POST['duration']) ? (int)$_POST['duration'] : null;
 
+file_put_contents(__DIR__ . '/debug.log', json_encode([
+    'category' => $_POST['category'] ?? null,
+    'duration' => $_POST['duration'] ?? null
+], JSON_PRETTY_PRINT));
+
 if (!$category || $duration === null) {
     http_response_code(400);
     exit;
