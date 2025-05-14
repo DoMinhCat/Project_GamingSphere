@@ -9,21 +9,15 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-parse_str(file_get_contents("php://input"), $parsedData);
+$category = $_POST['category'] ?? null;
+$duration = isset($_POST['duration']) ? (int)$_POST['duration'] : null;
 
-$category = $parsedData['category'] ?? null;
-$duration = isset($parsedData['duration']) ? (int)$parsedData['duration'] : null;
-
-
-file_put_contents(__DIR__ . '/debug.log', print_r($parsedData, true));
-
-
+file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true));
 
 if (!$category || $duration === null) {
     http_response_code(400);
     exit;
 }
-
 
 $userId = $_SESSION['user_id'];
 $query = $bdd->prepare("SELECT id FROM visit_duration WHERE id_utilisateur = ? AND category = ?");

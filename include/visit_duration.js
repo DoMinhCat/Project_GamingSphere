@@ -2,16 +2,16 @@ document.addEventListener("DOMContentLoaded", () => {
   let startTime = Date.now();
   let totalTime = 0;
 
-  function sendTime(duration) {
-    const data = new URLSearchParams();
-    data.append("category", pageCategory);
-    data.append("duration", duration);
-
-    const blob = new Blob([data.toString()], {
-      type: "application/x-www-form-urlencoded;charset=UTF-8",
+  async function sendTime(duration) {
+    fetch("/include/visit_duration.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `category=${encodeURIComponent(
+        pageCategory
+      )}&duration=${encodeURIComponent(duration)}`,
     });
-
-    navigator.sendBeacon("/include/visit_duration.php", blob);
   }
 
   function pauseTimer() {
