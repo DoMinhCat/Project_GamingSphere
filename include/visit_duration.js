@@ -15,10 +15,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function pauseTimer() {
+    if (!startTime) return;
+
     const now = Date.now();
     const duration = Math.round((now - startTime) / 1000);
-    totalTime += duration;
-    sendTime(duration);
+
+    if (duration > 0 && duration < 3600) {
+      sendTime(duration);
+    }
+
     startTime = null;
   }
 
