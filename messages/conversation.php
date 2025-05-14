@@ -43,7 +43,7 @@ try {
     echo "Erreur : " . htmlspecialchars($e->getMessage());
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
-    $messageContent = trim(htmlspecialchars($_POST['message']));
+    $messageContent = trim($_POST['message']);
     if (!empty($messageContent)) {
         try {
             $stmt = $bdd->prepare("
