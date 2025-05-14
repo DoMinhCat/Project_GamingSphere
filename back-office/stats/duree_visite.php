@@ -75,7 +75,7 @@ ORDER BY
                 <thead class="table-dark" style="position: sticky; top: 0; z-index: 1;">
                     <tr>
                         <th>Utilisateur</th>
-
+                        <th>Total</th>
                         <th>Accueil</th>
                         <th>Profil</th>
                         <th>Actualité</th>
@@ -93,21 +93,23 @@ ORDER BY
                 <tbody id="list">
                     <?php foreach ($lines as $line) {
                         $email = $line['email'];
-                        $accueil = $line['accueil'] / 60;
-                        $profil = $line['profil'] / 60;
-                        $actualite = $line['actualite'] / 60;
-                        $commnunaute = $line['commnunaute'] / 60;
-                        $forum = $line['forum'] / 60;
-                        $tournois = $line['tournois'] / 60;
-                        $equipe = $line['equipe'] / 60;
-                        $message = $line['message'] / 60;
-                        $magasin = $line['magasin'] / 60;
-                        $credits = $line['credits'] / 60;
-                        $panier = $line['panier'] / 60;
-                        $error = $line['error'] / 60;
+                        $total = $line['total_time'];
+                        $accueil = $line['accueil'];
+                        $profil = $line['profil'];
+                        $actualite = $line['actualite'];
+                        $commnunaute = $line['commnunaute'];
+                        $forum = $line['forum'];
+                        $tournois = $line['tournois'];
+                        $equipe = $line['equipe'];
+                        $message = $line['message'];
+                        $magasin = $line['magasin'];
+                        $credits = $line['credits'];
+                        $panier = $line['panier'];
+                        $error = $line['error'];
                     ?>
                         <tr>
                             <td class="align-middle"><?= $email ?></td>
+                            <td class="align-middle"><?= $total ?></td>
                             <td class="align-middle"><?= $accueil ?></td>
                             <td class="align-middle"><?= $profil ?></td>
                             <td class="align-middle"><?= $actualite ?></td>

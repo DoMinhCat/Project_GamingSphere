@@ -18,9 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!startTime) return;
 
     const now = Date.now();
-    const duration = Math.round((now - startTime) / 1000);
+    const duration = Math.round((now - startTime) / 1000 / 60);
 
-    if (duration > 0 && duration < 3600) {
+    if (duration > 0) {
       sendTime(duration);
     }
 
