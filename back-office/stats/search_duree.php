@@ -6,7 +6,7 @@ if ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest' || !isset($_GET['sear
     exit('Accès non-autorisé');
 }
 $search = trim($_GET['search'] ?? '');
-$option = "WHERE email LIKE :search ";
+$option = $search ? "WHERE email LIKE :search " : "";
 try {
 
     $sql = "SELECT
