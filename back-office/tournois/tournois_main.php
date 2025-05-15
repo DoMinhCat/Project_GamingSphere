@@ -168,7 +168,6 @@ require('../head.php');
         document.getElementById('search_tournois').addEventListener('input', fetchFilteredUsers);
         document.getElementById('statusFilter').addEventListener('change', fetchFilteredUsers);
         document.getElementById('typeFilter').addEventListener('change', fetchFilteredUsers);
-        document.addEventListener('DOMContentLoaded', fetchfetchFilteredUsersStats);
     </script>
 </body>
 

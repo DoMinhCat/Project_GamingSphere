@@ -46,27 +46,11 @@ ORDER BY
     ?>
 
     <main class="container my-5">
-        <h1 class="my-5 text-center">Durée de la visite sur le site</h1>
+        <h1 class="mt-5 mb-2 text-center">Durée de la visite sur le site</h1>
+        <h2 class="mb-5 text-center">(minutes)</h2>
         <div class="form-group mb-2 pt-3 pb-2">
             <div class="d-flex gap-2">
                 <input type="text" id="search_duree" class="form-control searchBoxBack" placeholder="Rechercher par email">
-                <div class="d-flex ms-2" style="gap: 0.5rem;">
-                    <select id="categoryFilter" class="form-select searchBoxBack">
-                        <option value="">Tout</option>
-                        <option value="actualite">Actualité</option>
-                        <option value="communaute">Communauté</option>
-                        <option value="credits">Crédits</option>
-                        <option value="error">Erreur</option>
-                        <option value="forum">Forum</option>
-                        <option value="magasin">Magasin</option>
-                        <option value="message">Message</option>
-                        <option value="panier">Panier</option>
-                        <option value="profil">Profil</option>
-                        <option value="equipe">Equipe</option>
-                        <option value="tournois">Tournoi</option>
-                        <option value="accueil">Accueil</option>
-                    </select>
-                </div>
             </div>
         </div>
 
@@ -97,7 +81,7 @@ ORDER BY
                         $accueil = $line['accueil'];
                         $profil = $line['profil'];
                         $actualite = $line['actualite'];
-                        $commnunaute = $line['commnunaute'];
+                        $commnunaute = $line['communaute'];
                         $forum = $line['forum'];
                         $tournois = $line['tournois'];
                         $equipe = $line['equipe'];
@@ -128,9 +112,88 @@ ORDER BY
             </table>
         </div>
         <!-- total time sur chaque category (time all user) -->
-        <!-- table time sur chaque category de chauqe user -->
-
+        <h1 class="text-center my-5">Statistiques</h1>
+        <div class="d-flex flex-column">
+            <div class="d-flex align-items-center mb-4 gap-2">
+                <select id="categoryFilter" class="form-select searchBoxBack">
+                    <option value="">Tout</option>
+                    <option value="actualite">Actualité</option>
+                    <option value="communaute">Communauté</option>
+                    <option value="credits">Crédits</option>
+                    <option value="error">Erreur</option>
+                    <option value="forum">Forum</option>
+                    <option value="magasin">Magasin</option>
+                    <option value="message">Message</option>
+                    <option value="panier">Panier</option>
+                    <option value="profil">Profil</option>
+                    <option value="equipe">Equipe</option>
+                    <option value="tournois">Tournoi</option>
+                    <option value="accueil">Accueil</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center mb-3 gap-2">
+                <h5>Durée total sur le site : </h5>
+                <h5 id="site"></h5>
+            </div>
+            <div class="d-flex align-items-center mb-3 gap-2">
+                <h5>Durée total sur</h5>
+                <h5 id="total"></h5>
+            </div>
+            <div class="d-flex align-items-center mb-3 gap-2">
+                <h5>Pages les plus/moins visitées : </h5>
+                <h5 id="page"></h5>
+            </div>
+            <div class="d-flex align-items-center mb-3 gap-2">
+                <h5>Utilisateur le plus/moins actif : </h5>
+                <h5 id="user"></h5>
+            </div>
+        </div>
     </main>
+
+    <script>
+        function fetchUser() {
+            const query = document.getElementById('search_duree').value;
+
+
+            fetch(`search_duree.php?search=${encodeURIComponent(query)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('list').innerHTML = data;
+                });
+        }
+        document.getElementById('search_duree').addEventListener('input', fetchUser);
+
+        function fetchStats() {
+            const category = document.getElementById('categoryFilter').value;
+
+            fetch(`stat_duree.php?category=${category}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('site').textContent = data.site ?? '0';
+                    document.getElementById('total').textContent = data.total ?? '0';
+                    document.getElementById('page').textContent = data.page ?? '';
+                    document.getElementById('user').textContent = data.user ?? '';
+                })
+                .catch(error => {
+                    console.error('Erreur fetch:', error);
+                    document.getElementById('total').textContent = 'Erreur lors de la récuperation de statistiques';
+                    document.getElementById('page').textContent = 'Erreur lors de la récuperation de statistiques';
+                    document.getElementById('user').textContent = 'Erreur lors de la récuperation de statistiques';
+                    document.getElementById('site').textContent = 'Erreur lors de la récuperation de statistiques';
+                });
+        }
+
+        document.getElementById('categoryFilter').addEventListener('change', fetchStats);
+        document.addEventListener('DOMContentLoaded', fetchStats);
+    </script>
 </body>
 
 </html>

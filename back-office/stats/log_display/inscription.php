@@ -24,7 +24,7 @@ $lines = file('../../../log/log_inscription.txt');
         <h1 class="text-center my-5">Inscriptions | Vérification | Initialisation de mot de passe</h1>
         <div class="form-group mb-2 pt-3 pb-2">
             <div class="d-flex gap-2">
-                <input type="text" id="search_inscription" class="form-control searchBoxBack" placeholder="Rechercher par email ou action,">
+                <input type="text" id="search_inscription" class="form-control searchBoxBack" placeholder="Rechercher par email ou action">
                 <div class="d-flex ms-2" style="gap: 0.5rem;">
                     <select id="statusFilter" class="form-select searchBoxBack">
                         <option value="">Statut</option>

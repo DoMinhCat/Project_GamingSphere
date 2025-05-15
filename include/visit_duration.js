@@ -14,16 +14,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function pauseTimer() {
-    if (!startTime) return;
+  let sent = false;
 
+  async function pauseTimer() {
+    if (!startTime || sent) return;
     const now = Date.now();
-    const duration = Math.round((now - startTime) / 1000 / 60);
-
+    const duration = Math.ceil((now - startTime) / 1000 / 60);
+    console.log(
+      `pauseTimer triggered for category '${pageCategory}' with duration: ${duration} min`
+    );
     if (duration > 0) {
       sendTime(duration);
+      sent = true;
     }
-
     startTime = null;
   }
 
