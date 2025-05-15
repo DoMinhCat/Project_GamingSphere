@@ -35,7 +35,7 @@ if (!empty($_GET['delete_id'])) {
     try {
         $query = $bdd->prepare("select id_captcha from captcha WHERE id_captcha=?");
         $query->execute([$id_delete]);
-        $captcha = $query->fetch();
+        $captcha = $query->fetch(PDO::FETCH_ASSOC);
         if (!$captcha) {
             header('Location:' . captcha_back . '?message=id_invalid');
             exit();
@@ -160,7 +160,7 @@ require('../head.php');
                         <td class="align-middle">' . htmlspecialchars($captcha['question']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($captcha['answer']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($captcha['email']) . '</td>
-                        <td class="align-middle">' . ($captcha['status'] == 1 ? 'Actif' : 'Inactif') . '</td>
+                        <td class="align-middle"' . ($captcha['status'] == 1 ? 'style="color:green"' : 'style="color:red') . '>' . ($captcha['status'] == 1 ? 'Actif' : 'Inactif') . '</td>
                         
                         <td>
                             <a href=' . captcha_edit_back . '?id=' . $captcha['id_captcha'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>

@@ -14,22 +14,23 @@ $user = '';
 $total = 0;
 $site = 0;
 
-$stmt = $bdd->query("SELECT sum(visit_duration.duration) as total_site from visit_duration;");
+$stmt = $bdd->prepare("SELECT sum(visit_duration.duration) as total_site from visit_duration;");
 $stmt->execute();
 $total_site = $stmt->fetch(PDO::FETCH_ASSOC);
 $site = $total_site['total_site'];
 
-$stmt = $bdd->query("SELECT sum(visit_duration.duration) as page_duree from visit_duration where category like :search;");
-$stmt->execute([':search', '%' . $category . '%']);
+$stmt = $bdd->prepare("SELECT sum(visit_duration.duration) as page_duree from visit_duration where category=:search;");
+$stmt->execute(['search' => '%' . $category . '%']);
 $page_duree = $stmt->fetch(PDO::FETCH_ASSOC);
-$total = $category . ':' . $page_duree['page_duree'];
+$page_duree_value = $page_duree['page_duree'] ?? 0;
+$total = $category . ':' . $page_duree_value;
 
-$stmt = $bdd->query("SELECT category, (sum(visit_duration.duration)) as sum from visit_duration group by category order by sum desc limit 1;");
+$stmt = $bdd->prepare("SELECT category, (sum(visit_duration.duration)) as sum from visit_duration group by category order by sum desc limit 1;");
 $stmt->execute();
 $most_visited = $stmt->fetch(PDO::FETCH_ASSOC);
 $page_most = $most_visited['category'];
 
-$stmt = $bdd->query("SELECT category, (sum(visit_duration.duration)) as sum from visit_duration group by category order by sum asc limit 1;");
+$stmt = $bdd->prepare("SELECT category, (sum(visit_duration.duration)) as sum from visit_duration group by category order by sum asc limit 1;");
 $stmt->execute();
 $least_visited = $stmt->fetch(PDO::FETCH_ASSOC);
 $page_least = $least_visited['category'];
@@ -37,20 +38,20 @@ $page_least = $least_visited['category'];
 $page = $page_most . '/' . $page_least;
 
 
-$stmt = $bdd->query("SELECT email, sum(visit_duration.duration) as sum from visit_duration join utilisateurs on id_utilisateur=utilisateurs.id_utilisateurs  group by email order by sum asc limit 1;");
+$stmt = $bdd->prepare("SELECT email, sum(visit_duration.duration) as sum from visit_duration join utilisateurs on id_utilisateur=utilisateurs.id_utilisateurs  group by email order by sum asc limit 1;");
 $stmt->execute();
 $least_user = $stmt->fetch(PDO::FETCH_ASSOC);
 $user_least = $least_user['email'];
 
-$stmt = $bdd->query("SELECT email, sum(visit_duration.duration) as sum from visit_duration join utilisateurs on id_utilisateur=utilisateurs.id_utilisateurs  group by email order by sum desc limit 1;");
+$stmt = $bdd->prepare("SELECT email, sum(visit_duration.duration) as sum from visit_duration join utilisateurs on id_utilisateur=utilisateurs.id_utilisateurs  group by email order by sum desc limit 1;");
 $stmt->execute();
 $most_user = $stmt->fetch(PDO::FETCH_ASSOC);
 $user_most = $most_user['email'];
 
 $user = $user_most . '/' . $user_least;
 echo json_encode([
-    'site' => $site, //
-    'page' => $page, //
-    'total' => $total, //
+    'site' => $site,
+    'page' => $page,
+    'total' => $total,
     'user' => $user
 ]);

@@ -5,6 +5,7 @@ if (!empty($_SESSION['user_email'])) {
   exit();
 }
 require_once __DIR__ . '/../path.php';
+require_once('../include/database.php');
 ?>
 
 <!DOCTYPE html>
@@ -146,20 +147,15 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
 
         <div class="col-12 mt-4">
           <?php
-          $questions = [
-            "Combien font 3 + 5 ?" => 8,
-            "Quelle été la couleur du cheval blanc d'Henry V ? (en un mot)" => "blanc",
-            "Quelle est la couleur du ciel (en un mot) ?" => "bleu",
-            "Combien font 10 - 4 ?" => 6,
-          ];
-          $question_keys = array_keys($questions);
-          $random_question = $question_keys[array_rand($question_keys)];
-          $_SESSION['captcha_answer'] = strtolower(trim($questions[$random_question]));
+          $stmt = $bdd->prepare("SELECT id_captcha,question FROM captcha where status=1 ORDER BY RAND()LIMIT 1;");
+          $stmt->execute();
+          $random_question = $stmt->fetch(PDO::FETCH_ASSOC);
           ?>
-          <p class="text-start mb-1" id="captcha_question"><?= 'Question captcha : ' . htmlspecialchars($random_question) ?></p>
+          <p class="text-start mb-1" id="captcha_question"><?= 'Question captcha : ' . ucfirst(htmlspecialchars($random_question['question'])) ?></p>
           <input type="text" id="captcha_answer" name="captcha_answer" class="form-control f-inscription mb-2 <?php echo ($error == 'captcha_invalid') ? 'is-invalid' : ''; ?>" required>
+          <input type="hidden" name="id_captcha" value="<?= $random_question['id_captcha'] ?>">
           <?php if ($error == 'captcha_invalid') {
-            echo '<div class="invalid-feedback text-start">La réponse au CAPTCHA est incorrecte.</div>';
+            echo '<div class="invalid-feedback text-start">La réponse au CAPTCHA est incorrecte !</div>';
           } ?>
           <div class="form-check text-start mt-2">
             <input class="form-check-input" type="checkbox" value="1" id="checkbox_inscrire" required>

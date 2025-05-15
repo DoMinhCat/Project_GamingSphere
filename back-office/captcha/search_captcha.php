@@ -33,7 +33,7 @@ WHERE (question LIKE :search OR answer LIKE :search) ORDER BY id_captcha;");
                         <td class="align-middle">' . htmlspecialchars($captcha['question']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($captcha['answer']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($captcha['email']) . '</td>
-                        <td class="align-middle">' . ($captcha['status'] == 1 ? 'Actif' : 'Inactif') . '</td>
+                         <td class="align-middle"' . ($captcha['status'] == 1 ? 'style="color:green"' : 'style="color:red') . '>' . ($captcha['status'] == 1 ? 'Actif' : 'Inactif') . '</td>
                         
                         <td>
                             <a href=' . captcha_edit_back . '?id=' . $captcha['id_captcha'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
