@@ -20,9 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!startTime || sent) return;
     const now = Date.now();
     const duration = Math.ceil((now - startTime) / 1000 / 60);
-    console.log(
-      `pauseTimer triggered for category '${pageCategory}' with duration: ${duration} min`
-    );
+
     if (duration > 0) {
       sendTime(duration);
       sent = true;

@@ -6,7 +6,7 @@ if ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest' || !isset($_GET['sear
     exit('Accès non-autorisé');
 }
 $search = trim($_GET['search'] ?? '');
-
+$option = "WHERE email LIKE :search ";
 try {
 
     $sql = "SELECT
@@ -24,11 +24,10 @@ try {
     SUM(CASE WHEN utt.category = 'tournois' THEN utt.duration ELSE 0 END) AS tournois,
     SUM(CASE WHEN utt.category = 'accueil' THEN utt.duration ELSE 0 END) AS accueil,
     SUM(utt.duration) AS total_time
-FROM
+FROM 
     visit_duration AS utt
 JOIN
-    utilisateurs AS u ON utt.id_utilisateur = u.id_utilisateurs WHERE email LIKE :search
-GROUP BY
+    utilisateurs AS u ON utt.id_utilisateur = u.id_utilisateurs " . $option . "GROUP BY
     u.email
 ORDER BY
     total_time DESC;";

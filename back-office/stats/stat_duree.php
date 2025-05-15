@@ -19,8 +19,8 @@ $stmt->execute();
 $total_site = $stmt->fetch(PDO::FETCH_ASSOC);
 $site = $total_site['total_site'];
 
-$stmt = $bdd->query("SELECT sum(visit_duration.duration) as page_duree from visit_duration where category like ?;");
-$stmt->execute(['%' . $category . '%']);
+$stmt = $bdd->query("SELECT sum(visit_duration.duration) as page_duree from visit_duration where category like :search;");
+$stmt->execute([':search', '%' . $category . '%']);
 $page_duree = $stmt->fetch(PDO::FETCH_ASSOC);
 $total = $category . ':' . $page_duree['page_duree'];
 
