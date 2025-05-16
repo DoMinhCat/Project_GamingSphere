@@ -238,7 +238,7 @@ require('../head.php');
                     document.getElementById('article_results').innerHTML = data;
                 });
         };
-        document.getElementById('search_article').addEventListener('input', fetchArticle);
+
         document.addEventListener('DOMContentLoaded', fetchArticle);
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('category').value = "Général";
