@@ -58,8 +58,8 @@ if (isset($_POST['update_article'])) {
     }
 }
 try {
-    $query = $bdd->query("SELECT * FROM news ORDER BY date_article DESC");
-    $articles = $query->fetchAll();
+    $query = $bdd->query("SELECT id_news,titre,date_article,category,email FROM news join utilisateurs on auteur=utilisateurs.id_utilisateurs ORDER BY date_article DESC;");
+    $articles = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $_SESSION['error'] = htmlspecialchars($e->getMessage());
     header('Location:' . article_back . '?error=bdd');
@@ -156,7 +156,9 @@ require('../head.php');
             echo "<thead class='table-dark' style=\"position: sticky; top: 0; z-index: 1;\"><tr>
                     <th>ID</th>
                     <th>Titre</th>
+                    <th>Catégorie</th>
                     <th>Date</th>
+                    <th>Auteur</th>
                     <th>Actions</th>
                 </tr></thead>";
             echo '<tbody id="article_results">';
@@ -167,7 +169,9 @@ require('../head.php');
                 echo '<tr>
                         <td class="align-middle">' . htmlspecialchars($article['id_news']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($article['titre']) . '</td>
+                        <td class="align-middle">' . htmlspecialchars($article['category']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($article['date_article']) . '</td>
+                        <td class="align-middle">' . htmlspecialchars($article['email']) . '</td>
                         <td>
                             <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
                             <button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $article['id_news'] . '">Supprimer</button>';
@@ -217,28 +221,41 @@ require('../head.php');
         document.getElementById('search_article').addEventListener('input', fetchArticle);
         document.addEventListener('DOMContentLoaded', fetchArticle);
 
-        async function showNewCategoryForm() {
-            const new_form = document.getElementById('new_category');
+        function showNewCategoryForm() {
+            const newForm = document.getElementById('new_category');
             const select = document.getElementById('category');
-            const select_form = document.getElementById('choose');
+            const newInput = document.getElementById('new_category_input');
+            const selectForm = document.getElementById('choose');
 
-            if (select.value == "new") {
-                new_form.style.display = 'block';
-                select_form.style.display = 'none';
+            if (select.value === "new") {
+                newForm.style.display = 'block';
+                selectForm.style.display = 'none';
+
+                newInput.setAttribute('required', 'required');
+                select.removeAttribute('required');
             } else {
-                new_form.style.display = 'none';
-                select_form.style.display = 'block';
+                newForm.style.display = 'none';
+                selectForm.style.display = 'block';
+
+                newInput.removeAttribute('required');
+                select.setAttribute('required', 'required');
             }
         }
-        const button_propose = document.getElementById('category');
-        button_propose.addEventListener('change', showNewCategoryForm);
 
-        async function chooseCategory() {
-            const new_form = document.getElementById('new_category');
-            const select_form = document.getElementById('choose');
+        document.getElementById('category').addEventListener('change', showNewCategoryForm);
 
-            new_form.style.display = 'none';
-            select_form.style.display = 'block';
+        function chooseCategory() {
+            const newForm = document.getElementById('new_category');
+            const newInput = document.getElementById('new_category_input');
+            const select = document.getElementById('category');
+            const selectForm = document.getElementById('choose');
+
+            newForm.style.display = 'none';
+            selectForm.style.display = 'block';
+
+            newInput.removeAttribute('required');
+            select.setAttribute('required', 'required');
+
         }
     </script>
 
