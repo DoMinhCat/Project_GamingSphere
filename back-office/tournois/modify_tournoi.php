@@ -28,7 +28,7 @@ require('../head.php');
         }
         $id_tournoi = $_GET['id_tournoi'];
         try {
-            $stmt = $bdd->prepare("SELECT * from tournoi WHERE id_tournoi=?;");
+            $stmt = $bdd->prepare("SELECT * from tournoi WHERE id_tournoi=?; LIMIT 1");
             $stmt->execute([$id_tournoi]);
             $tournois = $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

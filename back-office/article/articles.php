@@ -112,7 +112,13 @@ require('../head.php');
         elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
             $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
             unset($_SESSION['error']);
-        }
+        } elseif (isset($_GET['error']) && $_GET['error'] === 'missing_id')
+            $noti_Err = 'Aucun ID spécifié';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'missing_fields')
+            $noti_Err = 'Il faut remplir tous les champs !';
+
+
+
 
         ?>
         <?php if (!empty($noti_Err)) : ?>
@@ -128,7 +134,7 @@ require('../head.php');
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
-        <h1 class="mb-5 text-center">Gestion des Articles</h1>
+        <h1 class="my-5 text-center">Gestion des Articles</h1>
 
         <!-- Formulaire d'ajout d'article -->
         <form method="POST" action="" class="mb-5">
@@ -146,8 +152,8 @@ require('../head.php');
                         <option value="Evenèment">Evenèment</option>
                         <option value="Critique">Critique</option>
                         <option value="Mise à jour">Mise à jour</option>
-                        <option id="new" value="new">Proposer une nouvelle catégorie</option>
                     </select>
+                    <button id="new" onclick="showNewCategoryForm(event)" class="mt-2 btn btn-primary">Proposer une nouvelle catégorie</button>
                 </div>
                 <div id="new_category" style="display: none;">
                     <label for="new_category_input" class="form-label">Categorie</label>
@@ -253,26 +259,22 @@ require('../head.php');
             categorySelect.addEventListener('change', showNewCategoryForm);
         });
 
-        function showNewCategoryForm() {
+        function showNewCategoryForm(event) {
+            event.preventDefault();
+
             const newForm = document.getElementById('new_category');
             const selectForm = document.getElementById('choose');
-            const categorySelect = document.getElementById('category');
             const newCategoryInput = document.getElementById('new_category_input');
+            const categorySelect = document.getElementById('category');
 
-            if (categorySelect.value === "new") {
-                newForm.style.display = 'block';
-                selectForm.style.display = 'none';
+            newForm.style.display = 'block';
+            selectForm.style.display = 'none';
 
-                newCategoryInput.required = true;
-                categorySelect.required = false;
-            } else {
-                newForm.style.display = 'none';
-                selectForm.style.display = 'block';
-
-                newCategoryInput.required = false;
-                categorySelect.required = true;
-            }
+            newCategoryInput.required = true;
+            categorySelect.required = false;
+            categorySelect.value = "";
         }
+
 
 
         function chooseCategory() {
