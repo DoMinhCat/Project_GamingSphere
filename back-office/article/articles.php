@@ -150,7 +150,7 @@ require('../head.php');
                         <option id="new" value="new">Proposer une nouvelle catégorie</option>
                     </select>
                 </div>
-                <div id="new_category" style="display: none;">
+                <div id="new_category" hidden>
                     <label for="new_category_input" class="form-label">Categorie</label>
                     <input type="text" class="form-control" id="new_category_input" name="category_new" required>
                     <button onclick="chooseCategory()" class="mt-2 btn btn-primary">Choisir une catégorie predéfinie</button>
@@ -261,17 +261,17 @@ require('../head.php');
             const selectForm = document.getElementById('choose');
 
             if (select.value === "new") {
-                newForm.style.display = 'block';
-                selectForm.style.display = 'none';
+                newForm.hidden = false;
+                selectForm.hidden = true;
 
-                newInput.setAttribute('required', 'required');
-                select.removeAttribute('required');
+                newInput.required = true;
+                select.required = false;
             } else {
-                newForm.style.display = 'none';
-                selectForm.style.display = 'block';
+                newForm.hidden = true;
+                selectForm.hidden = false;
 
-                newInput.removeAttribute('required');
-                select.setAttribute('required', 'required');
+                newInput.required = false;
+                select.required = true;
             }
         }
 
@@ -281,11 +281,11 @@ require('../head.php');
             const select = document.getElementById('category');
             const selectForm = document.getElementById('choose');
 
-            newForm.style.display = 'none';
-            selectForm.style.display = 'block';
+            newForm.hidden = true;
+            selectForm.hidden = false;
 
-            newInput.removeAttribute('required');
-            select.setAttribute('required', 'required');
+            newInput.required = false;
+            select.required = true;
             select.value = "Général";
         }
     </script>
