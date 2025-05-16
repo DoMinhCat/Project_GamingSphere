@@ -5,7 +5,6 @@ require('../check_session.php');
 require('../../include/check_timeout.php');
 require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
-var_dump($articles); // Just temporarily for debugging
 
 if (isset($_POST['add_article'])) {
     if (empty($_POST['titre']) || empty($_POST['contenu'])) {
@@ -256,37 +255,39 @@ require('../head.php');
 
         function showNewCategoryForm() {
             const newForm = document.getElementById('new_category');
-            const select = document.getElementById('category');
-            const newInput = document.getElementById('new_category_input');
             const selectForm = document.getElementById('choose');
+            const categorySelect = document.getElementById('category');
+            const newCategoryInput = document.getElementById('new_category_input');
 
-            if (select.value === "new") {
-                newForm.hidden = false;
-                selectForm.hidden = true;
+            if (categorySelect.value === "new") {
+                newForm.removeAttribute('hidden');
+                selectForm.setAttribute('hidden', true);
 
-                newInput.required = true;
-                select.required = false;
+                newCategoryInput.required = true;
+                categorySelect.required = false;
             } else {
-                newForm.hidden = true;
-                selectForm.hidden = false;
+                newForm.setAttribute('hidden', true);
+                selectForm.removeAttribute('hidden');
 
-                newInput.required = false;
-                select.required = true;
+                newCategoryInput.required = false;
+                categorySelect.required = true;
             }
         }
 
         function chooseCategory() {
             const newForm = document.getElementById('new_category');
-            const newInput = document.getElementById('new_category_input');
-            const select = document.getElementById('category');
             const selectForm = document.getElementById('choose');
+            const categorySelect = document.getElementById('category');
+            const newCategoryInput = document.getElementById('new_category_input');
 
-            newForm.hidden = true;
-            selectForm.hidden = false;
+            newForm.setAttribute('hidden', true);
+            selectForm.removeAttribute('hidden');
 
-            newInput.required = false;
-            select.required = true;
-            select.value = "Général";
+            newCategoryInput.required = false;
+            categorySelect.required = true;
+            categorySelect.value = "Général";
+
+            showNewCategoryForm();
         }
     </script>
 
