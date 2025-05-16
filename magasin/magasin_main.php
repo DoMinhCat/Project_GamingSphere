@@ -45,6 +45,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                     <?php if (!empty($game['image'])): ?>
                                         <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="d-block w-100" alt="<?= htmlspecialchars($game['nom']) ?>" style="height: 400px; object-fit: cover;">
                                     <?php else: ?>
+                                        <!-- fix link img here (no dossier assets, ../../ -> tu sors du dossier root PA) -->
                                         <img src="../../assets/img/no_image.png" class="d-block w-100" alt="Aucune image" style="height: 400px; object-fit: cover;">
                                     <?php endif; ?>
                                     <div class="carousel-caption d-none d-md-block">

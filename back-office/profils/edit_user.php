@@ -102,7 +102,7 @@ require('../head.php');
                 <label for="photo">Photo de profil:</label>
                 <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
                 <?php if (!empty($user['photo_profil'])): ?>
-                    <img src="/PA/<?php echo htmlspecialchars($user['photo_profil']); ?>" class="mt-2" width="100">
+                    <img src="/<?php echo htmlspecialchars($user['photo_profil']); ?>" class="mt-2" width="100">
                 <?php endif; ?>
             </div>
             <div class="form-group mb-3">

@@ -78,7 +78,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php endif; ?>
 
 
-        <div class="card mb-4">
+        <div class="card mb-5">
             <div class="card-body">
                 <h2 class="card-title"><?= htmlspecialchars($team['nom']) ?></h2>
                 <p class="card-text"><strong>Niveau :</strong> <?= htmlspecialchars($team['niveau']) ?></p>
@@ -121,8 +121,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
         if ($isMember): ?>
 
-            <p class="text-success mt-3">Vous êtes membre de cette équipe.</p>
-            <form action="leave_team.php" method="POST" class="mt-3">
+            <p class="text-success mt-2">Vous êtes membre de cette équipe.</p>
+            <form action="leave_team.php" method="POST" class="mt-4">
                 <input type="hidden" name="team_id" value="<?= htmlspecialchars($teamId) ?>">
                 <button type="submit" class="btn btn-danger">Quitter l'équipe</button>
             </form>
@@ -138,7 +138,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <a href="<?= team_list ?>" class="btn btn-secondary">Retour à la liste des équipes</a>
         </div>
     </div>
-
+    <?php include('../include/footer.php'); ?>
 </body>
 
 </html>

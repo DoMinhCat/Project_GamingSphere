@@ -19,7 +19,7 @@ require('../head.php');
     $page = index_back;
     include('../navbar.php'); ?>
 
-    <div class="container my-5">
+    <main class="container my-5">
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
                 <div class="h-100">
@@ -51,7 +51,7 @@ require('../head.php');
             </div>
 
         </div>
-    </div>
+    </main>
 
 </body>
 

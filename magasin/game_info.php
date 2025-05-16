@@ -38,6 +38,7 @@ include('../include/head.php');
                     <?php if (!empty($jeu['image'])): ?>
                         <img src="../back-office/uploads/<?= htmlspecialchars($jeu['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($jeu['nom']) ?>" style="height: 400px; object-fit: cover;">
                     <?php else: ?>
+                        <!-- fixer img ici pareil que dans magasin_main -->
                         <img src="../../assets/img/no_image.png" class="card-img-top" alt="Aucune image disponible" style="height: 400px; object-fit: cover;">
                     <?php endif; ?>
 

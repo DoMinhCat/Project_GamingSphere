@@ -315,6 +315,28 @@ RewriteCond %{THE_REQUEST} \s/back-office/forum/forum\.php [NC]
 RewriteRule ^back-office/forum/forum\.php$ /back-office/forum [R=301,L,QSA]
 RewriteRule ^back-office/forum/?$ back-office/forum/forum.php [L]
 
+# back-office annonce_main.php/ (forum)
+
+RewriteCond %{THE_REQUEST} \s/back-office/forum/annonce/annonce_main\.php [NC]
+RewriteRule ^back-office/forum/annonce/annonce_main\.php$ /back-office/forum/annonce [R=301,L,QSA]
+RewriteRule ^back-office/forum/annonce/?$ back-office/forum/annonce/annonce_main.php [L]
+
+# back-office discussion_main.php/ (forum)
+
+RewriteCond %{THE_REQUEST} \s/back-office/forum/discussion/discussion_main\.php [NC]
+RewriteRule ^back-office/forum/discussion/discussion_main\.php$ /back-office/forum/discussion [R=301,L,QSA]
+RewriteRule ^back-office/forum/discussion/?$ back-office/forum/discussion/discussion_main.php [L]
+
+# back-office support_main.php/ (forum)
+
+RewriteCond %{THE_REQUEST} \s/back-office/forum/support/support_main\.php [NC]
+RewriteRule ^back-office/forum/support/support_main\.php$ /back-office/forum/support [R=301,L,QSA]
+RewriteRule ^back-office/forum/support/?$ back-office/forum/support/support_main.php [L]
+
+
+
+
+
 # back-office jeux.php/
 
 RewriteCond %{THE_REQUEST} \s/back-office/jeux/jeux\.php [NC]

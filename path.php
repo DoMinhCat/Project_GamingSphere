@@ -91,6 +91,11 @@ define('event_back', '/back-office/event'); // evenements.php
 
 //forum
 define('forum_back', '/back-office/forum'); // forum.php
+define('forum_annonce_back', '/back-office/forum/annonce'); // annonce_main.php
+define('forum_discussion_back', '/back-office/forum/discussion'); // discussion_main.php
+define('forum_support_back', '/back-office/forum/support'); // support_main.php
+
+
 
 //jeux
 define('jeux_back', '/back-office/jeux'); // jeux.php

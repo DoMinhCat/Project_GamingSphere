@@ -124,7 +124,7 @@ require('../head.php');
 
         <!-- Affichage des captchas -->
         <h3 class="text-center mb-4">Liste des captchas</h3>
-        <?php /*
+        <?php
 
         echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
                 <div class="d-flex gap-2">
@@ -149,11 +149,11 @@ require('../head.php');
                     <th>Auteur</th>
                     <th>Statut</th>
                     <th>Actions</th>
-                </tr></thead>";*/
-        echo '<tbody id="captcha_results">';
+                </tr></thead>";
+            echo '<tbody id="captcha_results">';
 
 
-        /*
+
             foreach ($captchas as $captcha) {
                 echo '<tr>
                         <td class="align-middle">' . htmlspecialchars($captcha['id_captcha']) . '</td>
@@ -183,14 +183,14 @@ require('../head.php');
                           </div>';
                 echo '</td>
                     </tr>';
-            }*/
-        echo '</tbody>';
-        /*
-        </table>
-    </div>';
+            }
+            echo '</tbody>';
+
+            echo '</table>
+                </div>';
         } else {
             echo "<div class='alert alert-warning'>Aucun question trouvée.</div>";
-        }*/
+        }
         ?>
     </main>
 
