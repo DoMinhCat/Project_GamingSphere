@@ -256,7 +256,6 @@ require('../head.php');
                 fetchArticle(this.value);
             });
 
-            categorySelect.addEventListener('change', showNewCategoryForm);
         });
 
         function showNewCategoryForm(event) {
@@ -274,8 +273,6 @@ require('../head.php');
             categorySelect.required = false;
             categorySelect.value = "";
         }
-
-
 
         function chooseCategory() {
             document.getElementById('new_category').style.display = 'none';

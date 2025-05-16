@@ -73,8 +73,39 @@ require('../head.php'); ?>
     </main>
 
     <script>
+        function showNewCategoryForm(event) {
+            event.preventDefault();
 
+            const newForm = document.getElementById('new_category');
+            const selectForm = document.getElementById('choose');
+            const newCategoryInput = document.getElementById('new_category_input');
+            const categorySelect = document.getElementById('category');
 
+            newForm.style.display = 'block';
+            selectForm.style.display = 'none';
+
+            newCategoryInput.required = true;
+            categorySelect.required = false;
+            categorySelect.value = "";
+        }
+
+        function chooseCategory() {
+            document.getElementById('new_category').style.display = 'none';
+            document.getElementById('choose').style.display = 'block';
+
+            const newCategoryInput = document.getElementById('new_category_input');
+            const categorySelect = document.getElementById('category');
+
+            newCategoryInput.required = false;
+            categorySelect.required = true;
+            categorySelect.value = "Général";
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('category');
+            categorySelect.value = "Général";
+
+        });
     </script>
 </body>
 
