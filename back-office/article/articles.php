@@ -133,7 +133,7 @@ require('../head.php');
                 <div id="new_category" style="display: none;">
                     <label for="new_category_input" class="form-label">Categorie</label>
                     <input type="text" class="form-control" id="new_category_input" name="category" required>
-                    <button onclick="chooseCategory()" class="mt-2">Choisir une catégorie predéfinie</button>
+                    <button onclick="chooseCategory()" class="mt-2 btn btn-primary">Choisir une catégorie predéfinie</button>
                 </div>
             </div>
             <div class="mb-3">
@@ -219,9 +219,10 @@ require('../head.php');
 
         async function showNewCategoryForm() {
             const new_form = document.getElementById('new_category');
-            const select_form = document.getElementById('category');
+            const select = document.getElementById('category');
+            const select_form = document.getElementById('choose');
 
-            if (select_form.value == "new") {
+            if (select.value == "new") {
                 new_form.style.display = 'block';
                 select_form.style.display = 'none';
             } else {
@@ -234,7 +235,7 @@ require('../head.php');
 
         async function chooseCategory() {
             const new_form = document.getElementById('new_category');
-            const select_form = document.getElementById('category');
+            const select_form = document.getElementById('choose');
 
             new_form.style.display = 'none';
             select_form.style.display = 'block';
