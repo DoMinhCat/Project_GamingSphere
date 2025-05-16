@@ -76,7 +76,7 @@ if (isset($_POST['update_article'])) {
     }
 }
 try {
-    $query = $bdd->prepare("SELECT n.id_news, n.titre, n.date_article, n.category, u.email 
+    $query = $bdd->prepare("SELECT n.id_news, n.titre, n.date_article, n.category, u.email
 FROM news n JOIN utilisateurs u ON n.auteur = u.id_utilisateurs ORDER BY date_article DESC;");
     $query->execute();
     $articles = $query->fetchAll(PDO::FETCH_ASSOC);

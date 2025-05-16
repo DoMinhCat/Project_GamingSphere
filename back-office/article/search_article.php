@@ -18,7 +18,8 @@ JOIN utilisateurs u ON n.auteur = u.id_utilisateurs
 WHERE n.titre LIKE :search OR u.email LIKE :search ORDER BY n.date_article DESC;");
     $stmt->execute(['search' => '%' . $search . '%']);
   } else {
-    $stmt = $bdd->query("SELECT id_news, titre, date_article FROM news ORDER BY date_article DESC");
+    $stmt = $bdd->query("SELECT n.id_news, n.titre, n.date_article, n.category, u.email
+FROM news n JOIN utilisateurs u ON n.auteur = u.id_utilisateurs ORDER BY date_article DESC;");
   }
 
   $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
