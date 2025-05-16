@@ -8,11 +8,29 @@ require_once __DIR__ . '/../../path.php';
 
 
 if (isset($_POST['add_article'])) {
+    if (empty($_POST['titre']) || empty($_POST['contenu'])) {
+        $_SESSION['error'] = "Un titre et du contenu est obligatoire !";
+        header('Location:' . article_back . '?error=bdd');
+        exit();
+    }
+
     $titre = trim($_POST['titre']);
     $contenu = trim($_POST['contenu']);
     $date_article = date('Y-m-d');
     $id_auteur = $_SESSION['user_id'];
-    $category = trim($_POST['category']);
+    $category = null;
+
+    if (!empty($_POST['category_choose'])) {
+
+        $category = trim($_POST['category_choose']);
+    } elseif (!empty($_POST['category_new'])) {
+
+        $category = $_POST['category_new'];
+    } else {
+        $_SESSION['error'] = "Aucune catégorie n'a été sélectionnée ou saisie !";
+        header('Location:' . article_back . '?error=bdd');
+        exit();
+    }
     try {
         $query = $bdd->prepare("INSERT INTO news (titre, date_article, contenue, auteur, category) VALUES (?, ?, ?, ?, ?)");
         $query->execute([$titre, $date_article, $contenu, $id_auteur, $category]);
@@ -123,7 +141,7 @@ require('../head.php');
             <div class="mb-3">
                 <div id="choose">
                     <label for="category" class="form-label">Catégorie</label>
-                    <select class="form-select" id="category" name="category" required>
+                    <select class="form-select" id="category" name="category_choose" required>
                         <option value="Général">Général</option>
                         <option value="Esport">Esport</option>
                         <option value="Evenèment">Evenèment</option>
@@ -134,7 +152,7 @@ require('../head.php');
                 </div>
                 <div id="new_category" style="display: none;">
                     <label for="new_category_input" class="form-label">Categorie</label>
-                    <input type="text" class="form-control" id="new_category_input" name="category" required>
+                    <input type="text" class="form-control" id="new_category_input" name="category_new" required>
                     <button onclick="chooseCategory()" class="mt-2 btn btn-primary">Choisir une catégorie predéfinie</button>
                 </div>
             </div>
