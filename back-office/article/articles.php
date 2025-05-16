@@ -225,8 +225,7 @@ require('../head.php');
 
 
     <script>
-        async function fetchArticle() {
-            const query = this.value;
+        async function fetchArticle(query = '') {
             try {
                 const response = await fetch('search_article.php?search=' + encodeURIComponent(query), {
                     headers: {
@@ -236,13 +235,23 @@ require('../head.php');
                 const data = await response.text();
                 document.getElementById('article_results').innerHTML = data;
             } catch (error) {
-                console.error('Fetch error:', error);
+                console.error('Fetch erreur:', error);
             }
-        };
-        document.getElementById('search_article').addEventListener('input', fetchArticle);
-        document.addEventListener('DOMContentLoaded', fetchArticle);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('category').value = "Général";
+            const searchInput = document.getElementById('search_article');
+            const categorySelect = document.getElementById('category');
+
+            fetchArticle('');
+
+            categorySelect.value = "Général";
+
+            searchInput.addEventListener('input', function() {
+                fetchArticle(this.value);
+            });
+
+            categorySelect.addEventListener('change', showNewCategoryForm);
         });
 
         function showNewCategoryForm() {
@@ -266,8 +275,6 @@ require('../head.php');
             }
         }
 
-        document.getElementById('category').addEventListener('change', showNewCategoryForm);
-
         function chooseCategory() {
             const newForm = document.getElementById('new_category');
             const newInput = document.getElementById('new_category_input');
@@ -282,6 +289,7 @@ require('../head.php');
             select.value = "Général";
         }
     </script>
+
 
 </body>
 
