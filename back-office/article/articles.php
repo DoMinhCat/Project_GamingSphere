@@ -256,6 +256,7 @@ require('../head.php');
                 fetchArticle(this.value);
             });
 
+            chooseCategory();
         });
 
         function showNewCategoryForm(event) {
