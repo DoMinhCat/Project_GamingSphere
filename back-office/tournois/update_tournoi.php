@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_tournoi'])) {
 
     try {
         $stmt = $bdd->prepare("UPDATE tournoi SET nom_tournoi=?, date_debut=?, date_fin=?, status_ENUM=?, jeu=?, type=? WHERE id_tournoi = ?");
-        $stmt->execute([$nom_tournoi, $date_debut, $date_fin, $statut, $jeu, $type, $id_edit]);
+        $stmt->execute([$nom_tournoi, $date_debut, $date_fin, $statut, $jeu, $type_tournoi, $id_edit]);
         header('Location:' . tournois_back . '?updated=1');
         exit();
     } catch (PDOException $e) {
