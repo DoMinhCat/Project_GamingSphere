@@ -30,7 +30,7 @@ require('../head.php');
         try {
             $stmt = $bdd->prepare("SELECT * from tournoi WHERE id_tournoi=?;");
             $stmt->execute([$id_tournoi]);
-            $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $tournois = $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             header('Location:' . tournois_back . '?error=db');
             exit();
@@ -48,7 +48,7 @@ require('../head.php');
             </div>
             <div class="mb-3">
                 <label for="date_fin" class="form-label">Date de Fin</label>
-                <input type="date" class="form-control" id="date_fin" name="date_fin" value="<?= $tournois['date_fin'] ?> required" required>
+                <input type="date" class="form-control" id="date_fin" name="date_fin" value="<?= $tournois['date_fin'] ?>" required>
             </div>
             <div class="mb-3">
                 <label for="jeu" class="form-label">Jeu</label>
@@ -56,17 +56,17 @@ require('../head.php');
             </div>
             <div class="mb-3">
                 <label for="statut" class="form-label">Statut</label>
-                <select class="form-select" id="statut" name="statut" value="<?= $tournois['statut_ENUM'] ?>" required>
-                    <option value="En attente">En attente</option>
-                    <option value="En cours">En cours</option>
-                    <option value="Terminé">Terminé</option>
+                <select class="form-select" id="statut" name="statut" required>
+                    <option value="En attente" <?= $tournois['statut_ENUM'] === 'En attente' ? 'selected' : '' ?>>En attente</option>
+                    <option value="En cours" <?= $tournois['statut_ENUM'] === 'En cours' ? 'selected' : '' ?>>En cours</option>
+                    <option value="Terminé" <?= $tournois['statut_ENUM'] === 'Terminé' ? 'selected' : '' ?>>Terminé</option>
                 </select>
             </div>
             <div class="mb-4">
                 <label for="type_tournoi" class="form-label">Type de Tournoi</label>
-                <select class="form-select" id="type_tournoi" name="type_tournoi" value="<?= $tournois['type'] ?>" required>
-                    <option value="Solo">Solo</option>
-                    <option value="Équipe">Équipe</option>
+                <select class="form-select" id="type_tournoi" name="type_tournoi" required>
+                    <option value="Solo" <?= $tournois['type'] === 'solo' ? 'selected' : '' ?>>Solo</option>
+                    <option value="Équipe" <?= $tournois['type'] === 'equipe' ? 'selected' : '' ?>>Équipe</option>
                 </select>
             </div>
             <div class="text-center">
