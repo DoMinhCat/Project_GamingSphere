@@ -24,21 +24,21 @@ require('../head.php');
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= log_login ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= forum_annonce_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Annonces
                     </a>
                 </div>
             </div>
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= log_inscription ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= forum_support_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Support
                     </a>
                 </div>
             </div>
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= log_transaction ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                    <a href="<?= forum_discussion_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Discussions
                     </a>
                 </div>

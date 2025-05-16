@@ -15,13 +15,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
 }
 
-if (!isset($bdd)) {
-    die("Erreur de connexion à la base de données");
-}
-
-// Vérification de la catégorie dans l'URL
 if (!isset($_GET['nom']) || empty($_GET['nom'])) {
-    die("Catégorie non spécifiée.");
+    header('location:' . forum_main . '?message=' . urlencode('Catégorie non précisée !'));
+    exit;
 }
 
 $categorie_nom = $_GET['nom'];
@@ -30,13 +26,28 @@ $categorie_nom = $_GET['nom'];
 <body>
     <?php include("../include/header.php"); ?>
 
-    <div class="container my-5">
-        <h2 class="mb-4">Catégorie : <?= htmlspecialchars($categorie_nom) ?></h2>
-
-        <a href="<?= nouveau_sujet ?>?categorie=<?= urlencode($categorie_nom) ?>" class="btn btn-primary mb-4">+ Nouveau sujet</a>
+    <div class="container mb-5">
+        <?php if (!empty($_GET['message'])) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_GET['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
+        <?php if (!empty($_GET['success'])) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_GET['success']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
+        <div class="mb-4 d-flex">
+            <a href="<?= forum_main ?>">
+                <i class="bi bi-chevron-left"></i>
+            </a>
+            <h1>Catégorie : <?= htmlspecialchars($categorie_nom) ?></h1>
+        </div>
+        <a href="<?= nouveau_sujet ?>?categorie=<?= urlencode($categorie_nom) ?>" class="btn btn-primary mb-2">+ Nouveau sujet</a>
 
         <?php
-        // Récupération des sujets de la catégorie
         $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? AND parent_id IS NULL ORDER BY date_msg DESC");
         $stmt->execute([$categorie_nom]);
         $sujets = $stmt->fetchAll();
@@ -46,7 +57,6 @@ $categorie_nom = $_GET['nom'];
         }
 
         foreach ($sujets as $sujet) {
-            // Compter les réponses
             $stmt_reponses = $bdd->prepare("SELECT COUNT(*) FROM forum_reponses WHERE id_sujet = ?");
             $stmt_reponses->execute([$sujet['id_sujet']]);
             $nb_reponses = $stmt_reponses->fetchColumn();

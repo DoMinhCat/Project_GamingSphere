@@ -19,13 +19,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
 }
 
-
-if (!isset($bdd)) {
-    die("Erreur de connexion à la base de données");
-}
-
 if (!isset($_GET['categorie']) || empty($_GET['categorie'])) {
-    die("Catégorie non précisée.");
+    header('location:' . forum_main . '?message=' . urlencode('Catégorie non précisée !'));
+    exit;
 }
 $categorie_nom = $_GET['categorie'];
 
@@ -37,17 +33,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $contenu = trim($_POST['contenu']);
     $auteur = $_SESSION['utilisateur'] ?? 'Anonyme';
 
-    if (strlen($titre) > 150) {
-        $messageErreur = "Le titre est trop long. (maximum 150 caractères)";
+    if (strlen($titre) > 150 || strlen($contenu) > 1000) {
+        $messageErreur = "Veuillez respecter la longeur maximum du titre et du contenu !";
     } elseif (empty($titre) || empty($contenu)) {
         $messageErreur = "Veuillez remplir tous les champs.";
     } else {
-        $stmt = $bdd->prepare("INSERT INTO forum_sujets (titre, contenu, date_msg, categories, parent_id, auteur) 
-                               VALUES (?, ?, NOW(), ?, NULL, ?)");
-        $stmt->execute([$titre, $contenu, $categorie_nom, $auteur]);
+        try {
+            $stmt = $bdd->prepare("INSERT INTO forum_sujets (titre, contenu, date_msg, categories, parent_id, auteur) VALUES (?, ?, NOW(), ?, NULL, ?);");
+            $stmt->execute([$titre, $contenu, $categorie_nom, $auteur]);
 
-        header('Location:' . forum_category . '?nom=' . urlencode($categorie_nom));
-        exit;
+            header('Location:' . forum_category . '?nom=' . urlencode($categorie_nom) . '&success=' . urlencode('Sujet ajouté !'));
+            exit;
+        } catch (PDOException) {
+            header('Location:' . forum_category . '?message=' . urlencode('Erreur lors de l\'ajoute du sujet !'));
+            exit();
+        }
     }
 }
 ?>
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
     <?php include("../include/header.php"); ?>
 
-    <div class="container my-5">
+    <main class="container my-5">
         <h2 class="mb-4">Créer un nouveau sujet dans : <?= htmlspecialchars($categorie_nom) ?></h2>
 
         <?php if (!empty($messageErreur)): ?>
@@ -84,18 +84,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <button type="submit" class="btn btn-primary">Créer le sujet</button>
         </form>
-    </div>
+    </main>
 
     <?php include("../include/footer.php"); ?>
-    <script>
-        function updateCounter() {
-            const input = document.getElementById('titre');
-            const counter = document.getElementById('counter');
-            counter.textContent = `${input.value.length} / 150`;
-        }
-
-        document.addEventListener("DOMContentLoaded", updateCounter);
-    </script>
     <script>
         function updateCounter() {
             const input = document.getElementById('titre');

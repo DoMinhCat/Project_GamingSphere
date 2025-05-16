@@ -42,6 +42,8 @@ require('../head.php');
             $noti = 'Le jeu a été modifié avec succès !';
         elseif (isset($_GET['error']) && $_GET['error'] === 'id_invalid')
             $noti_Err = 'ID du jeu fourni invalid !';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'req')
+            $noti_Err = 'Requête invalide !';
         elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
             $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
             unset($_SESSION['error']);

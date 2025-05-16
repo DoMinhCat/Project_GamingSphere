@@ -17,21 +17,25 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
 }
 
-
-if (!isset($bdd)) {
-    die("Erreur de connexion à la base de données");
-}
 ?>
 
 <body>
     <?php include("../include/header.php"); ?>
 
-    <div class="container my-5">
+    <div class="container mb-5">
+        <?php if (!empty($_GET['message'])) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_GET['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
         <h1 class="mb-4">Forum - Catégories</h1>
         <?php
-        $query = $bdd->query("SELECT DISTINCT categories FROM forum_sujets WHERE parent_id IS NULL");
-        if (!$query) {
-            die("Erreur dans la requête SQL: " . $bdd->errorInfo()[2]);
+        try {
+            $query = $bdd->query("SELECT DISTINCT categories FROM forum_sujets WHERE parent_id IS NULL");
+        } catch (PDOException $e) {
+            header('location:' . index_front . '?message=bdd');
+            exit;
         }
 
         while ($row = $query->fetch()) {

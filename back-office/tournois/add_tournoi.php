@@ -18,8 +18,16 @@ require('../head.php');
     $page = tournois_back;
     include('../navbar.php'); ?>
 
-    <main class="container my-5">
+    <main class="container mb-5">
+        <?php if (!empty($_GET['message'])) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_GET['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
+
         <h1 class="my-5 text-center">Ajouter un Nouveau Tournoi</h1>
+
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nom_tournoi = trim($_POST['nom_tournoi']) ?? '';
@@ -30,7 +38,8 @@ require('../head.php');
             $type_tournoi = trim($_POST['type_tournoi']) ?? '';
 
             if (empty($nom_tournoi) || empty($date_debut) || empty($date_fin) || empty($jeu) || empty($statut) || empty($type_tournoi)) {
-                echo "<div class='alert alert-danger'>Tous les champs sont obligatoires.</div>";
+                header('location:' . tournois_add_back . '?message=' . urlencode('Il faut remplir tous les champs nécessaires !'));
+                exit();
             } else {
                 try {
                     $stmt = $bdd->prepare("INSERT INTO tournoi (nom_tournoi, date_debut, date_fin, jeu, status_ENUM, type) VALUES (?, ?, ?, ?, ?, ?)");
