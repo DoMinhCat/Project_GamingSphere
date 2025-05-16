@@ -1,9 +1,8 @@
 <?php
-session_start();;
-require('../include/database.php');
+session_start();
+require_once('../include/database.php');
 require('../include/check_timeout.php');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+require_once __DIR__ . '/../path.php';
 ?>
 
 <!DOCTYPE html>
@@ -33,29 +32,35 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php
         try {
             $query = $bdd->query("SELECT DISTINCT categories FROM forum_sujets WHERE parent_id IS NULL");
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             header('location:' . index_front . '?message=bdd');
             exit;
         }
 
-        while ($row = $query->fetch()) {
-            $categorie = $row['categories'];
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            try {
+                $categorie = $row['categories'];
 
-            $stmt = $bdd->prepare("SELECT COUNT(*) FROM forum_sujets WHERE categories = ? AND parent_id IS NULL");
-            $stmt->execute([$categorie]);
-            $nb_sujets = $stmt->fetchColumn();
+                $stmt = $bdd->prepare("SELECT COUNT(*) FROM forum_sujets WHERE categories = ? AND parent_id IS NULL");
+                $stmt->execute([$categorie]);
+                $nb_sujets = $stmt->fetchColumn();
 
-            $stmt = $bdd->prepare("SELECT id_sujet FROM forum_sujets WHERE categories = ? AND parent_id IS NULL");
-            $stmt->execute([$categorie]);
-            $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                $stmt = $bdd->prepare("SELECT id_sujet FROM forum_sujets WHERE categories = ? AND parent_id IS NULL");
+                $stmt->execute([$categorie]);
+                $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-            $nb_messages = 0;
-            if (!empty($ids)) {
-                $placeholders = implode(',', array_fill(0, count($ids), '?'));
-                $stmt = $bdd->prepare("SELECT COUNT(*) FROM forum_reponses WHERE id_sujet IN ($placeholders)");
-                $stmt->execute($ids);
-                $nb_messages = $stmt->fetchColumn();
+                $nb_messages = 0;
+                if (!empty($ids)) {
+                    $placeholders = implode(',', array_fill(0, count($ids), '?'));
+                    $stmt = $bdd->prepare("SELECT COUNT(*) FROM forum_reponses WHERE id_sujet IN ($placeholders)");
+                    $stmt->execute($ids);
+                    $nb_messages = $stmt->fetchColumn();
+                }
+            } catch (PDOException) {
+                header('location:' . index_front . '?message=bdd');
+                exit;
             }
+
         ?>
             <a href="<?= forum_category ?>?nom=<?= urlencode($categorie) ?>" class="text-decoration-none text-dark forumBlockLink mb-3">
                 <div class="card mb-3 shadow-sm border-0">

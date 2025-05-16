@@ -142,8 +142,9 @@ require('../head.php');
                     <label for="category" class="form-label">Catégorie</label>
                     <select class="form-select" id="category" name="category_choose" required>
                         <option value="Général">Général</option>
+                        <option value="À la une">À la une</option>
                         <option value="Esport">Esport</option>
-                        <option value="Evenèment">Evenèment</option>
+                        <option value="Évenèment">Évenèment</option>
                         <option value="Critique">Critique</option>
                         <option value="Mise à jour">Mise à jour</option>
                     </select>

@@ -1,7 +1,8 @@
 <?php
 session_start();
-require('../include/database.php');
+require_once('../include/database.php');
 require('../include/check_timeout.php');
+require_once __DIR__ . '/../path.php';
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +41,7 @@ $categorie_nom = $_GET['nom'];
             </div>
         <?php endif ?>
         <div class="mb-4 mt-5 d-flex align-items-center gap-2">
-            <a href="<?= forum_main ?>" class="text-decoration-none fs-3">
+            <a href="<?= forum_main ?>" class="text-decoration-none fs-3 return_arrow">
                 <i class="bi bi-chevron-left"></i>
             </a>
             <h1 class="m-0"><?= htmlspecialchars($categorie_nom) ?></h1>
@@ -50,28 +51,34 @@ $categorie_nom = $_GET['nom'];
         <?php
         $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? AND parent_id IS NULL ORDER BY date_msg DESC");
         $stmt->execute([$categorie_nom]);
-        $sujets = $stmt->fetchAll();
+        $sujets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (count($sujets) === 0) {
             echo "<p class='text-muted'>Aucun sujet dans cette catégorie pour le moment.</p>";
         }
 
         foreach ($sujets as $sujet) {
-            $stmt_reponses = $bdd->prepare("SELECT COUNT(*) FROM forum_reponses WHERE id_sujet = ?");
-            $stmt_reponses->execute([$sujet['id_sujet']]);
-            $nb_reponses = $stmt_reponses->fetchColumn();
+            try {
+                $stmt_reponses = $bdd->prepare("SELECT COUNT(*) FROM forum_reponses WHERE id_sujet = ?");
+                $stmt_reponses->execute([$sujet['id_sujet']]);
+                $nb_reponses = $stmt_reponses->fetchColumn();
+            } catch (PDOException) {
+                header('location:' . forum_main . '?message=' . urlencode('Erreur de la base de données, veuillez réessayer plus tard.'));
+                exit();
+            }
         ?>
-            <div class="card mx-0 mb-3">
-                <div class="card-body">
-                    <h5>
-                        <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] ?>" class="text-decoration-none">
+            <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] ?>" class="text-decoration-none">
+
+                <div class="card mx-0 mb-3">
+                    <div class="card-body">
+                        <h5>
                             <?= htmlspecialchars($sujet['titre']) ?>
-                        </a>
-                    </h5>
-                    <p class="text-muted mb-1">Posté le <?= date("d/m/Y à H:i", strtotime($sujet['date_msg'])) ?> par <?= htmlspecialchars($sujet['auteur'] ?? 'Anonyme') ?></p>
-                    <p class="mb-0"><strong><?= $nb_reponses ?></strong> réponse<?= $nb_reponses != 1 ? 's' : '' ?></p>
+                        </h5>
+                        <p class="text-muted mb-1">Posté le <?= date("d/m/Y à H:i", strtotime($sujet['date_msg'])) ?> par <?= htmlspecialchars($sujet['auteur'] ?? 'Anonyme') ?></p>
+                        <p class="mb-0"><strong><?= $nb_reponses ?></strong> réponse<?= $nb_reponses != 1 ? 's' : '' ?></p>
+                    </div>
                 </div>
-            </div>
+            </a>
         <?php } ?>
     </div>
 

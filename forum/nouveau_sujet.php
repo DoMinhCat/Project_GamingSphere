@@ -2,10 +2,9 @@
 session_start();
 $login_page = '../connexion/login.php';
 require('../include/check_session.php');
-require('../include/database.php');
+require_once('../include/database.php');
 require('../include/check_timeout.php');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+require_once __DIR__ . '/../path.php';
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +30,7 @@ $messageErreur = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $titre = trim($_POST['titre']);
     $contenu = trim($_POST['contenu']);
-    $auteur = $_SESSION['utilisateur'] ?? 'Anonyme';
+    $auteur = $_SESSION['user_pseudo'] ?? 'Anonyme';
 
     if (strlen($titre) > 150 || strlen($contenu) > 1000) {
         $messageErreur = "Veuillez respecter la longeur maximum du titre et du contenu !";
@@ -56,7 +55,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php include("../include/header.php"); ?>
 
     <main class="container my-5">
-        <h2 class="mb-4">Créer un nouveau sujet dans : <?= htmlspecialchars($categorie_nom) ?></h2>
+        <div class="mb-4 d-flex align-items-center gap-2">
+            <a href="<?= forum_main ?>" class="text-decoration-none fs-3">
+                <i class="bi bi-chevron-left"></i>
+            </a>
+            <h1 class="m-0">Créer un nouveau sujet dans : <?= htmlspecialchars($categorie_nom) ?></h1>
+        </div>
 
         <?php if (!empty($messageErreur)): ?>
             <div class="alert alert-danger"><?= htmlspecialchars($messageErreur) ?></div>

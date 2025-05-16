@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../../path.php';
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $titre = trim($_POST['titre']);
     $contenu = trim($_POST['contenu']);
-    $auteur = $_SESSION['utilisateur'] ?? 'Anonyme';
+    $auteur = $_SESSION['user_pseudo'] ?? 'Anonyme';
 
     if (strlen($titre) > 150 || strlen($contenu) > 1000) {
         header('Location:' . forum_annonce_back . '?error=length');

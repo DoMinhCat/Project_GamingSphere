@@ -13,7 +13,7 @@ if (!empty($_GET['id'])) {
     exit();
 }
 try {
-    $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email, photo_profil, ville, rue, code_postal FROM utilisateurs WHERE id_utilisateurs = ?");
+    $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, nom, prenom, email, photo_profil, ville, rue, code_postal, status_ENUm FROM utilisateurs WHERE id_utilisateurs = ?");
     $stmt->bindValue(1, $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -26,6 +26,7 @@ try {
         $pseudo = $_POST['pseudo'];
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
+        $statut = $_POST['statut'];
         $email = $_POST['email'];
         $ville = $_POST['ville'];
         $rue = $_POST['rue'];
@@ -44,7 +45,7 @@ try {
             }
         }
 
-        $update_stmt = $bdd->prepare("UPDATE utilisateurs SET pseudo = ?, nom = ?, prenom = ?, email = ?, photo_profil = ?, ville = ?, rue = ?, code_postal = ? WHERE id_utilisateurs = ?");
+        $update_stmt = $bdd->prepare("UPDATE utilisateurs SET pseudo = ?, nom = ?, prenom = ?, email = ?, photo_profil = ?, ville = ?, rue = ?, code_postal = ?, status_ENUm=? WHERE id_utilisateurs = ?");
         $update_stmt->bindValue(1, $pseudo, PDO::PARAM_STR);
         $update_stmt->bindValue(2, $nom, PDO::PARAM_STR);
         $update_stmt->bindValue(3, $prenom, PDO::PARAM_STR);
@@ -53,7 +54,8 @@ try {
         $update_stmt->bindValue(6, $ville, PDO::PARAM_STR);
         $update_stmt->bindValue(7, $rue, PDO::PARAM_STR);
         $update_stmt->bindValue(8, $code_postal, PDO::PARAM_STR);
-        $update_stmt->bindValue(9, $user_id, PDO::PARAM_INT);
+        $update_stmt->bindValue(9, $statut, PDO::PARAM_STR);
+        $update_stmt->bindValue(10, $user_id, PDO::PARAM_INT);
         $update_stmt->execute();
 
         header('Location: ' . profils_back . '?message=success');
@@ -97,6 +99,14 @@ require('../head.php');
             <div class="form-group mb-3">
                 <label for="email">Email:</label>
                 <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="statut">Statut</label>
+                <select name="statut" id="statut" class="form-select" required>
+                    <option value="Client" <?= ($user['status_ENUm'] == 'Client' ? 'selected' : '') ?>>Client</option>
+                    <option value="Admin" <?= ($user['status_ENUm'] == 'Admin' ? 'selected' : '') ?>>Admin</option>
+                </select>
+
             </div>
             <div class="form-group mb-3">
                 <label for="photo">Photo de profil:</label>

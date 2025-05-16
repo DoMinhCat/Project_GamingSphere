@@ -603,7 +603,7 @@ body.offcanvas-backdrop {
 #linkProfileFromConv:hover {
   transform: scale(1.03);
 }
-.articleBlockLink,
+
 .forumBlockLink {
   text-decoration: none;
   color: inherit;
@@ -621,7 +621,6 @@ body.offcanvas-backdrop {
   transition: transform 0.2s ease-in-out;
 }
 
-.articleBlockLink:hover .article,
 .forumBlockLink:hover .card {
   transform: scale(1.01);
 }
@@ -630,4 +629,27 @@ body.offcanvas-backdrop {
 }
 .dark .modal-content {
   background-color: #3e80bd;
+}
+
+.box_category_news {
+  background-color: #e1ddce;
+}
+.card_news {
+  transition: transform 0.2s ease-in-out;
+}
+
+.card_news:hover {
+  transform: scale(1.01);
+}
+.return_arrow {
+  color: #2f608e;
+}
+.return_arrow:hover {
+  color: #1e3d59;
+}
+.dark .return_arrow {
+  color: #fe8c68;
+}
+.dark .return_arrow:hover {
+  color: #ff6e40;
 }

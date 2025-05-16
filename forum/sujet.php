@@ -1,9 +1,8 @@
 <?php
 session_start();
-require('../include/database.php');
+require_once('../include/database.php');
 require('../include/check_timeout.php');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+require_once __DIR__ . '/../path.php';
 ?>
 
 <!DOCTYPE html>
@@ -17,45 +16,60 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
 }
 
-if (!isset($bdd)) {
-    die("Erreur de connexion à la base de données");
-}
-
 if (!isset($_GET['id']) || empty($_GET['id'])) {
-    die("Sujet non spécifié.");
+    header('location:' . forum_main . '?message=' . urlencode('Sujet non spécifié !'));
+    exit;
 }
 
 $id_sujet = (int) $_GET['id'];
+try {
+    $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE id_sujet = ?");
+    $stmt->execute([$id_sujet]);
+    $sujet = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE id_sujet = ?");
-$stmt->execute([$id_sujet]);
-$sujet = $stmt->fetch();
-
-if (!$sujet) {
-    die("Sujet introuvable.");
+    if (!$sujet) {
+        header('location:' . forum_main . '?message=' . urlencode('Sujet non trouvé !'));
+        exit;
+    }
+} catch (PDOException) {
+    header('Location:' . forum_main . '?message=' . urlencode('Erreur de la base de données !'));
+    exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['contenu']) && !empty(trim($_POST['contenu']))) {
-    $contenu_reponse = trim($_POST['contenu']);
-    $auteur = $_SESSION['utilisateur'] ?? 'Anonyme';
+    try {
+        $contenu_reponse = trim($_POST['contenu']);
+        $auteur = $_SESSION['user_id'] ?? 'Anonyme';
 
-    $stmt = $bdd->prepare("INSERT INTO forum_reponses (id_sujet, contenu, auteur) VALUES (?, ?, ?)");
-    $stmt->execute([$id_sujet, $contenu_reponse, $auteur]);
+        $stmt = $bdd->prepare("INSERT INTO forum_reponses (id_sujet, contenu, auteur) VALUES (?, ?, ?)");
+        $stmt->execute([$id_sujet, $contenu_reponse, $auteur]);
 
-    header('Location: ' . sujet . '?id=' . $id_sujet);
-    exit;
+        header('Location: ' . sujet . '?id=' . $id_sujet);
+        exit;
+    } catch (PDOException) {
+        header('Location:' . forum_main . '?message=' . urlencode('Erreur lors de l\'ajoute de la réponse !'));
+        exit();
+    }
 }
 
 $stmt = $bdd->prepare("SELECT * FROM forum_reponses WHERE id_sujet = ? ORDER BY date_msg ASC");
 $stmt->execute([$id_sujet]);
-$reponses = $stmt->fetchAll();
+$reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <body>
     <?php include("../include/header.php"); ?>
 
     <div class="container my-5">
+        <div class="mb-3 d-flex align-items-center gap-2">
+            <a href="<?= forum_category . '?nom=' . $sujet['categories'] ?>" class="text-decoration-none fs-3 return_arrow">
+                <i class="bi bi-chevron-left"></i>
+            </a>
+            <h1 class="m-0"><?= htmlspecialchars($sujet['titre']) ?></h1>
+        </div>
+
         <h2 class="mb-3"><?= htmlspecialchars($sujet['titre']) ?></h2>
+
         <div class="mb-4">
             <div class="p-3 border rounded bg-light">
                 <p><?= nl2br(htmlspecialchars($sujet['contenu'] ?? '')) ?></p>
@@ -68,10 +82,10 @@ $reponses = $stmt->fetchAll();
             <p class="text-muted">Aucune réponse pour le moment.</p>
         <?php else: ?>
             <?php foreach ($reponses as $rep): ?>
-                <div class="card mb-3">
+                <div class="card mb-3 mx-0">
                     <div class="card-body">
-                        <p><?= nl2br(htmlspecialchars($rep['contenu'])) ?></p>
-                        <p class="text-muted text-end">Par <?= htmlspecialchars($rep['auteur']) ?> le <?= date("d/m/Y à H:i", strtotime($rep['date_msg'])) ?></p>
+                        <p class="mb-1"><?= nl2br(htmlspecialchars($rep['contenu'])) ?></p>
+                        <p class="text-muted m-0 text-end">Par <?= htmlspecialchars($rep['auteur']) ?> le <?= date("d/m/Y à H:i", strtotime($rep['date_msg'])) ?></p>
                     </div>
                 </div>
             <?php endforeach; ?>
