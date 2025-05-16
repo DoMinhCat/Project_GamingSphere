@@ -39,11 +39,11 @@ $categorie_nom = $_GET['nom'];
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
-        <div class="mb-4 d-flex">
-            <a href="<?= forum_main ?>">
+        <div class="mb-4 mt-5 d-flex align-items-center gap-2">
+            <a href="<?= forum_main ?>" class="text-decoration-none fs-3">
                 <i class="bi bi-chevron-left"></i>
             </a>
-            <h1>Catégorie : <?= htmlspecialchars($categorie_nom) ?></h1>
+            <h1 class="m-0"><?= htmlspecialchars($categorie_nom) ?></h1>
         </div>
         <a href="<?= nouveau_sujet ?>?categorie=<?= urlencode($categorie_nom) ?>" class="btn btn-primary mb-2">+ Nouveau sujet</a>
 
