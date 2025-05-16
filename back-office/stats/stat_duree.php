@@ -19,11 +19,11 @@ $stmt->execute();
 $total_site = $stmt->fetch(PDO::FETCH_ASSOC);
 $site = $total_site['total_site'];
 
-$stmt = $bdd->prepare("SELECT sum(visit_duration.duration) as page_duree from visit_duration where category=:search;");
-$stmt->execute(['search' => '%' . $category . '%']);
+$stmt = $bdd->prepare("SELECT sum(visit_duration.duration) as page_duree from visit_duration where category=?;");
+$stmt->execute([$category]);
 $page_duree = $stmt->fetch(PDO::FETCH_ASSOC);
 $page_duree_value = $page_duree['page_duree'] ?? 0;
-$total = $category . ':' . $page_duree_value;
+$total = $category . ': ' . $page_duree_value;
 
 $stmt = $bdd->prepare("SELECT category, (sum(visit_duration.duration)) as sum from visit_duration group by category order by sum desc limit 1;");
 $stmt->execute();

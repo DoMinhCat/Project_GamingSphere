@@ -18,16 +18,17 @@ require('../head.php');
     $page = tournois_back;
     include('../navbar.php'); ?>
 
-    <div class="container my-5">
+    <main class="container my-5">
         <h1 class="my-5 text-center">Ajouter un Nouveau Tournoi</h1>
         <?php
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nom_tournoi = $_POST['nom_tournoi'] ?? '';
-            $date_debut = $_POST['date_debut'] ?? '';
-            $date_fin = $_POST['date_fin'] ?? '';
-            $jeu = $_POST['jeu'] ?? '';
-            $statut = $_POST['statut'] ?? '';
-            $type_tournoi = $_POST['type_tournoi'] ?? '';
+            $nom_tournoi = trim($_POST['nom_tournoi']) ?? '';
+            $date_debut = trim($_POST['date_debut']) ?? '';
+            $date_fin = trim($_POST['date_fin']) ?? '';
+            $jeu = trim($_POST['jeu']) ?? '';
+            $statut = trim($_POST['statut']) ?? '';
+            $type_tournoi = trim($_POST['type_tournoi']) ?? '';
+
             if (empty($nom_tournoi) || empty($date_debut) || empty($date_fin) || empty($jeu) || empty($statut) || empty($type_tournoi)) {
                 echo "<div class='alert alert-danger'>Tous les champs sont obligatoires.</div>";
             } else {
@@ -81,7 +82,7 @@ require('../head.php');
                 <a href="<?= tournois_back ?>" class="btn btn-secondary">Retour</a>
             </div>
         </form>
-    </div>
+    </main>
 </body>
 
 </html>
