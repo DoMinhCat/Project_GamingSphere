@@ -58,7 +58,8 @@ if (isset($_POST['update_article'])) {
     }
 }
 try {
-    $query = $bdd->query("SELECT id_news,titre,date_article,category,email FROM news join utilisateurs on auteur=utilisateurs.id_utilisateurs ORDER BY date_article DESC;");
+    $query = $bdd->prepare("SELECT id_news,titre,date_article,category,email FROM news join utilisateurs on auteur=utilisateurs.id_utilisateurs ORDER BY date_article DESC;");
+    $query->execute();
     $articles = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $_SESSION['error'] = htmlspecialchars($e->getMessage());
@@ -255,7 +256,7 @@ require('../head.php');
 
             newInput.removeAttribute('required');
             select.setAttribute('required', 'required');
-
+            select.value = "Général";
         }
     </script>
 
