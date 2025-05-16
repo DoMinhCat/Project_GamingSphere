@@ -114,12 +114,6 @@ require('../head.php');
             unset($_SESSION['error']);
         } elseif (isset($_GET['error']) && $_GET['error'] === 'missing_id')
             $noti_Err = 'Aucun ID spécifié';
-        elseif (isset($_GET['error']) && $_GET['error'] === 'missing_fields')
-            $noti_Err = 'Il faut remplir tous les champs !';
-
-
-
-
         ?>
         <?php if (!empty($noti_Err)) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">

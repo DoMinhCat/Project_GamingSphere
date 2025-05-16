@@ -19,7 +19,17 @@ require('../head.php');
     $page = tournois_back;
     include('../navbar.php');
     ?>
-    <main class="container my-5">
+    <main class="container mb-5">
+        <?php
+        if (isset($_GET['error']) && $_GET['error'] === 'missing_fields')
+            $noti_Err = 'Il faut remplir tous les champs !';
+        ?>
+        <?php if (!empty($noti_Err)) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= $noti_Err ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
         <h1 class="my-5 text-center">Modifier un tournoi</h1>
         <?php
         if (empty($_GET['id_tournoi'])) {

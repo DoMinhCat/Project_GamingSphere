@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'])) {
     $id_edit = $_POST['id_article'];
 
     if (empty($titre) || empty($contenu) || empty($category)) {
-        header('Location:' . article_back . '?missing_fields');
+        header('Location:' . article_edit_back . '?error=missing_fields');
         exit();
     }
 

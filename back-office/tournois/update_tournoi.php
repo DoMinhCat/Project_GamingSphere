@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_tournoi'])) {
     $id_edit = $_POST['id_tournoi'];
 
     if (empty($nom_tournoi) || empty($date_debut) || empty($date_fin) || empty($jeu) || empty($statut) || empty($type_tournoi)) {
-        header('Location:' . tournois_back . '?missing_fields');
+        header('Location:' . tournois_edit_back . '?error=missing_fields');
         exit();
     }
 
