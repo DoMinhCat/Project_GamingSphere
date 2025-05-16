@@ -2,8 +2,8 @@
 require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
 if ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest' || !isset($_GET['search'])) {
-    http_response_code(403);
-    exit('Accès non-autorisé');
+  http_response_code(403);
+  exit('Accès non-autorisé');
 }
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
@@ -11,25 +11,27 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 $search = trim($_GET['search'] ?? '');
 
 try {
-    if (!empty($search)) {
-        $stmt = $bdd->prepare("SELECT id_news, titre, date_article FROM news WHERE titre LIKE :search ORDER BY date_article DESC");
-        $stmt->execute(['search' => '%' . $search . '%']);
-    } else {
-        $stmt = $bdd->query("SELECT id_news, titre, date_article FROM news ORDER BY date_article DESC");
-    }
+  if (!empty($search)) {
+    $stmt = $bdd->prepare("SELECT id_news, titre, date_article FROM news WHERE titre LIKE :search ORDER BY date_article DESC");
+    $stmt->execute(['search' => '%' . $search . '%']);
+  } else {
+    $stmt = $bdd->query("SELECT id_news, titre, date_article FROM news ORDER BY date_article DESC");
+  }
 
-    $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    if (count($articles) > 0) {
-        foreach ($articles as $article) {
-            echo '<tr>
+  if (count($articles) > 0) {
+    foreach ($articles as $article) {
+      echo '<tr>
                         <td class="align-middle">' . htmlspecialchars($article['id_news']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($article['titre']) . '</td>
+                        <td class="align-middle">' . htmlspecialchars($article['category']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($article['date_article']) . '</td>
+                        <td class="align-middle">' . htmlspecialchars($article['email']) . '</td>
                         <td>
                             <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
                             <button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $article['id_news'] . '">Supprimer</button>';
-            echo '<div class="modal fade" id="modal' . $article['id_news'] . '" tabindex="-1" aria-hidden="true">
+      echo '<div class="modal fade" id="modal' . $article['id_news'] . '" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
@@ -45,12 +47,12 @@ try {
                               </div>
                             </div>
                           </div>';
-            echo '</td>
+      echo '</td>
                     </tr>';
-        }
-    } else {
-        echo "<tr><td colspan='6'>Aucun article trouvé.</td></tr>";
     }
+  } else {
+    echo "<tr><td colspan='6'>Aucun article trouvé.</td></tr>";
+  }
 } catch (PDOException $e) {
-    echo "<tr><td colspan='6'>Erreur : " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+  echo "<tr><td colspan='6'>Erreur : " . htmlspecialchars($e->getMessage()) . "</td></tr>";
 }
