@@ -5,7 +5,7 @@ require('../check_session.php');
 require('../../include/check_timeout.php');
 require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
-
+var_dump($articles); // Just temporarily for debugging
 
 if (isset($_POST['add_article'])) {
     if (empty($_POST['titre']) || empty($_POST['contenu'])) {
@@ -77,7 +77,7 @@ if (isset($_POST['update_article'])) {
 }
 try {
     $query = $bdd->prepare("SELECT n.id_news, n.titre, n.date_article, n.category, u.email
-FROM news n JOIN utilisateurs u ON n.auteur = u.id_utilisateurs ORDER BY date_article DESC;");
+FROM news n JOIN utilisateurs u ON n.auteur = u.id_utilisateurs ORDER BY n.date_article DESC;");
     $query->execute();
     $articles = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -227,16 +227,17 @@ require('../head.php');
     <script>
         async function fetchArticle() {
             const query = this.value;
-
-            await fetch('search_article.php?search=' + encodeURIComponent(query), {
+            try {
+                const response = await fetch('search_article.php?search=' + encodeURIComponent(query), {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     }
-                })
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('article_results').innerHTML = data;
                 });
+                const data = await response.text();
+                document.getElementById('article_results').innerHTML = data;
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
         };
         document.getElementById('search_article').addEventListener('input', fetchArticle);
         document.addEventListener('DOMContentLoaded', fetchArticle);
