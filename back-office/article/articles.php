@@ -11,9 +11,11 @@ if (isset($_POST['add_article'])) {
     $titre = trim($_POST['titre']);
     $contenu = trim($_POST['contenu']);
     $date_article = date('Y-m-d');
+    $id_auteur = $_SESSION['user_id'];
+    $category = trim($_POST['category']);
     try {
-        $query = $bdd->prepare("INSERT INTO news (titre, date_article, contenue) VALUES (?, ?, ?)");
-        $query->execute([$titre, $date_article, $contenu]);
+        $query = $bdd->prepare("INSERT INTO news (titre, date_article, contenue, auteur, category) VALUES (?, ?, ?, ?, ?)");
+        $query->execute([$titre, $date_article, $contenu, $id_auteur, $category]);
 
         header('Location:' . article_back . '?message=add_success');
         exit();
@@ -78,7 +80,7 @@ require('../head.php');
     $page = index_back;
     include("../navbar.php");
     ?>
-    <main class="container my-5">
+    <main class="container mb-5">
         <?php
         $noti = '';
         $noti_Err = '';
@@ -115,6 +117,24 @@ require('../head.php');
             <div class="my-3">
                 <label for="titre" class="form-label">Titre</label>
                 <input type="text" class="form-control" id="titre" name="titre" required>
+            </div>
+            <div class="mb-3">
+                <div id="choose">
+                    <label for="category" class="form-label">Catégorie</label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="Général">Général</option>
+                        <option value="Esport">Esport</option>
+                        <option value="Evenèment">Evenèment</option>
+                        <option value="Critique">Critique</option>
+                        <option value="Mise à jour">Mise à jour</option>
+                        <option id="new" value="new">Proposer une nouvelle catégorie</option>
+                    </select>
+                </div>
+                <div id="new_category" style="display: none;">
+                    <label for="new_category_input" class="form-label">Categorie</label>
+                    <input type="text" class="form-control" id="new_category_input" name="category" required>
+                    <button onclick="chooseCategory()" class="mt-2">Choisir une catégorie predéfinie</button>
+                </div>
             </div>
             <div class="mb-3">
                 <label for="contenu" class="form-label">Contenu</label>
@@ -181,10 +201,10 @@ require('../head.php');
 
 
     <script>
-        function fetchArticle() {
+        async function fetchArticle() {
             const query = this.value;
 
-            fetch('search_article.php?search=' + encodeURIComponent(query), {
+            await fetch('search_article.php?search=' + encodeURIComponent(query), {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     }
@@ -196,6 +216,29 @@ require('../head.php');
         };
         document.getElementById('search_article').addEventListener('input', fetchArticle);
         document.addEventListener('DOMContentLoaded', fetchArticle);
+
+        async function showNewCategoryForm() {
+            const new_form = document.getElementById('new_category');
+            const select_form = document.getElementById('category');
+
+            if (select_form.value == "new") {
+                new_form.style.display = 'block';
+                select_form.style.display = 'none';
+            } else {
+                new_form.style.display = 'none';
+                select_form.style.display = 'block';
+            }
+        }
+        const button_propose = document.getElementById('category');
+        button_propose.addEventListener('change', showNewCategoryForm);
+
+        async function chooseCategory() {
+            const new_form = document.getElementById('new_category');
+            const select_form = document.getElementById('category');
+
+            new_form.style.display = 'none';
+            select_form.style.display = 'block';
+        }
     </script>
 
 </body>
