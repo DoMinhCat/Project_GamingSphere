@@ -149,11 +149,11 @@ require('../head.php');
                     <th>Auteur</th>
                     <th>Statut</th>
                     <th>Actions</th>
-                </tr></thead>";
-            echo '<tbody id="captcha_results">';
+                </tr></thead>";*/
+        echo '<tbody id="captcha_results">';
 
 
-
+        /*
             foreach ($captchas as $captcha) {
                 echo '<tr>
                         <td class="align-middle">' . htmlspecialchars($captcha['id_captcha']) . '</td>
@@ -183,8 +183,9 @@ require('../head.php');
                           </div>';
                 echo '</td>
                     </tr>';
-            }
-            echo '</tbody>
+            }*/
+        echo '</tbody>';
+        /*
         </table>
     </div>';
         } else {
