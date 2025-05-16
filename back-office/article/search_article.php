@@ -14,6 +14,9 @@ try {
   if (!empty($search)) {
     $stmt = $bdd->prepare("SELECT id_news, titre, date_article FROM news WHERE titre LIKE :search ORDER BY date_article DESC");
     $stmt->execute(['search' => '%' . $search . '%']);
+
+    $stmt = $bdd->prepare("SELECT id_news,titre,date_article,category,email FROM news join utilisateurs on auteur=utilisateurs.id_utilisateurs WHERE titre LIKE :search ORDER BY date_article DESC;");
+    $stmt->execute(['search' => '%' . $search . '%']);
   } else {
     $stmt = $bdd->query("SELECT id_news, titre, date_article FROM news ORDER BY date_article DESC");
   }
