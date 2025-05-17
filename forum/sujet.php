@@ -39,7 +39,7 @@ try {
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['contenu']) && !empty(trim($_POST['contenu']))) {
     try {
         $contenu_reponse = trim($_POST['contenu']);
-        $auteur = $_SESSION['user_id'] ?? 'Anonyme';
+        $auteur = $_SESSION['user_pseudo'] ?? 'Anonyme';
 
         $stmt = $bdd->prepare("INSERT INTO forum_reponses (id_sujet, contenu, auteur) VALUES (?, ?, ?)");
         $stmt->execute([$id_sujet, $contenu_reponse, $auteur]);
@@ -68,10 +68,8 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <h1 class="m-0"><?= htmlspecialchars($sujet['titre']) ?></h1>
         </div>
 
-        <h2 class="mb-3"><?= htmlspecialchars($sujet['titre']) ?></h2>
-
         <div class="mb-4">
-            <div class="p-3 border rounded bg-light">
+            <div class="p-3 border rounded">
                 <p><?= nl2br(htmlspecialchars($sujet['contenu'] ?? '')) ?></p>
                 <p class="text-muted text-end">Posté par <?= htmlspecialchars($sujet['auteur']) ?> le <?= date("d/m/Y à H:i", strtotime($sujet['date_msg'])) ?></p>
             </div>
@@ -79,7 +77,7 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <h4 class="mb-3">Réponses</h4>
         <?php if (count($reponses) === 0): ?>
-            <p class="text-muted">Aucune réponse pour le moment.</p>
+            <p>Aucune réponse pour le moment.</p>
         <?php else: ?>
             <?php foreach ($reponses as $rep): ?>
                 <div class="card mb-3 mx-0">

@@ -1,4 +1,5 @@
 <?php
+require_once('/path.php');
 $timeout_duree = 60 * 30;
 
 if (isset($_SESSION['actif']) && (time() - $_SESSION['actif']) > $timeout_duree) {
