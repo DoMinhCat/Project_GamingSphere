@@ -72,7 +72,7 @@ require('../../head.php');
     $page = forum_back;
     include('../../navbar.php');
     ?>
-    <main class="container my-5">
+    <main class="container mb-5">
         <?php
         $noti = '';
         $noti_Err = '';
@@ -87,9 +87,9 @@ require('../../head.php');
         elseif (isset($_GET['error']) && $_GET['error'] === 'length')
             $noti_Err = 'Veuillez respecter la longeur du titre et du contenu !';
         elseif (isset($_GET['message']) && $_GET['message'] === 'deleted')
-            $noti_Err = 'Sujet supprimé avec succès !';
+            $noti = 'Sujet supprimé avec succès !';
         elseif (isset($_GET['message']) && $_GET['message'] === 'updated')
-            $noti_Err = 'Sujet modifié avec succès !';
+            $noti = 'Sujet modifié avec succès !';
         elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
             $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
             unset($_SESSION['error']);

@@ -5,7 +5,7 @@ require('../../check_session.php');
 require_once('../../../include/database.php');
 require_once __DIR__ . '/../../../path.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['annonceId'])) {
     $titre = trim($_POST['titre']) ?? '';
     $contenu = trim($_POST['contenu']) ?? '';
     $category = trim($_POST['category']) ?? '';

@@ -21,11 +21,11 @@ if (isset($_GET['id'])) {
         }
     } catch (PDOException $e) {
         $_SESSION['error'] = htmlspecialchars($e->getMessage());
-        header('Location:' . jeux_back . '?error=bdd');
+        header('Location:' . forum_annonce_back . '?error=bdd');
         exit();
     }
 } else {
-    header('Location: ' . jeux_back . '?error=id_invalid');
+    header('Location: ' . forum_annonce_back . '?error=id_invalid');
     exit();
 }
 ?>
@@ -49,13 +49,6 @@ require('../../head.php');
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
-        <?php if (!empty($_SESSION['message'])) : ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <?= htmlspecialchars($_SESSION['message']) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php unset($_SESSION['message']);
-        endif ?>
 
         <h1 class="text-center mt-5 mb-4">Modifier le sujet - Annonce</h1>
         <?php if (isset($annonce)): ?>
@@ -101,7 +94,7 @@ require('../../head.php');
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function updateCounter() {
-            const input = document.getElementById('titre');
+            const input = document.getElementById('annonceName');
             const counter = document.getElementById('counter');
             counter.textContent = `${input.value.length} / 150`;
         }
