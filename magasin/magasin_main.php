@@ -83,8 +83,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
                             <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
                             <div class="mt-auto d-flex justify-content-between gap-2 align-items-center">
-                                <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>" class="btn btn-outline-primary w-50 mt-3 h-50">Voir détails</a>
-                                <button class="btn btn-success mt-3 btn-add-to-cart h-50" data-id="<?= $game['id_jeu'] ?>">Ajouter au panier</button>
+                                <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>" class="btn btn-magasin btn-outline-primary w-50 mt-3 h-50">Voir détails</a>
+                                <button class="btn btn-magasin btn-success mt-3 btn-add-to-cart h-50" data-id="<?= $game['id_jeu'] ?>">Ajouter au panier + </button>
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         margin-bottom: auto;
     }
 
-    .btn {
+    .btn-magasin {
         font-weight: 500;
     }
 

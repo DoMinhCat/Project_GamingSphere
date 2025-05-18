@@ -11,7 +11,7 @@ function writeLogCredit(string $email, bool $success, string $return): void
 {
   $stream = fopen('../log/log_transaction.txt', 'a+');
   if ($success)
-    $line = date('Y/m/d - H:i:s') . ' - Paiement réussi de ' . $email . ' - ' . $return . '\n';
+    $line = date('Y/m/d - H:i:s') . ' - Paiement réussi de ' . $email . ' - ' . $return . "\n";
   else
     $line = date('Y/m/d - H:i:s') . ' - Paiement échoué de ' . $email . ' - en raison de : ' . $return . "\n";
   fputs($stream, $line);
@@ -58,7 +58,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                   include('../include/database.php');
                   $stmt = $bdd->prepare("UPDATE credits SET credits = credits + ? WHERE user_id = ?");
                   $stmt->execute([$credits_ajoutes, $user_id]);
-                  writeLogCredit($email, true, "$credits_ajoutes crédits ajoutés.");
+                  writeLogCredit($email, true, "$credits_ajoutes crédits ajoutés");
             ?>
                   <i class="bi bi-check-circle text-success display-1"></i>
                   <h2 class="mt-4 text-success">Paiement confirmé !</h2>

@@ -217,7 +217,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                 <?php endif; ?>
 
                 <?php if ($notificationCount === 0 && $notificationCountTeams === 0): ?>
-                  <li class="dropdown-item text-center text-muted">Aucune notification</li>
+                  <li class="dropdown-item text-center">Aucune notification</li>
                 <?php endif; ?>
               </ul>
             </div>
@@ -339,7 +339,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                 <?php endif; ?>
 
                 <?php if ($notificationCount === 0 && $notificationCountTeams === 0): ?>
-                  <li class="dropdown-item text-center text-muted">Aucune notification</li>
+                  <li class="dropdown-item text-center">Aucune notification</li>
                 <?php endif; ?>
               </ul>
             </div>

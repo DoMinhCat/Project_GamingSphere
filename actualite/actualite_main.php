@@ -17,7 +17,7 @@ function fetchNews(PDO $bdd, string $category): array
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $nb_row = count($rows);
 
-        // Adjust number of articles to return if less than 5
+
         if ($nb_row < 5) {
             if ($nb_row < 1) $row_take = 0;
             elseif ($nb_row < 2) $row_take = 1;
@@ -95,7 +95,7 @@ try {
     }
 
     if ($nb_row != 5) {
-        $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'Général' and news.category<>'Esport' and news.category<>'Évènement' and news.category<>'Critique' and news.category<>'Mise à jour' order by rand() limit" . $row_take . ";");
+        $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'Général' and news.category<>'Esport' and news.category<>'Évènement' and news.category<>'Critique' and news.category<>'Mise à jour' order by rand() limit " . $row_take . ";");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -419,32 +419,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
         <!-- critique -->
         <?php
-        try {
-            $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category='Critique' order by rand() limit 5;");
-            $stmt->execute();
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $nb_row = $stmt->rowCount();
-
-
-            if ($nb_row < 1) {
-                $row_take = 0;
-            } elseif ($nb_row < 2) {
-                $row_take = 1;
-            } elseif ($nb_row < 4) {
-                $row_take = 2;
-            } else {
-                $row_take = 4;
-            }
-
-            if ($nb_row != 5) {
-                $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category='Critique' order by rand() limit" . $row_take . ";");
-                $stmt->execute();
-                $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }
-        } catch (PDOException) {
-            header('location:' . index_front . '?message=bdd');
-            exit();
-        }
         // 5 items case
         if ($nb_row_critique == 5) {
             $big_article = $rows[0];

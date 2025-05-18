@@ -142,7 +142,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
 
             <hr>
-            <div class="d-flex justify-content-between mt-4">
+            <div class="d-flex justify-content-between mt-4 px-3">
                 <a href="<?= edit_account ?>" class="btn btn-primary">Modifier mes informations</a>
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
                     Supprimer mon compte

@@ -58,8 +58,8 @@ ORDER BY
             echo "</tr>";
         }
     } else {
-        echo "<tr><td colspan='12' class=\"text-center\">Aucun utilisateur trouvé.</td></tr>";
+        echo "<tr><td colspan='13' class=\"text-center\">Aucun utilisateur trouvé.</td></tr>";
     }
 } catch (PDOException $e) {
-    echo "<tr><td colspan='12' class=\"text-center\">Erreur : " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+    echo "<tr><td colspan='13' class=\"text-center\">Erreur : " . htmlspecialchars($e->getMessage()) . "</td></tr>";
 }

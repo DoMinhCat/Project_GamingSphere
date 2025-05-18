@@ -53,10 +53,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 $team = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 if ($team && isset($team['id_equipe'], $team['nom_equipe'])): ?>
-                    <a href="<?= team_details ?>?id_equipe=<?= htmlspecialchars($team['id_equipe']) ?>" class="btn btn-primary">
+                    <a href="<?= team_details ?>?id_equipe=<?= htmlspecialchars($team['id_equipe']) ?>" class="btn btn-primary mb-2">
                         Voir les détails de votre équipe : <?= htmlspecialchars($team['nom_equipe']) ?>
                     </a>
-                    <a href="<?= create_team ?>" class="btn btn-secondary">Créer une autre équipe</a>
+                    <a href="<?= create_team ?>" class="btn btn-secondary mb-2">Créer une autre équipe</a>
                 <?php else: ?>
                     <a href="../team/join_team.php" class="btn btn-success">Rejoindre une équipe</a>
                     <a href="<?= create_team ?>" class="btn btn-secondary">Créer une équipe</a>

@@ -76,8 +76,8 @@ try {
             </tr>';
         }
     } else {
-        echo '<tr><td colspan="9" class="text-center">Aucun jeu trouvé.</td></tr>';
+        echo '<tr><td colspan="10" class="text-center">Aucun jeu trouvé.</td></tr>';
     }
 } catch (PDOException $e) {
-    echo '<tr><td colspan="9" class="text-danger">Erreur : ' . htmlspecialchars($e->getMessage()) . '</td></tr>';
+    echo '<tr><td colspan="10" class="text-danger">Erreur : ' . htmlspecialchars($e->getMessage()) . '</td></tr>';
 }

@@ -35,12 +35,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         </div>
     <?php endif;
     if (isset($_GET['message']) && $_GET['message'] == 'email_verifie') {
-        echo '<div class="feedback text-center mb-4 mt-4" style="background-color: #f5f0e1; color:#1E3D59;">';
+        echo '<div class="feedback text-center p-3" style="background-color: #f5f0e1; color:#1E3D59;">';
         echo "Vous avez déjà vérifié votre email !";
         echo '</div>';;
     }
     if (isset($_GET['message']) && $_GET['message'] == 'bdd') {
-        echo '<div class="feedback text-center mb-4 mt-4" style="background-color: #f5f0e1; color:#1E3D59;">';
+        echo '<div class="feedback text-center p-3" style="background-color: #f5f0e1; color:#1E3D59;">';
         echo "Erreur de la base de données, veuillez reéssayer plus tard !";
         echo '</div>';;
     }

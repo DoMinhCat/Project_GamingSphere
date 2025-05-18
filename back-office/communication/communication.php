@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../path.php';
 <html lang="fr">
 
 <?php
-$title = 'Gestions des canaux de communications';
+$title = 'Gestions des commentaires';
 require('../head.php');
 ?>
 

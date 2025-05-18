@@ -35,7 +35,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include('navbar.php'); ?>
 
     <div class="container my-5">
-        <h1 class="text-center mb-4">🧾 Historique de vos achats</h1>
+        <h1 class="text-center mb-5">🧾 Historique de vos achats</h1>
 
         <?php if (count($achats) > 0): ?>
             <div class="row">
@@ -57,10 +57,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p class="text-center text-muted">Vous n'avez encore acheté aucun jeu.</p>
+            <p class="text-center">Vous n'avez pas encore acheté un jeu.</p>
         <?php endif; ?>
 
-        <div class="text-center mt-4">
+        <div class="text-center mt-5">
             <a href="../jeux/index.php" class="btn btn-primary">🕹️ Parcourir les jeux</a>
             <a href="../profil.php" class="btn btn-secondary">👤 Retour au profil</a>
         </div>

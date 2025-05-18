@@ -40,6 +40,8 @@ $categorie_nom = $_GET['nom'];
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
+
+
         <div class="mb-4 mt-5 d-flex align-items-center gap-2">
             <a href="<?= forum_main ?>" class="text-decoration-none fs-3 return_arrow">
                 <i class="bi bi-chevron-left"></i>
@@ -67,7 +69,7 @@ $categorie_nom = $_GET['nom'];
                 exit();
             }
         ?>
-            <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] ?>" class="text-decoration-none">
+            <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] ?>" class="text-decoration-none forumBlockLink">
 
                 <div class="card mx-0 mb-3">
                     <div class="card-body">

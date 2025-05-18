@@ -93,7 +93,7 @@ require('head.php');
             <div class="col">
                 <div class="h-100">
                     <a href="<?= communication_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                        Gestion des canaux de communication
+                        Gestion des commentaires
                     </a>
                 </div>
             </div>

@@ -38,8 +38,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <h1 class="mb-4 text-center">Mes équipes</h1>
 
         <?php if (count($teams) > 0): ?>
-            <table class="table table-striped">
-                <thead>
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
                     <tr>
                         <th>Nom de l'équipe</th>
                         <th>Niveau</th>
@@ -54,7 +54,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <td><?= htmlspecialchars($team['niveau']) ?></td>
                             <td><?= htmlspecialchars(date('Y-m-d', strtotime($team['date_creation']))) ?></td>
                             <td>
-                                <a href="../team/team_details.php?id_equipe=<?= urlencode($team['id_equipe']) ?>" class="btn btn-primary btn-sm">Voir l'équipe</a>
+                                <a href="../team/team_details.php?id_equipe=<?= urlencode($team['id_equipe']) ?>" class="btn btn-secondary btn-sm">Voir l'équipe</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -64,11 +64,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <p class="text-center">Vous n'avez rejoint aucune équipe pour le moment.</p>
         <?php endif; ?>
         <div class="text-center mt-4">
-            <a href="<?= create_team ?>" class="btn btn-success">Créer une nouvelle équipe</a>
-            <a href="<?= team_list ?>" class="btn btn-success">Liste des équipes</a>
+            <a href="<?= create_team ?>" class="btn btn-primary">Créer une nouvelle équipe</a>
+            <a href="<?= team_list ?>" class="btn btn-secondary">Liste des équipes</a>
         </div>
     </div>
-
+    <?php include('../include/footer.php'); ?>
 </body>
 
 </html>

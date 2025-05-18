@@ -70,8 +70,8 @@ try {
             echo "</tr>";
         }
     } else {
-        echo "<tr><td colspan='6'>Aucun utilisateur trouvé.</td></tr>";
+        echo "<tr><td colspan='7'>Aucun utilisateur trouvé.</td></tr>";
     }
 } catch (PDOException $e) {
-    echo "<tr><td colspan='6'>Erreur : " . htmlspecialchars($e->getMessage()) . "</td></tr>";
+    echo "<tr><td colspan='7'>Erreur : " . htmlspecialchars($e->getMessage()) . "</td></tr>";
 }

@@ -138,7 +138,7 @@ require('../head.php');
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="9" class="text-center">Aucun jeu trouvé.</td>
+                            <td colspan="10" class="text-center">Aucun jeu trouvé.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

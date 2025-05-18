@@ -72,7 +72,7 @@ require('../head.php');
                 </div>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Modifier la question</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
             </form>
         <?php else: ?>

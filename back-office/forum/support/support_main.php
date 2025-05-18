@@ -202,7 +202,7 @@ require('../../head.php');
         function fetchSupport() {
             const query = document.getElementById('search').value;
 
-            fetch(`search_discussions.php?search=${encodeURIComponent(query)}`, {
+            fetch(`search_support.php?search=${encodeURIComponent(query)}`, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     }
