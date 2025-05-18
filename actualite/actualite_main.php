@@ -1,7 +1,7 @@
 <?php
 session_start();
 require('../include/check_timeout.php');
-require('../include/database.php');
+require_once('../include/database.php');
 require_once __DIR__ . '/../path.php';
 function fetchNews(PDO $bdd, string $category): array
 {
@@ -57,17 +57,17 @@ $rows_esport = $result['rows'];
 $nb_row_esport = $result['nb_row'];
 $row_take_esport = $result['row_take'];
 
-$result = fetchNews($bdd, 'Evenement');
+$result = fetchNews($bdd, 'Évènement');
 $rows_event = $result['rows'];
 $nb_row_event = $result['nb_row'];
 $row_take_event = $result['row_take'];
 
-$result = fetchNews($bdd, 'General');
+$result = fetchNews($bdd, 'Général');
 $rows_general = $result['rows'];
 $nb_row_general = $result['nb_row'];
 $row_take_general = $result['row_take'];
 
-$result = fetchNews($bdd, 'Mise a jour');
+$result = fetchNews($bdd, 'Mise à jour');
 $rows_update = $result['rows'];
 $nb_row_update = $result['nb_row'];
 $row_take_update = $result['row_take'];
@@ -78,7 +78,7 @@ $nb_row_critique = $result['nb_row'];
 $row_take_critique = $result['row_take'];
 
 try {
-    $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'General' and news.category<>'Esport' and news.category<>'evenement' and news.category<>'Critique' and news.category<>'Mise a jour' order by rand() limit 5;");
+    $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'Général' and news.category<>'Esport' and news.category<>'Évènement' and news.category<>'Critique' and news.category<>'Mise à jour' order by rand() limit 5;");
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $nb_row = $stmt->rowCount();
@@ -95,7 +95,7 @@ try {
     }
 
     if ($nb_row != 5) {
-        $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'General' and news.category<>'Esport' and news.category<>'Evenement' and news.category<>'Critique' and news.category<>'Mise a jour' order by rand() limit " . $row_take . ";");
+        $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'Général' and news.category<>'Esport' and news.category<>'Évènement' and news.category<>'Critique' and news.category<>'Mise à jour' order by rand() limit " . $row_take . ";");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -123,11 +123,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 ?>
 
 <body>
-    <?php include("../include/header.php");
-    var_dump($rows_alaune, $nb_row_alaune, $row_take_alaune); //debug
-    ?>
+    <?php include("../include/header.php");    ?>
 
-    <main class="container my-5">
+    <main class="container mb-5">
+        <?php
+        if (!empty($_GET['message'])) {
+            echo '<div class="feedback text-center p-3" style="background-color: #f5f0e1; color:#1E3D59;">';
+            echo htmlspecialchars($_GET['message']);
+            echo '</div>';;
+        }
+        ?>
         <h1 class="text-center mb-5">Actualités</h1>
         <!-- A la une -->
         <?php
@@ -165,7 +170,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
-                                        <p class="mb-0"><strong><?= $small_article['pseudo'] . ' a publié le ' ?></strong><?= $small_article['date_article'] ?>
+                                        <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
                                         </p>
                                     </div>
                                 </a>
@@ -174,7 +179,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     </div>
                 </div>
             </div>
-        <?php } elseif ($row_take_alaune == 4 || $row_take_alaune == 2) { ?>
+        <?php } elseif ($row_take_alaune == 4 || $row_take_alaune == 2 || $row_take_alaune == 1) { ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=alaune' ?>" class="mb-3 category_news_title">
                     <h2>À la une</h2>
@@ -247,7 +252,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
-                                        <p class="mb-0"><strong><?= $small_article['pseudo'] . ' a publié le ' ?></strong><?= $small_article['date_article'] ?>
+                                        <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
                                         </p>
                                     </div>
                                 </a>
@@ -256,7 +261,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     </div>
                 </div>
             </div>
-        <?php } elseif ($row_take_esport == 4 || $row_take_esport == 2) { ?>
+        <?php } elseif ($row_take_esport == 4 || $row_take_esport == 2 || $row_take_esport == 1) { ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=' . urlencode('Esport') ?>" class="mb-3 category_news_title">
                     <h2>Esport</h2>
@@ -327,7 +332,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
-                                        <p class="mb-0"><strong><?= $small_article['pseudo'] . ' a publié le ' ?></strong><?= $small_article['date_article'] ?>
+                                        <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
                                         </p>
                                     </div>
                                 </a>
@@ -336,7 +341,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     </div>
                 </div>
             </div>
-        <?php } elseif ($row_take_event == 4 || $row_take_event == 2) { ?>
+        <?php } elseif ($row_take_event == 4 || $row_take_event == 2 || $row_take_event == 1) { ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=evenement'  ?>" class="mb-3 category_news_title">
                     <h2>Évènement</h2>
@@ -410,7 +415,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
-                                        <p class="mb-0"><strong><?= $small_article['pseudo'] . ' a publié le ' ?></strong><?= $small_article['date_article'] ?>
+                                        <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
                                         </p>
                                     </div>
                                 </a>
@@ -419,7 +424,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     </div>
                 </div>
             </div>
-        <?php } elseif ($row_take_general == 4 || $row_take_general == 2) { ?>
+        <?php } elseif ($row_take_general == 4 || $row_take_general == 2 || $row_take_general == 1) { ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=general' ?>" class="mb-3 category_news_title">
                     <h2>Général</h2>
@@ -493,7 +498,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
-                                        <p class="mb-0"><strong><?= $small_article['pseudo'] . ' a publié le ' ?></strong><?= $small_article['date_article'] ?>
+                                        <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
                                         </p>
                                     </div>
                                 </a>
@@ -502,7 +507,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     </div>
                 </div>
             </div>
-        <?php } elseif ($row_take_critique == 4 || $row_take_critique == 2) { ?>
+        <?php } elseif ($row_take_critique == 4 || $row_take_critique == 2 || $row_take_critique == 1) { ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=' . urlencode('Critique') ?>" class="mb-3 category_news_title">
                     <h2>Critique</h2>
@@ -576,7 +581,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
-                                        <p class="mb-0"><strong><?= $small_article['pseudo'] . ' a publié le ' ?></strong><?= $small_article['date_article'] ?>
+                                        <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
                                         </p>
                                     </div>
                                 </a>
@@ -585,7 +590,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     </div>
                 </div>
             </div>
-        <?php } elseif ($row_take_update == 4 || $row_take_update == 2) { ?>
+        <?php } elseif ($row_take_update == 4 || $row_take_update == 2 || $row_take_update == 1) { ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=miseajour' ?>" class="mb-3 category_news_title">
                     <h2>Mise à jour</h2>
@@ -659,7 +664,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
-                                        <p class="mb-0"><strong><?= $small_article['pseudo'] . ' a publié le ' ?></strong><?= $small_article['date_article'] ?>
+                                        <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
                                         </p>
                                     </div>
                                 </a>
