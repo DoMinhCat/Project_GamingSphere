@@ -61,11 +61,11 @@ require('../head.php'); ?>
                 <div id="choose">
                     <label for="category" class="form-label">Catégorie</label>
                     <select class="form-select" id="category" name="category_choose" required>
-                        <option value="Général">Général</option>
+                        <option value="General">Général</option>
                         <option value="Esport">Esport</option>
-                        <option value="Évènement">Évènement</option>
+                        <option value="Evenement">Évènement</option>
                         <option value="Critique">Critique</option>
-                        <option value="Mise à jour">Mise à jour</option>
+                        <option value="Mise a jour">Mise à jour</option>
                     </select>
                     <button id="new" onclick="showNewCategoryForm(event)" class="mt-2 btn btn-primary">Proposer une nouvelle catégorie</button>
                 </div>

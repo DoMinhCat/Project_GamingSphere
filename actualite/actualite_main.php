@@ -10,7 +10,7 @@ function fetchNews(PDO $bdd, string $category): array
                                FROM news 
                                JOIN utilisateurs ON id_utilisateurs = news.auteur 
                                WHERE news.category = :category 
-                               ORDER BY RAND() 
+                               ORDER BY RAND()
                                LIMIT 5;");
         $stmt->bindParam(':category', $category);
         $stmt->execute();
@@ -47,7 +47,7 @@ function fetchNews(PDO $bdd, string $category): array
         exit();
     }
 }
-$result = fetchNews($bdd, 'À la une');
+$result = fetchNews($bdd, 'A la une');
 $rows_alaune = $result['rows'];
 $nb_row_alaune = $result['nb_row'];
 $row_take_alaune = $result['row_take'];
@@ -57,17 +57,17 @@ $rows_esport = $result['rows'];
 $nb_row_esport = $result['nb_row'];
 $row_take_esport = $result['row_take'];
 
-$result = fetchNews($bdd, 'Évènement');
+$result = fetchNews($bdd, 'Evenement');
 $rows_event = $result['rows'];
 $nb_row_event = $result['nb_row'];
 $row_take_event = $result['row_take'];
 
-$result = fetchNews($bdd, 'Général');
+$result = fetchNews($bdd, 'General');
 $rows_general = $result['rows'];
 $nb_row_general = $result['nb_row'];
 $row_take_general = $result['row_take'];
 
-$result = fetchNews($bdd, 'Mise à jour');
+$result = fetchNews($bdd, 'Mise a jour');
 $rows_update = $result['rows'];
 $nb_row_update = $result['nb_row'];
 $row_take_update = $result['row_take'];
@@ -78,7 +78,7 @@ $nb_row_critique = $result['nb_row'];
 $row_take_critique = $result['row_take'];
 
 try {
-    $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'Général' and news.category<>'Esport' and news.category<>'Évènement' and news.category<>'Critique' and news.category<>'Mise à jour' order by rand() limit 5;");
+    $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'General' and news.category<>'Esport' and news.category<>'evenement' and news.category<>'Critique' and news.category<>'Mise a jour' order by rand() limit 5;");
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $nb_row = $stmt->rowCount();
@@ -95,7 +95,7 @@ try {
     }
 
     if ($nb_row != 5) {
-        $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'Général' and news.category<>'Esport' and news.category<>'Évènement' and news.category<>'Critique' and news.category<>'Mise à jour' order by rand() limit " . $row_take . ";");
+        $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'General' and news.category<>'Esport' and news.category<>'Evenement' and news.category<>'Critique' and news.category<>'Mise a jour' order by rand() limit " . $row_take . ";");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -123,7 +123,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 ?>
 
 <body>
-    <?php include("../include/header.php"); ?>
+    <?php include("../include/header.php");
+    var_dump($rows_alaune, $nb_row_alaune, $row_take_alaune); //debug
+    ?>
 
     <main class="container my-5">
         <h1 class="text-center mb-5">Actualités</h1>
@@ -135,7 +137,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             $small_articles = array_slice($rows_alaune, 1);
         ?>
             <div class="d-flex flex-column mb-5">
-                <a href="<?= actualite_categorie . '?category=' . urlencode('À la une') ?>" class="mb-3 category_news_title">
+                <a href="<?= actualite_categorie . '?category=alaune' ?>" class="mb-3 category_news_title">
                     <h2>À la une</h2>
                 </a>
 
@@ -173,28 +175,38 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php } elseif ($row_take_alaune == 4 || $row_take_alaune == 2) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=alaune' ?>" class="mb-3 category_news_title">
+                    <h2>À la une</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
 
-                    <?php foreach ($rows_alaune as $row) : ?>
-                        <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
-                            <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
-                                <h2>
-                                    <?= htmlspecialchars($row['titre']) ?>
-                                </h2>
-                                <p class="mb-1">
-                                    <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
-                                </p>
-                                <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
-                            </div>
-                        </a>
-                    <?php endforeach ?>
+                        <?php foreach ($rows_alaune as $row) : ?>
+                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                                <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
+                                    <h2>
+                                        <?= htmlspecialchars($row['titre']) ?>
+                                    </h2>
+                                    <p class="mb-1">
+                                        <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
+                                    </p>
+                                    <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
+                                </div>
+                            </a>
+                        <?php endforeach ?>
+                    </div>
                 </div>
             </div>
         <?php } elseif ($row_take_alaune == 0) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
-                    <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=alaune' ?>" class="mb-3 category_news_title">
+                    <h2>À la une</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
+                        <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+                    </div>
                 </div>
             </div>
         <?php } ?>
@@ -245,28 +257,36 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php } elseif ($row_take_esport == 4 || $row_take_esport == 2) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=' . urlencode('Esport') ?>" class="mb-3 category_news_title">
+                    <h2>Esport</h2>
+                </a>
+                <div class="rounded box_category_news">
 
-                    <?php foreach ($rows_esport as $row) : ?>
-                        <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
-                            <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
-                                <h2>
-                                    <?= htmlspecialchars($row['titre']) ?>
-                                </h2>
-                                <p class="mb-1">
-                                    <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
-                                </p>
-                                <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
-                            </div>
-                        </a>
-                    <?php endforeach ?>
+                    <div class="article-container p-3">
+
+                        <?php foreach ($rows_esport as $row) : ?>
+                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                                <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
+                                    <h2>
+                                        <?= htmlspecialchars($row['titre']) ?>
+                                    </h2>
+                                    <p class="mb-1">
+                                        <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
+                                    </p>
+                                    <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
+                                </div>
+                            </a>
+                        <?php endforeach ?>
+                    </div>
                 </div>
             </div>
         <?php } elseif ($row_take_esport == 0) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
-                    <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+            <div class="d-flex flex-column mb-5">
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
+                        <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+                    </div>
                 </div>
             </div>
         <?php } ?>
@@ -279,7 +299,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             $small_articles = array_slice($rows, 1);
         ?>
             <div class="d-flex flex-column mb-5">
-                <a href="<?= actualite_categorie . '?category=' . urlencode('Évènement') ?>" class="mb-3 category_news_title">
+                <a href="<?= actualite_categorie . '?category=evenement' ?>" class="mb-3 category_news_title">
                     <h2>Évènement</h2>
                 </a>
 
@@ -317,28 +337,38 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php } elseif ($row_take_event == 4 || $row_take_event == 2) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=evenement'  ?>" class="mb-3 category_news_title">
+                    <h2>Évènement</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
 
-                    <?php foreach ($rows_event as $row) : ?>
-                        <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
-                            <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
-                                <h2>
-                                    <?= htmlspecialchars($row['titre']) ?>
-                                </h2>
-                                <p class="mb-1">
-                                    <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
-                                </p>
-                                <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
-                            </div>
-                        </a>
-                    <?php endforeach ?>
+                        <?php foreach ($rows_event as $row) : ?>
+                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                                <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
+                                    <h2>
+                                        <?= htmlspecialchars($row['titre']) ?>
+                                    </h2>
+                                    <p class="mb-1">
+                                        <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
+                                    </p>
+                                    <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
+                                </div>
+                            </a>
+                        <?php endforeach ?>
+                    </div>
                 </div>
             </div>
         <?php } elseif ($row_take_event == 0) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
-                    <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=evenement'  ?>" class="mb-3 category_news_title">
+                    <h2>Évènement</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
+                        <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+                    </div>
                 </div>
             </div>
         <?php } ?>
@@ -352,7 +382,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             $small_articles = array_slice($rows, 1);
         ?>
             <div class="d-flex flex-column mb-5">
-                <a href="<?= actualite_categorie . '?category=' . urlencode('Général') ?>" class="mb-3 category_news_title">
+                <a href="<?= actualite_categorie . '?category=general' ?>" class="mb-3 category_news_title">
                     <h2>Général</h2>
                 </a>
 
@@ -390,28 +420,38 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php } elseif ($row_take_general == 4 || $row_take_general == 2) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=general' ?>" class="mb-3 category_news_title">
+                    <h2>Général</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
 
-                    <?php foreach ($rows_general as $row) : ?>
-                        <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
-                            <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
-                                <h2>
-                                    <?= htmlspecialchars($row['titre']) ?>
-                                </h2>
-                                <p class="mb-1">
-                                    <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
-                                </p>
-                                <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
-                            </div>
-                        </a>
-                    <?php endforeach ?>
+                        <?php foreach ($rows_general as $row) : ?>
+                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                                <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
+                                    <h2>
+                                        <?= htmlspecialchars($row['titre']) ?>
+                                    </h2>
+                                    <p class="mb-1">
+                                        <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
+                                    </p>
+                                    <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
+                                </div>
+                            </a>
+                        <?php endforeach ?>
+                    </div>
                 </div>
             </div>
         <?php } elseif ($row_take_general == 0) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
-                    <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=general' ?>" class="mb-3 category_news_title">
+                    <h2>Général</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
+                        <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+                    </div>
                 </div>
             </div>
         <?php } ?>
@@ -463,28 +503,38 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php } elseif ($row_take_critique == 4 || $row_take_critique == 2) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=' . urlencode('Critique') ?>" class="mb-3 category_news_title">
+                    <h2>Critique</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
 
-                    <?php foreach ($rows_critique as $row) : ?>
-                        <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
-                            <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
-                                <h2>
-                                    <?= htmlspecialchars($row['titre']) ?>
-                                </h2>
-                                <p class="mb-1">
-                                    <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
-                                </p>
-                                <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
-                            </div>
-                        </a>
-                    <?php endforeach ?>
+                        <?php foreach ($rows_critique as $row) : ?>
+                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                                <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
+                                    <h2>
+                                        <?= htmlspecialchars($row['titre']) ?>
+                                    </h2>
+                                    <p class="mb-1">
+                                        <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
+                                    </p>
+                                    <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
+                                </div>
+                            </a>
+                        <?php endforeach ?>
+                    </div>
                 </div>
             </div>
         <?php } elseif ($row_take_critique == 0) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
-                    <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=' . urlencode('Critique') ?>" class="mb-3 category_news_title">
+                    <h2>Critique</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
+                        <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+                    </div>
                 </div>
             </div>
         <?php } ?>
@@ -498,7 +548,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             $small_articles = array_slice($rows, 1);
         ?>
             <div class="d-flex flex-column mb-5">
-                <a href="<?= actualite_categorie . '?category=' . urlencode('Mise à jour') ?>" class="mb-3 category_news_title">
+                <a href="<?= actualite_categorie . '?category=miseajour' ?>" class="mb-3 category_news_title">
                     <h2>Mise à jour</h2>
                 </a>
 
@@ -536,28 +586,38 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php } elseif ($row_take_update == 4 || $row_take_update == 2) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=miseajour' ?>" class="mb-3 category_news_title">
+                    <h2>Mise à jour</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
 
-                    <?php foreach ($rows_update as $row) : ?>
-                        <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
-                            <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
-                                <h2>
-                                    <?= htmlspecialchars($row['titre']) ?>
-                                </h2>
-                                <p class="mb-1">
-                                    <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
-                                </p>
-                                <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
-                            </div>
-                        </a>
-                    <?php endforeach ?>
+                        <?php foreach ($rows_update as $row) : ?>
+                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                                <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
+                                    <h2>
+                                        <?= htmlspecialchars($row['titre']) ?>
+                                    </h2>
+                                    <p class="mb-1">
+                                        <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
+                                    </p>
+                                    <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
+                                </div>
+                            </a>
+                        <?php endforeach ?>
+                    </div>
                 </div>
             </div>
         <?php } elseif ($row_take_update == 0) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
-                    <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=miseajour' ?>" class="mb-3 category_news_title">
+                    <h2>Mise à jour</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
+                        <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+                    </div>
                 </div>
             </div>
         <?php } ?>
@@ -609,28 +669,38 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php } elseif ($row_take == 4 || $row_take == 2) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=' . urlencode('Divers') ?>" class="mb-3 category_news_title">
+                    <h2>Divers</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
 
-                    <?php foreach ($rows as $row) : ?>
-                        <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
-                            <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
-                                <h2>
-                                    <?= htmlspecialchars($row['titre']) ?>
-                                </h2>
-                                <p class="mb-1">
-                                    <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
-                                </p>
-                                <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
-                            </div>
-                        </a>
-                    <?php endforeach ?>
+                        <?php foreach ($rows as $row) : ?>
+                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                                <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
+                                    <h2>
+                                        <?= htmlspecialchars($row['titre']) ?>
+                                    </h2>
+                                    <p class="mb-1">
+                                        <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
+                                    </p>
+                                    <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
+                                </div>
+                            </a>
+                        <?php endforeach ?>
+                    </div>
                 </div>
             </div>
         <?php } elseif ($row_take == 0) { ?>
-            <div class="rounded box_category_news">
-                <div class="article-container p-3">
-                    <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=' . urlencode('Divers') ?>" class="mb-3 category_news_title">
+                    <h2>Divers</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
+                        <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+                    </div>
                 </div>
             </div>
         <?php } ?>

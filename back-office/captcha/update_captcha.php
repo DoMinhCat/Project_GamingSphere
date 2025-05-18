@@ -6,10 +6,10 @@ require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_captcha'])) {
-    $id = htmlspecialchars($_POST['id_captcha']);
-    $question = htmlspecialchars($_POST['question']);
-    $answer = htmlspecialchars($_POST['answer']);
-    $status = htmlspecialchars($_POST['statut']);
+    $id = trim($_POST['id_captcha']);
+    $question = trim($_POST['question']);
+    $answer = trim($_POST['answer']);
+    $status = trim($_POST['statut']);
     try {
         $stmt = $bdd->prepare("UPDATE captcha SET question=?, answer=?, status=? WHERE id_captcha = ?");
         $stmt->execute([$question, $answer, $status, $id]);

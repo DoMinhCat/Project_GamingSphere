@@ -133,7 +133,7 @@ require('../../head.php');
             <button type="submit" class="btn btn-primary">Créer le sujet</button>
         </form>
 
-        <h3 class="text-center mt-5 mb-4">Liste des sujets Annonces</h3>
+        <h3 class="text-center mt-5 mb-4">Liste des sujets Annonce</h3>
         <?php
         echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
             <input type="text" id="search" class="form-control searchBoxBack" placeholder="Rechercher par titre ou auteur du sujet">
