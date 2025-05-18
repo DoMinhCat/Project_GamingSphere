@@ -333,9 +333,23 @@ RewriteCond %{THE_REQUEST} \s/back-office/forum/support/support_main\.php [NC]
 RewriteRule ^back-office/forum/support/support_main\.php$ /back-office/forum/support [R=301,L,QSA]
 RewriteRule ^back-office/forum/support/?$ back-office/forum/support/support_main.php [L]
 
+# back-office edit.php/ (forum support)
 
+RewriteCond %{THE_REQUEST} \s/back-office/forum/support/edit\.php [NC]
+RewriteRule ^back-office/forum/support/edit\.php$ /back-office/forum/support/edit [R=301,L,QSA]
+RewriteRule ^back-office/forum/support/edit/?$ back-office/forum/support/edit.php [L]
 
+# back-office edit.php/ (forum discussion)
 
+RewriteCond %{THE_REQUEST} \s/back-office/forum/discussion/edit\.php [NC]
+RewriteRule ^back-office/forum/discussion/edit\.php$ /back-office/forum/discussion/edit [R=301,L,QSA]
+RewriteRule ^back-office/forum/discussion/edit/?$ back-office/forum/discussion/edit.php [L]
+
+# back-office edit.php/ (forum annonce)
+
+RewriteCond %{THE_REQUEST} \s/back-office/forum/annonce/edit\.php [NC]
+RewriteRule ^back-office/forum/annonce/edit\.php$ /back-office/forum/annonce/edit [R=301,L,QSA]
+RewriteRule ^back-office/forum/annonce/edit/?$ back-office/forum/annonce/edit.php [L]
 
 # back-office jeux.php/
 

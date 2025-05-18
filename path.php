@@ -95,7 +95,9 @@ define('forum_annonce_back', '/back-office/forum/annonce'); // annonce_main.php
 define('forum_discussion_back', '/back-office/forum/discussion'); // discussion_main.php
 define('forum_support_back', '/back-office/forum/support'); // support_main.php
 
-
+define('support_edit_back', '/back-office/forum/support/edit'); //  edit.php support
+define('annonce_edit_back', '/back-office/forum/annonce/edit'); // edit.php annonce
+define('discussion_edit_back', '/back-office/forum/discussion/edit'); // edit.php discussion
 
 //jeux
 define('jeux_back', '/back-office/jeux'); // jeux.php

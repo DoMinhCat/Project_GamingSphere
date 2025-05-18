@@ -63,7 +63,7 @@ require('../head.php'); ?>
                     <select class="form-select" id="category" name="category_choose" required>
                         <option value="Général">Général</option>
                         <option value="Esport">Esport</option>
-                        <option value="Évenèment">Évenèment</option>
+                        <option value="Évènement">Évènement</option>
                         <option value="Critique">Critique</option>
                         <option value="Mise à jour">Mise à jour</option>
                     </select>

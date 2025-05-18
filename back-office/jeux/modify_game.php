@@ -116,6 +116,7 @@ require('../head.php');
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Modifier le jeu</button>
+                    <a href="<?= jeux_back ?>" class="btn btn-secondary">Retour</a>
                 </div>
             </form>
         <?php else: ?>

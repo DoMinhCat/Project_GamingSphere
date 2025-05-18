@@ -43,7 +43,7 @@ if (isset($_POST['add_article'])) {
     }
 }
 
-if (isset($_GET['delete_id'])) {
+if (!empty($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
     try {
         $query = $bdd->prepare("DELETE FROM news WHERE id_news = ?");
@@ -58,22 +58,6 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-if (isset($_POST['update_article'])) {
-    $update_id = $_POST['update_id'];
-    $titre = $_POST['titre'];
-    $contenu = $_POST['contenu'];
-    try {
-        $query = $bdd->prepare("UPDATE news SET titre = ?, contenue = ? WHERE id_news = ?");
-        $query->execute([$titre, $contenu, $update_id]);
-
-        header('Location:' . article_back . '?message=update_success');
-        exit();
-    } catch (PDOException $e) {
-        $_SESSION['error'] = htmlspecialchars($e->getMessage());
-        header('Location:' . article_back . '?error=bdd');
-        exit();
-    }
-}
 try {
     $query = $bdd->prepare("SELECT n.id_news, n.titre, n.date_article, n.category, u.email
 FROM news n JOIN utilisateurs u ON n.auteur = u.id_utilisateurs ORDER BY n.date_article DESC;");
@@ -144,7 +128,7 @@ require('../head.php');
                         <option value="Général">Général</option>
                         <option value="À la une">À la une</option>
                         <option value="Esport">Esport</option>
-                        <option value="Évenèment">Évenèment</option>
+                        <option value="Évènement">Évènement</option>
                         <option value="Critique">Critique</option>
                         <option value="Mise à jour">Mise à jour</option>
                     </select>
