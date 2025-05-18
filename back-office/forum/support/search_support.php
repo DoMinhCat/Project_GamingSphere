@@ -37,7 +37,7 @@ try {
                                   <h1 class="modal-title fs-5">Confirmation</h1>
                                 </div>
                                 <div class="modal-body">
-                                  Êtes-vous sûr de vouloir supprimer ce sujet de support ?
+                                  Êtes-vous sûr de vouloir supprimer cette discussion ?
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
