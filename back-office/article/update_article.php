@@ -5,10 +5,10 @@ require('../check_session.php');
 require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'])) {
+if (isset($_POST['id_article'])) {
     $titre = trim($_POST['titre']) ?? '';
     $contenu = trim($_POST['contenu']) ?? '';
-    $category = trim($_POST['category']) ?? '';
+    $category = trim($_POST['category_choose']) ?? trim($_POST['category_new']);
     $id_edit = $_POST['id_article'];
 
     if (empty($titre) || empty($contenu) || empty($category)) {
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'])) {
     try {
         $stmt = $bdd->prepare("UPDATE news SET titre=?, contenue=?, category=? WHERE id_news = ?");
         $stmt->execute([$titre, $contenu, $category, $id_edit]);
-        header('Location:' . article_back . '?update_success');
+        header('Location:' . article_back . '?message=update_success');
         exit();
     } catch (PDOException $e) {
         $_SESSION['error'] = htmlspecialchars($e->getMessage());
