@@ -6,8 +6,8 @@ require('../include/check_timeout.php');
 require_once __DIR__ . '/../path.php';
 
 if (
-    !isset($_POST['id_tournoi'], $_POST['choix'], $_POST['montant'], $_POST['cote']) ||
-    empty($_POST['id_tournoi']) || empty($_POST['choix']) || empty($_POST['montant']) || empty($_POST['cote'])
+    !isset($_POST['id_tournoi'], $_POST['choix'], $_POST['montant']) ||
+    empty($_POST['id_tournoi']) || empty($_POST['choix']) || empty($_POST['montant'])
 ) {
     header('Location: paris_main.php?message=Veuillez remplir tous les champs.');
     exit();
@@ -16,7 +16,6 @@ if (
 $id_tournoi = intval($_POST['id_tournoi']);
 $choix = $_POST['choix'];
 $montant = intval($_POST['montant']);
-$cote = floatval($_POST['cote']);
 $user_id = $_SESSION['user_id'] ?? null;
 
 if (!$user_id) {
@@ -24,8 +23,13 @@ if (!$user_id) {
     exit();
 }
 
-// Vérifier que le tournoi est pariable
-$stmt = $bdd->prepare("SELECT pari_ouvert FROM tournoi WHERE id_tournoi = ?");
+if ($montant <= 0) {
+    header('Location: paris_main.php?message=Montant de pari invalide.');
+    exit();
+}
+
+// Récupérer les infos du tournoi (pari_ouvert, type, cote)
+$stmt = $bdd->prepare("SELECT pari_ouvert, type, cote FROM tournoi WHERE id_tournoi = ?");
 $stmt->execute([$id_tournoi]);
 $tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -48,12 +52,21 @@ if (!$user || $user['credits'] < $montant) {
 $stmt = $bdd->prepare("UPDATE credits SET credits = credits - ? WHERE user_id = ?");
 $stmt->execute([$montant, $user_id]);
 
-// Enregistrer le pari
+// Préparer les valeurs pour l'INSERT
+$id_equipe = null;
+$id_joueur = null;
+if ($tournoi['type'] === 'equipe') {
+    $id_equipe = $choix;
+} else {
+    $id_joueur = $choix;
+}
+
+// Enregistrer le pari (on utilise la cote du tournoi pour éviter la triche)
 $stmt = $bdd->prepare("
-    INSERT INTO paris (id_tournoi, id_utilisateur, choix, montant, cote, statut, date_pari)
-    VALUES (?, ?, ?, ?, ?, 'en attente', NOW())
+    INSERT INTO paris (id_tournoi, id_utilisateur, id_equipe, id_joueur, montant, cote, statut, date_pari)
+    VALUES (?, ?, ?, ?, ?, ?, 'en attente', NOW())
 ");
-$stmt->execute([$id_tournoi, $user_id, $choix, $montant, $cote]);
+$stmt->execute([$id_tournoi, $user_id, $id_equipe, $id_joueur, $montant, $tournoi['cote']]);
 
 header('Location: paris_main.php?message=Pari enregistré avec succès !');
 exit();
