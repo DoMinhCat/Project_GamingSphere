@@ -1,5 +1,6 @@
 <?php
 session_start();
+var_dump($_POST); exit;
 require('../include/database.php');
 require('../include/check_session.php');
 require('../include/check_timeout.php');
@@ -40,7 +41,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </h5>
                 <form method="post" action="parier.php" class="row g-2 align-items-center">
                     <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
-                    <input type="hidden" name="type_pari" value="<?= htmlspecialchars($tournoi['type']) ?>">
                     <input type="hidden" name="cote" value="<?= htmlspecialchars($tournoi['cote']) ?>">
                     <?php
                     if ($tournoi['type'] === 'equipe') {
