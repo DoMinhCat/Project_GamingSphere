@@ -10,7 +10,7 @@ $title = 'Gestion des cotes des tournois';
 // Récupérer la liste des tournois
 $tournois = $bdd->query("
     SELECT id_tournoi, nom_tournoi, jeu, type, cote, pari_ouvert, date_debut, date_fin
-    FROM tournoi
+    FROM tournoi where status_ENUM = 'en cours'
     ORDER BY date_debut DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
 ?>
