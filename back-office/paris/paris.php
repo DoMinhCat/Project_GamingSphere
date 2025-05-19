@@ -56,7 +56,7 @@ $tournois = $bdd->query("
                             <td><?= htmlspecialchars($tournoi['jeu']) ?></td>
                             <td><?= htmlspecialchars($tournoi['type']) ?></td>
                             <td>
-                                <form method="post" action="edit_cote_tournoi.php" class="d-flex align-items-center">
+                                <form method="post" action="edit_cote.php" class="d-flex align-items-center">
                                     <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
                                     <input type="number" step="0.01" min="1" name="cote" value="<?= htmlspecialchars($tournoi['cote'] ?? 1) ?>" class="form-control form-control-sm" style="width:80px;">
                                     <button type="submit" class="btn btn-sm btn-primary ms-2">Enregistrer</button>
