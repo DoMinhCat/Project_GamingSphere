@@ -684,3 +684,6 @@ body.offcanvas-backdrop {
   display: flex;
   justify-content: center;
 }
+.searchBoxFront {
+  background-color: #d0ccbf;
+}
