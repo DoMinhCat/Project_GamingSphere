@@ -8,11 +8,12 @@ require_once __DIR__ . '/../../path.php';
 $title = 'Gestion des paris';
 
 // Récupérer la liste des paris avec les infos nécessaires
-
-$tournois = $bdd->query("
-    SELECT t.id_tournoi, t.nom_tournoi, t.jeu, t.type, t.cote, t.pari_ouvert, t.date_debut, t.date_fin
-    FROM tournoi t
-    ORDER BY t.date_debut DESC
+$paris = $bdd->query("
+    SELECT p.*, t.nom_tournoi, t.jeu, t.type AS type_tournoi, u.pseudo AS utilisateur
+    FROM paris p
+    LEFT JOIN tournoi t ON p.id_tournoi = t.id_tournoi
+    LEFT JOIN utilisateurs u ON p.id_utilisateur = u.id_utilisateurs
+    ORDER BY p.date_pari DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -34,58 +35,60 @@ $tournois = $bdd->query("
         <?php endif; ?>
 
         <div class="table-responsive">
-<table class="table table-bordered table-striped align-middle">
-    <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Tournoi</th>
-            <th>Jeu</th>
-            <th>Type</th>
-            <th>Cote</th>
-            <th>Pariable</th>
-            <th>Date début</th>
-            <th>Date fin</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php if (count($tournois) > 0): ?>
-        <?php foreach ($tournois as $tournoi): ?>
-            <tr>
-                <td><?= htmlspecialchars($tournoi['id_tournoi']) ?></td>
-                <td><?= htmlspecialchars($tournoi['nom_tournoi']) ?></td>
-                <td><?= htmlspecialchars($tournoi['jeu']) ?></td>
-                <td><?= htmlspecialchars($tournoi['type']) ?></td>
-                <td>
-                    <form method="post" action="edit_cote.php" class="d-flex align-items-center">
-                        <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
-                        <input type="number" step="0.01" min="1" name="cote" value="<?= htmlspecialchars($tournoi['cote'] ?? 1) ?>" class="form-control form-control-sm" style="width:80px;">
-                        <button type="submit" class="btn btn-sm btn-primary ms-2">Enregistrer</button>
-                    </form>
-                </td>
-                <td>
-                    <form method="post" action="toggle_pariable.php" class="d-inline">
-                        <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
-                        <input type="hidden" name="pari_ouvert" value="<?= $tournoi['pari_ouvert'] ? 0 : 1 ?>">
-                        <button type="submit" class="btn btn-sm <?= $tournoi['pari_ouvert'] ? 'btn-success' : 'btn-secondary' ?>">
-                            <?= $tournoi['pari_ouvert'] ? 'Oui' : 'Non' ?>
-                        </button>
-                    </form>
-                </td>
-                <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
-                <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
-                <td>
-                    <!-- Autres actions si besoin -->
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="9" class="text-center">Aucun tournoi trouvé.</td>
-        </tr>
-    <?php endif; ?>
-    </tbody>
-</table>
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tournoi</th>
+                        <th>Jeu</th>
+                        <th>Type</th>
+                        <th>Utilisateur</th>
+                        <th>Montant</th>
+                        <th>Cote</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php if (count($paris) > 0): ?>
+                    <?php foreach ($paris as $pari): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($pari['id_pari']) ?></td>
+                            <td><?= htmlspecialchars($pari['nom_tournoi']) ?></td>
+                            <td><?= htmlspecialchars($pari['jeu']) ?></td>
+                            <td><?= htmlspecialchars($pari['type_tournoi']) ?></td>
+                            <td><?= htmlspecialchars($pari['utilisateur']) ?></td>
+                            <td><?= htmlspecialchars($pari['montant']) ?></td>
+                            <td>
+                                <form method="post" action="edit_cote.php" class="d-flex align-items-center">
+                                    <input type="hidden" name="id_pari" value="<?= $pari['id_pari'] ?>">
+                                    <input type="number" step="0.01" min="1" name="cote" value="<?= htmlspecialchars($pari['cote'] ?? 1) ?>" class="form-control form-control-sm" style="width:80px;">
+                                    <button type="submit" class="btn btn-sm btn-primary ms-2">Enregistrer</button>
+                                </form>
+                            </td>
+                            <td><?= htmlspecialchars($pari['statut']) ?></td>
+                            <td><?= htmlspecialchars($pari['date_pari']) ?></td>
+                            <td>
+                                <form method="post" action="toggle_pariable.php" class="d-inline">
+                                    <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
+                                    <input type="hidden" name="pari_ouvert" value="<?= $tournoi['pari_ouvert'] ? 0 : 1 ?>">
+                                    <button type="submit" class="btn btn-sm <?= $tournoi['pari_ouvert'] ? 'btn-success' : 'btn-secondary' ?>">
+                                        <?= $tournoi['pari_ouvert'] ? 'Oui' : 'Non' ?>
+                                    </button>
+                                </form>
+                            </td>
+                            <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
+                            <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="10" class="text-center">Aucun pari trouvé.</td>
+                    </tr>
+                <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </main>
 </body>
