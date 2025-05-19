@@ -5,7 +5,7 @@ require('../include/check_session.php');
 require('../include/check_timeout.php');
 require_once __DIR__ . '/../path.php';
 
-$rencontres = $bdd->query("SELECT * FROM rencontre WHERE status_ENUM = 'en cours'")->fetchAll(PDO::FETCH_ASSOC);
+$rencontres = $bdd->query("SELECT * FROM tournoi WHERE status_ENUM = 'en cours'")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
