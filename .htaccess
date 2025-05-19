@@ -260,6 +260,12 @@ RewriteRule ^paris/paris_main\.php$ /paris [R=301,L,QSA]
 RewriteRule ^paris/?$ paris/paris_main.php [L]
 
 
+# paris_main.php (paris)
+
+RewriteCond %{THE_REQUEST} \s/paris/paris_main\.php [NC]
+RewriteRule ^paris/paris_main\.php$ /paris [R=301,L,QSA]
+RewriteRule ^paris/?$ paris/paris_main.php [L]
+
 
 
 
