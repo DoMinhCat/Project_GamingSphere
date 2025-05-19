@@ -84,7 +84,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 }
                 ?>
                 <div class="col-auto">
-                    <input type="number" name="montant" min="1" class="form-control" placeholder="Montant (€)" required>
+                    <input type="number" name="montant" min="1" class="form-control" placeholder="Coins" required>
                 </div>
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary">Parier</button>
