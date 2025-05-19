@@ -1,5 +1,6 @@
 <?php
 session_start();
+var_dump($_POST); exit;
 require('../include/database.php');
 require('../include/check_session.php');
 require('../include/check_timeout.php');
