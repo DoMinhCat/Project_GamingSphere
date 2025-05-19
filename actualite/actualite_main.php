@@ -10,7 +10,7 @@ function fetchNews(PDO $bdd, string $category): array
                                FROM news 
                                JOIN utilisateurs ON id_utilisateurs = news.auteur 
                                WHERE news.category = :category 
-                               ORDER BY RAND()
+                               ORDER BY date_article desc
                                LIMIT 5;");
         $stmt->bindParam(':category', $category);
         $stmt->execute();
@@ -28,7 +28,7 @@ function fetchNews(PDO $bdd, string $category): array
                                    FROM news 
                                    JOIN utilisateurs ON id_utilisateurs = news.auteur 
                                    WHERE news.category = :category 
-                                   ORDER BY RAND() 
+                                   ORDER BY date_article desc
                                    LIMIT $row_take;");
             $stmt->bindParam(':category', $category);
             $stmt->execute();
@@ -78,7 +78,7 @@ $nb_row_critique = $result['nb_row'];
 $row_take_critique = $result['row_take'];
 
 try {
-    $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'Général' and news.category<>'Esport' and news.category<>'Évènement' and news.category<>'Critique' and news.category<>'Mise à jour' order by rand() limit 5;");
+    $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'Général' and news.category<>'Esport' and news.category<>'Évènement' and news.category<>'Critique' and news.category<>'Mise à jour' and news.category<>'À la une' order by date_article desc limit 5;");
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $nb_row = $stmt->rowCount();
@@ -95,7 +95,7 @@ try {
     }
 
     if ($nb_row != 5) {
-        $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'Général' and news.category<>'Esport' and news.category<>'Évènement' and news.category<>'Critique' and news.category<>'Mise à jour' order by rand() limit " . $row_take . ";");
+        $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category,pseudo FROM news join utilisateurs on id_utilisateurs=news.auteur where news.category<>'Général' and news.category<>'Esport' and news.category<>'Évènement' and news.category<>'Critique' and news.category<>'Mise à jour' and news.category<>'À la une' order by date_article desc limit " . $row_take . ";");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -188,7 +188,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_alaune as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . $origin_category  ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -271,7 +271,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_esport as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . $origin_category  ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -350,7 +350,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_event as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news']  . '&category=' . $origin_category ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -433,7 +433,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_general as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . $origin_category  ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -516,7 +516,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_critique as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . $origin_category  ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -599,7 +599,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_update as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . $origin_category  ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -682,7 +682,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news']  . '&category=' . $origin_category ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
