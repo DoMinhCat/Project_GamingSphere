@@ -152,7 +152,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -167,7 +167,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -234,7 +234,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -249,7 +249,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -314,7 +314,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -329,7 +329,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -397,7 +397,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -412,7 +412,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -480,7 +480,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -495,7 +495,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -563,7 +563,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -578,7 +578,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -646,7 +646,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -661,7 +661,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>

@@ -3,8 +3,12 @@ session_start();
 require('../include/check_timeout.php');
 require('../include/database.php');
 require_once __DIR__ . '/../path.php';
+if (empty($_GET['category'])) {
+    header('location:' . actualite_main . '?message=' . urlencode('L\'article non trouvé'));
+    exit;
+}
 $origin_category  = $_GET['category'];
-$category  = $_GET['category'];
+$category = $_GET['category'];
 switch ($category) {
     case 'general':
         $category = 'Général';
@@ -27,11 +31,11 @@ try {
         $stmt->execute([$id_article]);
         $article = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($article->rowCount() < 1) {
-            header('location:' . actualite_categorie . '?category=' . $origin_category . '&message=' . urlencode('Article non trouvé !'));
+            header('location:' . actualite_categorie . '?category=' . $origin_category . '&message=' . urlencode('L\'article non trouvé'));
             exit;
         }
     } else {
-        header('location:' . actualite_categorie . '?category=' . $origin_category . '&message=' . urlencode('Article non trouvé !'));
+        header('location:' . actualite_categorie . '?category=' . $origin_category . '&message=' . urlencode('L\'article non trouvé'));
         exit;
     }
 } catch (PDOException) {

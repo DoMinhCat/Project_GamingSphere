@@ -69,7 +69,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <!-- foreach loop -->
         <?php foreach ($news as $new) : ?>
             <div class="mb-2">
-                <a href="actualite_article.php?id=<?= $new['id_news'] . '&category=' . $_GET['category'] ?>" class="articleBlockLink text-dark">
+                <a href="actualite_article.php?id=<?= $new['id_news'] . '&category=' . $origin_category ?>" class="articleBlockLink text-dark">
                     <div class="article border rounded p-3 shadow-sm">
                         <h2>
                             <?= htmlspecialchars($new['titre']) ?>
