@@ -27,7 +27,7 @@ $categorie_nom = $_GET['nom'];
 <body>
     <?php include("../include/header.php"); ?>
 
-    <div class="container mb-5">
+    <div class="container mt-2 mb-5">
         <?php if (!empty($_GET['message'])) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <?= htmlspecialchars($_GET['message']) ?>

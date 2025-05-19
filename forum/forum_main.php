@@ -21,7 +21,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <body>
     <?php include("../include/header.php"); ?>
 
-    <div class="container mb-5">
+    <main class="container mt-2 mb-5">
         <?php if (!empty($_GET['message'])) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <?= htmlspecialchars($_GET['message']) ?>
@@ -78,7 +78,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </a>
         <?php } ?>
-    </div>
+    </main>
 
     <?php include("../include/footer.php"); ?>
 </body>
