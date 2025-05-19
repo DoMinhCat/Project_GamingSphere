@@ -31,76 +31,68 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <p>Aucun match en cours.</p>
     <?php endif; ?>
 
-    <?php foreach ($rencontres as $match): ?>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <?php
-                    if ($match['type'] === 'equipe') {
-                        
-                        $eq1 = $bdd->prepare("SELECT nom_equipe FROM equipe WHERE id_equipe = ?");
-                        $eq1->execute([$match['id_equipe1']]);
-                        $equipe1 = $eq1->fetchColumn();
-
-                        $eq2 = $bdd->prepare("SELECT nom_equipe FROM equipe WHERE id_equipe = ?");
-                        $eq2->execute([$match['id_equipe2']]);
-                        $equipe2 = $eq2->fetchColumn();
-
-                        echo htmlspecialchars($equipe1) . " vs " . htmlspecialchars($equipe2);
-                    } else {
-                        
-                        $pl1 = $bdd->prepare("SELECT pseudo FROM utilisateurs WHERE id_utilisateurs = ?");
-                        $pl1->execute([$match['id_joueur1']]);
-                        $joueur1 = $pl1->fetchColumn();
-
-                        $pl2 = $bdd->prepare("SELECT pseudo FROM utilisateurs WHERE id_utilisateurs = ?");
-                        $pl2->execute([$match['id_joueur2']]);
-                        $joueur2 = $pl2->fetchColumn();
-
-                        echo htmlspecialchars($joueur1) . " vs " . htmlspecialchars($joueur2);
+   <?php foreach ($rencontres as $tournoi): ?>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">
+                <?= htmlspecialchars($tournoi['nom_tournoi']) ?> (<?= htmlspecialchars($tournoi['type']) ?>)
+            </h5>
+            <form method="post" action="parier.php" class="row g-2 align-items-center">
+                <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
+                <input type="hidden" name="type_pari" value="<?= htmlspecialchars($tournoi['type']) ?>">
+                <?php
+                if ($tournoi['type'] === 'equipe') {
+                    // Récupérer les équipes inscrites à ce tournoi
+                    $stmt = $bdd->prepare("
+                        SELECT e.id_equipe, e.nom 
+                        FROM inscription_tournoi it
+                        JOIN equipe e ON it.id_team = e.id_equipe
+                        WHERE it.id_tournoi = ?
+                    ");
+                    $stmt->execute([$tournoi['id_tournoi']]);
+                    $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($equipes as $equipe) {
+                        ?>
+                        <div class="col-auto">
+                            <label>
+                                <input type="radio" name="choix" value="<?= $equipe['id_equipe'] ?>" required>
+                                <?= htmlspecialchars($equipe['nom']) ?>
+                            </label>
+                        </div>
+                        <?php
                     }
-                    ?>
-                </h5>
-                <form method="post" action="parier.php" class="row g-2 align-items-center">
-                    <input type="hidden" name="id_match" value="<?= $match['id_rencontre'] ?>">
-                    <input type="hidden" name="type_pari" value="<?= htmlspecialchars($match['type']) ?>">
-                    <?php if ($match['type'] === 'equipe'): ?>
+                } else {
+                    // Récupérer les joueurs inscrits à ce tournoi
+                    $stmt = $bdd->prepare("
+                        SELECT u.id_utilisateurs, u.pseudo 
+                        FROM inscription_tournoi it
+                        JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
+                        WHERE it.id_tournoi = ?
+                    ");
+                    $stmt->execute([$tournoi['id_tournoi']]);
+                    $joueurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($joueurs as $joueur) {
+                        ?>
                         <div class="col-auto">
                             <label>
-                                <input type="radio" name="choix" value="<?= $match['id_equipe1'] ?>" required>
-                                <?= htmlspecialchars($equipe1) ?>
+                                <input type="radio" name="choix" value="<?= $joueur['id_utilisateurs'] ?>" required>
+                                <?= htmlspecialchars($joueur['pseudo']) ?>
                             </label>
                         </div>
-                        <div class="col-auto">
-                            <label>
-                                <input type="radio" name="choix" value="<?= $match['id_equipe2'] ?>" required>
-                                <?= htmlspecialchars($equipe2) ?>
-                            </label>
-                        </div>
-                    <?php else: ?>
-                        <div class="col-auto">
-                            <label>
-                                <input type="radio" name="choix" value="<?= $match['id_joueur1'] ?>" required>
-                                <?= htmlspecialchars($joueur1) ?>
-                            </label>
-                        </div>
-                        <div class="col-auto">
-                            <label>
-                                <input type="radio" name="choix" value="<?= $match['id_joueur2'] ?>" required>
-                                <?= htmlspecialchars($joueur2) ?>
-                            </label>
-                        </div>
-                    <?php endif; ?>
-                    <div class="col-auto">
-                        <input type="number" name="montant" min="1" class="form-control" placeholder="Montant (€)" required>
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">Parier</button>
-                    </div>
-                </form>
-            </div>
+                        <?php
+                    }
+                }
+                ?>
+                <div class="col-auto">
+                    <input type="number" name="montant" min="1" class="form-control" placeholder="Montant (€)" required>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Parier</button>
+                </div>
+            </form>
         </div>
-    <?php endforeach; ?>
+    </div>
+<?php endforeach; ?>
 </div>
 </body>
 </html>
