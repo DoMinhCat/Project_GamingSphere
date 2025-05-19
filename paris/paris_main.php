@@ -38,12 +38,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?= htmlspecialchars($tournoi['nom_tournoi']) ?> (<?= htmlspecialchars($tournoi['type']) ?>)
                     <span class="badge bg-warning text-dark ms-2">Cote : <?= htmlspecialchars($tournoi['cote']) ?></span>
                 </h5>
-                <form method="post" action="parier.php" class="row g-2 align-items-center">
+                <form method="post" action="<?= parier ?>" class="row g-2 align-items-center">
                     <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
                     <input type="hidden" name="cote" value="<?= htmlspecialchars($tournoi['cote']) ?>">
                     <?php
                     if ($tournoi['type'] === 'equipe') {
-                        // Récupérer les équipes inscrites à ce tournoi
                         $stmt = $bdd->prepare("
                             SELECT e.id_equipe, e.nom 
                             FROM inscription_tournoi it
@@ -63,7 +62,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <?php
                         }
                     } else {
-                        // Récupérer les joueurs inscrits à ce tournoi
                         $stmt = $bdd->prepare("
                             SELECT u.id_utilisateurs, u.pseudo 
                             FROM inscription_tournoi it
