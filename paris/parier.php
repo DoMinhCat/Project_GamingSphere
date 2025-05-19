@@ -5,7 +5,6 @@ require('../include/check_session.php');
 require('../include/check_timeout.php');
 require_once __DIR__ . '/../path.php';
 
-// Vérification des champs du formulaire
 if (
     !isset($_POST['id_tournoi'], $_POST['choix'], $_POST['montant'], $_POST['cote']) ||
     empty($_POST['id_tournoi']) || empty($_POST['choix']) || empty($_POST['montant']) || empty($_POST['cote'])
