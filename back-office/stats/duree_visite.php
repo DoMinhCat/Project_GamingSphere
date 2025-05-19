@@ -32,6 +32,7 @@ require('../head.php');
     SUM(CASE WHEN utt.category = 'equipe' THEN utt.duration ELSE 0 END) AS equipe,
     SUM(CASE WHEN utt.category = 'tournois' THEN utt.duration ELSE 0 END) AS tournois,
     SUM(CASE WHEN utt.category = 'accueil' THEN utt.duration ELSE 0 END) AS accueil,
+    SUM(CASE WHEN utt.category = 'paris' THEN utt.duration ELSE 0 END) AS paris,
     SUM(utt.duration) AS total_time
 FROM
     visit_duration AS utt
@@ -66,6 +67,7 @@ ORDER BY
                         <th>Communauté</th>
                         <th>Forum</th>
                         <th>Tournoi</th>
+                        <th>Paris</th>
                         <th>Equipe</th>
                         <th>Message</th>
                         <th>Magasin</th>
@@ -84,6 +86,7 @@ ORDER BY
                         $commnunaute = $line['communaute'];
                         $forum = $line['forum'];
                         $tournois = $line['tournois'];
+                        $paris = $line['paris'];
                         $equipe = $line['equipe'];
                         $message = $line['message'];
                         $magasin = $line['magasin'];
@@ -100,6 +103,7 @@ ORDER BY
                             <td class="align-middle"><?= $commnunaute ?></td>
                             <td class="align-middle"><?= $forum ?></td>
                             <td class="align-middle"><?= $tournois ?></td>
+                            <td class="align-middle"><?= $paris ?></td>
                             <td class="align-middle"><?= $equipe ?></td>
                             <td class="align-middle"><?= $message ?></td>
                             <td class="align-middle"><?= $magasin ?></td>
@@ -120,6 +124,7 @@ ORDER BY
                     <option value="actualite">Actualité</option>
                     <option value="communaute">Communauté</option>
                     <option value="credits">Crédits</option>
+                    <option value="paris">Paris</option>
                     <option value="error">Erreur</option>
                     <option value="forum">Forum</option>
                     <option value="magasin">Magasin</option>

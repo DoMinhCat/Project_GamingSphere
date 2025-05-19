@@ -4,7 +4,7 @@ if ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest' || !isset($_GET['sear
     http_response_code(403);
     exit('Accès non-autorisé');
 }
-$lines = file('../../../log/log_inscription.txt');
+$lines = array_reverse(file('../../../log/log_inscription.txt'));
 $pattern = '/^(\d{4}\/\d{2}\/\d{2}) - (\d{2}:\d{2}:\d{2}) - (.+?) (réussie|échouée) de (.+?)(?: - (?:en raison de : )?(.+))?$/';
 $results = [];
 

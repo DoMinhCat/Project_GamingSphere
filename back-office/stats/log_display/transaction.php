@@ -11,7 +11,7 @@ require_once('../../../path.php');
 <?php
 $title = 'Log des transactions';
 require('../../head.php');
-$lines = file('../../../log/log_transaction.txt');
+$lines = array_reverse(file('../../../log/log_transaction.txt'));
 ?>
 
 <body>

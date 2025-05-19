@@ -12,7 +12,7 @@ require_once('../../../path.php');
 <?php
 $title = 'Log des connexions';
 require('../../head.php');
-$lines = file('../../../log/log_login.txt');
+$lines = array_reverse(file('../../../log/log_login.txt'));
 ?>
 
 <body>

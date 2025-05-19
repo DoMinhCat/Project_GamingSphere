@@ -29,8 +29,7 @@ require('../head.php');
     $page = index_back;
     include('../navbar.php');
     ?>
-    <div class="container mb-5">
-
+    <main class="container mb-5">
         <?php
         $noti = '';
         $noti_Err = '';
@@ -98,7 +97,7 @@ require('../head.php');
                         <th>Éditeur</th>
                         <th>Actions</th>
                     </tr>
-                    </t>
+                </thead>
                 <tbody id="jeux">
                     <?php if (count($games) > 0): ?>
                         <?php foreach ($games as $game): ?>
@@ -144,7 +143,7 @@ require('../head.php');
                 </tbody>
             </table>
         </div>
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
