@@ -36,7 +36,7 @@ if (!$tournoi || !$tournoi['pari_ouvert']) {
 }
 
 // Vérifier que l'utilisateur a assez de crédits
-$stmt = $bdd->prepare("SELECT credits FROM utilisateurs WHERE id_utilisateurs = ?");
+$stmt = $bdd->prepare("SELECT credits FROM credits WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -46,7 +46,7 @@ if (!$user || $user['credits'] < $montant) {
 }
 
 // Débiter les crédits de l'utilisateur
-$stmt = $bdd->prepare("UPDATE utilisateurs SET credits = credits - ? WHERE id_utilisateurs = ?");
+$stmt = $bdd->prepare("UPDATE credits SET credits = credits - ? WHERE user_id = ?");
 $stmt->execute([$montant, $user_id]);
 
 // Enregistrer le pari
