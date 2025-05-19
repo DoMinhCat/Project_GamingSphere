@@ -27,7 +27,7 @@ $categorie_nom = $_GET['nom'];
 <body>
     <?php include("../include/header.php"); ?>
 
-    <div class="container mb-5">
+    <div class="container mt-2 mb-5">
         <?php if (!empty($_GET['message'])) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <?= htmlspecialchars($_GET['message']) ?>
@@ -41,13 +41,13 @@ $categorie_nom = $_GET['nom'];
             </div>
         <?php endif ?>
 
-
-        <div class="mb-4 mt-5 d-flex align-items-center gap-2">
-            <a href="<?= forum_main ?>" class="text-decoration-none fs-3 return_arrow">
+        <div class="mb-4 mt-5">
+            <a href="<?= forum_main ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
                 <i class="bi bi-chevron-left"></i>
+                <h1 class="m-0"><?= htmlspecialchars($categorie_nom) ?></h1>
             </a>
-            <h1 class="m-0"><?= htmlspecialchars($categorie_nom) ?></h1>
         </div>
+
         <a href="<?= nouveau_sujet ?>?categorie=<?= urlencode($categorie_nom) ?>" class="btn btn-primary mb-2">+ Nouveau sujet</a>
 
         <?php
@@ -69,7 +69,7 @@ $categorie_nom = $_GET['nom'];
                 exit();
             }
         ?>
-            <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] ?>" class="text-decoration-none forumBlockLink">
+            <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] . '&category=' . $categorie_nom ?>" class="text-decoration-none forumBlockLink">
 
                 <div class="card mx-0 mb-3">
                     <div class="card-body">

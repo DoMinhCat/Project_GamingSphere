@@ -3,8 +3,8 @@ session_start();
 require('../include/database.php');
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    echo "ID de jeu invalide.";
-    exit();
+    header('location:' . magasin_game . '?error=' . urlencode('Jeu introuvable !'));
+    exit;
 }
 
 $id_jeu = (int) $_GET['id'];
@@ -14,8 +14,8 @@ $stmt->execute([$id_jeu]);
 $jeu = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$jeu) {
-    echo "Jeu introuvable.";
-    exit();
+    header('location:' . magasin_game . '?error=' . urlencode('Jeu introuvable !'));
+    exit;
 }
 ?>
 
@@ -30,10 +30,9 @@ include('../include/head.php');
 
 <body>
     <?php include('../include/header.php'); ?>
-    <div id="alert-container"></div>
-    <div class="container mt-5">
+    <main class="container my-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="card shadow">
                     <?php if (!empty($jeu['image'])): ?>
                         <img src="../back-office/uploads/<?= htmlspecialchars($jeu['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($jeu['nom']) ?>" style="height: 400px; object-fit: cover;">
@@ -42,16 +41,18 @@ include('../include/head.php');
                         <img src="../../assets/img/no_image.png" class="card-img-top" alt="Aucune image disponible" style="height: 400px; object-fit: cover;">
                     <?php endif; ?>
 
-                    <div class="card-body">
+                    <div class="card-body p-4">
                         <h2 class="card-title"><?= htmlspecialchars($jeu['nom']) ?></h2>
                         <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($jeu['prix']) ?> €</p>
                         <p class="card-text"><strong>Description :</strong><br> <?= nl2br(htmlspecialchars($jeu['description'] ?? "Aucune description disponible.")) ?></p>
-                        <button class="btn btn-success mt-3 btn-add-to-cart" data-id="<?= $jeu['id_jeu'] ?>">Acheter ce jeu</button>
+                        <button class="btn btn-success mt-3 btn-add-to-cart" data-id="<?= $jeu['id_jeu'] ?>">Ajouter au panier</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+    <?php include('../include/footer.php'); ?>
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll(".btn-add-to-cart").forEach(button => {

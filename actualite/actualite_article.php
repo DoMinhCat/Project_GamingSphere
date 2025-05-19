@@ -29,7 +29,7 @@ try {
     $stmt->execute([$id_article]);
     $article = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$article) {
-        header('location:' . actualite_categorie . '?category=' . $origin_category . '&message=' . urlencode('L\'article non trouvé'));
+        header('location:' . actualite_categorie . '?category=' . $category . '&message=' . urlencode('L\'article non trouvé'));
         exit;
     }
 } catch (PDOException) {
@@ -57,11 +57,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include("../include/header.php");
     ?>
     <main class="container my-5">
-        <div class="mb-4 mt-5 d-flex align-items-center gap-2">
-            <a href="<?= actualite_categorie . '?category=' . $origin_category ?>" class="text-decoration-none fs-3 return_arrow">
+        <div class="mb-4 mt-5">
+            <a href="<?= actualite_categorie . '?category=' . $origin_category ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
                 <i class="bi bi-chevron-left"></i>
+                <h1 class="m-0"><?= htmlspecialchars($category) ?></h1>
             </a>
-            <h1 class="m-0"><?= $category ?></h1>
         </div>
 
         <div class="d-flex mb-5 flex-column">
@@ -69,10 +69,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="mb-5">
                 picture here
             </div>
-            <p><?= 'Publié le :' . $article['date_article'] ?></p>
+            <p><?= 'Publié le : ' . $article['date_article'] ?></p>
             <p class="mt-5"><?= nl2br(htmlspecialchars($article['contenue'])) ?></p>
         </div>
+        <!-- D'autres article meme cate -->
+        <div class="d-flex mb-5 flex-column">
 
+        </div>
     </main>
     <?php
     include("../include/footer.php");

@@ -16,11 +16,11 @@
         echo '<script src="../include/check_timeout.js"></script>';
     }
 
-    if (!isset($_GET['id']) || empty($_GET['id'])) {
+    if (empty($_GET['category']) || empty($_GET['id'])) {
         header('location:' . forum_main . '?message=' . urlencode('Sujet non spécifié !'));
         exit;
     }
-
+    $categorie_nom = $_GET['category'];
     $id_sujet = (int) $_GET['id'];
     try {
         $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE id_sujet = ?");
@@ -61,12 +61,16 @@
         <?php include("../include/header.php"); ?>
 
         <div class="container my-5">
-            <div class="mb-3 d-flex align-items-center gap-2">
-                <a href="<?= forum_category . '?nom=' . $sujet['categories'] ?>" class="text-decoration-none fs-3 return_arrow">
+
+
+            <div class="mb-4 mt-5">
+                <a href="<?= forum_category . '?nom=' . $sujet['categories'] ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
                     <i class="bi bi-chevron-left"></i>
+                    <h1 class="m-0"><?= htmlspecialchars($categorie_nom) ?></h1>
                 </a>
-                <h1 class="m-0"><?= htmlspecialchars($sujet['titre']) ?></h1>
             </div>
+
+            <h1 class="mb-4 text-center"><?= htmlspecialchars($sujet['titre']) ?></h1>
 
             <div class="mb-5">
                 <div class="p-3 border rounded card m-0">

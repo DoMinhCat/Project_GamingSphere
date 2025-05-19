@@ -51,33 +51,42 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <?php
     include("../include/header.php");
     ?>
-    <main class="container mb-5">
+    <main class="container mt-2 mb-5">
         <?php
-        if (!empty($_GET['message'])) {
-            echo '<div class="feedback text-center p-3" style="background-color: #f5f0e1; color:#1E3D59;">';
-            echo htmlspecialchars($_GET['message']);
-            echo '</div>';;
-        }
-        ?>
-        <div class="mb-4 mt-5 d-flex align-items-center gap-2">
-            <a href="<?= actualite_main ?>" class="text-decoration-none fs-3 return_arrow">
+        if (!empty($_GET['message'])) { ?>
+            <div class="alert alert-danger alert-dismissible fade show mb-2" role="alert">
+                <?= htmlspecialchars($_GET['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php } ?>
+
+        <div class="col md-6 text-center">
+            <div class="d-flex pt-3 pb-2">
+                <input type="text" id="search" class="form-control searchBoxFront" placeholder="Rechercher par titre ou auteur">
+            </div>
+        </div>
+
+        <div class="mb-4 mt-5">
+            <a href="<?= actualite_main ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
                 <i class="bi bi-chevron-left"></i>
+                <h1 class="m-0"><?= htmlspecialchars($category) ?></h1>
             </a>
-            <h1 class="m-0"><?= $category ?></h1>
         </div>
 
         <!-- foreach loop -->
         <?php foreach ($news as $new) : ?>
-            <div class="mb-2">
-                <a href="actualite_article.php?id=<?= $new['id_news'] . '&category=' . $origin_category ?>" class="articleBlockLink text-dark">
-                    <div class="article border rounded p-3 shadow-sm">
-                        <h2>
-                            <?= htmlspecialchars($new['titre']) ?>
-                        </h2>
-                        <p class="mb-0"><?= $new['date_article'] ?> par <strong><?= $new['pseudo'] ?></strong>
-                        <p><?= nl2br(htmlspecialchars($new['contenue'])) ?></p>
-                    </div>
-                </a>
+            <div id="results">
+                <div class="mb-3">
+                    <a href="actualite_article.php?id=<?= $new['id_news'] . '&category=' . $origin_category ?>" class="articleBlockLink text-dark">
+                        <div class="article border rounded p-3 shadow-sm">
+                            <h2>
+                                <?= htmlspecialchars($new['titre']) ?>
+                            </h2>
+                            <p class="mb-0"><?= $new['date_article'] ?> par <strong><?= $new['pseudo'] ?></strong>
+                            <p><?= nl2br(htmlspecialchars($new['contenue'])) ?></p>
+                        </div>
+                    </a>
+                </div>
             </div>
         <?php endforeach ?>
     </main>

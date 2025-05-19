@@ -125,14 +125,14 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <body>
     <?php include("../include/header.php");    ?>
 
-    <main class="container mb-5">
+    <main class="container mt-2 mb-5">
         <?php
-        if (!empty($_GET['message'])) {
-            echo '<div class="feedback text-center p-3" style="background-color: #f5f0e1; color:#1E3D59;">';
-            echo htmlspecialchars($_GET['message']);
-            echo '</div>';;
-        }
-        ?>
+        if (!empty($_GET['message'])) { ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_GET['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php } ?>
         <h1 class="text-center my-5">Actualités</h1>
         <!-- A la une -->
         <?php
@@ -152,7 +152,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=alaune' ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -167,7 +167,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=alaune' ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -188,7 +188,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_alaune as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . $origin_category  ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=alaune' ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -234,7 +234,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=esport' ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -249,7 +249,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=esport' ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -271,7 +271,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_esport as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . $origin_category  ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=esport' ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -314,7 +314,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=evenement' ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -329,7 +329,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=evenement' ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -350,7 +350,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_event as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news']  . '&category=' . $origin_category ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=evenement' ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -397,7 +397,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=general' ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -412,7 +412,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=general' ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -433,7 +433,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_general as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . $origin_category  ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=general' ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -480,7 +480,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' .  urlencode('Critique') ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -495,7 +495,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . urlencode('Critique') ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -516,7 +516,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_critique as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . $origin_category  ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . urlencode('Critique') ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -563,7 +563,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=miseajour' ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -578,7 +578,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=miseajour' ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -599,7 +599,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_update as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . $origin_category  ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=miseajour' ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>
@@ -646,7 +646,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . $origin_category ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=' . urlencode('Divers') ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -661,7 +661,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . $origin_category ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=' . urlencode('Divers') ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -673,7 +673,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     </div>
                 </div>
             </div>
-        <?php } elseif ($row_take == 4 || $row_take == 2) { ?>
+        <?php } elseif ($row_take == 4 || $row_take == 2 || $row_take == 1) { ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=' . urlencode('Divers') ?>" class="mb-3 category_news_title">
                     <h2>Divers</h2>
@@ -682,7 +682,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news']  . '&category=' . $origin_category ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=' . urlencode('Divers') ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>

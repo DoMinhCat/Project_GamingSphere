@@ -25,9 +25,20 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 ?>
 
 <body>
-    <?php include('../include/header.php'); ?>
+    <?php include('../include/header.php');
+    if (isset($_GET['message']) && $_GET['message'] == 'bdd') { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Erreur de la base de données, veuillez reéssayer plus tard ! !
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } elseif (!empty($_GET['error'])) { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($_GET['error']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php }  ?>
 
-    <main class="container my-5">
+    <main class="container mt-2 mb-5">
         <h1 class="text-center mb-4">Boutique de jeux</h1>
 
         <?php if (count($carouselGames) > 0): ?>
@@ -69,7 +80,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php endif; ?>
 
         <h2 class="mb-3 text-center">Tous les jeux</h2>
-        <div id="alert-container"></div>
         <div class="row">
             <?php foreach ($games as $game): ?>
                 <div class="col-md-4 mb-4 d-flex align-items-stretch">
@@ -84,7 +94,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
                             <div class="mt-auto d-flex justify-content-between gap-2 align-items-center">
                                 <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>" class="btn btn-magasin btn-outline-primary w-50 mt-3 h-50">Voir détails</a>
-                                <button class="btn btn-magasin btn-success mt-3 btn-add-to-cart h-50" data-id="<?= $game['id_jeu'] ?>">Ajouter au panier + </button>
+                                <button class="btn btn-magasin btn-success mt-3 btn-add-to-cart h-50" data-id="<?= $game['id_jeu'] ?>">Ajouter au panier</button>
                             </div>
                         </div>
                     </div>

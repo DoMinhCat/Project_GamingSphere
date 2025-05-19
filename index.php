@@ -34,17 +34,19 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             ?>
         </div>
     <?php endif;
-    if (isset($_GET['message']) && $_GET['message'] == 'email_verifie') {
-        echo '<div class="feedback text-center p-3" style="background-color: #f5f0e1; color:#1E3D59;">';
-        echo "Vous avez déjà vérifié votre email !";
-        echo '</div>';;
-    }
-    if (isset($_GET['message']) && $_GET['message'] == 'bdd') {
-        echo '<div class="feedback text-center p-3" style="background-color: #f5f0e1; color:#1E3D59;">';
-        echo "Erreur de la base de données, veuillez reéssayer plus tard !";
-        echo '</div>';;
-    }
-    ?>
+
+    if (isset($_GET['message']) && $_GET['message'] == 'email_verifie') { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Vous avez déjà vérifié votre email !
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php }
+    if (isset($_GET['message']) && $_GET['message'] == 'bdd') { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Erreur de la base de données, veuillez reéssayer plus tard ! !
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
 
     <main class="mb-5">
         <div class="carousel-container">
@@ -89,7 +91,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         </div>
         <div id="bande_sepe"></div>
         <a href="<?= tournois_main ?>" style="text-decoration: none;">
-            <h3 class="montserrat-titre40 tournament_title mt-3">TOURNOIS EN COURS</h3>
+            <h3 class="montserrat-titre40 tournament_title my-3">TOURNOIS EN COURS</h3>
         </a>
         <div class="b_l mx-5">
             <div class="row justify-content-center">
@@ -181,32 +183,38 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         ?>
         <div id="bande_sepe"></div>
         <a href="<?= magasin_main ?>" style="text-decoration: none;">
-            <h3 class="montserrat-titre40 tournament_title">MAGASIN</h3>
+            <h3 class="montserrat-titre40 tournament_title mb-3">MAGASIN</h3>
         </a>
-        <h2 class="montserrat-titre32 title_selling_item_index">Meilleurs Ventes</h2>
-        <div class="d-flex flex-row flex-wrap justify-content-start g-2 sell_card_index mx-5">
-            <?php
-            $max_cards = 6;
-            $count = 0;
-            foreach ($games as $game):
-                if ($count >= $max_cards) break;
-                $count++;
-            ?>
-                <div class="card" style="width: 18rem;">
-                    <img src="back-office/uploads/<?php echo htmlspecialchars($game['image']); ?>" class="card-img-top img_sell_index" alt="Image du jeu">
-                    <div class="card-body d-flex flex-column align-items-center">
-                        <h5 class="card-title text-center"><?php echo htmlspecialchars($game['nom']); ?></h5>
-                        <p class="card-text text-center"><?php echo htmlspecialchars($game['prix']); ?> €</p>
-                        <p>Ajouter au panier</p>
-                        <button type="button" class="btn btn-secondary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5"></path>
-                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"></path>
-                            </svg>
-                        </button>
+
+        <div class="d-flex flex-row">
+            <h3 class="title_selling_item_index">Meilleurs Ventes</h3>
+            <div class="d-flex flex-row flex-wrap justify-content-start g-2 sell_card_index mx-5">
+                <?php
+                $max_cards = 6;
+                $count = 0;
+                foreach ($games as $game):
+                    if ($count >= $max_cards) break;
+                    $count++;
+                ?>
+                    <div class="col-md-4 mb-4 d-flex align-items-stretch">
+                        <div class="card shadow-sm w-100 d-flex flex-column">
+                            <?php if (!empty($game['image'])): ?>
+                                <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
+                            <?php else: ?>
+                                <img src="../../assets/img/no_image.png" class="card-img-top" alt="Aucune image">
+                            <?php endif; ?>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
+                                <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                                <div class="mt-auto d-flex justify-content-between gap-2 align-items-center">
+                                    <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>" class="btn btn-magasin btn-outline-primary w-50 mt-3 h-50">Voir détails</a>
+                                    <button class="btn btn-magasin btn-success mt-3 btn-add-to-cart h-50" data-id="<?= $game['id_jeu'] ?>">Ajouter au panier</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
         </div>
     </main>
     <?php include('include/footer.php'); ?>
