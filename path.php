@@ -67,7 +67,8 @@ define('nouvelle_conversation', '/messages/new'); // nouvelle_conversation.php
 //search
 define('search', '/include/search'); // search.php
 
-
+//paris
+define('paris_main', '/paris');
 
 
 
