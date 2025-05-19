@@ -133,7 +133,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             echo '</div>';;
         }
         ?>
-        <h1 class="text-center mb-5">Actualités</h1>
+        <h1 class="text-center my-5">Actualités</h1>
         <!-- A la une -->
         <?php
         // 5 items case
