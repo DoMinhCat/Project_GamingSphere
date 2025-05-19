@@ -10,7 +10,7 @@ if ($_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
 $month = $_GET['month'] ?? '';
 $year = $_GET['year'] ?? '';
 
-$lines = file('../../../log/log_inscription.txt');
+$lines = array_reverse(file('../../../log/log_inscription.txt'));
 $pattern = '/^(\d{4})\/(\d{2})\/\d{2} - \d{2}:\d{2}:\d{2} - (.+?) (réussie|échouée) de (.+?)(?: - (?:en raison de : )?(.+))?$/u';
 
 
