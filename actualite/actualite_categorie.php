@@ -53,12 +53,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     ?>
     <main class="container mb-5">
         <?php
-        if (!empty($_GET['message'])) {
-            echo '<div class="feedback text-center p-3" style="background-color: #f5f0e1; color:#1E3D59;">';
-            echo htmlspecialchars($_GET['message']);
-            echo '</div>';;
-        }
-        ?>
+        if (!empty($_GET['message'])) { ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_GET['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php } ?>
         <div class="mb-4 mt-5 d-flex align-items-center gap-2">
             <a href="<?= actualite_main ?>" class="text-decoration-none fs-3 return_arrow">
                 <i class="bi bi-chevron-left"></i>

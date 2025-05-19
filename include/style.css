@@ -644,10 +644,10 @@ body.offcanvas-backdrop {
   transform: scale(1.01);
 }
 .return_arrow {
-  color: #2f608e;
+  color: #1e3d59;
 }
 .return_arrow:hover {
-  color: #1e3d59;
+  color: #2f608e;
 }
 .dark .return_arrow {
   color: #fe8c68;

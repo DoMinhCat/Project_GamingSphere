@@ -142,7 +142,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
           <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php') ? 'active' : '' ?>" href="<?= actualite_main ?>" style="color: #F5F0E1 !important;">
             Actualités
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'forum.php') ? 'active' : '' ?>" href="<?= forum_main ?>" style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'forum_main.php') ? 'active' : '' ?>" href="<?= forum_main ?>" style="color: #F5F0E1 !important;">
             Forum
           </a>
         </div>
@@ -428,7 +428,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                   <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php') ? 'active' : '' ?>" href="<?= actualite_main ?>" style="color: #F5F0E1 !important;">
                     Actualités
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'forum.php') ? 'active' : '' ?>"
+                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'forum_main.php') ? 'active' : '' ?>"
                     href="<?= forum_main ?>"
                     style="color: #F5F0E1 !important;">
                     Forum

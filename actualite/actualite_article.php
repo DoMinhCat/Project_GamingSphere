@@ -69,10 +69,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="mb-5">
                 picture here
             </div>
-            <p><?= 'Publié le :' . $article['date_article'] ?></p>
+            <p><?= 'Publié le : ' . $article['date_article'] ?></p>
             <p class="mt-5"><?= nl2br(htmlspecialchars($article['contenue'])) ?></p>
         </div>
+        <!-- D'autres article meme cate -->
+        <div class="d-flex mb-5 flex-column">
 
+        </div>
     </main>
     <?php
     include("../include/footer.php");
