@@ -44,7 +44,6 @@ $tournois = $bdd->query("
                         <th>Pariable</th>
                         <th>Date début</th>
                         <th>Date fin</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,9 +72,6 @@ $tournois = $bdd->query("
                             </td>
                             <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
                             <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
-                            <td>
-                                <!-- Autres actions si besoin -->
-                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
