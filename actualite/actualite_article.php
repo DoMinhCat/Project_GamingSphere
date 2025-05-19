@@ -3,12 +3,13 @@ session_start();
 require('../include/check_timeout.php');
 require('../include/database.php');
 require_once __DIR__ . '/../path.php';
-if (empty($_GET['category'])) {
+if (empty($_GET['category']) || empty($_GET['id'])) {
     header('location:' . actualite_main . '?message=' . urlencode('L\'article non trouvé'));
     exit;
 }
 $origin_category  = $_GET['category'];
 $category = $_GET['category'];
+$id_article = (int)$_GET['id'];
 switch ($category) {
     case 'general':
         $category = 'Général';
@@ -24,17 +25,10 @@ switch ($category) {
         break;
 }
 try {
-    if (isset($_GET['id']) && !empty($_GET['id'])) {
-        $id_article = (int)$_GET['id'];
-
-        $query = $bdd->prepare("SELECT * FROM news WHERE id_news = ?;");
-        $stmt->execute([$id_article]);
-        $article = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($article->rowCount() < 1) {
-            header('location:' . actualite_categorie . '?category=' . $origin_category . '&message=' . urlencode('L\'article non trouvé'));
-            exit;
-        }
-    } else {
+    $stmt = $bdd->prepare("SELECT * FROM news WHERE id_news = ?;");
+    $stmt->execute([$id_article]);
+    $article = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$article) {
         header('location:' . actualite_categorie . '?category=' . $origin_category . '&message=' . urlencode('L\'article non trouvé'));
         exit;
     }
