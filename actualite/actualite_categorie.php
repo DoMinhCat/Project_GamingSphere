@@ -94,11 +94,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     ?>
 
     <script>
-        const category = <?= json_encode($origin_category) ?>;
+        const category = <?= json_encode($category) ?>;
         async function fetchArticle() {
             let search = document.getElementById('search').value;
             try {
-                const response = await fetch('search_actualite.php?search=' + encodeURIComponent(search) + '&category=' + encodeURIComponent(origin_category), {
+                const response = await fetch('search_actualite.php?search=' + encodeURIComponent(search) + '&category=' + encodeURIComponent(category), {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
                     }
@@ -111,7 +111,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         }
         const searchInput = document.getElementById('search');
         searchInput.addEventListener('input', function() {
-            fetchArticle(this.value);
+            fetchArticle();
         });
     </script>
 </body>

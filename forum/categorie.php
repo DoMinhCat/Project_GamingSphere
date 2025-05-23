@@ -41,6 +41,12 @@ $categorie_nom = $_GET['nom'];
             </div>
         <?php endif ?>
 
+        <div class="col d-flex justify-content-center text-center">
+            <div class="d-flex col-md-6 pt-3 pb-2">
+                <input type="text" id="search" class="form-control searchBoxFront" placeholder="Rechercher par titre ou auteur">
+            </div>
+        </div>
+
         <div class="mb-4 mt-5">
             <a href="<?= forum_main ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
                 <i class="bi bi-chevron-left"></i>
@@ -48,10 +54,12 @@ $categorie_nom = $_GET['nom'];
             </a>
         </div>
 
-        <a href="<?= nouveau_sujet ?>?categorie=<?= urlencode($categorie_nom) ?>" class="btn btn-primary mb-2">+ Nouveau sujet</a>
-
         <?php
-        $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? AND parent_id IS NULL ORDER BY date_msg DESC");
+        if (!empty($_SESSION['user_id'])) {
+            echo '<a href="' . nouveau_sujet . '?categorie=' . urlencode($categorie_nom) . '" class="btn btn-primary mb-2">+ Nouveau sujet</a>';
+        }
+
+        $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? AND parent_id IS NULL ORDER BY date_creation DESC");
         $stmt->execute([$categorie_nom]);
         $sujets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -69,22 +77,46 @@ $categorie_nom = $_GET['nom'];
                 exit();
             }
         ?>
-            <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] . '&category=' . $categorie_nom ?>" class="text-decoration-none forumBlockLink">
+            <div id="results">
+                <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] . '&category=' . $categorie_nom ?>" class="text-decoration-none forumBlockLink">
 
-                <div class="card mx-0 mb-3">
-                    <div class="card-body">
-                        <h5>
-                            <?= htmlspecialchars($sujet['titre']) ?>
-                        </h5>
-                        <p class="text-muted mb-1">Posté le <?= date("d/m/Y à H:i", strtotime($sujet['date_msg'])) ?> par <?= htmlspecialchars($sujet['auteur'] ?? 'Anonyme') ?></p>
-                        <p class="mb-0"><strong><?= $nb_reponses ?></strong> réponse<?= $nb_reponses != 1 ? 's' : '' ?></p>
+                    <div class="card mx-0 mb-3">
+                        <div class="card-body">
+                            <h5>
+                                <?= htmlspecialchars($sujet['titre']) ?>
+                            </h5>
+                            <p class="text-muted mb-1">Posté le <?= date("d/m/Y à H:i", strtotime($sujet['date_creation'])) ?> par <?= htmlspecialchars($sujet['auteur'] ?? 'Anonyme') ?></p>
+                            <p class="mb-0"><strong><?= $nb_reponses ?></strong> réponse<?= $nb_reponses != 1 ? 's' : '' ?></p>
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
         <?php } ?>
     </div>
 
     <?php include("../include/footer.php"); ?>
+
+    <script>
+        const category = <?= json_encode($categorie_nom) ?>;
+        async function fetchArticle() {
+            let search = document.getElementById('search').value;
+            try {
+                const response = await fetch('search_forum.php?search=' + encodeURIComponent(search) + '&category=' + encodeURIComponent(category), {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                const data = await response.text();
+                document.getElementById('results').innerHTML = data;
+            } catch (error) {
+                console.error('Fetch erreur:', error);
+            }
+        }
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('input', function() {
+            fetchArticle();
+        });
+    </script>
 </body>
 
 </html>

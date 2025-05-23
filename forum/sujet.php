@@ -63,7 +63,7 @@
         <div class="container my-5">
 
 
-            <div class="mb-4 mt-5">
+            <div class="mb-4">
                 <a href="<?= forum_category . '?nom=' . $sujet['categories'] ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
                     <i class="bi bi-chevron-left"></i>
                     <h1 class="m-0"><?= htmlspecialchars($categorie_nom) ?></h1>
@@ -95,7 +95,7 @@
 
             <h4 class="mt-5 mb-3">Ajouter une réponse</h4>
             <form method="post">
-                <div class="mb-4">
+                <div class="mb-2">
                     <textarea name="contenu" class="form-control" rows="4" placeholder="Votre message..." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Envoyer</button>
