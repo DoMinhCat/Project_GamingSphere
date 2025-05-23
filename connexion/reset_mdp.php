@@ -27,8 +27,6 @@ if (!$user) {
 <html lang="fr">
 <?php
 $title = 'Réinitilisation de mot de passe';
-$pageCategory = 'connexion';
-echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php')
 ?>
 

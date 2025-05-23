@@ -14,8 +14,6 @@ if (!isset($_GET['result'])) {
 <html lang="fr">
 <?php
 $title = 'Statut de vérification de l\'e-mail';
-$pageCategory = 'connexion';
-echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php')
 ?>
 

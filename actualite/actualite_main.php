@@ -234,7 +234,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=esport' ?>" class="card w-100 card_news" style="text-decoration: none;">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=Esport' ?>" class="card w-100 card_news" style="text-decoration: none;">
 
                                 <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
                                 <div class="card-body p-3">
@@ -249,7 +249,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- RIGHT CARDS STACKED -->
                         <div class="col-md-5 d-flex flex-column h-100">
                             <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=esport' ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=Esport' ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
                                     <div class="card-body p-2">
                                         <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
                                         <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
@@ -271,7 +271,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="article-container p-3">
 
                         <?php foreach ($rows_esport as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=esport' ?>" class="articleBlockLink text-dark">
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=Esport' ?>" class="articleBlockLink text-dark">
                                 <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
                                     <h2>
                                         <?= htmlspecialchars($row['titre']) ?>

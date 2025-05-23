@@ -685,5 +685,5 @@ body.offcanvas-backdrop {
   justify-content: center;
 }
 .searchBoxFront {
-  background-color: #d0ccbf;
+  background-color: #d0ccbf !important;
 }

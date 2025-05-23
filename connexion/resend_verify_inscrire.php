@@ -12,8 +12,6 @@ if (!empty($_SESSION['user_email'])) {
 <html lang="fr">
 <?php
 $title = 'Vérification de l\'email';
-$pageCategory = 'connexion';
-echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
 ?>
 

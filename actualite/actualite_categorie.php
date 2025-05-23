@@ -25,7 +25,7 @@ switch ($category) {
         break;
 }
 try {
-    $stmt = $bdd->prepare("SELECT id_news, category titre, date_article, contenue, pseudo from news join utilisateurs on auteur=utilisateurs.id_utilisateurs where category = ?;");
+    $stmt = $bdd->prepare("SELECT id_news, category, titre, date_article, contenue, pseudo from news join utilisateurs on auteur=utilisateurs.id_utilisateurs where category = ?;");
     $stmt->execute([$category]);
     $news = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException) {
@@ -60,8 +60,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php } ?>
 
-        <div class="col md-6 text-center">
-            <div class="d-flex pt-3 pb-2">
+        <div class="col d-flex justify-content-center text-center">
+            <div class="d-flex col-md-6 pt-3 pb-2">
                 <input type="text" id="search" class="form-control searchBoxFront" placeholder="Rechercher par titre ou auteur">
             </div>
         </div>
@@ -73,7 +73,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </a>
         </div>
 
-        <!-- foreach loop -->
         <?php foreach ($news as $new) : ?>
             <div id="results">
                 <div class="mb-3">
@@ -93,6 +92,28 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <?php
     include("../include/footer.php");
     ?>
+
+    <script>
+        const category = <?= json_encode($origin_category) ?>;
+        async function fetchArticle() {
+            let search = document.getElementById('search').value;
+            try {
+                const response = await fetch('search_actualite.php?search=' + encodeURIComponent(search) + '&category=' + encodeURIComponent(origin_category), {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                const data = await response.text();
+                document.getElementById('results').innerHTML = data;
+            } catch (error) {
+                console.error('Fetch erreur:', error);
+            }
+        }
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('input', function() {
+            fetchArticle(this.value);
+        });
+    </script>
 </body>
 
 </html>
