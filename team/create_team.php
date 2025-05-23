@@ -51,11 +51,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
         <form method="POST" class="p-4 border rounded shadow-sm bg-light" action="create_team.php">
             <div class="mb-3">
-                <label for="team_name" class="form-label">Nom de l'équipe</label>
+                <label for="team_name" class="form-label text-dark">Nom de l'équipe</label>
                 <input type="text" class="form-control" id="team_name" name="team_name" required>
             </div>
             <div class="mb-3">
-                <label for="team_level" class="form-label">Niveau de l'équipe</label>
+                <label for="team_level" class="form-label text-dark">Niveau de l'équipe</label>
                 <select class="form-select" id="team_level" name="team_level" required>
                     <option value="Débutant">Débutant</option>
                     <option value="Intermédiaire">Intermédiaire</option>
@@ -68,8 +68,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         </form>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

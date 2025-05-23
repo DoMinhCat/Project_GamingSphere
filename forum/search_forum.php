@@ -12,6 +12,7 @@ $search = trim($_GET['search'] ?? '');
 $category = $_GET['category'];
 
 try {
+
     if (!empty($search)) {
         $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? AND parent_id IS NULL AND (auteur LIKE ? OR titre LIKE ?) ORDER BY date_creation DESC;");
         $stmt->execute([$category, '%' . $search . '%', '%' . $search . '%']);
@@ -24,6 +25,13 @@ try {
 
     if (count($sujets) > 0) {
         foreach ($sujets as $sujet) {
+            try {
+                $stmt_reponses = $bdd->prepare("SELECT COUNT(*) FROM forum_reponses WHERE id_sujet = ?");
+                $stmt_reponses->execute([$sujet['id_sujet']]);
+                $nb_reponses = $stmt_reponses->fetchColumn();
+            } catch (PDOException) {
+                echo "<p>Erreur de la base de données.</p>";
+            }
             echo '<a href="' . sujet . '?id=' . $sujet['id_sujet'] . '&category=' . $categorie_nom . '" class="text-decoration-none forumBlockLink">';
 
             echo '<div class="card mx-0 mb-3">

@@ -266,6 +266,11 @@ RewriteCond %{THE_REQUEST} \s/paris/parier\.php [NC]
 RewriteRule ^paris/parier\.php$ /paris/parier [R=301,L,QSA]
 RewriteRule ^paris/parier/?$ paris/parier.php [L]
 
+# easter.php 
+
+RewriteCond %{THE_REQUEST} \s/error_pages/easter\.php [NC]
+RewriteRule ^error_pages/easter\.php$ /easter [R=301,L,QSA]
+RewriteRule ^easter/?$ error_pages/easter.php [L]
 
 
 

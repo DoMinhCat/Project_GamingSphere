@@ -18,6 +18,7 @@ if (isset($_POST['add_article'])) {
     $date_article = date('Y-m-d');
     $id_auteur = $_SESSION['user_id'];
     $category = null;
+    //Ajouter verification image upload ici et insert image dans la bdd svp
 
     if (!empty($_POST['category_choose'])) {
 
@@ -115,7 +116,7 @@ require('../head.php');
         <h1 class="my-5 text-center">Gestion des Articles</h1>
 
         <!-- Formulaire d'ajout d'article -->
-        <form method="POST" action="" class="mb-5">
+        <form method="POST" action="" class="mb-5" enctype="multipart/form-data">
             <h3>Ajouter un nouvel article</h3>
             <div class="my-3">
                 <label for="titre" class="form-label">Titre</label>
@@ -144,6 +145,7 @@ require('../head.php');
                 <label for="contenu" class="form-label">Contenu</label>
                 <textarea class="form-control" id="contenu" name="contenu" rows="4" required></textarea>
             </div>
+            <input type="file" name="img_article" placeholder="Uploader une image thubnail" class="mb-3">
             <button type="submit" name="add_article" class="btn btn-primary">Ajouter l'article</button>
         </form>
 

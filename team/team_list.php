@@ -44,26 +44,28 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         </form>
         <?php if (count($teams) > 0): ?>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nom de l'équipe</th>
-                        <th>Niveau</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($teams as $team): ?>
+            <div class="table-responsive" style="max-height: 80vh; overflow-y: auto;">
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td><?= htmlspecialchars($team['nom']) ?></td>
-                            <td><?= htmlspecialchars($team['niveau']) ?></td>
-                            <td>
-                                <a href="<?= team_details ?>?id_equipe=<?= $team['id_equipe'] ?>" class="btn btn-sm btn-info">Voir</a>
-                            </td>
+                            <th>Nom de l'équipe</th>
+                            <th>Niveau</th>
+                            <th>Actions</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($teams as $team): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($team['nom']) ?></td>
+                                <td><?= htmlspecialchars($team['niveau']) ?></td>
+                                <td>
+                                    <a href="<?= team_details ?>?id_equipe=<?= $team['id_equipe'] ?>" class="btn btn-sm btn-info">Voir</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         <?php else: ?>
             <p class="text-center">Aucune équipe trouvée.</p>
         <?php endif; ?>
