@@ -136,9 +136,11 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
           <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php' || $this_page == 'create_team.php' || $this_page == 'tournois_details.php' || $this_page == 'tournois_jeux.php' || $this_page == 'team_details.php' || $this_page == 'team_list.php') ? 'active' : '' ?>" href="<?= tournois_main ?>" style="color: #F5F0E1 !important;">
             Tournois
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'paris_main.php') ? 'active' : '' ?>" href="<?= paris_main ?>" style="color: #F5F0E1 !important;">
-            Paris
-          </a>
+          <?php if (!empty($_SESSION['user_id'])) { ?>
+            <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'paris_main.php') ? 'active' : '' ?>" href="<?= paris_main ?>" style="color: #F5F0E1 !important;">
+              Paris
+            </a>
+          <?php } ?>
           <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php' || $this_page == 'actualite_article.php' || $this_page == 'actualite_categorie.php') ? 'active' : '' ?>" href="<?= actualite_main ?>" style="color: #F5F0E1 !important;">
             Actualités
           </a>
@@ -422,9 +424,11 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                   <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php' || $this_page == 'create_team.php' || $this_page == 'tournois_details.php' || $this_page == 'tournois_jeux.php' || $this_page == 'team_details.php' || $this_page == 'team_list.php') ? 'active' : '' ?>" href="<?= tournois_main ?>" style="color: #F5F0E1 !important;">
                     Tournois
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'paris_main.php') ? 'active' : '' ?>" href="<?= paris_main ?>" style="color: #F5F0E1 !important;">
-                    Communauté
-                  </a>
+                  <?php if (!empty($_SESSION['user_id'])) { ?>
+                    <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'paris_main.php') ? 'active' : '' ?>" href="<?= paris_main ?>" style="color: #F5F0E1 !important;">
+                      Communauté
+                    </a>
+                  <?php } ?>
                   <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php' || $this_page == 'actualite_article.php' || $this_page == 'actualite_categorie.php') ? 'active' : '' ?>" href="<?= actualite_main ?>" style="color: #F5F0E1 !important;">
                     Actualités
                   </a>

@@ -10,7 +10,7 @@ if (
     !isset($_POST['id_tournoi'], $_POST['choix'], $_POST['montant'], $_POST['cote']) ||
     empty($_POST['id_tournoi']) || empty($_POST['choix']) || empty($_POST['montant']) || empty($_POST['cote'])
 ) {
-    header('Location: paris_main.php?message=Veuillez remplir tous les champs.');
+    header('Location:' . paris_main . '?message=Veuillez remplir tous les champs !');
     exit();
 }
 
@@ -21,27 +21,25 @@ $cote = floatval($_POST['cote']);
 $user_id = $_SESSION['user_id'] ?? null;
 
 if (!$user_id) {
-    header('Location: ../connexion/login.php?message=Veuillez vous connecter.');
+    header('Location:' . login . '?message=' . urlencode('Connectez-vous pour accéder à cette page !'));
     exit();
 }
 
-// Vérifier que le tournoi est pariable
 $stmt = $bdd->prepare("SELECT pari_ouvert FROM tournoi WHERE id_tournoi = ?");
 $stmt->execute([$id_tournoi]);
 $tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$tournoi || !$tournoi['pari_ouvert']) {
-    header('Location: paris_main.php?message=Ce tournoi n\'est pas ouvert aux paris.');
+    header('Location:' . paris_main . '?message=' . urlencode('Ce tournoi n\'est pas ouvert aux paris !'));
     exit();
 }
 
-// Vérifier que l'utilisateur a assez de crédits
 $stmt = $bdd->prepare("SELECT credits FROM credits WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user || $user['credits'] < $montant) {
-    header('Location: paris_main.php?message=Crédits insuffisants.');
+    header('Location:' . paris_main . '?message=' . urlencode('Crédits insuffisants !'));
     exit();
 }
 
@@ -56,5 +54,5 @@ $stmt = $bdd->prepare("
 ");
 $stmt->execute([$id_tournoi, $user_id, $choix, $montant, $cote]);
 
-header('Location: paris_main.php?message=Pari enregistré avec succès !');
+header('Location:' . paris_main . '?message=' . urlencode('Pari enregistré avec succès !'));
 exit();
