@@ -141,11 +141,13 @@ require('../head.php');
                     <button onclick="chooseCategory()" class="mt-2 btn btn-primary">Choisir une catégorie predéfinie</button>
                 </div>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="contenu" class="form-label">Contenu</label>
                 <textarea class="form-control" id="contenu" name="contenu" rows="4" required></textarea>
             </div>
-            <input type="file" name="img_article" placeholder="Uploader une image thubnail" class="mb-3">
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" name="img_article">
+            </div>
             <button type="submit" name="add_article" class="btn btn-primary">Ajouter l'article</button>
         </form>
 

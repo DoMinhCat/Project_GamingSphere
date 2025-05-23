@@ -53,7 +53,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
 <body>
     <?php include('../include/header.php'); ?>
-    <div class="container my-4">
+    <div class="container my-5">
         <h2 class="mb-4 text-center">Messagerie</h2>
 
         <?php if (!empty($conversations)): ?>

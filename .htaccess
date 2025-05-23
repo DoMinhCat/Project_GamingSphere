@@ -470,6 +470,10 @@ RewriteRule ^back-office/stats/duree/?$ back-office/stats/duree_visite.php [L]
 
 ErrorDocument 404 /error_pages/404.php
 ErrorDocument 500 /error_pages/500.php
+ErrorDocument 400 /error_pages/400.php
+ErrorDocument 403 /error_pages/403.php
+ErrorDocument 408 /error_pages/408.php
+ErrorDocument 503 /error_pages/503.php
 
 # Bloquer acces aux fichiers config et env
 
