@@ -1,116 +1,87 @@
 <?php
 session_start();
-$login_page = '../../connexion/login.php';
 require('../check_session.php');
 require('../../include/database.php');
 require('../../include/check_timeout.php');
 require_once __DIR__ . '/../../path.php';
+
+$title = 'Gestion des cotes des tournois';
+
+// Récupérer la liste des tournois
+$tournois = $bdd->query("
+    SELECT id_tournoi, nom_tournoi, jeu, type, cote, pari_ouvert, date_debut, date_fin
+    FROM tournoi where status_ENUM = 'en cours'
+    ORDER BY date_debut DESC
+")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-<?php
-$title = 'Gestions des paris';
-require('../head.php');
-?>
+<?php require('../head.php'); ?>
 
-<body class="pb-4">
-    <?php
-    $page = index_back;
-    include('../navbar.php');
-    ?>
+<body>
+    <?php include('../navbar.php'); ?>
 
-    <main class="container mb-5">
-        <?php
-        $noti = '';
-        $noti_Err = '';
-        if (isset($_GET['message']) && $_GET['message'] === 'EDIT ME')
-            $noti = 'SUCCESS MESSAGE !';
-        ?>
-        <?php if (!empty($noti_Err)) : ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <?= $noti_Err ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif ?>
+    <main class="container my-5">
+        <h1 class="text-center mb-4">Gestion des cotes des tournois</h1>
 
-        <?php if (!empty($noti)) : ?>
+        <?php if (isset($_GET['message']) && $_GET['message'] === 'EDIT_ME'): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?= $noti ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                Cote modifiée avec succès.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
             </div>
-        <?php endif ?>
+        <?php endif; ?>
 
-        <h1 class="text-center my-5">Liste des paris</h1>
-
-        <div class="form-group mb-2 sticky-top pt-3 pb-2">
-            <div class="d-flex gap-2">
-                <input type="text" id="search" class="form-control searchBoxBack" placeholder="Rechercher par nom du tournois ou jeu">
-                <div class="d-flex ms-2" style="gap: 0.5rem;">
-                    <select id="prixFilter" class="form-select searchBoxBack">
-                        <option value="">Filter</option>
-
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
-            <table class="table table-bordered table-striped">
-                <thead class='table-dark' style="position: sticky; top: 0; z-index: 1;">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-dark">
                     <tr>
                         <th>ID</th>
-                        <th>Nom</th>
-                        <th>Date de sortie</th>
-                        <th>Catégorie</th>
-                        <th>Note</th>
-                        <th>Plateforme</th>
-                        <th>Prix (€)</th>
+                        <th>Tournoi</th>
+                        <th>Jeu</th>
                         <th>Type</th>
-                        <th>Éditeur</th>
-                        <th>Actions</th>
+                        <th>Cote</th>
+                        <th>Pariable</th>
+                        <th>Date début</th>
+                        <th>Date fin</th>
                     </tr>
                 </thead>
-                <tbody id="jeux">
-                    <?php if (count($paris) > 0): ?>
-                        <?php foreach ($paris as $pari): ?>
-                            <tr>
-                                <td class="align-middle"><?= htmlspecialchars('content pari') ?></td>
-
-
-                                <!-- <td>
-                                    <div class='d-flex flex-wrap align-items-start flex-xl-row align-items-start'>
-                                        <a href="<?= jeux_edit_back . '?id=' . $game['id_jeu'] ?>" class="btn btn-warning btn-sm mb-1 mb-xl-0 me-sm-1">Modifier</a>
-                                        <button type="button" class="btn btn-sm btn-danger mb-1 mb-xl-0 me-sm-1" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $game['id_jeu'] ?>">Supprimer</button>
-                                    </div>
-                                    <div class="modal fade" id="deleteModal<?= $game['id_jeu'] ?>" tabindex="-1" aria-labelledby="deleteModalLabel<?= $game['id_jeu'] ?>" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="deleteModalLabel<?= $game['id_jeu'] ?>">Confirmation</h1>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Êtes-vous sûr de vouloir supprimer ce jeu du magasin ?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                                    <a type="button" class="btn btn-danger" href="delete_game.php?id=<?= $game['id_jeu'] ?>">Supprimer</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td> -->
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
+                <tbody>
+                <?php if (count($tournois) > 0): ?>
+                    <?php foreach ($tournois as $tournoi): ?>
                         <tr>
-                            <td colspan="10" class="text-center">Aucun pari trouvé.</td>
+                            <td><?= htmlspecialchars($tournoi['id_tournoi']) ?></td>
+                            <td><?= htmlspecialchars($tournoi['nom_tournoi']) ?></td>
+                            <td><?= htmlspecialchars($tournoi['jeu']) ?></td>
+                            <td><?= htmlspecialchars($tournoi['type']) ?></td>
+                            <td>
+                                <form method="post" action="edit_cote.php" class="d-flex align-items-center">
+                                    <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
+                                    <input type="number" step="0.01" min="1" name="cote" value="<?= htmlspecialchars($tournoi['cote'] ?? 1) ?>" class="form-control form-control-sm" style="width:80px;">
+                                    <button type="submit" class="btn btn-sm btn-primary ms-2">Enregistrer</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post" action="toggle_pariable.php" class="d-inline">
+                                    <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
+                                    <input type="hidden" name="pari_ouvert" value="<?= $tournoi['pari_ouvert'] ? 0 : 1 ?>">
+                                    <button type="submit" class="btn btn-sm <?= $tournoi['pari_ouvert'] ? 'btn-success' : 'btn-secondary' ?>">
+                                        <?= $tournoi['pari_ouvert'] ? 'Oui' : 'Non' ?>
+                                    </button>
+                                </form>
+                            </td>
+                            <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
+                            <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
                         </tr>
-                    <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="9" class="text-center">Aucun tournoi trouvé.</td>
+                    </tr>
+                <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </main>
 </body>
-
 </html>
