@@ -108,7 +108,6 @@ include('../include/head.php');
                                         $note = (float)$jeu['note_jeu'];
                                         for ($i = 1; $i <= 5; $i++):
                                         ?>
-                                            <i class="bi bi-star<?= $i <= $note ? '-fill text-warning' : ' text-muted' ?>"></i>
                                         <?php endfor; ?>
                                         <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
                                     </div>

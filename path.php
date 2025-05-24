@@ -15,6 +15,7 @@ define('status_verify', '/connexion/status_verify'); // status_verify.php
 //magasin
 define('magasin_main', '/magasin'); // magasin_main.php
 define('magasin_game', '/magasin/game'); // game_info.php
+define('magasin_category', '/magasin/category'); // magasin_category.php
 
 //credits
 define('add_credits', '/credits/add'); // add_credits.php

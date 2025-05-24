@@ -91,6 +91,12 @@ RewriteCond %{THE_REQUEST} \s/magasin/game_info\.php [NC]
 RewriteRule ^magasin/game_info\.php$ /magasin/game [R=301,L]
 RewriteRule ^magasin/game/?$ magasin/game_info.php [L]
 
+# magasin_category.php (magasin)
+
+RewriteCond %{THE_REQUEST} \s/magasin/magasin_category\.php [NC]
+RewriteRule ^magasin/magasin_category\.php$ /magasin/category [R=301,L]
+RewriteRule ^magasin/category/?$ magasin/magasin_category.php [L]
+
 # tournois_main.php
 
 RewriteCond %{THE_REQUEST} \s/tournois/tournois_main\.php [NC]

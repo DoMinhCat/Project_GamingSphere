@@ -225,7 +225,6 @@ include('../include/head.php');
 
                     <div class="mb-5">
                         <h3 class="text-dark mb-4">
-                            <i class="bi bi-code-slash me-2"></i>
                             Bienvenue, hacker curieux !
                         </h3>
                         <p class="lead text-muted">Voici quelques stats du projet :</p>
@@ -234,25 +233,25 @@ include('../include/head.php');
                     <!-- Stats -->
                     <div class="row g-3 mb-5">
                         <div class="col-md-6">
-                            <div class="stats-card text-white">
+                            <div class="stats-card text-dark">
                                 <h5><i class="bi bi-trophy-fill text-warning me-2"></i>Note attendue</h5>
                                 <p class="mb-0">19/20 <small>(Nous savons que c'est irréaliste )</small></p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="stats-card text-white">
+                            <div class="stats-card text-dark">
                                 <h5><i class="bi bi-bug-fill text-danger me-2"></i>Bugs rencontrés</h5>
                                 <p class="mb-0">Trop pour les compter 🐛</p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="stats-card text-white">
+                            <div class="stats-card text-dark">
                                 <h5><i class="bi bi-cup-hot-fill text-brown me-2"></i>Café consommé</h5>
                                 <p class="mb-0">~41 tasses ☕</p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="stats-card text-white">
+                            <div class="stats-card text-dark">
                                 <h5><i class="bi bi-emoji-laughing-fill text-info me-2"></i>Moment drôle</h5>
                                 <p class="mb-0"><em>Aucun, pourquoi pensez-vous qu'il y a eu un moment drôle ? 😅</em></p>
                             </div>
