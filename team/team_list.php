@@ -46,7 +46,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php if (count($teams) > 0): ?>
             <div class="table-responsive" style="max-height: 80vh; overflow-y: auto;">
                 <table class="table table-striped">
-                    <thead>
+                    <thead style="position: sticky; top: 0; z-index: 1;">
                         <tr>
                             <th>Nom de l'équipe</th>
                             <th>Niveau</th>
@@ -59,7 +59,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <td><?= htmlspecialchars($team['nom']) ?></td>
                                 <td><?= htmlspecialchars($team['niveau']) ?></td>
                                 <td>
-                                    <a href="<?= team_details ?>?id_equipe=<?= $team['id_equipe'] ?>" class="btn btn-sm btn-info">Voir</a>
+                                    <a href="<?= team_details ?>?id_equipe=<?= $team['id_equipe'] ?>" class="btn btn-sm btn-secondary">Voir</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -70,7 +70,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <p class="text-center">Aucune équipe trouvée.</p>
         <?php endif; ?>
         <div class="text-center mt-4">
-            <a href="<?= create_team ?>" class="btn btn-success">Créer une nouvelle équipe</a>
+            <a href="<?= create_team ?>" class="btn btn-primary">Créer une nouvelle équipe</a>
         </div>
     </div>
 </body>

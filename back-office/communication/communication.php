@@ -46,19 +46,39 @@ if (!empty($_GET['id_edit']) && !empty($_GET['status'])) {
     }
 }
 if (!empty($_GET['delete_bad'])) {
-    $conditions = [];
-    $params = [];
+    if ($mots) {
+        $conditions = [];
+        $params = [];
 
-    foreach ($mots as $mot) {
-        $conditions[] = "contenu LIKE ?";
-        $params[] = '%' . $mot['mot'] . '%';
+        foreach ($mots as $mot) {
+            $conditions[] = "contenu LIKE ?";
+            $params[] = '%' . $mot['mot'] . '%';
+        }
+        try {
+            $query = $bdd->prepare("DELETE FROM forum_reponses WHERE " . implode(" OR ", $conditions) . ";");
+            $query->execute($params);
+            $deletedCount = $query->rowCount();
+
+            header('Location:' . communication_back . '?message=bad_success&count=' . $deletedCount);
+            exit();
+        } catch (PDOException $e) {
+            $_SESSION['error'] = htmlspecialchars($e->getMessage());
+            header('Location:' . communication_back . '?error=bdd');
+            exit();
+        }
+    } else {
+        header('Location:' . communication_back . '?error=no_word');
+        exit();
     }
-    try {
-        $query = $bdd->prepare("DELETE FROM forum_reponses WHERE " . implode(" OR ", $conditions) . ";");
-        $query->execute($params);
-        $deletedCount = $query->rowCount();
+}
 
-        header('Location:' . communication_back . '?message=bad_success&count=' . $deletedCount);
+if (isset($_POST['add_mot'])) {
+    $word = strtolower(trim($_POST['add_mot']));
+    try {
+        $query = $bdd->prepare("INSERT INTO mots_interdits (mot) VALUES (?);");
+        $query->execute([$word]);
+
+        header('Location:' . communication_back . '?message=add_success');
         exit();
     } catch (PDOException $e) {
         $_SESSION['error'] = htmlspecialchars($e->getMessage());
@@ -95,6 +115,10 @@ require('../head.php');
             $noti = 'Statut du mot modifié avec succès !';
         elseif (isset($_GET['message']) && $_GET['message'] === 'bad_success')
             $noti = $_GET['count'] . ' mauvais commentaires supprimés !';
+        elseif (isset($_GET['message']) && $_GET['message'] === 'add_success')
+            $noti = 'Mot ajouté avec succès !';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'no_word')
+            $noti = 'Aucun mot interdit !';
 
         ?>
         <?php if (!empty($noti_Err)) : ?>
@@ -120,7 +144,12 @@ require('../head.php');
             </div>
             <button type="submit" name="add_mot" class="btn btn-primary">Ajouter mot</button>
         </form>
-        <a href="<?= communication_back . '?delete_bad=1' ?>" class="btn btn-lg btn-danger my-4 text-center">Supprimer tous les commentaires contenant les mots interdits</a>
+
+
+        <div class="d-flex justify-content-center text-center my-4">
+            <a href="<?= communication_back . '?delete_bad=1' ?>" class="btn btn-lg btn-danger text-center">Supprimer tous les commentaires contenant les mots interdits</a>
+        </div>
+
 
         <h3 class="text-center mb-4">Liste des mots interdits</h3>
         <?php

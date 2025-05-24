@@ -23,7 +23,7 @@ include('../include/head.php');
                 </div>
                 <h5 class="mb-2">Uh oh, il y a un problème de notre côté.</h5>
                 <h5 class="mb-2">Veuillez revenir plus tard.</h5>
-                <a class="mt-5" href="<?= index_front ?>" class="btn btn-primary">Retour à l'acueil</a>
+                <a class="mt-5 btn btn-primary" href="<?= index_front ?>">Retour à l'acueil</a>
             </div>
         </div>
     </main>

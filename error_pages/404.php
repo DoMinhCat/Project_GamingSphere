@@ -22,6 +22,7 @@ include('../include/head.php');
                     <span class="line my-2"></span>
                 </div>
                 <h5 class="mb-2">Uh oh, vous vous êtes perdu ? Que cherchez vous ?</h5>
+                <!-- Pssst... Essayez de cliquer sur la phrase ci dessous, une surprise vous attend ;) -->
                 <p id="easter" class="mb-5">Retournons à l'accueil</p>
                 <a href="<?= index_front ?>" class="btn btn-primary">Retour à l'acueil</a>
             </div>

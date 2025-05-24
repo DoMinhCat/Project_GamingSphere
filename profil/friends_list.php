@@ -50,14 +50,14 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include('../include/header.php');
     include('navbar.php');
     ?>
-    <div class="container my-4">
+    <div class="container my-5">
         <h2 class="mb-4 text-center">Mes amis</h2>
         <?php if (count($friends) > 0): ?>
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <?php foreach ($friends as $friend): ?>
                     <div class="col">
                         <div class="card h-100 shadow-sm">
-                            <img src="<?= htmlspecialchars($friend['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="card-img-top">
+                            <img src="<?= '/' . htmlspecialchars($friend['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="card-img-top">
                             <div class="card-body text-center">
                                 <h5 class="card-title"><?= htmlspecialchars($friend['pseudo']) ?></h5>
                                 <a href="profil.php?user=<?= urlencode($friend['pseudo']) ?>" class="btn btn-outline-primary">Voir le profil</a>
@@ -70,13 +70,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="alert alert-info text-center">Aucun ami ajouté pour le moment.</div>
         <?php endif; ?>
 
-        <h2 class="section-title text-center">Demandes d'amis en attente</h2>
+        <h2 class="section-title text-center mt-4">Demandes d'amis en attente</h2>
         <?php if (count($pendingRequests) > 0): ?>
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <?php foreach ($pendingRequests as $request): ?>
                     <div class="col">
                         <div class="card h-100 shadow-sm">
-                            <img src="<?= htmlspecialchars($request['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="card-img-top">
+                            <img src="<?= '/' . htmlspecialchars($request['photo_profil'] ?: 'default-profile.jpg') ?>" alt="Photo de profil" class="card-img-top">
                             <div class="card-body text-center">
                                 <h5 class="card-title"><?= htmlspecialchars($request['pseudo']) ?></h5>
                                 <a href="profil.php?user=<?= urlencode($request['pseudo']) ?>" class="btn btn-outline-primary mb-2">Voir le profil</a>
