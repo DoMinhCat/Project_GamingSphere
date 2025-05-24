@@ -45,7 +45,7 @@ include('../include/head.php');
                                     alt="<?= htmlspecialchars($jeu['nom']) ?>"
                                     style="object-fit: cover; min-height: 400px;">
                             <?php else: ?>
-                                <img src="../../assets/img/no_image.png"
+                                <img src="/magasin/img/no_image.png"
                                     class="img-fluid rounded-start h-100"
                                     alt="Aucune image disponible"
                                     style="object-fit: cover; min-height: 400px;">

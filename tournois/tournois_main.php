@@ -76,7 +76,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu 
                 FROM tournoi 
                 WHERE type = ? AND status_ENUM = ? 
-                ORDER BY date_debut DESC
+                ORDER BY date_debut DESC LIMIT 6;
             ");
                 $stmt->execute([$type_tournoi, $statut]);
                 $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);

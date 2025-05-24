@@ -56,7 +56,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                     <?php if (!empty($game['image'])): ?>
                                         <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" onclick="window.location.href='<?= magasin_game . '?id=' . $game['id_jeu'] ?>'" class="d-block w-100" alt="<?= htmlspecialchars($game['nom']) ?>" style="height: 400px; object-fit: cover;">
                                     <?php else: ?>
-                                        <img src="/magasin/img/no-image.svg" class="d-block w-100" alt="Aucune image" onclick="window.location.href='<?= magasin_game . '?id=' . $game['id_jeu'] ?>'" style="height: 400px; object-fit: cover;">
+                                        <img src="/magasin/img/no_image.png" class="d-block w-100" alt="Aucune image" onclick="window.location.href='<?= magasin_game . '?id=' . $game['id_jeu'] ?>'" style="height: 400px; object-fit: cover;">
                                     <?php endif; ?>
                                     <div class="carousel-caption d-none d-md-block">
                                         <h5><?= htmlspecialchars($game['nom']) ?></h5>
