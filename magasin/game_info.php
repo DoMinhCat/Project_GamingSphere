@@ -42,8 +42,8 @@ include('../include/head.php');
                     <?php endif; ?>
 
                     <div class="card-body p-4">
-                        <h2 class="card-title text-center my-4"><?= htmlspecialchars($jeu['nom']) ?></h2>
-                        <div class="col">
+                        <h2 class="card-title text-center mb-4"><?= htmlspecialchars($jeu['nom']) ?></h2>
+                        <div class="d-flex flex-row col">
                             <div class="col-md-8">
                                 <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($jeu['prix']) ?> €</p>
                                 <div class="d-flex flex-row justify-content-between">
@@ -56,15 +56,13 @@ include('../include/head.php');
                             </div>
                             <div class="col-md-4">
                                 <p class="card-text"><?= htmlspecialchars($jeu['éditeur']) ?></p>
-                                <p class="card-text"><?= date('d/m/y', strtotime($jeu['éditeur'])) ?></p>
+                                <p class="card-text"><?= 'Sorti le ' . date('d/m/Y', strtotime($jeu['éditeur'])) ?></p>
                                 <p class="card-text"><strong>Note : </strong><?= htmlspecialchars($jeu['note_jeu']) ?></p>
                                 <div class="d-flex justify-content-center text-center mt-3">
                                     <button class="btn btn-success mt-3 btn-add-to-cart" data-id="<?= $jeu['id_jeu'] ?>">Ajouter au panier</button>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>

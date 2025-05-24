@@ -1,5 +1,28 @@
 <?php
 require_once __DIR__ . '/../path.php';
+require('../include/database.php');
+
+$first_time = 0;
+if (!empty($_SESSION['user_id'])) {
+    $id_user = $_SESSION['user_id'];
+    try {
+        $stmt = $bdd->prepare("SELECT easter_found from utilisateurs WHERE id_utilisateurs=?;");
+        $stmt->execute([$id_user]);
+        $easter_status = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($easter_status['easter_found'] == 0) {
+            $stmt = $bdd->prepare("UPDATE credits SET credits=credits+10 WHERE user_id=?;");
+            $stmt->execute([$id_user]);
+
+            $stmt = $bdd->prepare("UPDATE utilisateurs SET easter_found=1 WHERE id_utilisateurs=?;");
+            $stmt->execute([$id_user]);
+            $first_time = 1;
+        }
+    } catch (PDOException) {
+        header('location:' . index_front . '?message=bdd');
+        exit;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -14,8 +37,13 @@ include('../include/head.php');
     ?>
     <main class="container my-5">
         <div class="d-flex flex-column text-center justify-content-center">
-            <h1 class="mb-5">Fécilitations! Vous avez trouvé un easter egg !!!</h1>
-            <h3 class="mb-3">Bienvenue, hacker curieux ! Voici quelques stats du projet :</h3>
+            <h1>Fécilitations! Vous avez trouvé un easter egg !!!</h1>
+
+            <?php if ($first_time == 1 && !empty($_SESSION['user_id'])) {
+                echo '<p class="mt-2">Vous avez gagné 10 crédits en récompense. Yay !</p>';
+            } ?>
+
+            <h3 class=" mt-5 mb-3">Bienvenue, hacker curieux ! Voici quelques stats du projet :</h3>
             <p>Note attendu pour le projet annuel : 19/20 (Nous savons que c'est irréaliste :/ )</p>
             <p>Bugs rencontrés : trop pour les compter</p>
             <p>Tasses de café consommées : ~41</p>

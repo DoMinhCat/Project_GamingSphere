@@ -56,7 +56,7 @@ include('navbar.php');
 ?>
 
 <body>
-    <div class="container mt-4">
+    <main class="container my-5">
         <h1 class="montserrat-titre40 text-center mb-4">Modifier mes informations</h1>
         <?php if (isset($error)): ?>
             <div class="alert alert-danger">
@@ -99,7 +99,7 @@ include('navbar.php');
                 <a href="<?= my_account ?>" class="btn btn-secondary">Annuler</a>
             </div>
         </form>
-    </div>
+    </main>
 </body>
 <?php include('../include/footer.php'); ?>
 
