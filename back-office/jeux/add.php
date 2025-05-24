@@ -65,7 +65,7 @@ try {
     header("Location:" . jeux_back . "?message=success");
     exit();
 } catch (PDOException $e) {
-    $_SESSION['error'] = htmlspecialchars($e->getMessage());
+    $_SESSION['error'] = $e->getMessage();
     header('Location:' . jeux_back . '?error=bdd');
     exit();
 }

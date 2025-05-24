@@ -25,21 +25,21 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 ?>
 
 <body>
-    <?php include('../include/header.php');
-    if (isset($_GET['message']) && $_GET['message'] == 'bdd') { ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            Erreur de la base de données, veuillez reéssayer plus tard ! !
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php } elseif (!empty($_GET['error'])) { ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= htmlspecialchars($_GET['error']) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php }  ?>
+    <?php include('../include/header.php'); ?>
 
-    <main class="container mt-2 mb-5">
-        <h1 class="text-center mb-4">Boutique de jeux</h1>
+    <main class="container mb-5">
+        <?php if (isset($_GET['message']) && $_GET['message'] == 'bdd') { ?>
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                Erreur de la base de données, veuillez reéssayer plus tard !
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php } elseif (!empty($_GET['error'])) { ?>
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                <?= htmlspecialchars($_GET['error']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php } ?>
+        <h1 class="text-center mt-5 mb-4">Boutique de jeux</h1>
 
         <?php if (count($carouselGames) > 0): ?>
             <div class="d-flex justify-content-center mb-5">
@@ -54,10 +54,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <?php foreach ($carouselGames as $index => $game): ?>
                                 <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
                                     <?php if (!empty($game['image'])): ?>
-                                        <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="d-block w-100" alt="<?= htmlspecialchars($game['nom']) ?>" style="height: 400px; object-fit: cover;">
+                                        <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" onclick="window.location.href='<?= magasin_game . '?id=' . $game['id_jeu'] ?>'" class="d-block w-100" alt="<?= htmlspecialchars($game['nom']) ?>" style="height: 400px; object-fit: cover;">
                                     <?php else: ?>
-                                        <!-- fix link img here (no dossier assets, ../../ -> tu sors du dossier root PA) -->
-                                        <img src="../../assets/img/no_image.png" class="d-block w-100" alt="Aucune image" style="height: 400px; object-fit: cover;">
+                                        <img src="/magasin/img/no-image.svg" class="d-block w-100" alt="Aucune image" onclick="window.location.href='<?= magasin_game . '?id=' . $game['id_jeu'] ?>'" style="height: 400px; object-fit: cover;">
                                     <?php endif; ?>
                                     <div class="carousel-caption d-none d-md-block">
                                         <h5><?= htmlspecialchars($game['nom']) ?></h5>

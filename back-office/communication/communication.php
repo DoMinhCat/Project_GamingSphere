@@ -46,13 +46,13 @@ if (!empty($_GET['id_edit']) && isset($_GET['status'])) {
     }
 }
 if (!empty($_GET['delete_bad'])) {
-    if ($mots) {
+    if (!empty($mots)) {
         $conditions = [];
         $params = [];
 
         foreach ($mots as $mot) {
-            $conditions[] = "contenu LIKE ?";
-            $params[] = '%' . $mot['mot'] . '%';
+            $conditions[] = "contenu REGEXP ?";
+            $params[] = '\b' . preg_quote($mot['mot'], '/') . '\b';
         }
         try {
             $query = $bdd->prepare("DELETE FROM forum_reponses WHERE " . implode(" OR ", $conditions) . ";");
@@ -75,7 +75,7 @@ if (!empty($_GET['delete_bad'])) {
 if (isset($_POST['add_mot'])) {
     $word = strtolower(trim($_POST['add_mot']));
     try {
-        $query = $bdd->prepare("INSERT INTO mots_interdits(mot) VALUE (?);");
+        $query = $bdd->prepare("INSERT INTO mots_interdits(mot) VALUES (?);");
         $query->execute([$word]);
 
         header('Location:' . communication_back . '?message=add_success');
@@ -146,7 +146,7 @@ require('../head.php');
         </form>
 
 
-        <div class="d-flex justify-content-center text-center my-4">
+        <div class="d-flex justify-content-center text-center my-5">
             <a href="<?= communication_back . '?delete_bad=1' ?>" class="btn btn-lg btn-danger text-center">Supprimer tous les commentaires contenant les mots interdits</a>
         </div>
 
@@ -170,7 +170,7 @@ require('../head.php');
                         <td class="align-middle">' . htmlspecialchars($mot['mot']) . '</td>
                         <td class="align-middle">' . ($mot['status'] == 1 ? 'Actif' : 'Inactif') . '</td>
                         <td>';
-                echo '<a href="' . communication_back . '?id_edit=' . $mot['id_mot'] . '&status=' . ($mot['status'] == 1 ? 0 : 1) . '" class="btn btn-outline-' . ($mot['status'] == 1 ? 'danger' : 'success') . '">' . ($mot['status'] == 1 ? 'Désactiver' : 'Activer') . '</button></a>';
+                echo '<a href="' . communication_back . '?id_edit=' . $mot['id_mot'] . '&status=' . ($mot['status'] == 1 ? 0 : 1) . '" class="btn btn-sm me-2 btn-outline-' . ($mot['status'] == 1 ? 'danger' : 'success') . '">' . ($mot['status'] == 1 ? 'Désactiver' : 'Activer') . '</button></a>';
 
                 echo '<button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $mot['id_mot'] . '">Supprimer</button>';
                 echo '<div class="modal fade" id="modal' . $mot['id_mot'] . '" tabindex="-1" aria-hidden="true">
