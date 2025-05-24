@@ -1,7 +1,4 @@
 <?php
-
-use Stripe\Terminal\Location;
-
 session_start();
 require('../include/check_timeout.php');
 require('../include/database.php');
@@ -38,6 +35,22 @@ try {
 } catch (PDOException) {
     header('location:' . magasin_main . '?message=bdd');
     exit;
+}
+
+// Pagination logic
+$gamesPerPage = 10;
+$currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$totalGames = count($games);
+$totalPages = ceil($totalGames / $gamesPerPage);
+$offset = ($currentPage - 1) * $gamesPerPage;
+$currentPageGames = array_slice($games, $offset, $gamesPerPage);
+
+// Generate pagination URL with existing GET parameters
+function getPaginationUrl($page)
+{
+    $params = $_GET;
+    $params['page'] = $page;
+    return '?' . http_build_query($params);
 }
 ?>
 <!DOCTYPE html>
@@ -77,33 +90,155 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </a>
         </div>
 
-        <!-- jeux display -->
-        <?php foreach ($games as $game) : ?>
-            <div class="col-md-4 mb-4 d-flex align-items-stretch px-0">
-                <div class="card shadow-sm w-100 d-flex flex-column">
-                    <?php if (!empty($game['image'])): ?>
-                        <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
-                    <?php else: ?>
-                        <img src="/magasin/img/no_image2.png" class="card-img-top" alt="Aucune image">
-                    <?php endif; ?>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
-                        <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                        <div class="mt-auto d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-stretch">
-                            <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
-                                class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
-                                Voir détails
-                            </a>
-                            <button class="btn btn-magasin btn-success mt-3 flex-fill btn-add-to-cart d-flex align-items-center justify-content-center text-center small"
-                                data-id="<?= $game['id_jeu'] ?>">
-                                Ajouter au panier
-                            </button>
+        <!-- Games Grid Container -->
+        <div class="container-fluid px-0">
+            <!-- Games Grid -->
+            <div class="row g-3 g-md-4">
+                <?php foreach ($currentPageGames as $game) : ?>
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 d-flex align-items-stretch">
+                        <div class="card shadow-sm w-100 d-flex flex-column h-100">
+                            <!-- Game Image -->
+                            <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                                <?php if (!empty($game['image'])): ?>
+                                    <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>"
+                                        class="card-img-top w-100 h-100"
+                                        alt="<?= htmlspecialchars($game['nom']) ?>"
+                                        style="object-fit: cover;">
+                                <?php else: ?>
+                                    <img src="/magasin/img/no_image2.png"
+                                        class="card-img-top w-100 h-100"
+                                        alt="Aucune image"
+                                        style="object-fit: cover;">
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="card-body d-flex flex-column p-3">
+                                <h5 class="card-title mb-2 text-truncate" title="<?= htmlspecialchars($game['nom']) ?>">
+                                    <?= htmlspecialchars($game['nom']) ?>
+                                </h5>
+                                <p class="card-text mb-3">
+                                    <strong class="text-success fs-5"><?= htmlspecialchars($game['prix']) ?> €</strong>
+                                </p>
+
+                                <!-- Buttons Container -->
+                                <div class="mt-auto">
+                                    <div class="d-grid gap-2">
+                                        <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
+                                            class="btn btn-magasin btn-outline-primary btn-sm">
+                                            <span class="d-none d-sm-inline">Voir détails</span>
+                                            <span class="d-sm-none">Détails</span>
+                                        </a>
+                                        <button class="btn btn-magasin btn-success btn-sm btn-add-to-cart"
+                                            data-id="<?= $game['id_jeu'] ?>">
+                                            <span class="d-none d-md-inline">Ajouter au panier</span>
+                                            <span class="d-md-none d-none d-sm-inline">Ajouter</span>
+                                            <span class="d-sm-none">+</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <!-- No Games Message -->
+            <?php if (empty($currentPageGames)): ?>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info text-center py-5">
+                            <h4>Aucun jeu trouvé</h4>
+                            <p class="mb-0">Il n'y a actuellement aucun jeu disponible dans cette catégorie.</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        <?php endforeach ?>
+            <?php endif; ?>
+        </div>
 
+        <!-- Pagination -->
+        <?php if ($totalPages > 1): ?>
+            <nav aria-label="Navigation des pages" class="mt-5">
+                <ul class="pagination justify-content-center flex-wrap">
+                    <!-- Previous Button -->
+                    <li class="page-item <?= $currentPage <= 1 ? 'disabled' : '' ?>">
+                        <a class="page-link" href="<?= $currentPage > 1 ? getPaginationUrl($currentPage - 1) : '#' ?>"
+                            aria-label="Page précédente" <?= $currentPage <= 1 ? 'tabindex="-1"' : '' ?>>
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="d-none d-sm-inline ms-1">Précédent</span>
+                        </a>
+                    </li>
+
+                    <?php
+                    // Calculate page range to display
+                    $startPage = max(1, $currentPage - 2);
+                    $endPage = min($totalPages, $currentPage + 2);
+
+                    // Adjust range if we're near the beginning or end
+                    if ($endPage - $startPage < 4) {
+                        if ($startPage == 1) {
+                            $endPage = min($totalPages, $startPage + 4);
+                        } else {
+                            $startPage = max(1, $endPage - 4);
+                        }
+                    }
+                    ?>
+
+                    <!-- First page (if not in range) -->
+                    <?php if ($startPage > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="<?= getPaginationUrl(1) ?>">1</a>
+                        </li>
+                        <?php if ($startPage > 2): ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+                    <!-- Page numbers -->
+                    <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                        <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
+                            <a class="page-link" href="<?= getPaginationUrl($i) ?>">
+                                <?= $i ?>
+                                <?php if ($i == $currentPage): ?>
+                                    <span class="visually-hidden">(page courante)</span>
+                                <?php endif; ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Last page (if not in range) -->
+                    <?php if ($endPage < $totalPages): ?>
+                        <?php if ($endPage < $totalPages - 1): ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        <?php endif; ?>
+                        <li class="page-item">
+                            <a class="page-link" href="<?= getPaginationUrl($totalPages) ?>"><?= $totalPages ?></a>
+                        </li>
+                    <?php endif; ?>
+
+                    <!-- Next Button -->
+                    <li class="page-item <?= $currentPage >= $totalPages ? 'disabled' : '' ?>">
+                        <a class="page-link" href="<?= $currentPage < $totalPages ? getPaginationUrl($currentPage + 1) : '#' ?>"
+                            aria-label="Page suivante" <?= $currentPage >= $totalPages ? 'tabindex="-1"' : '' ?>>
+                            <span class="d-none d-sm-inline me-1">Suivant</span>
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Pagination Info -->
+            <div class="text-center text-muted mt-3">
+                <small>
+                    Page <?= $currentPage ?> sur <?= $totalPages ?>
+                    (<?= number_format($totalGames) ?> jeu<?= $totalGames > 1 ? 's' : '' ?> au total)
+                </small>
+            </div>
+        <?php endif; ?>
 
     </main>
     <?php include('../include/footer.php'); ?>

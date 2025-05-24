@@ -65,19 +65,19 @@ $categorie_nom = $_GET['nom'];
 
         if (count($sujets) === 0) {
             echo "<p class='text-muted'>Aucun sujet dans cette catégorie pour le moment.</p>";
-        }
+        } ?>
+        <div id="results">
+            <?php foreach ($sujets as $sujet) {
+                try {
+                    $stmt_reponses = $bdd->prepare("SELECT COUNT(*) FROM forum_reponses WHERE id_sujet = ?");
+                    $stmt_reponses->execute([$sujet['id_sujet']]);
+                    $nb_reponses = $stmt_reponses->fetchColumn();
+                } catch (PDOException) {
+                    header('location:' . forum_main . '?message=' . urlencode('Erreur de la base de données, veuillez réessayer plus tard.'));
+                    exit();
+                }
+            ?>
 
-        foreach ($sujets as $sujet) {
-            try {
-                $stmt_reponses = $bdd->prepare("SELECT COUNT(*) FROM forum_reponses WHERE id_sujet = ?");
-                $stmt_reponses->execute([$sujet['id_sujet']]);
-                $nb_reponses = $stmt_reponses->fetchColumn();
-            } catch (PDOException) {
-                header('location:' . forum_main . '?message=' . urlencode('Erreur de la base de données, veuillez réessayer plus tard.'));
-                exit();
-            }
-        ?>
-            <div id="results">
                 <a href="<?= sujet ?>?id=<?= $sujet['id_sujet'] . '&category=' . $categorie_nom ?>" class="text-decoration-none forumBlockLink">
 
                     <div class="card mx-0 mb-3">
@@ -90,8 +90,9 @@ $categorie_nom = $_GET['nom'];
                         </div>
                     </div>
                 </a>
-            </div>
-        <?php } ?>
+
+            <?php } ?>
+        </div>
     </div>
 
     <?php include("../include/footer.php"); ?>
