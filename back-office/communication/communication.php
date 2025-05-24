@@ -30,7 +30,7 @@ if (!empty($_GET['delete_id'])) {
         exit();
     }
 }
-if (!empty($_GET['id_edit']) && !empty($_GET['status'])) {
+if (!empty($_GET['id_edit']) && isset($_GET['status'])) {
     $edit = $_GET['id_edit'];
     $status = $_GET['status'];
     try {
@@ -75,7 +75,7 @@ if (!empty($_GET['delete_bad'])) {
 if (isset($_POST['add_mot'])) {
     $word = strtolower(trim($_POST['add_mot']));
     try {
-        $query = $bdd->prepare("INSERT INTO mots_interdits (mot) VALUES (?);");
+        $query = $bdd->prepare("INSERT INTO mots_interdits(mot) VALUE (?);");
         $query->execute([$word]);
 
         header('Location:' . communication_back . '?message=add_success');
@@ -168,9 +168,9 @@ require('../head.php');
                 echo '<tr>
                         <td class="align-middle">' . htmlspecialchars($mot['id_mot']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($mot['mot']) . '</td>
-                        <td class="align-middle">' . htmlspecialchars($mot['status']) . '</td>
+                        <td class="align-middle">' . ($mot['status'] == 1 ? 'Actif' : 'Inactif') . '</td>
                         <td>';
-                echo '<a href="' . communication_back . '?id_edit=' . $mot['id_mot'] . '&status=' . ($mot['status'] == 1 ? 0 : 1) . '" class="btn btn-outline-' . ($mot['status'] == 1 ? 'success' : 'danger') . '">' . ($mot['status'] == 1 ? 'Actif' : 'Inactif') . '</button>';
+                echo '<a href="' . communication_back . '?id_edit=' . $mot['id_mot'] . '&status=' . ($mot['status'] == 1 ? 0 : 1) . '" class="btn btn-outline-' . ($mot['status'] == 1 ? 'danger' : 'success') . '">' . ($mot['status'] == 1 ? 'Désactiver' : 'Activer') . '</button></a>';
 
                 echo '<button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $mot['id_mot'] . '">Supprimer</button>';
                 echo '<div class="modal fade" id="modal' . $mot['id_mot'] . '" tabindex="-1" aria-hidden="true">
