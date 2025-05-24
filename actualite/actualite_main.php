@@ -215,7 +215,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php } ?>
-
+        <div class="bande_sepe"></div>
         <!-- Esport -->
         <?php
         // 5 items case
@@ -295,7 +295,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php } ?>
-
+        <div class="bande_sepe"></div>
         <!-- event -->
         <?php
         // 5 items case
@@ -378,7 +378,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php } ?>
 
-
+        <div class="bande_sepe"></div>
         <!-- general -->
         <?php
         // 5 items case
@@ -461,7 +461,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php } ?>
 
-
+        <div class="bande_sepe"></div>
         <!-- critique -->
         <?php
         // 5 items case
@@ -544,8 +544,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php } ?>
 
-
-        <!-- mis a jour -->
+        <div class="bande_sepe"></div>
+        <!-- mise a jour -->
         <?php
         // 5 items case
         if ($nb_row_update == 5) {
@@ -627,7 +627,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php } ?>
 
-
+        <div class="bande_sepe"></div>
         <!-- divers/d'autres -->
         <?php
         // 5 items case

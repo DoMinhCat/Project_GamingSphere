@@ -24,7 +24,7 @@ if (!$jeu) {
 <!DOCTYPE html>
 <html lang="fr">
 <?php
-$title = "Détail du jeu - " . htmlspecialchars($jeu['nom']);
+$title = "Détail du jeu";
 $pageCategory = 'magasin';
 echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');

@@ -289,7 +289,6 @@ include('../include/head.php');
                     <!-- Back Button -->
                     <div class="mt-5">
                         <a href="<?= index_front ?>" class="btn btn-primary btn-lg px-4 py-2">
-                            <i class="bi bi-house-fill me-2"></i>
                             Retour à l'accueil
                         </a>
                     </div>

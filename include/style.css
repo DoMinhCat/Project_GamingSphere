@@ -207,7 +207,7 @@ a {
 .c-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .carousel-container {
@@ -243,7 +243,7 @@ a {
   top: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   transition: transform 0.2s ease-in-out;
 }
@@ -307,7 +307,6 @@ a {
 }
 
 .img_trn {
-  object-fit: cover;
   margin-right: 0.703125rem;
   width: 5.625rem;
   height: 5.625rem;
@@ -358,7 +357,7 @@ a {
 
 .card-img-top {
   height: 200px;
-  object-fit: cover;
+  object-fit: contain;
 }
 .section-title {
   margin-top: 2rem;
