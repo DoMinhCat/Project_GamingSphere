@@ -158,7 +158,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <!-- Gratuit -->
             <div class="d-flex flex-column mb-5">
                 <a href="<?= magasin_category . '?category=gratuit' ?>" class="mb-3 category_news_title">
-                    <h2>Nouveaux jeux</h2>
+                    <h2>Jeux gratuits</h2>
                 </a>
                 <div class="row">
                     <?php foreach ($free_games as $game): ?>

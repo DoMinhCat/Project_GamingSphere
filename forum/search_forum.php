@@ -32,7 +32,7 @@ try {
             } catch (PDOException) {
                 echo "<p>Erreur de la base de données.</p>";
             }
-            echo '<a href="' . sujet . '?id=' . $sujet['id_sujet'] . '&category=' . $categorie_nom . '" class="text-decoration-none forumBlockLink">';
+            echo '<a href="' . sujet . '?id=' . $sujet['id_sujet'] . '&category=' . $category . '" class="text-decoration-none forumBlockLink">';
 
             echo '<div class="card mx-0 mb-3">
                         <div class="card-body">';
