@@ -298,6 +298,13 @@ a {
   height: 2.34375rem;
   background-color: #f5f0e1;
 }
+.dark #bande_sepe {
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100vw;
+  height: 2.34375rem;
+  background-color: #1e1e1e;
+}
 
 .img_trn {
   object-fit: cover;
@@ -696,11 +703,7 @@ body.offcanvas-backdrop {
 .searchBoxFront:hover {
   background-color: #ede9da;
 }
-.footer-enhanced {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  color: white;
-  margin-top: auto;
-}
+
 .footer-link {
   color: #2f608e;
   text-decoration: none;

@@ -7,7 +7,7 @@ require_once __DIR__ . '/../path.php';
 $stmt = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu LIMIT 3");
 $carouselGames = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$stmtAllGames = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu");
+$stmtAllGames = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu ORDER BY note_jeu DESC LIMIT 3");
 $games = $stmtAllGames->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -78,7 +78,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php endif; ?>
 
-        <h2 class="mb-3 text-center">Tous les jeux</h2>
+        <h2 class="mb-3 text-center">Meilleurs jeux</h2>
         <div class="row">
             <?php foreach ($games as $game): ?>
                 <div class="col-md-4 mb-4 d-flex align-items-stretch">
@@ -111,20 +111,17 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     const response = await fetch(`../panier/add_to_cart.php?id=${gameId}`);
                     const data = await response.json();
 
-                    // Créer une alerte
                     const alertBox = document.createElement("div");
                     alertBox.className = `alert mt-3 text-center alert-${data.status === "success" ? "success" : "danger"}`;
                     alertBox.textContent = data.message;
 
-                    // Ajouter l'alerte au conteneur d'alertes
                     const alertContainer = document.getElementById("alert-container");
                     alertContainer.appendChild(alertBox);
 
-                    // Supprimer l'alerte après 5 secondes
                     setTimeout(() => alertBox.remove(), 5000);
 
-                    // Mettre à jour le badge du panier
-                    const panierCount = data.panierCount; // Assurez-vous que vous envoyez ce champ depuis le PHP.
+                    const panierCount = data.panierCount;
+                    PHP.
                     updatePanierBadge(panierCount);
                 });
             });
@@ -135,9 +132,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             if (badge) {
                 if (count > 0) {
                     badge.textContent = count;
-                    badge.style.display = 'inline'; // Afficher le badge si il y a des articles
+                    badge.style.display = 'inline';
                 } else {
-                    badge.style.display = 'none'; // Cacher le badge si le panier est vide
+                    badge.style.display = 'none';
                 }
             }
         }

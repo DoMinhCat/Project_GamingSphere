@@ -34,13 +34,6 @@ include('../include/head.php');
 
 <head>
     <style>
-        .easter-container {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-
         .easter-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -206,112 +199,106 @@ include('../include/head.php');
 <body>
     <?php include('../include/header.php'); ?>
 
-    <div class="easter-container">
-        <!-- Floating Background Shapes -->
-        <div class="floating-shapes">
-            <div class="shape">🎮</div>
-            <div class="shape">🏆</div>
-            <div class="shape">⭐</div>
-        </div>
 
-        <main class="container py-5 main-content">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="easter-card p-5 text-center">
-                        <div class="mb-4">
-                            <div class="celebration-icon">🎉</div>
-                            <h1 class="title-gradient display-4 fw-bold mb-3">
-                                Félicitations!
-                            </h1>
-                            <h2 class="text-primary mb-4">Vous avez trouvé un easter egg !!!</h2>
-                        </div>
 
-                        <?php if ($first_time == 1 && !empty($_SESSION['user_id'])): ?>
-                            <div class="mb-5">
-                                <div class="reward-badge d-inline-block">
-                                    <i class="bi bi-coin me-2"></i>
-                                    +10 Crédits gagnés ! 🎊
-                                </div>
-                                <p class="text-success mt-3 fs-5">Vous avez gagné 10 crédits en récompense. Yay !</p>
-                            </div>
-                        <?php endif; ?>
+    <main class="container py-5 main-content">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="easter-card p-5 text-center">
+                    <div class="mb-4">
+                        <div class="celebration-icon">🎉</div>
+                        <h1 class="title-gradient display-4 fw-bold mb-3">
+                            Félicitations!
+                        </h1>
+                        <h2 class="text-primary mb-4">Vous avez trouvé un easter egg !!!</h2>
+                    </div>
 
+                    <?php if ($first_time == 1 && !empty($_SESSION['user_id'])): ?>
                         <div class="mb-5">
-                            <h3 class="text-dark mb-4">
-                                <i class="bi bi-code-slash me-2"></i>
-                                Bienvenue, hacker curieux !
-                            </h3>
-                            <p class="lead text-muted">Voici quelques stats du projet :</p>
+                            <div class="reward-badge d-inline-block">
+                                <i class="bi bi-coin me-2"></i>
+                                +10 Crédits gagnés ! 🎊
+                            </div>
+                            <p class="text-success mt-3 fs-5">Vous avez gagné 10 crédits en récompense. Yay !</p>
                         </div>
+                    <?php endif; ?>
 
-                        <!-- Stats -->
-                        <div class="row g-3 mb-5">
-                            <div class="col-md-6">
-                                <div class="stats-card text-white">
-                                    <h5><i class="bi bi-trophy-fill text-warning me-2"></i>Note attendue</h5>
-                                    <p class="mb-0">19/20 <small>(Nous savons que c'est irréaliste )</small></p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="stats-card text-white">
-                                    <h5><i class="bi bi-bug-fill text-danger me-2"></i>Bugs rencontrés</h5>
-                                    <p class="mb-0">Trop pour les compter 🐛</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="stats-card text-white">
-                                    <h5><i class="bi bi-cup-hot-fill text-brown me-2"></i>Café consommé</h5>
-                                    <p class="mb-0">~41 tasses ☕</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="stats-card text-white">
-                                    <h5><i class="bi bi-emoji-laughing-fill text-info me-2"></i>Moment drôle</h5>
-                                    <p class="mb-0"><em>Aucun, pourquoi pensez-vous qu'il y a eu un moment drôle ? 😅</em></p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="mb-5">
+                        <h3 class="text-dark mb-4">
+                            <i class="bi bi-code-slash me-2"></i>
+                            Bienvenue, hacker curieux !
+                        </h3>
+                        <p class="lead text-muted">Voici quelques stats du projet :</p>
+                    </div>
 
-                        <!-- Team -->
-                        <div class="mb-5">
-                            <h2 class="text-dark mb-4">
-                                <i class="bi bi-people-fill me-2"></i>
-                                Notre équipe <em class="text-primary">incroyable</em>
-                            </h2>
-                            <div class="d-flex flex-wrap gap-4 justify-content-center">
-                                <div class="team-member">
-                                    <img src="/error_pages/members/Paul.jpg" alt="Paul Sainctavit">
-                                    <div class="text-center mt-2">
-                                        <small class="text-muted fw-bold">Paul</small>
-                                    </div>
+                    <!-- Stats -->
+                    <div class="row g-3 mb-5">
+                        <div class="col-md-6">
+                            <div class="stats-card text-white">
+                                <h5><i class="bi bi-trophy-fill text-warning me-2"></i>Note attendue</h5>
+                                <p class="mb-0">19/20 <small>(Nous savons que c'est irréaliste )</small></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stats-card text-white">
+                                <h5><i class="bi bi-bug-fill text-danger me-2"></i>Bugs rencontrés</h5>
+                                <p class="mb-0">Trop pour les compter 🐛</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stats-card text-white">
+                                <h5><i class="bi bi-cup-hot-fill text-brown me-2"></i>Café consommé</h5>
+                                <p class="mb-0">~41 tasses ☕</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stats-card text-white">
+                                <h5><i class="bi bi-emoji-laughing-fill text-info me-2"></i>Moment drôle</h5>
+                                <p class="mb-0"><em>Aucun, pourquoi pensez-vous qu'il y a eu un moment drôle ? 😅</em></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team -->
+                    <div class="mb-5">
+                        <h2 class="text-dark mb-4">
+                            <i class="bi bi-people-fill me-2"></i>
+                            Notre équipe <em class="text-primary">incroyable</em>
+                        </h2>
+                        <div class="d-flex flex-wrap gap-4 justify-content-center">
+                            <div class="team-member">
+                                <img src="/error_pages/members/Paul.jpg" alt="Paul Sainctavit">
+                                <div class="text-center mt-2">
+                                    <small class="text-muted fw-bold">Paul</small>
                                 </div>
-                                <div class="team-member">
-                                    <img src="/error_pages/members/Cat.jpg" alt="Minh Cat Do">
-                                    <div class="text-center mt-2">
-                                        <small class="text-muted fw-bold">Minh Cat</small>
-                                    </div>
+                            </div>
+                            <div class="team-member">
+                                <img src="/error_pages/members/Cat.jpg" alt="Minh Cat Do">
+                                <div class="text-center mt-2">
+                                    <small class="text-muted fw-bold">Minh Cat</small>
                                 </div>
-                                <div class="team-member">
-                                    <img src="/error_pages/members/Maxime.jpg" alt="Maxime Oliveira">
-                                    <div class="text-center mt-2">
-                                        <small class="text-muted fw-bold">Maxime</small>
-                                    </div>
+                            </div>
+                            <div class="team-member">
+                                <img src="/error_pages/members/Maxime.jpg" alt="Maxime Oliveira">
+                                <div class="text-center mt-2">
+                                    <small class="text-muted fw-bold">Maxime</small>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Back Button -->
-                        <div class="mt-5">
-                            <a href="<?= index_front ?>" class="btn btn-primary btn-lg px-4 py-2">
-                                <i class="bi bi-house-fill me-2"></i>
-                                Retour à l'accueil
-                            </a>
-                        </div>
+                    <!-- Back Button -->
+                    <div class="mt-5">
+                        <a href="<?= index_front ?>" class="btn btn-primary btn-lg px-4 py-2">
+                            <i class="bi bi-house-fill me-2"></i>
+                            Retour à l'accueil
+                        </a>
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
+
 
     <?php include('../include/footer.php'); ?>
 </body>

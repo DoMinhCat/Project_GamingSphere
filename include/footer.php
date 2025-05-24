@@ -105,7 +105,7 @@
         <hr class="footer-divider mb-4">
         <div class="text-center">
             <p class="text-light mb-0">
-                <i class="bi bi-c-circle me-1"></i>© 2024 Gaming Sphère - Tous droits réservés
+                <i class="bi bi-c-circle me-1"></i>2025 Gaming Sphère - Tous droits réservés
             </p>
         </div>
     </div>
