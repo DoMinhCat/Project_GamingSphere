@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../path.php';
 require('../include/database.php');
+session_start();
 
 $first_time = 0;
 if (!empty($_SESSION['user_id'])) {
@@ -37,7 +38,7 @@ include('../include/head.php');
     ?>
     <main class="container my-5">
         <div class="d-flex flex-column text-center justify-content-center">
-            <h1>Fécilitations! Vous avez trouvé un easter egg !!!</h1>
+            <h1>Félicitations! Vous avez trouvé un easter egg !!!</h1>
 
             <?php if ($first_time == 1 && !empty($_SESSION['user_id'])) {
                 echo '<p class="mt-2">Vous avez gagné 10 crédits en récompense. Yay !</p>';

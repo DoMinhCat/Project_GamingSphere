@@ -178,7 +178,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
 
         <?php
-        $stmt = $bdd->query("SELECT nom, prix, image FROM jeu");
+        $stmt = $bdd->query("SELECT id_jeux, nom, prix, image FROM jeu");
         $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
         <div id="bande_sepe"></div>
