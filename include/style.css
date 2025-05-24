@@ -696,3 +696,46 @@ body.offcanvas-backdrop {
 .searchBoxFront:hover {
   background-color: #ede9da;
 }
+.footer-enhanced {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+  margin-top: auto;
+}
+.footer-link {
+  color: #2f608e;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.dark .footer-link {
+  color: #fe8c68;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.footer-link:hover {
+  color: #1e3d59;
+}
+.dark .footer-link:hover {
+  color: #ff6e40;
+}
+.footer-heading {
+  color: #ecf0f1;
+  font-weight: 600;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+.newsletter-section {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+.footer-divider {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  height: 1px;
+  border: none;
+}

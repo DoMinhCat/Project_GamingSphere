@@ -1,6 +1,8 @@
 <?php
 session_start();
 require('../include/database.php');
+require_once __DIR__ . '/../path.php';
+require('../include/check_timeout.php');
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header('location:' . magasin_game . '?error=' . urlencode('Jeu introuvable !'));
