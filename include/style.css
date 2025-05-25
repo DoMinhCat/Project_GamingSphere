@@ -744,5 +744,11 @@ body.offcanvas-backdrop {
   border: none;
 }
 .dark .breadcrumb-item + .breadcrumb-item::before {
-  color: #fdae95 !important;
+  color: #fdae95;
+}
+.bg-sujet {
+  background-color: #ff6e40;
+}
+.dark .bg-sujet {
+  background-color: #2f608e;
 }
