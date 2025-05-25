@@ -62,14 +62,31 @@
 
         <div class="container my-5">
 
+            <!-- Navigation -->
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="<?= forum_main ?>" class="text-decoration-none footer-link">Forum</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="<?= forum_category . '?nom=' . $sujet['categories'] ?>" class="text-decoration-none footer-link"><?= htmlspecialchars($categorie_nom) ?></a>
+                            </li>
+                            <li class="breadcrumb-item active footer-link" aria-current="page">Discussion</li>
+                        </ol>
+                    </nav>
 
-            <div class="mb-4">
-                <a href="<?= forum_category . '?nom=' . $sujet['categories'] ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
-                    <i class="bi bi-chevron-left"></i>
-                    <h1 class="m-0"><?= htmlspecialchars($categorie_nom) ?></h1>
-                </a>
+                    <div class="mb-4">
+                        <a href="<?= forum_category . '?nom=' . $sujet['categories'] ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
+                            <i class="bi bi-chevron-left"></i>
+                            <h1 class="m-0"><?= htmlspecialchars($categorie_nom) ?></h1>
+                        </a>
+                    </div>
+                </div>
             </div>
 
+            <!-- Main content -->
             <h1 class="mb-4 text-center"><?= htmlspecialchars($sujet['titre']) ?></h1>
 
             <div class="mb-5">
