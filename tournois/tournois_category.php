@@ -66,7 +66,7 @@ try {
         $user_registrations = $reg_stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 } catch (PDOException $e) {
-    header('location:' . tournois_main . '?message=bdd');
+    header('location:' . tournois_main . '?message=bdd&err=' . urlencode($e->getMessage()));
     exit;
 }
 ?>

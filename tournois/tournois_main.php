@@ -33,7 +33,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             <?php elseif ($_GET['message'] === 'bdd'): ?>
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    Erreur de la base de données, veuillez réessayer plus tard !
+                    Erreur de la base de données, veuillez réessayer plus tard ! <?= $_GET['err'] ?>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php elseif ($_GET['message'] === 'missing_id'): ?>
@@ -91,7 +91,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 $stmt->execute([$type_tournoi, $statut]);
                 $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                echo '<a href=' . tournois_category . '?category=' . urlencode($category) . '" class="category_news_title">
+                echo '<a href="' . tournois_category . '?category=' . $category . '" class="category_news_title">
                     <h1 class="mt-5">' . $titre . '</h1>
                 </a>';
 
