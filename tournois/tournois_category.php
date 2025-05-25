@@ -216,42 +216,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="fluis.js"></script>
+    <script src="fluid.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Page tournois chargée');
 
-            attachTournoiEventListeners();
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const error = urlParams.get('error');
-            const message = urlParams.get('message');
-
-            if (error) {
-                fluis.showNotification(decodeURIComponent(error), 'error');
-            }
-            if (message) {
-                fluis.showNotification(decodeURIComponent(message), 'success');
-            }
-        });
-
-        function attachTournoiEventListeners() {
-            document.querySelectorAll('.participer-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const tournoiId = this.getAttribute('data-id');
-                    fluis.participerTournoi(tournoiId);
-                });
-            });
-
-            document.querySelectorAll('.desinscrire-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const tournoiId = this.getAttribute('data-id');
-                    fluis.desinscrireTournoi(tournoiId);
-                });
-            });
-        }
-    </script>
 </body>
 
 </html>
