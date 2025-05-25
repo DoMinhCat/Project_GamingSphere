@@ -225,7 +225,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         </div>
     </div>
 
-    <script src="https://unpkg.com/@joeattardi/emoji-button@4.6.2/dist/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.5.0/dist/index.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
