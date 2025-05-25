@@ -101,7 +101,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         $user_id = $_SESSION['user_id'] ?? null;
                         $is_registered = false;
                         if ($user_id) {
-                            $check_stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
+                            $check_stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?;");
                             $check_stmt->execute([$tournoi['id_tournoi'], $user_id]);
                             $is_registered = $check_stmt->fetchColumn() > 0;
                         }
