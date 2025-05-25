@@ -147,12 +147,6 @@ require('../head.php');
 
                             if (count($participants) === 0) {
                                 echo "<tr><td colspan='4' class='text-center'>Aucun participant enregistré pour ce tournoi.</td></tr>";
-                            echo "<tr><td colspan='4'><pre>";
-    print_r([
-        'id_tournoi' => $id_tournoi,
-        'requete' => $stmt->queryString,
-    ]);
-    echo "</pre></td></tr>";
                             } else {
                                 foreach ($participants as $participant): ?>
                                     <tr>

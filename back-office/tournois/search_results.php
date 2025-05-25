@@ -30,10 +30,10 @@ try {
                    COALESCE(r.result_id, 0) AS result_id,
                    COALESCE(r.position, '') AS position,
                    COALESCE(r.credits_awarded, 0) AS credits_awarded
-            FROM equipes_tournois et
-            JOIN equipe e ON et.id_equipe = e.id_equipe
+            FROM inscription_tournoi it
+            JOIN equipe e ON it.id_team = e.id_equipe
             LEFT JOIN tournament_results r ON r.tournament_id = :id_tournoi AND r.team_id = e.id_equipe
-            WHERE et.id_tournoi = :id_tournoi AND e.nom LIKE :search
+            WHERE it.id_tournoi = :id_tournoi AND e.nom LIKE :search
             ORDER BY r.position ASC, e.nom ASC
         ";
     }
