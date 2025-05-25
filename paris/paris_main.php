@@ -58,7 +58,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
                         <input type="hidden" name="type_pari" value="<?= ($tournoi['type'] === 'equipe') ? 'equipe' : 'solo' ?>">
                         <input type="hidden" name="cote" value="">
-
                         <?php
                         if ($tournoi['type'] === 'equipe') {
                             $stmt = $bdd->prepare("

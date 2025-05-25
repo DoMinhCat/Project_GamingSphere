@@ -17,28 +17,10 @@ if (
 $id_tournoi = intval($_POST['id_tournoi']);
 $montant = intval($_POST['montant']);
 $cote = floatval($_POST['cote']);
-$type_pari = $_POST['type_pari']; // 'solo' ou 'equipe'
+$type_pari = $_POST['type_pari']; 
 $user_id = $_SESSION['user_id'] ?? null;
 
-if (!$user_id) {
-    header('Location:' . paris_main . '?message=' . urlencode('Utilisateur non connecté'));
-    exit();
-}
 
-// Vérifier le solde
-$stmt = $bdd->prepare("SELECT credits FROM credits WHERE user_id = ?");
-$stmt->execute([$user_id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$user || !is_numeric($user['credits'])) {
-    header('Location:' . paris_main . '?message=' . urlencode('Erreur sur le solde des crédits'));
-    exit();
-}
-
-if ($user['credits'] < $montant) {
-    header('Location:' . paris_main . '?message=' . urlencode('Crédits insuffisants'));
-    exit();
-}
 
 // Débiter le montant
 $stmt = $bdd->prepare("UPDATE credits SET credits = credits - ? WHERE user_id = ?");
@@ -79,14 +61,6 @@ if ($type_pari === 'solo') {
         exit();
     }
     $id_equipe = intval($_POST['id_equipe']);
-
-    // Vérifier que l'équipe est inscrite
-    $stmt = $bdd->prepare("SELECT COUNT(*) FROM equipe_tournois WHERE id_tournoi = ? AND id_equipe = ?");
-    $stmt->execute([$id_tournoi, $id_equipe]);
-    if ($stmt->fetchColumn() == 0) {
-        header('Location:' . paris_main . '?message=' . urlencode('Équipe non inscrite à ce tournoi'));
-        exit();
-    }
 
     // Enregistrement du pari équipe
     $stmt = $bdd->prepare("
