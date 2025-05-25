@@ -81,7 +81,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 $stmt->execute([$type_tournoi, $statut]);
                 $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                echo "<h2 class='mt-5'>$titre</h2>";
+                echo "<h1 class='mt-5 category_news_title'>$titre</h1>";
 
                 if (count($tournois) > 0) {
                     echo "<div class='row row-cols-1 row-cols-md-3 g-4'>";

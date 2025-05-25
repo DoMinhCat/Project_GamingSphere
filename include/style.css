@@ -305,7 +305,9 @@ a {
   height: 2.34375rem;
   background-color: #1e1e1e;
 }
-
+.dark .text-muted {
+  color: rgb(185, 185, 185, 0.75) !important;
+}
 .img_trn {
   margin-right: 0.703125rem;
   width: 5.625rem;

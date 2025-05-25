@@ -130,7 +130,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
           <a class="nav-link lato16 px-2 py-1 <?= ($this_page == 'index.php') ? 'active' : '' ?>" href="<?= index_front ?>" style="color: #F5F0E1 !important;">
             Accueil
           </a>
-          <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php' || $this_page == 'game_info.php') ? 'active' : '' ?>" href="<?= magasin_main ?>" style="color: #F5F0E1 !important;">
+          <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php' || $this_page == 'game_info.php' || $this_page == 'magasin_category.php') ? 'active' : '' ?>" href="<?= magasin_main ?>" style="color: #F5F0E1 !important;">
             Magasin
           </a>
           <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php' || $this_page == 'create_team.php' || $this_page == 'tournois_details.php' || $this_page == 'tournois_jeux.php' || $this_page == 'team_details.php' || $this_page == 'team_list.php') ? 'active' : '' ?>" href="<?= tournois_main ?>" style="color: #F5F0E1 !important;">
@@ -418,7 +418,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                   <a class="nav-link lato16 px-2 py-1 <?= ($this_page == 'index.php') ? 'active' : '' ?>" href="<?= index_front ?>" style="color: #F5F0E1 !important;">
                     Accueil
                   </a>
-                  <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php' || $this_page == 'game_info.php') ? 'active' : '' ?>" href="<?= magasin_main ?>" style="color: #F5F0E1 !important;">
+                  <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php' || $this_page == 'magasin_category.php' || $this_page == 'game_info.php') ? 'active' : '' ?>" href="<?= magasin_main ?>" style="color: #F5F0E1 !important;">
                     Magasin
                   </a>
                   <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php' || $this_page == 'create_team.php' || $this_page == 'tournois_details.php' || $this_page == 'tournois_jeux.php' || $this_page == 'team_details.php' || $this_page == 'team_list.php') ? 'active' : '' ?>" href="<?= tournois_main ?>" style="color: #F5F0E1 !important;">

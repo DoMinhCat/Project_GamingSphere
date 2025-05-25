@@ -4,17 +4,20 @@ require('../include/check_timeout.php');
 require('../include/database.php');
 require_once __DIR__ . '/../path.php';
 try {
-    $stmt = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu ORDER BY RAND() LIMIT 3;");
+    $stmt = $bdd->query("SELECT id_jeu, nom, prix, note_jeu image FROM jeu ORDER BY RAND() LIMIT 3;");
     $carouselGames = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $meilleurs = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu ORDER BY note_jeu DESC LIMIT 3;");
+    $meilleurs = $bdd->query("SELECT id_jeu, nom, prix, note_jeu image FROM jeu ORDER BY note_jeu DESC LIMIT 3;");
     $games = $meilleurs->fetchAll(PDO::FETCH_ASSOC);
 
-    $nouveaux = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu ORDER BY date_sortie DESC LIMIT 3;");
+    $nouveaux = $bdd->query("SELECT id_jeu, nom, prix, note_jeu image FROM jeu ORDER BY date_sortie DESC LIMIT 3;");
     $new_games = $nouveaux->fetchAll(PDO::FETCH_ASSOC);
 
-    $gratuits = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu WHERE prix=0 LIMIT 3;");
+    $gratuits = $bdd->query("SELECT id_jeu, nom, prix, note_jeu image FROM jeu WHERE prix=0 LIMIT 3;");
     $free_games = $gratuits->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $bdd->query("SELECT id_jeu, nom, prix, note_jeu image FROM jeu ORDER BY RAND() LIMIT 3;");
+    $random_games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException) {
     header('location:' . index_front . '?message=bdd');
     exit;
@@ -70,6 +73,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                     <div class="carousel-caption d-none d-md-block">
                                         <h5><?= htmlspecialchars($game['nom']) ?></h5>
                                         <p><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                                        <p><strong>Note :</strong></p>
+                                        <div class="d-flex align-items-center">
+                                            <?php
+                                            $note = (float)$game['note_jeu'];
+                                            for ($i = 1; $i <= 5; $i++):
+                                                echo '<i class="bi bi-star-fill text-warning"></i>';
+                                            ?>
+                                            <?php endfor; ?>
+                                            <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
+                                        </div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -89,10 +102,43 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
         <!-- Content all categories-->
         <div class="container mt-5">
+            <!-- Random -->
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= magasin_category . '?category=random' ?>" class="mb-3 category_news_title">
+                    <h1>Découvrir un nouveau jeu</h1>
+                </a>
+                <div class="row">
+                    <?php foreach ($random_games as $game): ?>
+                        <div class="col-md-4 mb-4 d-flex align-items-stretch px-0">
+                            <div class="card shadow-sm w-100 d-flex flex-column">
+                                <?php if (!empty($game['image'])): ?>
+                                    <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
+                                <?php else: ?>
+                                    <img src="/magasin/img/no_image2.png" class="card-img-top" alt="Aucune image">
+                                <?php endif; ?>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
+                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                                    <div class="mt-auto d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-stretch">
+                                        <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
+                                            class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
+                                            Voir détails
+                                        </a>
+                                        <button class="btn btn-magasin btn-success mt-3 flex-fill btn-add-to-cart d-flex align-items-center justify-content-center text-center small"
+                                            data-id="<?= $game['id_jeu'] ?>">
+                                            Ajouter au panier
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
             <!-- Meilleurs -->
             <div class="d-flex flex-column mb-5">
                 <a href="<?= magasin_category . '?category=meilleur' ?>" class="mb-3 category_news_title">
-                    <h2>Meilleurs jeux</h2>
+                    <h1>Meilleurs jeux</h1>
                 </a>
                 <div class="row">
                     <?php foreach ($games as $game): ?>
@@ -125,7 +171,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <!-- Nouveaux -->
             <div class="d-flex flex-column mb-5">
                 <a href="<?= magasin_category . '?category=nouveau' ?>" class="mb-3 category_news_title">
-                    <h2>Nouveaux jeux</h2>
+                    <h1>Nouveaux jeux</h1>
                 </a>
                 <div class="row">
                     <?php foreach ($new_games as $game): ?>
@@ -158,7 +204,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <!-- Gratuit -->
             <div class="d-flex flex-column mb-5">
                 <a href="<?= magasin_category . '?category=gratuit' ?>" class="mb-3 category_news_title">
-                    <h2>Jeux gratuits</h2>
+                    <h1>Jeux gratuits</h1>
                 </a>
                 <div class="row">
                     <?php foreach ($free_games as $game): ?>

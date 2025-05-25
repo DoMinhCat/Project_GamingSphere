@@ -24,6 +24,10 @@ switch ($category) {
         $query = "WHERE prix=0";
         $display_category = "Jeux gratuits";
         break;
+    case 'random':
+        $query = "ORDER BY RAND() LIMIT 36";
+        $display_category = "Découvrir un nouveau jeu";
+        break;
     default:
         header('location:' . magasin_main . '?error=' . urlencode('Aucune catégorie précise !'));
         exit;
@@ -37,15 +41,13 @@ try {
     exit;
 }
 
-// Pagination logic
-$gamesPerPage = 10;
+$gamesPerPage = 12;
 $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $totalGames = count($games);
 $totalPages = ceil($totalGames / $gamesPerPage);
 $offset = ($currentPage - 1) * $gamesPerPage;
 $currentPageGames = array_slice($games, $offset, $gamesPerPage);
 
-// Generate pagination URL with existing GET parameters
 function getPaginationUrl($page)
 {
     $params = $_GET;
@@ -90,14 +92,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </a>
         </div>
 
-        <!-- Games Grid Container -->
         <div class="container-fluid px-0">
-            <!-- Games Grid -->
             <div class="row g-3 g-md-4">
                 <?php foreach ($currentPageGames as $game) : ?>
                     <div class="col-12 col-sm-6 col-lg-4 col-xl-3 d-flex align-items-stretch">
                         <div class="card shadow-sm w-100 d-flex flex-column h-100">
-                            <!-- Game Image -->
+
                             <div class="card-img-container" style="height: 200px; overflow: hidden;">
                                 <?php if (!empty($game['image'])): ?>
                                     <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>"
@@ -112,16 +112,14 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <?php endif; ?>
                             </div>
 
-                            <!-- Card Body -->
+                            <!-- Card -->
                             <div class="card-body d-flex flex-column p-3">
                                 <h5 class="card-title mb-2 text-truncate" title="<?= htmlspecialchars($game['nom']) ?>">
                                     <?= htmlspecialchars($game['nom']) ?>
                                 </h5>
-                                <p class="card-text mb-3">
-                                    <strong class="text-success fs-5"><?= htmlspecialchars($game['prix']) ?> €</strong>
-                                </p>
+                                <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
 
-                                <!-- Buttons Container -->
+                                <!-- Buttons -->
                                 <div class="mt-auto">
                                     <div class="d-grid gap-2">
                                         <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
@@ -143,7 +141,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php endforeach; ?>
             </div>
 
-            <!-- No Games Message -->
+            <!-- No game -->
             <?php if (empty($currentPageGames)): ?>
                 <div class="row">
                     <div class="col-12">
@@ -160,7 +158,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php if ($totalPages > 1): ?>
             <nav aria-label="Navigation des pages" class="mt-5">
                 <ul class="pagination justify-content-center flex-wrap">
-                    <!-- Previous Button -->
+                    <!-- Previous -->
                     <li class="page-item <?= $currentPage <= 1 ? 'disabled' : '' ?>">
                         <a class="page-link" href="<?= $currentPage > 1 ? getPaginationUrl($currentPage - 1) : '#' ?>"
                             aria-label="Page précédente" <?= $currentPage <= 1 ? 'tabindex="-1"' : '' ?>>
@@ -170,11 +168,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     </li>
 
                     <?php
-                    // Calculate page range to display
                     $startPage = max(1, $currentPage - 2);
                     $endPage = min($totalPages, $currentPage + 2);
 
-                    // Adjust range if we're near the beginning or end
                     if ($endPage - $startPage < 4) {
                         if ($startPage == 1) {
                             $endPage = min($totalPages, $startPage + 4);
@@ -184,7 +180,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     }
                     ?>
 
-                    <!-- First page (if not in range) -->
                     <?php if ($startPage > 1): ?>
                         <li class="page-item">
                             <a class="page-link" href="<?= getPaginationUrl(1) ?>">1</a>
@@ -196,7 +191,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <?php endif; ?>
                     <?php endif; ?>
 
-                    <!-- Page numbers -->
                     <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
                         <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
                             <a class="page-link" href="<?= getPaginationUrl($i) ?>">
@@ -208,7 +202,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         </li>
                     <?php endfor; ?>
 
-                    <!-- Last page (if not in range) -->
                     <?php if ($endPage < $totalPages): ?>
                         <?php if ($endPage < $totalPages - 1): ?>
                             <li class="page-item disabled">
@@ -220,7 +213,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         </li>
                     <?php endif; ?>
 
-                    <!-- Next Button -->
+                    <!-- Next  -->
                     <li class="page-item <?= $currentPage >= $totalPages ? 'disabled' : '' ?>">
                         <a class="page-link" href="<?= $currentPage < $totalPages ? getPaginationUrl($currentPage + 1) : '#' ?>"
                             aria-label="Page suivante" <?= $currentPage >= $totalPages ? 'tabindex="-1"' : '' ?>>
@@ -231,7 +224,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </ul>
             </nav>
 
-            <!-- Pagination Info -->
             <div class="text-center text-muted mt-3">
                 <small>
                     Page <?= $currentPage ?> sur <?= $totalPages ?>
@@ -242,6 +234,44 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
     </main>
     <?php include('../include/footer.php'); ?>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".btn-add-to-cart").forEach(button => {
+                button.addEventListener("click", async () => {
+                    const gameId = button.getAttribute("data-id");
+
+                    const response = await fetch(`../panier/add_to_cart.php?id=${gameId}`);
+                    const data = await response.json();
+
+                    const alertBox = document.createElement("div");
+                    alertBox.className = `alert mt-3 text-center alert-${data.status === "success" ? "success" : "danger"}`;
+                    alertBox.textContent = data.message;
+
+                    const alertContainer = document.getElementById("alert-container");
+                    alertContainer.appendChild(alertBox);
+
+                    setTimeout(() => alertBox.remove(), 5000);
+
+                    const panierCount = data.panierCount;
+                    PHP.
+                    updatePanierBadge(panierCount);
+                });
+            });
+        });
+
+        function updatePanierBadge(count) {
+            const badge = document.querySelector(".panier-badge");
+            if (badge) {
+                if (count > 0) {
+                    badge.textContent = count;
+                    badge.style.display = 'inline';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

@@ -100,13 +100,14 @@ include('../include/head.php');
                                     </div>
                                 </div>
 
-                                <!-- Rating -->
+                                <!-- Note -->
                                 <div class="mb-3">
-                                    <p class="mb-1"><i class="bi bi-star-fill text-warning"></i> <strong>Note:</strong></p>
+                                    <p class="mb-1"><strong>Note:</strong></p>
                                     <div class="d-flex align-items-center">
                                         <?php
                                         $note = (float)$jeu['note_jeu'];
                                         for ($i = 1; $i <= 5; $i++):
+                                            echo '<i class="bi bi-star-fill text-warning"></i>';
                                         ?>
                                         <?php endfor; ?>
                                         <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
