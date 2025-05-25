@@ -104,6 +104,13 @@ require('head.php');
                     </a>
                 </div>
             </div>
+            <div class="col">
+                <div class="h-100">
+                    <a href="/glpi/index.php" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        GLPI
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 

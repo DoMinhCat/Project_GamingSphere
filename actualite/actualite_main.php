@@ -381,7 +381,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <!-- event -->
         <?php
         // 5 items case
-        if ($nb_row == 5) {
+        if ($nb_row_event == 5) {
             $big_article = $rows_event[0];
             $small_articles = array_slice($rows_event, 1);
         ?>

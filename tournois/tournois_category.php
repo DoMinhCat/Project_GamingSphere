@@ -87,7 +87,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <body>
     <?php include('../include/header.php'); ?>
     <main class="container my-5">
-        <div class="mb-4 mt-5">
+        <div class="mb-4">
             <a href="<?= tournois_main ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
                 <i class="bi bi-chevron-left"></i>
                 <h1 class="m-0"><?= htmlspecialchars($display_category) ?></h1>
