@@ -17,13 +17,13 @@ $tournois = $bdd->query("
 // Pour chaque tournoi, récupérer les équipes inscrites et leur cote
 $participants_par_tournoi = [];
 foreach ($tournois as $tournoi) {
-    $stmt = $bdd->prepare("
-        SELECT t.id_team, t.nom_team, cp.cote
-        FROM inscription_tournoi it
-        JOIN team t ON it.id_team = t.id_team
-        LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team
-        WHERE it.id_tournoi = ?
-    ");
+$stmt = $bdd->prepare("
+    SELECT t.id_equipe AS id_team, t.nom_equipe AS nom_team, cp.cote
+    FROM inscription_tournoi it
+    JOIN equipe t ON it.id_team = t.id_equipe
+    LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team
+    WHERE it.id_tournoi = ?
+");
     $stmt->execute([$tournoi['id_tournoi']]);
     $participants_par_tournoi[$tournoi['id_tournoi']] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
