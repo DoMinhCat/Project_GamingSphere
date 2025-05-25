@@ -9,10 +9,24 @@ $title = 'Gestion des cotes des tournois';
 
 // Récupérer la liste des tournois
 $tournois = $bdd->query("
-    SELECT id_tournoi, nom_tournoi, jeu, type, cote, pari_ouvert, date_debut, date_fin
-    FROM tournoi where status_ENUM = 'en cours'
+    SELECT id_tournoi, nom_tournoi, jeu, type, pari_ouvert, date_debut, date_fin
+    FROM tournoi WHERE status_ENUM = 'en cours'
     ORDER BY date_debut DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
+
+// Pour chaque tournoi, récupérer les équipes inscrites et leur cote
+$participants_par_tournoi = [];
+foreach ($tournois as $tournoi) {
+    $stmt = $bdd->prepare("
+        SELECT t.id_team, t.nom_team, cp.cote
+        FROM inscription_tournoi it
+        JOIN team t ON it.id_team = t.id_team
+        LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team
+        WHERE it.id_tournoi = ?
+    ");
+    $stmt->execute([$tournoi['id_tournoi']]);
+    $participants_par_tournoi[$tournoi['id_tournoi']] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +54,7 @@ $tournois = $bdd->query("
                         <th>Tournoi</th>
                         <th>Jeu</th>
                         <th>Type</th>
-                        <th>Cote</th>
+                        <th>Participants & Cotes</th>
                         <th>Pariable</th>
                         <th>Date début</th>
                         <th>Date fin</th>
@@ -55,11 +69,15 @@ $tournois = $bdd->query("
                             <td><?= htmlspecialchars($tournoi['jeu']) ?></td>
                             <td><?= htmlspecialchars($tournoi['type']) ?></td>
                             <td>
-                                <form method="post" action="edit_cote.php" class="d-flex align-items-center">
-                                    <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
-                                    <input type="number" step="0.01" min="1" name="cote" value="<?= htmlspecialchars($tournoi['cote'] ?? 1) ?>" class="form-control form-control-sm" style="width:80px;">
-                                    <button type="submit" class="btn btn-sm btn-primary ms-2">Enregistrer</button>
-                                </form>
+                                <?php foreach ($participants_par_tournoi[$tournoi['id_tournoi']] as $participant): ?>
+                                    <form method="post" action="edit_cote.php" class="d-flex align-items-center mb-1">
+                                        <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
+                                        <input type="hidden" name="id_team" value="<?= $participant['id_team'] ?>">
+                                        <span class="me-2"><?= htmlspecialchars($participant['nom_team']) ?></span>
+                                        <input type="number" step="0.01" min="1" name="cote" value="<?= htmlspecialchars($participant['cote'] ?? 1) ?>" class="form-control form-control-sm" style="width:80px;">
+                                        <button type="submit" class="btn btn-sm btn-primary ms-2">Enregistrer</button>
+                                    </form>
+                                <?php endforeach; ?>
                             </td>
                             <td>
                                 <form method="post" action="toggle_pariable.php" class="d-inline">
@@ -76,7 +94,7 @@ $tournois = $bdd->query("
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="9" class="text-center">Aucun tournoi trouvé.</td>
+                        <td colspan="8" class="text-center">Aucun tournoi trouvé.</td>
                     </tr>
                 <?php endif; ?>
                 </tbody>
