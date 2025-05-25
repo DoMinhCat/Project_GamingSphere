@@ -123,74 +123,65 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     </div>
 
     <script>
-        document.querySelectorAll('.form-pari').forEach(form => {
-            const radios = form.querySelectorAll('input[type="radio"][name="id_equipe"], input[type="radio"][name="id_joueur"]');
-            const hiddenCote = form.querySelector('input[name="cote"]');
+       document.querySelectorAll('.form-pari').forEach(form => {
+    const radios = form.querySelectorAll('input[type="radio"]');
+    const hiddenCote = form.querySelector('input[name="cote"]');
 
-            radios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    hiddenCote.value = this.getAttribute('data-cote') || 1;
-                });
-            });
-
-            // Préremplir si déjà coché au chargement
-            const checked = form.querySelector('input[type="radio"][name="id_equipe"]:checked, input[type="radio"][name="id_joueur"]:checked');
-            if (checked) hiddenCote.value = checked.getAttribute('data-cote') || 1;
+    radios.forEach(radio => {
+        radio.addEventListener('change', function () {
+            hiddenCote.value = this.dataset.cote || 1;
         });
+    });
 
-        document.querySelectorAll('.form-pari').forEach(form => {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const alertBox = form.querySelector('.alert');
-                alertBox.classList.add('d-none');
-                alertBox.classList.remove('alert-success', 'alert-danger', 'fade-out', 'hide');
-                const btn = form.querySelector('button[type="submit"]');
-                btn.disabled = true;
+    const checked = form.querySelector('input[type="radio"]:checked');
+    if (checked) hiddenCote.value = checked.dataset.cote || 1;
 
-                const formData = new FormData(form);
-                fetch('parier.php', { // lien vers le fichier PHP de traitement
-                    method: 'POST',
-                    body: formData
-                })
-                .then(resp => resp.text())
-                .then(html => {
-                    let msg = '';
-                    try {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const redirect = doc.querySelector('meta[http-equiv="refresh"]');
-                        if (redirect) {
-                            const content = redirect.getAttribute('content');
-                            const url = content.split('url=')[1];
-                            const params = new URLSearchParams(url.split('?')[1]);
-                            msg = params.get('message');
-                        }
-                    } catch (e) {}
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const alertBox = form.querySelector('.alert');
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
 
-                    if (!msg) msg = "Pari enregistré avec succès !";
+        const formData = new FormData(form);
+        fetch('<?= parier ?>', {
+            method: 'POST',
+            body: formData
+        })
+            .then(resp => resp.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const redirect = doc.querySelector('meta[http-equiv="refresh"]');
+                let msg = 'Pari enregistré avec succès !';
 
-                    alertBox.textContent = decodeURIComponent(msg.replace(/\+/g, ' '));
-                    alertBox.classList.remove('d-none', 'alert-danger');
-                    alertBox.classList.add('alert-success', 'fade-out');
+                if (redirect) {
+                    const content = redirect.getAttribute('content');
+                    const url = content.split('url=')[1];
+                    const params = new URLSearchParams(url.split('?')[1]);
+                    msg = decodeURIComponent(params.get('message').replace(/\+/g, ' '));
+                }
 
-                    setTimeout(() => alertBox.classList.add('hide'), 2000);
-                })
-                .catch(() => {
-                    alertBox.textContent = "Erreur lors de l'enregistrement du pari.";
-                    alertBox.classList.remove('d-none', 'alert-success');
-                    alertBox.classList.add('alert-danger', 'fade-out');
-                    setTimeout(() => alertBox.classList.add('hide'), 2000);
-                })
-                .finally(() => {
-                    setTimeout(() => {
-                        alertBox.classList.add('d-none');
-                        alertBox.classList.remove('fade-out', 'hide');
-                        btn.disabled = false;
-                        form.reset();
-                    }, 2500);
-                });
+                alertBox.textContent = msg;
+                alertBox.classList.remove('d-none', 'alert-danger');
+                alertBox.classList.add('alert-success', 'fade-out');
+                setTimeout(() => alertBox.classList.add('hide'), 2000);
+            })
+            .catch(() => {
+                alertBox.textContent = "Erreur lors de l'enregistrement du pari.";
+                alertBox.classList.remove('d-none', 'alert-success');
+                alertBox.classList.add('alert-danger', 'fade-out');
+                setTimeout(() => alertBox.classList.add('hide'), 2000);
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    alertBox.classList.add('d-none');
+                    alertBox.classList.remove('fade-out', 'hide');
+                    btn.disabled = false;
+                    form.reset();
+                }, 2500);
             });
-        });
+    });
+});
     </script>
 </body>
 </html>
