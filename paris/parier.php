@@ -7,8 +7,8 @@ require_once __DIR__ . '/../path.php';
 
 // Vérification des champs du formulaire
 if (
-    !isset($_POST['id_tournoi'], $_POST['choix'], $_POST['montant'], $_POST['cote']) ||
-    empty($_POST['id_tournoi']) || empty($_POST['choix']) || empty($_POST['montant']) || empty($_POST['cote'])
+    !isset($_POST['id_tournoi'], $_POST['choix'], $_POST['montant'], $_POST['cote'], $_POST['type_pari']) ||
+    empty($_POST['id_tournoi']) || empty($_POST['choix']) || empty($_POST['montant']) || empty($_POST['cote']) || empty($_POST['type_pari'])
 ) {
     die('Debug: Champs manquants');
 }
@@ -17,6 +17,7 @@ $id_tournoi = intval($_POST['id_tournoi']);
 $choix = $_POST['choix'];
 $montant = intval($_POST['montant']);
 $cote = floatval($_POST['cote']);
+$type_pari = $_POST['type_pari']; // 'solo' ou 'equipe'
 $user_id = $_SESSION['user_id'] ?? null;
 
 if (!$user_id) {
@@ -69,11 +70,12 @@ if ($stmt->rowCount() === 0) {
 
 // Enregistrer le pari
 $stmt = $bdd->prepare("
-    INSERT INTO paris (id_tournoi, id_utilisateur, choix, montant, cote, statut, date_pari)
-    VALUES (?, ?, ?, ?, ?, 'en attente', NOW())
+    INSERT INTO paris (
+        id_tournoi, id_utilisateur, choix, montant, cote, statut, date_pari, type_pari, gain
+    ) VALUES (?, ?, ?, ?, ?, 'en attente', NOW(), ?, 0)
 ");
-if (!$stmt->execute([$id_tournoi, $user_id, $choix, $montant, $cote])) {
-    die('Debug: Erreur lors de l\'enregistrement du pari');
+if (!$stmt->execute([$id_tournoi, $user_id, $choix, $montant, $cote, $type_pari])) {
+    die('Debug: Erreur lors de l\'enregistrement du pari : ' . implode(' | ', $stmt->errorInfo()));
 }
 
 die('Debug: Pari enregistré avec succès !');
