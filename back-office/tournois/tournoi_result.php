@@ -25,6 +25,7 @@ if (isset($_GET['id_tournoi'])) {
     header('Location:' . tournois_back . '?error=no_id');
     exit();
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['credits'], $_POST['result_id'])) {
     foreach ($_POST['position'] as $participant_id => $position) {
         $position = intval($position);
@@ -45,9 +46,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
                 ");
                 $updateCredits->execute([$participant_id, $credits]);
             }
+            // Pour les équipes, on crédite les membres seulement si position 1
+            elseif (strtolower($tournoi['type']) === 'equipe' && $position == 1) {
+                $membersStmt = $bdd->prepare("SELECT user_id FROM inscription_tournoi WHERE id_tournoi = ? AND id_team = ?");
+                $membersStmt->execute([$id_tournoi, $participant_id]);
+                $members = $membersStmt->fetchAll(PDO::FETCH_COLUMN);
+                foreach ($members as $user_id) {
+                    $updateCredits = $bdd->prepare("
+                        INSERT INTO credits (user_id, credits)
+                        VALUES (?, ?)
+                        ON DUPLICATE KEY UPDATE credits = credits + VALUES(credits)
+                    ");
+                    $updateCredits->execute([$user_id, $credits]);
+                }
+            }
         } else {
             if (strtolower($tournoi['type']) === 'solo') {
-                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, user_id, position, credits_awarded) VALUES (?, ?, ?, ?)");
+                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, user_id, team_id, position, credits_awarded) VALUES (?, ?, NULL, ?, ?)");
                 $insertStmt->execute([$id_tournoi, $participant_id, $position, $credits]);
                 $updateCredits = $bdd->prepare("
                     INSERT INTO credits (user_id, credits)
@@ -58,7 +73,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
             } else {
                 $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, team_id, user_id, position, credits_awarded) VALUES (?, ?, NULL, ?, ?)");
                 $insertStmt->execute([$id_tournoi, $participant_id, $position, $credits]);
-                // Si tu veux donner des crédits à chaque membre de l'équipe, il faut une autre logique ici
+
+                // Attribution des crédits à chaque membre de l'équipe SEULEMENT si position 1
+                if ($position == 1) {
+                    $membersStmt = $bdd->prepare("SELECT user_id FROM inscription_tournoi WHERE id_tournoi = ? AND id_team = ?");
+                    $membersStmt->execute([$id_tournoi, $participant_id]);
+                    $members = $membersStmt->fetchAll(PDO::FETCH_COLUMN);
+
+                    foreach ($members as $user_id) {
+                        $updateCredits = $bdd->prepare("
+                            INSERT INTO credits (user_id, credits)
+                            VALUES (?, ?)
+                            ON DUPLICATE KEY UPDATE credits = credits + VALUES(credits)
+                        ");
+                        $updateCredits->execute([$user_id, $credits]);
+                    }
+                }
             }
         }
     }
