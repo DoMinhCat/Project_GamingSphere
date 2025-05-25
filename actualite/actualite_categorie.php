@@ -26,7 +26,7 @@ switch ($category) {
 }
 
 try {
-    $stmt = $bdd->prepare("SELECT id_news, category, titre, date_article, contenue, pseudo from news join utilisateurs on auteur=utilisateurs.id_utilisateurs where category = ? ORDER BY date_article DESC");
+    $stmt = $bdd->prepare("SELECT id_news, category, titre, date_article, contenue, pseudo from news join utilisateurs on auteur=utilisateurs.id_utilisateurs where category = ? ORDER BY date_article DESC;");
     $stmt->execute([$category]);
     $news = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException) {
@@ -99,7 +99,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <?php else: ?>
                 <?php foreach ($currentPageArticles as $new) : ?>
                     <div class="mb-3">
-                        <a href="actualite_article.php?id=<?= $new['id_news'] . '&category=' . $origin_category ?>" class="articleBlockLink text-dark">
+                        <a href="<?= actualite_article . '?id=' . $new['id_news'] . '&category=' . $origin_category ?>" class="articleBlockLink text-dark">
                             <div class="article border rounded p-3 shadow-sm">
                                 <h2>
                                     <?= htmlspecialchars($new['titre']) ?>
