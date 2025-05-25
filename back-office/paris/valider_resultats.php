@@ -18,9 +18,11 @@ if (isset($_POST['id_tournoi'], $_POST['id_gagnant'])) {
         $statut = $gagne ? 'gagné' : 'perdu';
         $gain = $gagne ? $pari['montant'] * $pari['cote'] : 0;
 
-        // Met à jour le pari
         $stmt2 = $bdd->prepare("UPDATE paris SET statut = ?, gain = ? WHERE id_pari = ?");
         $stmt2->execute([$statut, $gain, $pari['id_pari']]);
+
+        $stmt4 = $bdd->prepare("UPDATE credits SET credits = ? WHERE user_id = ?");
+        $stmt4->execute([$gain, $id_gagnant]);
 
       if ($gagne && $gain > 0) {
     $stmt3 = $bdd->prepare("
