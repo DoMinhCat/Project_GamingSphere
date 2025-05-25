@@ -75,22 +75,33 @@ foreach ($tournois as $tournoi) {
                 <tbody>
                 <?php if (count($tournois) > 0): ?>
                     <?php foreach ($tournois as $tournoi): ?>
+                            <td>
+                                <form method="post" action="edit_cote.php">
+                                    <table class="w-100">
+                                        <?php foreach ($participants_par_tournoi[$tournoi['id_tournoi']] as $participant): ?>
+                                            <tr>
+                                                <td style="width:40%;">
+                                                    <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
+                                                    <input type="hidden" name="id_team" value="<?= $participant['id_team'] ?>">
+                                                    <span><?= htmlspecialchars($participant['nom_team']) ?></span>
+                                                </td>
+                                                <td style="width:30%;">
+                                                    <input type="number" step="0.01" min="1" name="cote" value="<?= htmlspecialchars($participant['cote'] ?? 1) ?>" class="form-control form-control-sm w-100">
+                                                </td>
+                                                <td style="width:30%;">
+                                                    <button type="submit" class="btn btn-sm btn-primary w-100">Enregistrer</button>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </table>
+                                </form>
+                            </td>
                         <tr>
                             <td><?= htmlspecialchars($tournoi['id_tournoi']) ?></td>
                             <td><?= htmlspecialchars($tournoi['nom_tournoi']) ?></td>
                             <td><?= htmlspecialchars($tournoi['jeu']) ?></td>
                             <td><?= htmlspecialchars($tournoi['type']) ?></td>
-                            <td>
-                                <?php foreach ($participants_par_tournoi[$tournoi['id_tournoi']] as $participant): ?>
-                                    <form method="post" action="edit_cote.php" class="d-flex align-items-center mb-1">
-                                        <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
-                                        <input type="hidden" name="id_team" value="<?= $participant['id_team'] ?>">
-                                        <span class="me-2"><?= htmlspecialchars($participant['nom_team']) ?></span>
-                                        <input type="number" step="0.01" min="1" name="cote" value="<?= htmlspecialchars($participant['cote'] ?? 1) ?>" class="form-control form-control-sm" style="width:80px;">
-                                        <button type="submit" class="btn btn-sm btn-primary ms-2">Enregistrer</button>
-                                    </form>
-                                <?php endforeach; ?>
-                            </td>
+                            
                             <td>
                                 <form method="post" action="toggle_pariable.php" class="d-inline">
                                     <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
