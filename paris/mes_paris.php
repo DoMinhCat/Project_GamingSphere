@@ -102,7 +102,7 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
             </table>
         <?php endif; ?>
 
-        <a href="paris.php" class="btn btn-secondary mt-3">Retour aux paris</a>
+        <a href="paris-main.php" class="btn btn-secondary mt-3">Retour aux paris</a>
     </div>
 
 </body>
