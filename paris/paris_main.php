@@ -24,7 +24,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         opacity: 1;
         transition: opacity 1s;
     }
-
     .fade-out.hide {
         opacity: 0;
     }
@@ -47,19 +46,18 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <div class="card-body">
                     <h5 class="card-title">
                         <?= htmlspecialchars($tournoi['nom_tournoi']) ?> (<?= htmlspecialchars($tournoi['type']) ?>)
-                        <span class="badge bg-warning text-dark ms-2">Cote : <?= htmlspecialchars($tournoi['cote']) ?></span>
                     </h5>
                     <form class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
                         <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
-                        <input type="hidden" name="cote" value="<?= htmlspecialchars($tournoi['cote']) ?>">
                         <?php
                         if ($tournoi['type'] === 'equipe') {
                             $stmt = $bdd->prepare("
-                    SELECT e.id_equipe, e.nom 
-                    FROM inscription_tournoi it
-                    JOIN equipe e ON it.id_team = e.id_equipe
-                    WHERE it.id_tournoi = ?
-                ");
+                                SELECT e.id_equipe, e.nom, cp.cote
+                                FROM inscription_tournoi it
+                                JOIN equipe e ON it.id_team = e.id_equipe
+                                LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team
+                                WHERE it.id_tournoi = ?
+                            ");
                             $stmt->execute([$tournoi['id_tournoi']]);
                             $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             foreach ($equipes as $equipe) {
@@ -68,25 +66,32 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                     <label>
                                         <input type="radio" name="choix" value="<?= $equipe['id_equipe'] ?>" required>
                                         <?= htmlspecialchars($equipe['nom']) ?>
+                                        <span class="badge bg-info text-dark ms-1">
+                                            Cote : <?= htmlspecialchars($equipe['cote'] ?? 1) ?>
+                                        </span>
                                     </label>
                                 </div>
-                            <?php
+                        <?php
                             }
                         } else {
                             $stmt = $bdd->prepare("
-                    SELECT u.id_utilisateurs, u.pseudo 
-                    FROM inscription_tournoi it
-                    JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
-                    WHERE it.id_tournoi = ?
-                ");
+                                SELECT u.id_utilisateurs, u.pseudo, cp.cote
+                                FROM inscription_tournoi it
+                                JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
+                                LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.user_id
+                                WHERE it.id_tournoi = ?
+                            ");
                             $stmt->execute([$tournoi['id_tournoi']]);
                             $joueurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             foreach ($joueurs as $joueur) {
-                            ?>
+                        ?>
                                 <div class="col-auto">
                                     <label>
                                         <input type="radio" name="choix" value="<?= $joueur['id_utilisateurs'] ?>" required>
                                         <?= htmlspecialchars($joueur['pseudo']) ?>
+                                        <span class="badge bg-info text-dark ms-1">
+                                            Cote : <?= htmlspecialchars($joueur['cote'] ?? 1) ?>
+                                        </span>
                                     </label>
                                 </div>
                         <?php
@@ -124,7 +129,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     })
                     .then(resp => resp.text())
                     .then(html => {
-                        // On attend une redirection, donc on va parser le message dans l'URL
                         let msg = '';
                         try {
                             const parser = new DOMParser();
@@ -161,5 +165,4 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         });
     </script>
 </body>
-
 </html>
