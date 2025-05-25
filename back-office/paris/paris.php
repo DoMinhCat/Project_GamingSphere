@@ -9,10 +9,26 @@ $title = 'Gestion des cotes des tournois';
 
 // Récupérer la liste des tournois
 $tournois = $bdd->query("
-    SELECT id_tournoi, nom_tournoi, jeu, type, pari_ouvert, date_debut, date_fin, vainqueur
+    SELECT id_tournoi, nom_tournoi, jeu, type, pari_ouvert, date_debut, date_fin
     FROM tournoi WHERE status_ENUM = 'en cours'
     ORDER BY date_debut DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
+
+// Récupérer les vainqueurs depuis tournament_results
+$vainqueurs = [];
+$tournoi_ids = array_column($tournois, 'id_tournoi');
+if (count($tournoi_ids) > 0) {
+    $in = implode(',', array_fill(0, count($tournoi_ids), '?'));
+    $stmt = $bdd->prepare("
+        SELECT tournament_id, user_id, team_id
+        FROM tournament_results
+        WHERE position = 1 AND tournament_id IN ($in)
+    ");
+    $stmt->execute($tournoi_ids);
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        $vainqueurs[$row['tournament_id']] = $row;
+    }
+}
 
 $participants_par_tournoi = [];
 foreach ($tournois as $tournoi) {
@@ -115,7 +131,9 @@ foreach ($tournois as $tournoi) {
                             <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
                             <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
                             <td>
-                                <?php if ($tournoi['pari_ouvert'] == 0 && empty($tournoi['vainqueur'])): ?>
+                                <?php
+                                $vainqueur = $vainqueurs[$tournoi['id_tournoi']] ?? null;
+                                if ($tournoi['pari_ouvert'] == 0 && !$vainqueur): ?>
                                     <form method="post" action="valider_resultats.php" class="d-flex align-items-center gap-2">
                                         <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
                                         <select name="id_gagnant" class="form-select form-select-sm" required>
@@ -127,8 +145,20 @@ foreach ($tournois as $tournoi) {
                                         </select>
                                         <button type="submit" class="btn btn-success btn-sm">Valider</button>
                                     </form>
-                                <?php elseif (!empty($tournoi['vainqueur'])): ?>
-                                    <span class="badge bg-success">Résultat validé</span>
+                                <?php elseif ($vainqueur): ?>
+                                    <span class="badge bg-success">
+                                        <?php
+                                        foreach ($participants_par_tournoi[$tournoi['id_tournoi']] as $participant) {
+                                            if (
+                                                ($vainqueur['team_id'] && $participant['id_team'] == $vainqueur['team_id']) ||
+                                                ($vainqueur['user_id'] && $participant['id_team'] == $vainqueur['user_id'])
+                                            ) {
+                                                echo htmlspecialchars($participant['nom_team']);
+                                                break;
+                                            }
+                                        }
+                                        ?>
+                                    </span>
                                 <?php endif; ?>
                             </td>
                         </tr>

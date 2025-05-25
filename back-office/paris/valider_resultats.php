@@ -9,7 +9,7 @@ if (isset($_POST['id_tournoi'], $_POST['id_gagnant'])) {
     $id_tournoi = intval($_POST['id_tournoi']);
     $id_gagnant = intval($_POST['id_gagnant']);
 
-    // Mets à jour le tournoi avec le gagnant
+    // Mets à jour le tournoi avec le gagnant (optionnel si tu veux garder la colonne vainqueur)
     $stmt = $bdd->prepare("UPDATE tournoi SET vainqueur = ? WHERE id_tournoi = ?");
     $stmt->execute([$id_gagnant, $id_tournoi]);
 
@@ -33,6 +33,26 @@ if (isset($_POST['id_tournoi'], $_POST['id_gagnant'])) {
             $stmt3->execute([$gain, $pari['id_utilisateur']]);
         }
     }
+
+    // Ajoute le résultat dans tournament_results (vainqueur)
+    // On suppose que si c'est un tournoi solo, id_gagnant est un user_id, sinon c'est un team_id
+    $is_team = false;
+    // Vérifie si le tournoi est solo ou équipe
+    $stmt = $bdd->prepare("SELECT type FROM tournoi WHERE id_tournoi = ?");
+    $stmt->execute([$id_tournoi]);
+    $type = $stmt->fetchColumn();
+    if ($type === 'equipe') {
+        $is_team = true;
+    }
+
+    if ($is_team) {
+        $stmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, team_id, position, credits_awarded) VALUES (?, ?, 1, 0)");
+        $stmt->execute([$id_tournoi, $id_gagnant]);
+    } else {
+        $stmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, user_id, position, credits_awarded) VALUES (?, ?, 1, 0)");
+        $stmt->execute([$id_tournoi, $id_gagnant]);
+    }
+
     header('Location: paris.php?message=Résultats traités');
     exit();
 }
