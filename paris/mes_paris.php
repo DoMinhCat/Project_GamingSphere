@@ -39,7 +39,7 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
     <div class="container py-5">
         <div class="card shadow rounded-4">
             <div class="card-header bg-primary text-white rounded-top-4">
-                <h2 class="mb-0">📋 Mes Paris</h2>
+                <h2 class="mb-0 background-color: #ff6e40 !important;">📋 Mes Paris</h2>
             </div>
             <div class="card-body">
 
@@ -112,8 +112,5 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
             </div>
         </div>
     </div>
-
-    <!-- Optionally include Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
