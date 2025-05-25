@@ -125,6 +125,23 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <div class="d-flex flex-column">
                             <div class="message-bubble p-2">
                                 <p><?= nl2br(htmlspecialchars($message['contenu'], ENT_QUOTES, 'UTF-8')) ?></p>
+                                <!-- Reaction display and button -->
+                                <div class="reaction-section mt-1">
+                                    <span class="reactions" data-message-id="<?= $message['id_messages'] ?>">
+                                        <?php
+                                        $stmtReaction = $bdd->prepare("SELECT emoji FROM reactions 
+                                                                            WHERE id_message = ? ORDER BY date_reaction ASC
+                                                                            ");
+                                        $stmtReaction->execute([$message['id_messages']]);
+                                        $reactions = $stmtReaction->fetchAll(PDO::FETCH_COLUMN);
+                                        foreach ($reactions as $reaction) {
+                                            echo "<span class='reaction-emoji me-1'>$reaction</span>";
+                                        }
+                                        ?>
+                                        <button class="btn btn-sm btn-light react-btn" data-message-id="<?= $message['id_messages'] ?>">+</button>
+                                    </span>
+                                </div>
+
                             </div>
                             <div class="message-time"><?= date('H:i', strtotime($message['date_envoi'])) ?></div>
                         </div>
@@ -157,6 +174,35 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             picker.togglePicker(button);
         });
     </script>
+    <script>
+        const picker2 = new EmojiButton();
+
+        document.querySelectorAll('.react-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const messageId = button.dataset.messageId;
+                picker2.togglePicker(button);
+
+                picker2.on('emoji', emoji => {
+                    fetch('react.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: `message_id=${messageId}&emoji=${encodeURIComponent(emoji)}`
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                location.reload();
+                            }
+                        });
+                });
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.min.js"></script>
+
 </body>
 
 </html>

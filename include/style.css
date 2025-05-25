@@ -330,7 +330,14 @@ a {
   margin: 0.46875rem;
   background-color: #f9f7f2 !important;
 }
-
+.reaction-emoji {
+  font-size: 1.2rem;
+  cursor: default;
+}
+.react-btn {
+  padding: 0 6px;
+  font-size: 1rem;
+}
 .img_sell_index {
   object-fit: contain;
   height: 150px;
