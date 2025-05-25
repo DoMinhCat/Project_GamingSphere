@@ -33,6 +33,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <?php include('../include/header.php'); ?>
     <div class="container mt-4">
         <h1 class="mb-4">Matchs e-sport en cours</h1>
+
+        <div class="mb-4">
+            <a href="mes_paris.php" class="btn btn-outline-primary">
+                🎯 Voir mes paris
+            </a>
+        </div>
+
         <?php if (isset($_GET['message'])): ?>
             <div class="alert alert-info"><?= htmlspecialchars($_GET['message']) ?></div>
         <?php endif; ?>
