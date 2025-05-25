@@ -99,13 +99,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <?php include('../include/header.php'); ?>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6">
+            <div class="col-12 col-md-10">
                 <div class="card shadow-sm my-4">
                     <!-- Header -->
                     <div class="card-header bg-sujet border-bottom p-3">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center">
-                                <a href="<?= messagerie ?>" class="btn btn-outline-primary btn-sm me-3">
+                                <a href="<?= messagerie ?>" class="btn btn-primary btn-sm me-3">
                                     <i class="bi bi-chevron-left"></i>
                                     <span class="d-none d-sm-inline">Retour</span>
                                 </a>
@@ -225,7 +225,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.min.js"></script>
+    <script src="https://unpkg.com/@joeattardi/emoji-button@4.6.2/dist/index.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
