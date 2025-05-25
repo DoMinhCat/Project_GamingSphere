@@ -52,7 +52,6 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th># Pari</th>
                         <th>Tournoi</th>
                         <th>Type</th>
                         <th>Choix</th>
@@ -65,7 +64,6 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
                 <tbody>
                     <?php foreach ($mes_paris as $pari): ?>
                         <tr>
-                            <td><?= htmlspecialchars($pari['id_pari']) ?></td>
                             <td><?= htmlspecialchars($pari['nom_tournoi']) ?></td>
                             <td><?= htmlspecialchars($pari['type']) ?></td>
                             <td>
