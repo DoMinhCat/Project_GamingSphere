@@ -75,7 +75,7 @@ if ($stmt->rowCount() === 0) {
 
 // Vérifier que le choix est valide selon le type de pari
 if ($type_pari === 'solo') {
-    $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND id_utilisateur = ?");
+    $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
     $stmt->execute([$id_tournoi, $choix]);
     if ($stmt->fetchColumn() == 0) {
         header('Location:' . paris_main . '?message=Joueur non inscrit à ce tournoi');
