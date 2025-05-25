@@ -38,8 +38,8 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
 
     <div class="container py-5">
         <div class="card shadow rounded-4">
-            <div class="card-header bg-primary text-white rounded-top-4">
-                <h2 class="mb-0 background-color: #ff6e40 !important;">📋 Mes Paris</h2>
+            <div class="card-headerbackground-color: #ff6e40 !important; text-white rounded-top-4">
+                <h2 class="mb-0">📋 Mes Paris</h2>
             </div>
             <div class="card-body">
 
