@@ -28,7 +28,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
-        <h1 class="mt-5 mb-4">Forum - Catégories</h1>
+        <h1 class="mt-5 mb-4 text-center">Forum - Catégories</h1>
         <?php
         try {
             $query = $bdd->query("SELECT DISTINCT categories FROM forum_sujets WHERE parent_id IS NULL");

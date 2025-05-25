@@ -74,7 +74,7 @@
 
             <div class="mb-5">
                 <div class="p-3 border rounded card m-0">
-                    <p><?= nl2br(htmlspecialchars($sujet['contenu'] ?? '')) ?></p>
+                    <p><?= nl2br(htmlspecialchars($sujet['contenu'])) ?></p>
                     <p class="text-muted text-end">Posté par <?= htmlspecialchars($sujet['auteur']) ?> le <?= date("d/m/Y à H:i", strtotime($sujet['date_msg'])) ?></p>
                 </div>
             </div>
