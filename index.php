@@ -7,6 +7,24 @@ require_once __DIR__ . '/path.php';
 $success = $_GET['success'] ?? "";
 $user_pseudo = htmlspecialchars($_GET['user_pseudo'] ?? "");
 $pseudo = htmlspecialchars($_GET['pseudo'] ?? "");
+
+try {
+    $stmt = $bdd->prepare("SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu 
+                FROM tournoi 
+                WHERE status_ENUM='En cours' LIMIT 6;");
+    $stmt->execute();
+    $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu ORDER BY note_jeu DESC LIMIT 6;");
+    $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $bdd->query("SELECT id_news, category, titre, date_article, contenue, pseudo from news join utilisateurs on auteur=utilisateurs.id_utilisateurs where category = 'A la une' ORDER BY date_article DESC LIMIT 4;");
+    $news = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException) {
+    http_response_code(500);
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -90,130 +108,231 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         </div>
         <div id="bande_sepe"></div>
-        <a href="<?= tournois_main ?>" style="text-decoration: none;">
-            <h3 class="montserrat-titre40 tournament_title my-3">TOURNOIS EN COURS</h3>
-        </a>
-        <div class="b_l mx-5">
-            <div class="row justify-content-center">
-                <div class="col-md-5 mb-5">
-                    <div class="card my_card d-flex flex-colum">
-                        <div class="d-flex flex-row align-items-center">
-                            <img src="include/img/Tournament/128px-FortniteLogo.svg.png" class="card-img-left img_trn" alt="fortnite">
-                            <div class="card-body">
-                                <h5 class="card-title lato24">Nom du tournoi :</h5>
-                                <p class="card-text lato16">Date du tournoi :</p>
-                            </div>
-                        </div>
-                        <ul class="list-group list-group-flush lato16 d-i">
-                            <li class="list-group-item">Equipe :</li>
-                            <li class="list-group-item">Prize pool :</li>
-                            <li class="list-group-item">Prix d'inscription :</li>
-                        </ul>
-                        <div class="card-body text-center">
-                            <a href="#" class="card-link montserrat-titre32">Plus d'infos ...</a>
-                            <button class="btn-primary" onclick="window.location.href='<?= tournois_main ?>'">S'inscrire</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 mb-5">
-                    <div class="card my_card d-flex flex-column">
-                        <div class="d-flex flex-row align-items-center">
-                            <img src="include/img/Tournament/League_of_Legends_2019_vector.svg.png" class="card-img-left img_trn" alt="lol">
-                            <div class="card-body">
-                                <h5 class="card-title lato24">Nom du tournoi :</h5>
-                                <p class="card-text lato16">Date du tournoi :</p>
-                            </div>
-                        </div>
-                        <ul class="list-group list-group-flush lato16">
-                            <li class="list-group-item">Equipe :</li>
-                            <li class="list-group-item">Prize pool :</li>
-                            <li class="list-group-item">Prix d'inscription :</li>
-                        </ul>
-                        <div class="card-body text-center">
-                            <a href="#" class="card-link montserrat-titre32">Plus d'infos ...</a>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-md-5 mb-5">
-                    <div class="card my_card d-flex flex-column">
-                        <div class="d-flex flex-row align-items-center">
-                            <img src="include/img/Tournament/Rocket_League_logo.svg.png" class="card-img-left img_trn" alt="fortnite">
-                            <div class="card-body">
-                                <h5 class="card-title lato24">Nom du tournoi :</h5>
-                                <p class="card-text lato16">Date du tournoi :</p>
+        <!-- IMPROVED TOURNAMENTS SECTION -->
+        <div class="container-fluid py-5">
+            <div class="text-center mb-5">
+                <a href="<?= tournois_main ?>" class="text-decoration-none">
+                    <h2 class="display-5 fw-bold text-primary mb-3">
+                        <i class="bi bi-trophy-fill me-3"></i>Tournois en cours
+                    </h2>
+                    <p class="lead text-muted">Participez aux meilleurs tournois gaming du moment</p>
+                </a>
+            </div>
+
+            <div class="container">
+                <div class="row g-4">
+                    <?php if (!empty($tournois)): ?>
+                        <?php foreach ($tournois as $tournoi): ?>
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <div class='card h-100 shadow-sm border-0'>
+                                    <div class="card-header bg-primary text-white text-center">
+                                        <i class="bi bi-controller me-2"></i>
+                                        <strong>Tournoi Gaming</strong>
+                                    </div>
+                                    <div class='card-body'>
+                                        <h5 class='card-title fw-bold text-center mb-3'><?= htmlspecialchars($tournoi['nom_tournoi']) ?></h5>
+                                        <div class="tournament-info">
+                                            <p class='card-text mb-2'>
+                                                <i class="bi bi-joystick text-primary me-2"></i>
+                                                <strong>Jeu :</strong> <?= htmlspecialchars($tournoi['jeu']) ?>
+                                            </p>
+                                            <p class='card-text mb-2'>
+                                                <i class="bi bi-calendar-event text-success me-2"></i>
+                                                <strong>Début :</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_debut']))) ?>
+                                            </p>
+                                            <p class='card-text mb-0'>
+                                                <i class="bi bi-calendar-x text-danger me-2"></i>
+                                                <strong>Fin :</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_fin']))) ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class='card-footer bg-light text-center'>
+                                        <div class="d-flex gap-2 justify-content-center flex-wrap">
+                                            <?php
+                                            // Check if user is registered (you'll need to implement this logic)
+                                            $is_registered = false; // Replace with actual registration check
+                                            if ($is_registered): ?>
+                                                <button class="btn btn-outline-danger btn-sm desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">
+                                                    <i class="bi bi-x-circle"></i> Se désinscrire
+                                                </button>
+                                            <?php else: ?>
+                                                <button class="btn btn-outline-warning btn-sm participer-btn" data-id="<?= $tournoi['id_tournoi'] ?>">
+                                                    <i class="bi bi-check-circle"></i> Participer
+                                                </button>
+                                            <?php endif; ?>
+                                            <a href="<?= tournois_details ?>?id_tournoi=<?= $tournoi['id_tournoi'] ?>" class="btn btn-danger btn-sm">
+                                                <i class="bi bi-info-circle"></i> Plus d'infos
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="col-12">
+                            <div class='alert alert-info text-center py-4'>
+                                <i class="bi bi-info-circle display-4 text-primary mb-3"></i>
+                                <h4>Aucun tournoi en cours pour le moment</h4>
+                                <p class="mb-0">Revenez bientôt pour découvrir les prochains tournois !</p>
                             </div>
                         </div>
-                        <ul class="list-group list-group-flush lato16">
-                            <li class="list-group-item">Equipe :</li>
-                            <li class="list-group-item">Prize pool :</li>
-                            <li class="list-group-item">Prix d'inscription :</li>
-                        </ul>
-                        <div class="card-body text-center">
-                            <a href="#" class="card-link montserrat-titre32">Plus d'infos ...</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 mb-5">
-                    <div class="card my_card d-flex flex-column">
-                        <div class="d-flex flex-row align-items-center">
-                            <img src="include/img/Tournament/Valorant_logo_-_pink_color_version.svg.png" class="card-img-left img_trn" alt="valorant">
-                            <div class="card-body">
-                                <h5 class="card-title lato24">Nom du tournoi :</h5>
-                                <p class="card-text lato16">Date du tournoi :</p>
-                            </div>
-                        </div>
-                        <ul class="list-group list-group-flush lato16">
-                            <li class="list-group-item">Equipe :</li>
-                            <li class="list-group-item">Prize pool :</li>
-                            <li class="list-group-item">Prix d'inscription :</li>
-                        </ul>
-                        <div class="card-body text-center">
-                            <a href="#" class="card-link montserrat-titre32">Plus d'infos ...</a>
-                        </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
 
-
-        <?php
-        $stmt = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu");
-        $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        ?>
+        <!-- IMPROVED SHOP SECTION -->
         <div id="bande_sepe"></div>
-        <a href="<?= magasin_main ?>" style="text-decoration: none;">
-            <h3 class="montserrat-titre40 tournament_title mb-3">MAGASIN</h3>
-        </a>
+        <div class="container-fluid py-5 bg-light">
+            <div class="text-center mb-5">
+                <a href="<?= magasin_main ?>" class="text-decoration-none">
+                    <h2 class="display-5 fw-bold text-success mb-3">
+                        <i class="bi bi-shop me-3"></i>MAGASIN
+                    </h2>
+                    <p class="lead text-muted">Découvrez notre sélection des meilleurs jeux</p>
+                </a>
+            </div>
 
-        <div class="d-flex flex-row">
-            <h3 class="title_selling_item_index">Meilleurs Ventes</h3>
-            <div class="d-flex flex-row flex-wrap justify-content-start g-2 sell_card_index mx-5">
-                <?php
-                $max_cards = 6;
-                $count = 0;
-                foreach ($games as $game):
-                    if ($count >= $max_cards) break;
-                    $count++;
-                ?>
-                    <div class="col-md-4 mb-4 d-flex align-items-stretch">
-                        <div class="card shadow-sm w-100 d-flex flex-column">
-                            <?php if (!empty($game['image'])): ?>
-                                <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
-                            <?php else: ?>
-                                <img src="/magasin/img/no_image.png" class="card-img-top" alt="Aucune image">
-                            <?php endif; ?>
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
-                                <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                                <div class="mt-auto d-flex justify-content-between gap-2 align-items-center">
-                                    <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>" class="btn btn-magasin btn-outline-primary w-50 mt-3 h-50">Voir détails</a>
-                                    <button class="btn btn-magasin btn-success mt-3 btn-add-to-cart h-50" data-id="<?= $game['id_jeu'] ?>">Ajouter au panier</button>
+            <div class="container">
+                <div class="row g-4">
+                    <?php if (!empty($games)): ?>
+                        <?php foreach ($games as $game): ?>
+                            <div class="col-lg-4 col-md-6 col-sm-12">
+                                <div class="card h-100 shadow-sm border-0">
+                                    <div class="position-relative">
+                                        <?php if (!empty($game['image'])): ?>
+                                            <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>"
+                                                class="card-img-top"
+                                                alt="<?= htmlspecialchars($game['nom']) ?>"
+                                                style="height: 200px; object-fit: cover;">
+                                        <?php else: ?>
+                                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                                                <i class="bi bi-image text-white display-4"></i>
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="position-absolute top-0 end-0 m-2">
+                                            <span class="badge bg-primary fs-6"><?= htmlspecialchars($game['prix']) ?> €</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title fw-bold text-center"><?= htmlspecialchars($game['nom']) ?></h5>
+                                        <div class="mt-auto">
+                                            <div class="d-grid gap-2">
+                                                <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
+                                                    class="btn btn-outline-primary">
+                                                    <i class="bi bi-eye me-1"></i>Voir détails
+                                                </a>
+                                                <button class="btn btn-success btn-add-to-cart" data-id="<?= $game['id_jeu'] ?>">
+                                                    <i class="bi bi-cart-plus me-1"></i>Ajouter au panier
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="col-12">
+                            <div class="alert alert-info text-center py-4">
+                                <i class="bi bi-shop display-4 text-success mb-3"></i>
+                                <h4>Aucun jeu disponible pour le moment</h4>
+                                <p class="mb-0">Notre catalogue sera bientôt mis à jour !</p>
+                            </div>
                         </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- IMPROVED NEWS SECTION -->
+        <div id="bande_sepe"></div>
+        <div class="container-fluid py-5">
+            <div class="text-center mb-5">
+                <a href="<?= actualite_main ?>" class="text-decoration-none">
+                    <h2 class="display-5 fw-bold text-info mb-3">
+                        <i class="bi bi-newspaper me-3"></i>Actualités
+                    </h2>
+                    <p class="lead text-muted">Restez informé des dernières nouvelles gaming</p>
+                </a>
+            </div>
+
+            <div class="container">
+                <div class="row g-4">
+                    <?php if (!empty($news)): ?>
+                        <?php foreach ($news as $new): ?>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="mb-3">
+                                    <a href="<?= actualite_article ?>?id=<?= $new['id_news'] ?>&category=alaune"
+                                        class="text-decoration-none">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <div class="card-header bg-info text-white">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="badge bg-light text-dark">
+                                                        <i class="bi bi-star-fill me-1 text-warning"></i>À la une
+                                                    </span>
+                                                    <small>
+                                                        <i class="bi bi-calendar3 me-1"></i>
+                                                        <?= $new['date_article'] ?>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <h4 class="card-title text-dark fw-bold mb-3">
+                                                    <?= htmlspecialchars($new['titre']) ?>
+                                                </h4>
+                                                <div class="mb-3">
+                                                    <span class="text-muted">
+                                                        <i class="bi bi-person-circle me-1"></i>
+                                                        par <strong class="text-dark"><?= htmlspecialchars($new['pseudo']) ?></strong>
+                                                    </span>
+                                                </div>
+                                                <?php
+                                                $maxLength = 150;
+                                                $content = strip_tags($new['contenue']);
+                                                if (mb_strlen($content) > $maxLength) {
+                                                    $trimmed = mb_substr($content, 0, $maxLength);
+                                                    $lastSpace = mb_strrpos($trimmed, ' ');
+                                                    $trimmed = mb_substr($trimmed, 0, $lastSpace);
+                                                    $contentShow = htmlspecialchars($trimmed . '...');
+                                                } else {
+                                                    $contentShow = htmlspecialchars($content);
+                                                }
+                                                ?>
+                                                <p class="card-text text-muted lh-lg"><?= nl2br($contentShow) ?></p>
+                                            </div>
+                                            <div class="card-footer bg-transparent">
+                                                <div class="text-end">
+                                                    <span class="text-primary">
+                                                        Lire la suite <i class="bi bi-arrow-right"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="col-12">
+                            <div class="alert alert-info text-center py-4">
+                                <i class="bi bi-newspaper display-4 text-info mb-3"></i>
+                                <h4>Aucune actualité disponible</h4>
+                                <p class="mb-0">Les dernières nouvelles seront publiées bientôt !</p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <?php if (!empty($news)): ?>
+                    <div class="text-center mt-5">
+                        <a href="<?= actualite_main ?>" class="btn btn-info btn-lg">
+                            <i class="bi bi-newspaper me-2"></i>
+                            Voir toutes les actualités
+                            <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
                     </div>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </main>

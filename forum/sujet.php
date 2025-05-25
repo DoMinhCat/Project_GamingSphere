@@ -90,12 +90,12 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="text-center mb-4">
-                    <h1 class="display-6 fw-bold text-primary mb-0"><?= htmlspecialchars($sujet['titre']) ?></h1>
+                    <h1 class="display-6 fw-bold mb-0"><?= htmlspecialchars($sujet['titre']) ?></h1>
                 </div>
                 <div class="card shadow-sm border-0 mb-5">
-                    <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <div class="card-header bg-sujet text-white d-flex align-items-center">
                         <i class="bi bi-chat-square-text me-2"></i>
-                        <span class="fw-bold">Message original</span>
+                        <span class="fw-bold">Sujet discussion</span>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
@@ -120,7 +120,7 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="mb-5">
                     <div class="d-flex align-items-center mb-4">
                         <h3 class="h4 mb-0 me-3">
-                            <i class="bi bi-chat-dots text-primary"></i> Réponses
+                            </i> Réponses
                         </h3>
                         <span class="badge bg-secondary"><?= count($reponses) ?></span>
                     </div>
@@ -136,7 +136,7 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php else: ?>
                         <div class="replies-container">
                             <?php foreach ($reponses as $index => $rep): ?>
-                                <div class="card mb-3 border-start border-primary border-3">
+                                <div class="card mb-3 border-start border-secondary border-3">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div class="d-flex align-items-center">
@@ -165,7 +165,6 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-success text-white">
                         <h4 class="mb-0 d-flex align-items-center">
-                            <i class="bi bi-reply me-2"></i>
                             Ajouter une réponse
                         </h4>
                     </div>
