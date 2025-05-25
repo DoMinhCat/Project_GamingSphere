@@ -108,5 +108,5 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </form>
         <?php endif; ?>
     </main>
-    <?php include('../include/header.php'); ?>
+    <?php include('../include/footer.php'); ?>
 </body>

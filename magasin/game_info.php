@@ -138,7 +138,7 @@ include('../include/head.php');
                 </div>
 
                 <div class="text-center mt-4">
-                    <a href="<?= magasin_game ?>" class="btn btn-outline-secondary">
+                    <a href="<?= magasin_main ?>" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left me-2"></i>
                         Retour au magasin
                     </a>
