@@ -107,7 +107,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </a>
                 <a href="<?= profil ?>?user=<?php echo urlencode($otherUser['pseudo']); ?>" id="linkProfileFromConv" class="d-flex align-items-center">
                     <div class="avatar-container position-relative">
-                        <img src="/profil/<?= ($conversation['photo_profil'] ? htmlspecialchars($conversation['photo_profil']) : 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="avt" class="rounded-circle m-0" width="40" height="40">
+                        <img src="/profil/<?= ($otherUser['photo_profil'] ? htmlspecialchars($otherUser['photo_profil']) : 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="avt" class="rounded-circle m-0" width="40" height="40">
 
                         <?php if ($isUserOnline): ?>
                             <span class="position-absolute bottom-0 start-100 bg-success border border-light translate-middle rounded-circle p-1" style="width: 10px; height: 10px; font-size: 0.75rem; margin-bottom: -5px; margin-right: -5px;"></span>
@@ -177,26 +177,30 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <script>
         const picker2 = new EmojiButton();
 
+        picker2.on('emoji', emoji => {
+            if (!picker2._targetMessageId) return;
+
+            fetch('react.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `message_id=${picker2._targetMessageId}&emoji=${encodeURIComponent(emoji)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    }
+                });
+
+            picker2._targetMessageId = null;
+        });
+
         document.querySelectorAll('.react-btn').forEach(button => {
             button.addEventListener('click', () => {
-                const messageId = button.dataset.messageId;
+                picker2._targetMessageId = button.dataset.messageId;
                 picker2.togglePicker(button);
-
-                picker2.on('emoji', emoji => {
-                    fetch('react.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: `message_id=${messageId}&emoji=${encodeURIComponent(emoji)}`
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                location.reload();
-                            }
-                        });
-                });
             });
         });
     </script>
