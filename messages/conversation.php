@@ -42,9 +42,11 @@ try {
 } catch (PDOException $e) {
     echo "Erreur : " . htmlspecialchars($e->getMessage());
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
     $messageContent = trim($_POST['message']);
     if (!empty($messageContent)) {
+        $messageContent = htmlspecialchars($messageContent, ENT_QUOTES, 'UTF-8'); // 
         try {
             $stmt = $bdd->prepare("
                 INSERT INTO messages (expediteur_id, destinataire_id, contenu, date_envoi)
@@ -67,9 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
         }
     }
 }
+
 $stmt = $bdd->prepare("SELECT last_active FROM utilisateurs WHERE id_utilisateurs=?");
 $stmt->execute([$otherUserId]);
 $otherUserStatus = $stmt->fetch(PDO::FETCH_ASSOC);
+
 function isOnline($lastActive)
 {
     $timeout = 60;
@@ -77,8 +81,6 @@ function isOnline($lastActive)
     return (time() - $lastActiveTime) <= $timeout;
 }
 $isUserOnline = isOnline($otherUserStatus['last_active']);
-
-
 ?>
 
 <!DOCTYPE html>
@@ -92,6 +94,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     echo '<script src="../include/check_timeout.js"></script>';
 }
 ?>
+
 
 <body>
     <?php include('../include/header.php'); ?>
@@ -116,28 +119,44 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </a>
             </div>
 
-
             <div class="message-list p-3">
                 <?php foreach ($messages as $message): ?>
                     <div class="message mb-3 <?= $message['expediteur'] == $otherUser['pseudo'] ? 'received' : 'sent' ?>">
                         <div class="d-flex flex-column">
                             <div class="message-bubble p-2">
-                                <p><?= nl2br(htmlspecialchars($message['contenu'])) ?></p>
+                                <p><?= nl2br(htmlspecialchars($message['contenu'], ENT_QUOTES, 'UTF-8')) ?></p>
                             </div>
-                            <div class="message-time"><?= date('H:i', strtotime($message['date_envoi'])) ?>
-                            </div>
+                            <div class="message-time"><?= date('H:i', strtotime($message['date_envoi'])) ?></div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
 
-            <form action="<?= conversation . '?user=' . $otherUserId ?>" method="POST" class="message-input-container">
-                <textarea name="message" rows="1" placeholder="Écrivez un message..." class="p-2 me-2"></textarea>
-                <button type="submit" class="send-button">Envoyer</button>
+            <form action="<?= conversation . '?user=' . $otherUserId ?>" method="POST" class="message-input-container d-flex align-items-center">
+                <textarea id="messageTextarea" name="message" rows="1" placeholder="Écrivez un message..." class="p-2 me-2 flex-grow-1"></textarea>
+                <button type="button" id="emoji-button" class="btn btn-sm btn-light me-2">😊</button>
+                <button type="submit" class="send-button btn btn-primary">Envoyer</button>
             </form>
         </div>
     </div>
+
     <script src="refresh.js"></script>
+
+    <script>
+        const button = document.querySelector('#emoji-button');
+        const textarea = document.querySelector('#messageTextarea');
+        const picker = new EmojiButton();
+
+        picker.on('emoji', emoji => {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            textarea.setRangeText(emoji, start, end, 'end');
+        });
+
+        button.addEventListener('click', () => {
+            picker.togglePicker(button);
+        });
+    </script>
 </body>
 
 </html>
