@@ -182,7 +182,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
         <!-- Magasin -->
         <div id="bande_sepe"></div>
-        <div class="container-fluid py-5 bg-secondary">
+        <div class="container-fluid py-5 bg-index">
             <div class="text-center mb-5">
                 <a href="<?= magasin_main ?>" class="text-decoration-none category_news_title">
                     <h2 class="display-5 fw-bold mb-3">
@@ -264,7 +264,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                     <a href="<?= actualite_article ?>?id=<?= $new['id_news'] ?>&category=alaune"
                                         class="text-decoration-none">
                                         <div class="card border-0 shadow-sm h-100">
-                                            <div class="card-header bg-info text-white">
+                                            <div class="card-header bg-sujet text-white">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <span class="badge bg-light text-dark">
                                                         À la une
