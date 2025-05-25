@@ -5,17 +5,16 @@ require('../include/check_session.php');
 require('../include/check_timeout.php');
 require_once __DIR__ . '/../path.php';
 
-// Vérification des champs du formulaire
+// Vérification des champs de base
 if (
-    !isset($_POST['id_tournoi'], $_POST['choix'], $_POST['montant'], $_POST['cote'], $_POST['type_pari']) ||
-    empty($_POST['id_tournoi']) || empty($_POST['choix']) || empty($_POST['montant']) || empty($_POST['cote']) || empty($_POST['type_pari'])
+    !isset($_POST['id_tournoi'], $_POST['montant'], $_POST['cote'], $_POST['type_pari']) ||
+    empty($_POST['id_tournoi']) || empty($_POST['montant']) || empty($_POST['cote']) || empty($_POST['type_pari'])
 ) {
     header('Location:' . paris_main . '?message=Champs manquants');
     exit();
 }
 
 $id_tournoi = intval($_POST['id_tournoi']);
-$choix = intval($_POST['choix']); // Cast en entier pour éviter les injections
 $montant = intval($_POST['montant']);
 $cote = floatval($_POST['cote']);
 $type_pari = $_POST['type_pari']; // 'solo' ou 'equipe'
@@ -73,42 +72,59 @@ if ($stmt->rowCount() === 0) {
     exit();
 }
 
-// Vérifier que le choix est valide selon le type de pari
+// Traitement selon le type de pari
 if ($type_pari === 'solo') {
+    if (!isset($_POST['id_joueur']) || empty($_POST['id_joueur'])) {
+        header('Location:' . paris_main . '?message=Joueur non spécifié');
+        exit();
+    }
+    $id_joueur = intval($_POST['id_joueur']);
+
+    // Vérifier que le joueur est bien inscrit
     $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
-    $stmt->execute([$id_tournoi, $choix]);
+    $stmt->execute([$id_tournoi, $id_joueur]);
     if ($stmt->fetchColumn() == 0) {
         header('Location:' . paris_main . '?message=Joueur non inscrit à ce tournoi');
         exit();
     }
 
-    // Enregistrer le pari solo
+    // Enregistrement du pari solo
     $stmt = $bdd->prepare("
         INSERT INTO paris (
             id_tournoi, id_utilisateur, id_joueur, montant, cote, statut, date_pari, type_pari, gain
         ) VALUES (?, ?, ?, ?, ?, 'en attente', NOW(), ?, 0)
     ");
-    $success = $stmt->execute([$id_tournoi, $user_id, $choix, $montant, $cote, $type_pari]);
+    $success = $stmt->execute([$id_tournoi, $user_id, $id_joueur, $montant, $cote, $type_pari]);
+
 } elseif ($type_pari === 'equipe') {
+    if (!isset($_POST['id_equipe']) || empty($_POST['id_equipe'])) {
+        header('Location:' . paris_main . '?message=Équipe non spécifiée');
+        exit();
+    }
+    $id_equipe = intval($_POST['id_equipe']);
+
+    // Vérifier que l'équipe est bien inscrite
     $stmt = $bdd->prepare("SELECT COUNT(*) FROM equipe_tournois WHERE id_tournoi = ? AND id_equipe = ?");
-    $stmt->execute([$id_tournoi, $choix]);
+    $stmt->execute([$id_tournoi, $id_equipe]);
     if ($stmt->fetchColumn() == 0) {
         header('Location:' . paris_main . '?message=Équipe non inscrite à ce tournoi');
         exit();
     }
 
-    // Enregistrer le pari équipe
+    // Enregistrement du pari équipe
     $stmt = $bdd->prepare("
         INSERT INTO paris (
             id_tournoi, id_utilisateur, id_equipe, montant, cote, statut, date_pari, type_pari, gain
         ) VALUES (?, ?, ?, ?, ?, 'en attente', NOW(), ?, 0)
     ");
-    $success = $stmt->execute([$id_tournoi, $user_id, $choix, $montant, $cote, $type_pari]);
+    $success = $stmt->execute([$id_tournoi, $user_id, $id_equipe, $montant, $cote, $type_pari]);
+
 } else {
     header('Location:' . paris_main . '?message=Type de pari invalide');
     exit();
 }
 
+// Vérifier succès
 if (!$success) {
     header('Location:' . paris_main . '?message=Erreur lors de l\'enregistrement du pari');
     exit();
