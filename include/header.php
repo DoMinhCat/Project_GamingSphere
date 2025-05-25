@@ -434,7 +434,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                         </li>
                       <?php endif ?>
                       <li>
-                        <button id="theme-btn-mobile" class="dropdown-item py-3 w-100 text-start border-0 bg-transparent">
+                        <button id="theme-btn-mobile" class="dropdown-item py-3 w-100 text-start border-0">
                           <i class="bi bi-moon-stars me-2"></i>Mode nuit
                         </button>
                       </li>
@@ -500,7 +500,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                     <?php if (!empty($_SESSION['user_id'])) { ?>
                       <a class="nav-link d-flex align-items-center py-3 <?= ($this_page == 'paris_main.php' || $this_page == 'mes_paris.php') ? 'active fw-bold' : 'text-dark' ?>"
                         href="<?= paris_main ?>">
-                        <i class="bi bi-people me-3"></i>Communauté
+                        <i class="bi bi-people me-3"></i>Paris
                       </a>
                     <?php } ?>
                     <a class="nav-link d-flex align-items-center py-3 <?= ($this_page == 'actualite_main.php' || $this_page == 'actualite_article.php' || $this_page == 'actualite_categorie.php') ? 'active fw-bold' : 'text-dark' ?>"

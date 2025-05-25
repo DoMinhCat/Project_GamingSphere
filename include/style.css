@@ -328,6 +328,7 @@ a {
 }
 .card {
   margin: 0.46875rem;
+  background-color: #f9f7f2 !important;
 }
 
 .img_sell_index {
