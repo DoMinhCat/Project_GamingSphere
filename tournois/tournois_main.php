@@ -71,7 +71,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <a href="<?= create_team ?>" class="btn btn-warning mb-2">Créer une autre équipe</a>
                     <a href="<?= team_list ?>" class="btn btn-primary mb-2">Voir les équipes</a>
                 <?php else: ?>
-                    <a href="../team/join_team.php" class="btn btn-success">Rejoindre une équipe</a>
                     <a href="<?= create_team ?>" class="btn btn-warning">Créer une équipe</a>
                     <a href="<?= team_list ?>" class="btn btn-primary mb-2">Voir les équipes</a>
             <?php endif;

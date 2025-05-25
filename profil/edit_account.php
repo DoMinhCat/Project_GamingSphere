@@ -32,12 +32,12 @@ try {
             $stmt = $bdd->prepare("UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, ville = ?, code_postal = ?, rue = ? WHERE id_utilisateurs = ?");
             $stmt->execute([$nom, $prenom, $email, $ville, $code_postal, $rue, $userId]);
 
-            header('Location:' . my_account);
+            header('Location:' . my_account . '?message=' . urlencode('Modifications enregistrées !'));
             exit;
         }
     }
 } catch (PDOException $e) {
-    echo "Erreur : " . htmlspecialchars($e->getMessage());
+    header('location:' . index_front . '?message=bdd');
     exit;
 }
 ?>
@@ -96,7 +96,7 @@ include('navbar.php');
             </div>
             <div class="d-flex justify-content-between mt-4">
                 <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-                <a href="<?= my_account ?>" class="btn btn-secondary">Annuler</a>
+                <a href="<?= my_account ?>" class="btn btn-danger">Annuler</a>
             </div>
         </form>
     </main>

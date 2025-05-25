@@ -35,13 +35,6 @@ require('head.php');
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
                 <div class="h-100">
-                    <a href="<?= event_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                        Gestion des évènements
-                    </a>
-                </div>
-            </div>
-            <div class="col">
-                <div class="h-100">
                     <a href="<?= tournois_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Gestion des tournois
                     </a>

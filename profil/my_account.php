@@ -96,6 +96,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <?php
     include('../include/header.php');
     include('navbar.php');
+    if (!empty($_GET['message'])) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+        echo htmlspecialchars($_GET['message']);
+        echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+    }
     ?>
 
     <div class="container my-5">

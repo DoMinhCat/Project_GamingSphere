@@ -32,6 +32,10 @@ try {
         header('location:' . actualite_categorie . '?category=' . $category . '&message=' . urlencode('L\'article non trouvé'));
         exit;
     }
+    $stmt = $bdd->prepare("SELECT pseudo FROM news JOIN utilisateurs on auteur=id_utilisateurs WHERE id_news = ?;");
+    $stmt->execute([$id_article]);
+    $auteur = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (empty($auteur)) $auteur = 'Anonyme';
 } catch (PDOException) {
     header('location:' . index_front . '&message=bdd');
     exit;
@@ -69,7 +73,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="mb-5">
                 picture here
             </div>
-            <p><?= 'Publié le : ' . $article['date_article'] ?></p>
+            <p><?= 'Publié le : ' . $article['date_article'] . ' par ' . $auteur['pseudo'] ?></p>
             <p class="mt-5"><?= nl2br(htmlspecialchars($article['contenue'])) ?></p>
         </div>
         <!-- D'autres article meme cate -->

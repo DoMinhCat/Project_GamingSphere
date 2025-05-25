@@ -109,7 +109,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php else: ?>
             <p class="text-center mb-2">Votre panier est vide.</p>
-            <a href="<?= magasin_main ?>" class="btn btn-primary text-center">Voir nos jeux</a>
+            <div class="text-center d-flex flex-row justify-content-center mt-3">
+                <a href="<?= magasin_main ?>" class="btn btn-primary text-center">Voir nos jeux</a>
+            </div>
         <?php endif; ?>
     </main>
 </body>
