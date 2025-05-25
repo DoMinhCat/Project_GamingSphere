@@ -4,7 +4,6 @@ require('../check_session.php');
 require('../../include/database.php');
 require('../../include/check_timeout.php');
 
-// Récupère l'ID du tournoi et le vainqueur (par exemple via POST)
 if (isset($_POST['id_tournoi'], $_POST['id_gagnant'])) {
     $id_tournoi = intval($_POST['id_tournoi']);
     $id_gagnant = intval($_POST['id_gagnant']);
