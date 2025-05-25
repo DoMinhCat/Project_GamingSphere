@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
             $updateStmt = $bdd->prepare("UPDATE tournament_results SET position = ?, credits_awarded = ? WHERE result_id = ?");
             $updateStmt->execute([$position, $credits, $result_id]);
 
+            // Ajout crédit pour solo seulement
             if (strtolower($tournoi['type']) === 'solo') {
                 $updateCredits = $bdd->prepare("
                     INSERT INTO credits (user_id, credits)
@@ -46,9 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
             }
         } else {
             if (strtolower($tournoi['type']) === 'solo') {
-                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, user_id, position, credits_awarded, team_id) VALUES (?, ?, ?, ?, NULL)");
+                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, user_id, position, credits_awarded) VALUES (?, ?, ?, ?)");
                 $insertStmt->execute([$id_tournoi, $participant_id, $position, $credits]);
-
                 $updateCredits = $bdd->prepare("
                     INSERT INTO credits (user_id, credits)
                     VALUES (?, ?)
@@ -56,8 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
                 ");
                 $updateCredits->execute([$participant_id, $credits]);
             } else {
-                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, team_id, position, credits_awarded, user_id) VALUES (?, ?, ?, ?, NULL)");
+                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, team_id, user_id, position, credits_awarded) VALUES (?, ?, NULL, ?, ?)");
                 $insertStmt->execute([$id_tournoi, $participant_id, $position, $credits]);
+                // Si tu veux donner des crédits à chaque membre de l'équipe, il faut une autre logique ici
             }
         }
     }
@@ -147,12 +148,6 @@ require('../head.php');
 
                             if (count($participants) === 0) {
                                 echo "<tr><td colspan='4' class='text-center'>Aucun participant enregistré pour ce tournoi.</td></tr>";
-                            echo "<tr><td colspan='4'><pre>";
-    print_r([
-        'id_tournoi' => $id_tournoi,
-        'requete' => $stmt->queryString,
-    ]);
-    echo "</pre></td></tr>";
                             } else {
                                 foreach ($participants as $participant): ?>
                                     <tr>
