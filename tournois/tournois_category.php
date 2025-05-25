@@ -214,8 +214,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
     <?php include('../include/footer.php'); ?>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="fluid.js"></script>
 
 

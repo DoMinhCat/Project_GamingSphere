@@ -216,12 +216,94 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php } ?>
         <div class="bande_sepe"></div>
+        <!-- general -->
+        <?php
+        // 5 items case
+        if ($nb_row_general == 5) {
+            $big_article = $rows_general[0];
+            $small_articles = array_slice($rows_general, 1);
+        ?>
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=general' ?>" class="mb-3 category_news_title">
+                    <h2>Général</h2>
+                </a>
+
+                <!-- Background + Padding -->
+                <div class="rounded box_category_news">
+                    <div class="row gx-2 p-2 rounded align-items-stretch">
+
+                        <!-- LEFT CARD -->
+                        <div class="col-md-7 d-flex">
+                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=general' ?>" class="card w-100 card_news" style="text-decoration: none;">
+
+                                <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
+                                <div class="card-body p-3">
+                                    <h4 class="card-title" style="text-decoration: underline;"><?= $big_article['titre'] ?></h4>
+                                    <p class="mb-1"><strong><?= $big_article['pseudo'] ?></strong></p>
+                                    <p class="mb-0"><?= $big_article['date_article'] ?></p>
+                                </div>
+
+                            </a>
+                        </div>
+
+                        <!-- RIGHT CARDS STACKED -->
+                        <div class="col-md-5 d-flex flex-column h-100">
+                            <?php foreach ($small_articles as $small_article) : ?>
+                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=general' ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
+                                    <div class="card-body p-2">
+                                        <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
+                                        <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
+                                        </p>
+                                    </div>
+                                </a>
+                            <?php endforeach ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php } elseif ($row_take_general == 4 || $row_take_general == 2 || $row_take_general == 1) { ?>
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=general' ?>" class="mb-3 category_news_title">
+                    <h2>Général</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
+
+                        <?php foreach ($rows_general as $row) : ?>
+                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=general' ?>" class="articleBlockLink text-dark">
+                                <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
+                                    <h2>
+                                        <?= htmlspecialchars($row['titre']) ?>
+                                    </h2>
+                                    <p class="mb-1">
+                                        <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
+                                    </p>
+                                    <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
+                                </div>
+                            </a>
+                        <?php endforeach ?>
+                    </div>
+                </div>
+            </div>
+        <?php } elseif ($row_take_general == 0) { ?>
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= actualite_categorie . '?category=general' ?>" class="mb-3 category_news_title">
+                    <h2>Général</h2>
+                </a>
+                <div class="rounded box_category_news">
+                    <div class="article-container p-3">
+                        <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+        <div class="bande_sepe"></div>
         <!-- Esport -->
         <?php
         // 5 items case
         if ($nb_row_esport == 5) {
-            $big_article = $rows[0];
-            $small_articles = array_slice($rows, 1);
+            $big_article = $rows_esport[0];
+            $small_articles = array_slice($rows_esport, 1);
         ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=' . urlencode('Esport') ?>" class="mb-3 category_news_title">
@@ -300,8 +382,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php
         // 5 items case
         if ($nb_row == 5) {
-            $big_article = $rows[0];
-            $small_articles = array_slice($rows, 1);
+            $big_article = $rows_event[0];
+            $small_articles = array_slice($rows_event, 1);
         ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=evenement' ?>" class="mb-3 category_news_title">
@@ -379,95 +461,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php } ?>
 
         <div class="bande_sepe"></div>
-        <!-- general -->
-        <?php
-        // 5 items case
-        if ($nb_row_general == 5) {
-            $big_article = $rows[0];
-            $small_articles = array_slice($rows, 1);
-        ?>
-            <div class="d-flex flex-column mb-5">
-                <a href="<?= actualite_categorie . '?category=general' ?>" class="mb-3 category_news_title">
-                    <h2>Général</h2>
-                </a>
-
-                <!-- Background + Padding -->
-                <div class="rounded box_category_news">
-                    <div class="row gx-2 p-2 rounded align-items-stretch">
-
-                        <!-- LEFT CARD -->
-                        <div class="col-md-7 d-flex">
-                            <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=general' ?>" class="card w-100 card_news" style="text-decoration: none;">
-
-                                <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
-                                <div class="card-body p-3">
-                                    <h4 class="card-title" style="text-decoration: underline;"><?= $big_article['titre'] ?></h4>
-                                    <p class="mb-1"><strong><?= $big_article['pseudo'] ?></strong></p>
-                                    <p class="mb-0"><?= $big_article['date_article'] ?></p>
-                                </div>
-
-                            </a>
-                        </div>
-
-                        <!-- RIGHT CARDS STACKED -->
-                        <div class="col-md-5 d-flex flex-column h-100">
-                            <?php foreach ($small_articles as $small_article) : ?>
-                                <a href="actualite_article.php?id=<?= $small_article['id_news'] . '&category=general' ?>" class="card flex-fill mb-2 card_news" style="text-decoration: none;">
-                                    <div class="card-body p-2">
-                                        <h6 class="card-title mb-1"><?= $small_article['titre'] ?></h6>
-                                        <p class="mb-0"><?= $small_article['date_article'] ?> par <strong><?= $small_article['pseudo'] ?></strong>
-                                        </p>
-                                    </div>
-                                </a>
-                            <?php endforeach ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php } elseif ($row_take_general == 4 || $row_take_general == 2 || $row_take_general == 1) { ?>
-            <div class="d-flex flex-column mb-5">
-                <a href="<?= actualite_categorie . '?category=general' ?>" class="mb-3 category_news_title">
-                    <h2>Général</h2>
-                </a>
-                <div class="rounded box_category_news">
-                    <div class="article-container p-3">
-
-                        <?php foreach ($rows_general as $row) : ?>
-                            <a href="actualite_article.php?id=<?= $row['id_news'] . '&category=general' ?>" class="articleBlockLink text-dark">
-                                <div class="article border rounded px-3 py-2 mb-2 shadow-sm">
-                                    <h2>
-                                        <?= htmlspecialchars($row['titre']) ?>
-                                    </h2>
-                                    <p class="mb-1">
-                                        <strong><?= htmlspecialchars($row['pseudo']) ?></strong>
-                                    </p>
-                                    <p class="mb-0"><?= htmlspecialchars($row['date_article']) ?></p>
-                                </div>
-                            </a>
-                        <?php endforeach ?>
-                    </div>
-                </div>
-            </div>
-        <?php } elseif ($row_take_general == 0) { ?>
-            <div class="d-flex flex-column mb-5">
-                <a href="<?= actualite_categorie . '?category=general' ?>" class="mb-3 category_news_title">
-                    <h2>Général</h2>
-                </a>
-                <div class="rounded box_category_news">
-                    <div class="article-container p-3">
-                        <p class="text-center m-0">Aucun article de cette catégorie en ce moment.</p>
-                    </div>
-                </div>
-            </div>
-        <?php } ?>
-
-        <div class="bande_sepe"></div>
         <!-- critique -->
         <?php
         // 5 items case
         if ($nb_row_critique == 5) {
-            $big_article = $rows[0];
-            $small_articles = array_slice($rows, 1);
+            $big_article = $rows_critique[0];
+            $small_articles = array_slice($rows_critique, 1);
         ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=' . urlencode('Critique') ?>" class="mb-3 category_news_title">
@@ -549,8 +548,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php
         // 5 items case
         if ($nb_row_update == 5) {
-            $big_article = $rows[0];
-            $small_articles = array_slice($rows, 1);
+            $big_article = $rows_update[0];
+            $small_articles = array_slice($rows_update, 1);
         ?>
             <div class="d-flex flex-column mb-5">
                 <a href="<?= actualite_categorie . '?category=miseajour' ?>" class="mb-3 category_news_title">
