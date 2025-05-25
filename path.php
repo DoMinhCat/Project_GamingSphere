@@ -45,7 +45,7 @@ define('actualite_categorie', '/actualite/categorie'); // actualite_categorie.ph
 //forum
 define('forum_main', '/forum'); // forum_main.php
 define('forum_category', '/forum/category'); // categorie.php
-define('nouveau_sujet', '/forum/new'); // nouveau_sujet.php
+define('nouveau_sujet', '/forum/nouveau_sujet.php'); // nouveau_sujet.php
 define('sujet', '/forum/sujet'); // sujet.php
 
 //panier
