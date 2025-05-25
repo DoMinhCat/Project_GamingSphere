@@ -105,7 +105,7 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
                 <?php endif; ?>
 
                 <div class="text-end mt-4">
-                    <a href="paris-main.php" class="btn btn-outline-primary">
+                    <a href="<?= paris_main ?>" class="btn btn-outline-primary">
                     Retour aux paris
                     </a>
                 </div>

@@ -33,7 +33,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <?php include('../include/header.php'); ?>
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-primary fw-bold"> Matchs e-sport en cours</h1>
+        <h1> Matchs e-sport en cours</h1>
         <a href="mes_paris.php" class="btn btn-outline-primary">
              Voir mes paris
         </a>
@@ -54,7 +54,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
     <?php foreach ($rencontres as $tournoi): ?>
         <div class="card shadow rounded-4 mb-4">
-            <div class="card-header bg-dark text-white rounded-top-4">
+            <div class="card-header text-white rounded-top-4" style="background-color: #ff6e40 !important;">
                 <h5 class="mb-0"><?= htmlspecialchars($tournoi['nom_tournoi']) ?> 
                     <span class="badge bg-secondary ms-2"><?= htmlspecialchars($tournoi['type']) ?></span>
                 </h5>
