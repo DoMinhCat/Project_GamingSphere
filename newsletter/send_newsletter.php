@@ -1,12 +1,12 @@
 #!/usr/bin/php
 <?php
-require_once('../include/database.php');
+require_once  __DIR__ . '/../include/database.php';
 date_default_timezone_set('Europe/Paris');
 
 require '/var/www/PA/PHPMailer/src/PHPMailer.php';
 require '/var/www/PA/PHPMailer/src/SMTP.php';
 require '/var/www/PA/PHPMailer/src/Exception.php';
-require '../vendor/autoload.php';
+require  __DIR__ . '/../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
