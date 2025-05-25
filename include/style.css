@@ -743,3 +743,6 @@ body.offcanvas-backdrop {
   height: 1px;
   border: none;
 }
+.dark .breadcrumb-item + .breadcrumb-item::before {
+  color: #fdae95 !important;
+}
