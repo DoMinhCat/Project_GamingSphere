@@ -8,10 +8,6 @@ if (isset($_POST['id_tournoi'], $_POST['id_gagnant'])) {
     $id_tournoi = intval($_POST['id_tournoi']);
     $id_gagnant = intval($_POST['id_gagnant']);
 
-    // Mets à jour le tournoi avec le gagnant (optionnel si tu veux garder la colonne vainqueur)
-    $stmt = $bdd->prepare("UPDATE tournoi SET vainqueur = ? WHERE id_tournoi = ?");
-    $stmt->execute([$id_gagnant, $id_tournoi]);
-
     // Récupère tous les paris en attente sur ce tournoi
     $stmt = $bdd->prepare("SELECT * FROM paris WHERE id_tournoi = ? AND statut = 'en attente'");
     $stmt->execute([$id_tournoi]);

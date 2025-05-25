@@ -72,6 +72,8 @@ define('search', '/include/search'); // search.php
 //paris
 define('paris_main', '/paris'); // paris_main.php
 define('parier', '/paris/parier'); // parier.php
+define('paris_details', '/paris/details'); // paris_details.php
+
 
 //easter
 define('easter', '/easter'); // easter.php
