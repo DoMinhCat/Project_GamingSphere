@@ -33,9 +33,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <?php include('../include/header.php'); ?>
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-primary fw-bold">🎮 Matchs e-sport en cours</h1>
+        <h1 class="text-primary fw-bold"> Matchs e-sport en cours</h1>
         <a href="mes_paris.php" class="btn btn-outline-primary">
-            🎯 Voir mes paris
+             Voir mes paris
         </a>
     </div>
 
@@ -99,10 +99,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     } ?>
 
                     <div class="col-md-3 col-6">
-                        <input type="number" name="montant" min="1" class="form-control" placeholder="💰 Montant" required>
+                        <input type="number" name="montant" min="1" class="form-control" placeholder=" Montant" required>
                     </div>
                     <div class="col-md-3 col-6">
-                        <button type="submit" class="btn btn-success w-100">Parier ✅</button>
+                        <button type="submit" class="btn btn-success w-100">Parier</button>
                     </div>
                     <div class="col-12">
                         <div class="alert d-none mt-2" role="alert"></div>
