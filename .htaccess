@@ -412,6 +412,11 @@ RewriteCond %{THE_REQUEST} \s/back-office/paris/paris\.php [NC]
 RewriteRule ^back-office/paris/paris\.php$ /back-office/paris [R=301,L,QSA]
 RewriteRule ^back-office/paris/?$ back-office/paris/paris.php [L]
 
+# back-office valider_resultats.php/
+RewriteCond %{THE_REQUEST} \s/back-office/paris/valider_resultats\.php [NC]
+RewriteRule ^back-office/paris/valider_resultats\.php$ /back-office/valider_resultats [R=301,L,QSA]
+RewriteRule ^back-office/valider_resultats/?$ back-office/paris/valider_resultats.php [L]
+
 # back-office profils.php/
 
 RewriteCond %{THE_REQUEST} \s/back-office/profils/profils\.php [NC]
