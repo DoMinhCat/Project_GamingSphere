@@ -20,45 +20,9 @@ $cote = floatval($_POST['cote']);
 $type_pari = $_POST['type_pari']; // 'solo' ou 'equipe'
 $user_id = $_SESSION['user_id'] ?? null;
 
-if (!$user_id) {
-    header('Location:' . login . '?message=Utilisateur non connecté');
-    exit();
-}
-
-// Vérifier que le tournoi est ouvert aux paris
-$stmt = $bdd->prepare("SELECT pari_ouvert FROM tournoi WHERE id_tournoi = ?");
-if (!$stmt->execute([$id_tournoi])) {
-    $error = $stmt->errorInfo();
-    die("Erreur SQL sur la vérification tournoi : " . implode(" | ", $error));
-}
-$tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$tournoi) {
-    header('Location:' . paris_main . '?message=Tournoi introuvable');
-    exit();
-}
-if (!$tournoi['pari_ouvert']) {
-    header('Location:' . paris_main . '?message=Tournoi non ouvert aux paris');
-    exit();
-}
-
-// S'assurer que la ligne credits existe
-$stmt = $bdd->prepare("
-    INSERT INTO credits (user_id, credits)
-    VALUES (?, 0)
-    ON DUPLICATE KEY UPDATE credits = credits
-");
-if (!$stmt->execute([$user_id])) {
-    $error = $stmt->errorInfo();
-    die("Erreur SQL sur insertion ligne credits : " . implode(" | ", $error));
-}
-
 // Vérifier le solde
 $stmt = $bdd->prepare("SELECT credits FROM credits WHERE user_id = ?");
-if (!$stmt->execute([$user_id])) {
-    $error = $stmt->errorInfo();
-    die("Erreur SQL sur récupération crédits : " . implode(" | ", $error));
-}
+$stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user || !is_numeric($user['credits'])) {
@@ -72,10 +36,7 @@ if ($user['credits'] < $montant) {
 
 // Débiter le montant
 $stmt = $bdd->prepare("UPDATE credits SET credits = credits - ? WHERE user_id = ?");
-if (!$stmt->execute([$montant, $user_id])) {
-    $error = $stmt->errorInfo();
-    die("Erreur SQL sur débit crédits : " . implode(" | ", $error));
-}
+$stmt->execute([$montant, $user_id]);
 if ($stmt->rowCount() === 0) {
     header('Location:' . paris_main . '?message=Débit non effectué');
     exit();
@@ -91,10 +52,7 @@ if ($type_pari === 'solo') {
 
     // Vérifier que le joueur est bien inscrit
     $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
-    if (!$stmt->execute([$id_tournoi, $id_joueur])) {
-        $error = $stmt->errorInfo();
-        die("Erreur SQL sur vérification joueur inscrit : " . implode(" | ", $error));
-    }
+    $stmt->execute([$id_tournoi, $id_joueur]);
     if ($stmt->fetchColumn() == 0) {
         header('Location:' . paris_main . '?message=Joueur non inscrit à ce tournoi');
         exit();
@@ -104,9 +62,9 @@ if ($type_pari === 'solo') {
     $stmt = $bdd->prepare("
         INSERT INTO paris (
             id_utilisateur, id_tournoi, montant, id_joueur, type_pari, statut, gain, date_pari, cote, id_equipe
-        ) VALUES (?, ?, ?, ?, ?, 'en attente', 0, NOW(), ?, NULL)
+        ) VALUES (?, ?, ?, ?, 'en attente', 0, NOW(), ?, NULL)
     ");
-    $success = $stmt->execute([$user_id, $id_tournoi, $montant, $id_joueur, $type_pari, $cote]);
+    $success = $stmt->execute([$user_id, $id_tournoi, $id_joueur, $type_pari, $cote]);
 
 } elseif ($type_pari === 'equipe') {
     if (!isset($_POST['id_equipe']) || empty($_POST['id_equipe'])) {
@@ -117,10 +75,7 @@ if ($type_pari === 'solo') {
 
     // Vérifier que l'équipe est bien inscrite
     $stmt = $bdd->prepare("SELECT COUNT(*) FROM equipe_tournois WHERE id_tournoi = ? AND id_equipe = ?");
-    if (!$stmt->execute([$id_tournoi, $id_equipe])) {
-        $error = $stmt->errorInfo();
-        die("Erreur SQL sur vérification équipe inscrite : " . implode(" | ", $error));
-    }
+    $stmt->execute([$id_tournoi, $id_equipe]);
     if ($stmt->fetchColumn() == 0) {
         header('Location:' . paris_main . '?message=Équipe non inscrite à ce tournoi');
         exit();
@@ -129,20 +84,20 @@ if ($type_pari === 'solo') {
     // Enregistrement du pari équipe
     $stmt = $bdd->prepare("
         INSERT INTO paris (
-            id_utilisateur, id_tournoi, montant, id_equipe, type_pari, statut, gain, date_pari, cote, id_joueur
-        ) VALUES (?, ?, ?, ?, ?, 'en attente', 0, NOW(), ?, NULL)
+            id_utilisateur, id_tournoi, id_equipe, type_pari, statut, gain, date_pari, cote, id_joueur
+        ) VALUES (?, ?, ?, ?, 'en attente', 0, NOW(), ?, NULL)
     ");
-    $success = $stmt->execute([$user_id, $id_tournoi, $montant, $id_equipe, $type_pari, $cote]);
+    $success = $stmt->execute([$user_id, $id_tournoi, $id_equipe, $type_pari, $cote]);
 
 } else {
     header('Location:' . paris_main . '?message=Type de pari invalide');
     exit();
 }
 
-// Vérifier succès insertion pari
+// Vérifier succès
 if (!$success) {
-    $error = $stmt->errorInfo();
-    die("Erreur SQL lors de l'enregistrement du pari : " . implode(" | ", $error));
+    header('Location:' . paris_main . '?message=Erreur lors de l\'enregistrement du pari');
+    exit();
 }
 
 header('Location:' . paris_main . '?message=Pari enregistré avec succès');

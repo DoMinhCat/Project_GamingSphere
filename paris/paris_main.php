@@ -55,7 +55,7 @@ foreach ($rencontres as $tournoi):
             <h5 class="card-title">
                 <?= htmlspecialchars($tournoi['nom_tournoi']) ?> (<?= htmlspecialchars($tournoi['type']) ?>)
             </h5>
-            <form class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
+            <form method="$_POST" class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
                 <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
                 <input type="hidden" name="type_pari" value="<?= $tournoi['type'] ?>">
                 <input type="hidden" name="cote" value="">
