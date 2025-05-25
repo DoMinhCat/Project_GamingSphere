@@ -54,7 +54,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <h5 class="card-title">
                         <?= htmlspecialchars($tournoi['nom_tournoi']) ?> (<?= htmlspecialchars($tournoi['type']) ?>)
                     </h5>
-                    <form method="POST" class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
+                    <form method="POST" action="parier.php" class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
                         <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
                         <input type="hidden" name="type_pari" value="<?= ($tournoi['type'] === 'equipe') ? 'equipe' : 'solo' ?>">
                         <input type="hidden" name="cote" value="">
