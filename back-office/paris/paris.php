@@ -9,7 +9,7 @@ $title = 'Gestion des cotes des tournois';
 
 // Récupérer la liste des tournois
 $tournois = $bdd->query("
-    SELECT id_tournoi, nom_tournoi, jeu, type, pari_ouvert, date_debut, date_fin
+    SELECT id_tournoi, nom_tournoi, jeu, type, pari_ouvert, date_debut, date_fin, vainqueur
     FROM tournoi WHERE status_ENUM = 'en cours'
     ORDER BY date_debut DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
@@ -69,6 +69,7 @@ foreach ($tournois as $tournoi) {
                         <th>Pariable</th>
                         <th>Date début</th>
                         <th>Date fin</th>
+                        <th>Résultat</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,11 +114,28 @@ foreach ($tournois as $tournoi) {
                             </td>
                             <td><?= htmlspecialchars($tournoi['date_debut']) ?></td>
                             <td><?= htmlspecialchars($tournoi['date_fin']) ?></td>
+                            <td>
+                                <?php if ($tournoi['pari_ouvert'] == 0 && empty($tournoi['vainqueur'])): ?>
+                                    <form method="post" action="valider_resultats.php" class="d-flex align-items-center gap-2">
+                                        <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
+                                        <select name="id_gagnant" class="form-select form-select-sm" required>
+                                            <?php foreach ($participants_par_tournoi[$tournoi['id_tournoi']] as $participant): ?>
+                                                <option value="<?= $participant['id_team'] ?>">
+                                                    <?= htmlspecialchars($participant['nom_team']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <button type="submit" class="btn btn-success btn-sm">Valider</button>
+                                    </form>
+                                <?php elseif (!empty($tournoi['vainqueur'])): ?>
+                                    <span class="badge bg-success">Résultat validé</span>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="8" class="text-center">Aucun tournoi trouvé.</td>
+                        <td colspan="9" class="text-center">Aucun tournoi trouvé.</td>
                     </tr>
                 <?php endif; ?>
                 </tbody>
