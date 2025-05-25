@@ -61,9 +61,11 @@ try {
 
     $user_registrations = [];
     if (isset($_SESSION['user_id'])) {
-        $reg_stmt = $bdd->prepare("SELECT id_tournoi FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?;");
-        $reg_stmt->execute([$tournoi['id_tournoi'], $_SESSION['user_id']]);
-        $user_registrations = $reg_stmt->fetchAll(PDO::FETCH_COLUMN);
+        foreach ($tournois as $tournoi) {
+            $reg_stmt = $bdd->prepare("SELECT id_tournoi FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?;");
+            $reg_stmt->execute([$tournoi['id_tournoi'], $_SESSION['user_id']]);
+            $user_registrations = $reg_stmt->fetchAll(PDO::FETCH_COLUMN);
+        }
     }
 } catch (PDOException $e) {
     header('location:' . tournois_main . '?message=bdd&err=' . urlencode($e->getMessage()));
