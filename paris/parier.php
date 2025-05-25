@@ -27,7 +27,10 @@ if (!$user_id) {
 
 // Vérifier que le tournoi est ouvert aux paris
 $stmt = $bdd->prepare("SELECT pari_ouvert FROM tournoi WHERE id_tournoi = ?");
-$stmt->execute([$id_tournoi]);
+if (!$stmt->execute([$id_tournoi])) {
+    $error = $stmt->errorInfo();
+    die("Erreur SQL sur la vérification tournoi : " . implode(" | ", $error));
+}
 $tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$tournoi) {
@@ -46,13 +49,16 @@ $stmt = $bdd->prepare("
     ON DUPLICATE KEY UPDATE credits = credits
 ");
 if (!$stmt->execute([$user_id])) {
-    header('Location:' . paris_main . '?message=Erreur lors de la création de la ligne credits');
-    exit();
+    $error = $stmt->errorInfo();
+    die("Erreur SQL sur insertion ligne credits : " . implode(" | ", $error));
 }
 
 // Vérifier le solde
 $stmt = $bdd->prepare("SELECT credits FROM credits WHERE user_id = ?");
-$stmt->execute([$user_id]);
+if (!$stmt->execute([$user_id])) {
+    $error = $stmt->errorInfo();
+    die("Erreur SQL sur récupération crédits : " . implode(" | ", $error));
+}
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user || !is_numeric($user['credits'])) {
@@ -66,7 +72,10 @@ if ($user['credits'] < $montant) {
 
 // Débiter le montant
 $stmt = $bdd->prepare("UPDATE credits SET credits = credits - ? WHERE user_id = ?");
-$stmt->execute([$montant, $user_id]);
+if (!$stmt->execute([$montant, $user_id])) {
+    $error = $stmt->errorInfo();
+    die("Erreur SQL sur débit crédits : " . implode(" | ", $error));
+}
 if ($stmt->rowCount() === 0) {
     header('Location:' . paris_main . '?message=Débit non effectué');
     exit();
@@ -82,7 +91,10 @@ if ($type_pari === 'solo') {
 
     // Vérifier que le joueur est bien inscrit
     $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
-    $stmt->execute([$id_tournoi, $id_joueur]);
+    if (!$stmt->execute([$id_tournoi, $id_joueur])) {
+        $error = $stmt->errorInfo();
+        die("Erreur SQL sur vérification joueur inscrit : " . implode(" | ", $error));
+    }
     if ($stmt->fetchColumn() == 0) {
         header('Location:' . paris_main . '?message=Joueur non inscrit à ce tournoi');
         exit();
@@ -105,7 +117,10 @@ if ($type_pari === 'solo') {
 
     // Vérifier que l'équipe est bien inscrite
     $stmt = $bdd->prepare("SELECT COUNT(*) FROM equipe_tournois WHERE id_tournoi = ? AND id_equipe = ?");
-    $stmt->execute([$id_tournoi, $id_equipe]);
+    if (!$stmt->execute([$id_tournoi, $id_equipe])) {
+        $error = $stmt->errorInfo();
+        die("Erreur SQL sur vérification équipe inscrite : " . implode(" | ", $error));
+    }
     if ($stmt->fetchColumn() == 0) {
         header('Location:' . paris_main . '?message=Équipe non inscrite à ce tournoi');
         exit();
@@ -124,10 +139,10 @@ if ($type_pari === 'solo') {
     exit();
 }
 
-// Vérifier succès
+// Vérifier succès insertion pari
 if (!$success) {
-    header('Location:' . paris_main . '?message=Erreur lors de l\'enregistrement du pari');
-    exit();
+    $error = $stmt->errorInfo();
+    die("Erreur SQL lors de l'enregistrement du pari : " . implode(" | ", $error));
 }
 
 header('Location:' . paris_main . '?message=Pari enregistré avec succès');

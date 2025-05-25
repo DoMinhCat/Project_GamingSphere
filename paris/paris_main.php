@@ -124,7 +124,6 @@ foreach ($rencontres as $tournoi):
 
     </div>
     <script>
-        // Met à jour le champ caché "cote" selon le choix sélectionné
         document.querySelectorAll('.form-pari').forEach(form => {
             const radios = form.querySelectorAll('input[type="radio"][name="choix"]');
             const hiddenCote = form.querySelector('input[name="cote"]');
