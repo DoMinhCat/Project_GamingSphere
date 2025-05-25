@@ -157,8 +157,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         </div>
     </div>
 
-    <script src="refresh.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/emoji-button.min.js"></script>
+    <script src="refresh.js"></script>
 
     <script>
         const button = document.querySelector('#emoji-button');
