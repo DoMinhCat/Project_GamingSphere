@@ -47,79 +47,81 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php if (empty($rencontres)): ?>
             <p>Aucun match en cours.</p>
         <?php endif; ?>
-
-        <?php foreach ($rencontres as $tournoi): ?>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <?= htmlspecialchars($tournoi['nom_tournoi']) ?> (<?= htmlspecialchars($tournoi['type']) ?>)
-                    </h5>
-                    <form class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
-                        <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
-                        <input type="hidden" name="type_pari" value="<?= $tournoi['type'] ?>">
-                        <input type="hidden" name="cote" value="">
-                        <?php
-                        if ($tournoi['type'] === 'equipe') {
-                            $stmt = $bdd->prepare("
-                                SELECT e.id_equipe, e.nom, cp.cote
-                                FROM inscription_tournoi it
-                                JOIN equipe e ON it.id_team = e.id_equipe
-                                LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team
-                                WHERE it.id_tournoi = ?
-                            ");
-                            $stmt->execute([$tournoi['id_tournoi']]);
-                            $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($equipes as $equipe) {
-                        ?>
-                                <div class="col-auto">
-                                    <label>
-                                        <input type="radio" name="choix" value="<?= $equipe['id_equipe'] ?>" data-cote="<?= htmlspecialchars($equipe['cote'] ?? 1) ?>" required>
-                                        <?= htmlspecialchars($equipe['nom']) ?>
-                                        <span class="badge bg-info text-dark ms-1">
-                                            Cote : <?= htmlspecialchars($equipe['cote'] ?? 1) ?>
-                                        </span>
-                                    </label>
-                                </div>
-                        <?php
-                            }
-                        } else {
-                            $stmt = $bdd->prepare("
-                                SELECT u.id_utilisateurs, u.pseudo, cp.cote
-                                FROM inscription_tournoi it
-                                JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
-                                LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.user_id
-                                WHERE it.id_tournoi = ?
-                            ");
-                            $stmt->execute([$tournoi['id_tournoi']]);
-                            $joueurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($joueurs as $joueur) {
-                        ?>
-                                <div class="col-auto">
-                                    <label>
-                                        <input type="radio" name="choix" value="<?= $joueur['id_utilisateurs'] ?>" data-cote="<?= htmlspecialchars($joueur['cote'] ?? 1) ?>" required>
-                                        <?= htmlspecialchars($joueur['pseudo']) ?>
-                                        <span class="badge bg-info text-dark ms-1">
-                                            Cote : <?= htmlspecialchars($joueur['cote'] ?? 1) ?>
-                                        </span>
-                                    </label>
-                                </div>
-                        <?php
-                            }
-                        }
-                        ?>
+<?php
+foreach ($rencontres as $tournoi):
+?>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">
+                <?= htmlspecialchars($tournoi['nom_tournoi']) ?> (<?= htmlspecialchars($tournoi['type']) ?>)
+            </h5>
+            <form class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
+                <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
+                <input type="hidden" name="type_pari" value="<?= $tournoi['type'] ?>">
+                <input type="hidden" name="cote" value="">
+                <?php
+                if ($tournoi['type'] === 'equipe') {
+                    $stmt = $bdd->prepare("
+                        SELECT e.id_equipe, e.nom, cp.cote
+                        FROM inscription_tournoi it
+                        JOIN equipe e ON it.id_team = e.id_equipe
+                        LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team
+                        WHERE it.id_tournoi = ?
+                    ");
+                    $stmt->execute([$tournoi['id_tournoi']]);
+                    $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($equipes as $equipe) {
+                ?>
                         <div class="col-auto">
-                            <input type="number" name="montant" min="1" class="form-control" placeholder="Coins" required>
+                            <label>
+                                <input type="radio" name="id_equipe" value="<?= $equipe['id_equipe'] ?>" data-cote="<?= htmlspecialchars($equipe['cote'] ?? 1) ?>" required>
+                                <?= htmlspecialchars($equipe['nom']) ?>
+                                <span class="badge bg-info text-dark ms-1">
+                                    Cote : <?= htmlspecialchars($equipe['cote'] ?? 1) ?>
+                                </span>
+                            </label>
                         </div>
+                <?php
+                    }
+                } else {
+                    $stmt = $bdd->prepare("
+                        SELECT u.id_utilisateurs, u.pseudo, cp.cote
+                        FROM inscription_tournoi it
+                        JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
+                        LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.user_id
+                        WHERE it.id_tournoi = ?
+                    ");
+                    $stmt->execute([$tournoi['id_tournoi']]);
+                    $joueurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($joueurs as $joueur) {
+                ?>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-primary">Parier</button>
+                            <label>
+                                <input type="radio" name="id_joueur" value="<?= $joueur['id_utilisateurs'] ?>" data-cote="<?= htmlspecialchars($joueur['cote'] ?? 1) ?>" required>
+                                <?= htmlspecialchars($joueur['pseudo']) ?>
+                                <span class="badge bg-info text-dark ms-1">
+                                    Cote : <?= htmlspecialchars($joueur['cote'] ?? 1) ?>
+                                </span>
+                            </label>
                         </div>
-                        <div class="col-12 mt-2">
-                            <div class="alert d-none" role="alert"></div>
-                        </div>
-                    </form>
+                <?php
+                    }
+                }
+                ?>
+                <div class="col-auto">
+                    <input type="number" name="montant" min="1" class="form-control" placeholder="Coins" required>
                 </div>
-            </div>
-        <?php endforeach; ?>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Parier</button>
+                </div>
+                <div class="col-12 mt-2">
+                    <div class="alert d-none" role="alert"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php endforeach; ?>
+
     </div>
     <script>
         // Met à jour le champ caché "cote" selon le choix sélectionné
