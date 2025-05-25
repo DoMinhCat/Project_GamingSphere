@@ -95,6 +95,72 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 }
 ?>
 
+<head>
+    <style>
+        .emoji-picker {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            width: 280px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .emoji-picker.hidden {
+            display: none;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 5px;
+        }
+
+        .emoji-btn {
+            border: none;
+            background: none;
+            font-size: 1.2em;
+            padding: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .emoji-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .reaction-picker {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: flex;
+            gap: 5px;
+        }
+
+        .reaction-picker.hidden {
+            display: none;
+        }
+
+        .message-input-container {
+            position: relative;
+        }
+    </style>
+</head>
+
 <body>
     <?php include('../include/header.php'); ?>
     <div class="container-fluid">
@@ -151,7 +217,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                                             <!-- Reactions -->
                                             <div class="d-flex align-items-center mt-1 <?= $isSent ? 'justify-content-end' : 'justify-content-start' ?>">
-                                                <div class="reactions-container d-flex align-items-center">
+                                                <div class="reactions-container d-flex align-items-center position-relative">
                                                     <div class="reactions me-2" data-message-id="<?= $message['id_messages'] ?>">
                                                         <?php
                                                         $stmtReaction = $bdd->prepare("SELECT emoji, COUNT(*) as count 
@@ -197,7 +263,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <!-- Input -->
                     <div class="card-footer bg-light border-top p-3">
                         <form action="<?= conversation . '?user=' . $otherUserId ?>" method="POST" class="d-flex align-items-end gap-2">
-                            <div class="flex-grow-1">
+                            <div class="flex-grow-1 message-input-container">
                                 <div class="input-group">
                                     <textarea id="messageTextarea"
                                         name="message"
@@ -212,6 +278,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                         <i class="bi bi-emoji-smile"></i>
                                     </button>
                                 </div>
+
+                                <div id="emoji-picker" class="emoji-picker hidden">
+                                    <div class="emoji-grid" id="emoji-grid">
+                                    </div>
+                                </div>
                             </div>
                             <button type="submit"
                                 class="btn btn-primary d-flex align-items-center justify-content-center"
@@ -225,13 +296,65 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.umd.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const emojis = [
+                '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂',
+                '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩',
+                '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪',
+                '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨',
+                '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥',
+                '😔', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩',
+                '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯',
+                '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓',
+                '👍', '👎', '👌', '✌️', '🤞', '🤟', '🤘', '🤙',
+                '👈', '👉', '👆', '👇', '☝️', '✋', '🤚', '🖐️',
+                '🖖', '👋', '🤏', '💪', '🙏', '✍️', '💅', '🤳',
+                '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍',
+                '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖',
+                '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️'
+            ];
+
+            const quickReactions = ['👍', '❤️', '😂', '😮', '😢', '😡'];
+
             const textarea = document.getElementById('messageTextarea');
-            const emojiButton = document.querySelector('#emoji-button');
+            const emojiButton = document.getElementById('emoji-button');
+            const emojiPicker = document.getElementById('emoji-picker');
+            const emojiGrid = document.getElementById('emoji-grid');
             const messageForm = document.querySelector('form');
             const messageContainer = document.getElementById('message-container');
+
+            function populateEmojiPicker() {
+                emojiGrid.innerHTML = '';
+                emojis.forEach(emoji => {
+                    const button = document.createElement('button');
+                    button.className = 'emoji-btn';
+                    button.textContent = emoji;
+                    button.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        insertEmoji(emoji);
+                    });
+                    emojiGrid.appendChild(button);
+                });
+            }
+
+            function insertEmoji(emoji) {
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const text = textarea.value;
+                textarea.value = text.substring(0, start) + emoji + text.substring(end);
+                textarea.focus();
+                textarea.setSelectionRange(start + emoji.length, start + emoji.length);
+                hideEmojiPicker();
+            }
+
+            function toggleEmojiPicker() {
+                emojiPicker.classList.toggle('hidden');
+            }
+
+            function hideEmojiPicker() {
+                emojiPicker.classList.add('hidden');
+            }
 
             if (textarea) {
                 textarea.addEventListener('input', function() {
@@ -251,12 +374,27 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 });
             }
 
+            if (emojiButton) {
+                emojiButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleEmojiPicker();
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                if (!emojiPicker.contains(e.target) && e.target !== emojiButton && !e.target.closest('#emoji-button')) {
+                    hideEmojiPicker();
+                }
+            });
+
             function scrollToBottom() {
                 if (messageContainer) {
                     messageContainer.scrollTop = messageContainer.scrollHeight;
                 }
             }
 
+            // scroll to bottom
             scrollToBottom();
 
             if (messageForm) {
@@ -285,17 +423,19 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 const messageDiv = document.createElement('div');
                                 messageDiv.className = 'd-flex mb-3 justify-content-end';
 
+                                const messageId = 'msg-' + Date.now();
+
                                 messageDiv.innerHTML = `
                                     <div class="order-2" style="max-width: 75%;">
                                         <div class="bg-primary text-white rounded-3 p-3 shadow-sm position-relative">
                                             <p class="mb-0">${message.replace(/\n/g, '<br>')}</p>
                                         </div>
                                         <div class="d-flex align-items-center mt-1 justify-content-end">
-                                            <div class="reactions-container d-flex align-items-center">
-                                                <div class="reactions me-2" data-message-id="new-message">
+                                            <div class="reactions-container d-flex align-items-center position-relative">
+                                                <div class="reactions me-2" data-message-id="${messageId}">
                                                 </div>
                                                 <button class="btn btn-light btn-sm rounded-circle p-1 react-btn border-0 shadow-sm" 
-                                                        data-message-id="new-message"
+                                                        data-message-id="${messageId}"
                                                         style="width: 28px; height: 28px; font-size: 0.8rem;"
                                                         title="Ajouter une réaction">
                                                     <i class="bi bi-emoji-smile"></i>
@@ -325,51 +465,46 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 });
             }
 
-            let messagePicker;
-            if (typeof EmojiButton !== 'undefined' && emojiButton && textarea) {
-                messagePicker = new EmojiButton({
-                    position: 'top-end',
-                    autoHide: false,
-                    showPreview: false
+            function createReactionPicker(targetButton) {
+                document.querySelectorAll('.reaction-picker').forEach(picker => picker.remove());
+
+                const reactionPicker = document.createElement('div');
+                reactionPicker.className = 'reaction-picker';
+
+                quickReactions.forEach(emoji => {
+                    const button = document.createElement('button');
+                    button.className = 'emoji-btn';
+                    button.textContent = emoji;
+                    button.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        addReaction(targetButton.dataset.messageId, emoji);
+                        reactionPicker.remove();
+                    });
+                    reactionPicker.appendChild(button);
                 });
 
-                messagePicker.on('emoji', emoji => {
-                    const start = textarea.selectionStart;
-                    const end = textarea.selectionEnd;
-                    const text = textarea.value;
-                    textarea.value = text.substring(0, start) + emoji + text.substring(end);
-                    textarea.focus();
-                    textarea.setSelectionRange(start + emoji.length, start + emoji.length);
-                });
+                targetButton.parentElement.appendChild(reactionPicker);
 
-                emojiButton.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    messagePicker.togglePicker(emojiButton);
-                });
+                setTimeout(() => {
+                    if (reactionPicker.parentElement) {
+                        reactionPicker.remove();
+                    }
+                }, 3000);
             }
 
-            let reactionPicker;
-            if (typeof EmojiButton !== 'undefined') {
-                reactionPicker = new EmojiButton({
-                    position: 'top-start',
-                    autoHide: true,
-                    showPreview: false
-                });
-
-                reactionPicker.on('emoji', emoji => {
-                    if (!reactionPicker._targetMessageId) return;
-
+            function addReaction(messageId, emoji) {
+                if (!messageId.startsWith('msg-')) {
                     fetch('react.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'
                             },
-                            body: `message_id=${reactionPicker._targetMessageId}&emoji=${encodeURIComponent(emoji)}`
+                            body: `message_id=${messageId}&emoji=${encodeURIComponent(emoji)}`
                         })
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                updateReactions(reactionPicker._targetMessageId, emoji);
+                                updateReactionDisplay(messageId, emoji);
                             } else {
                                 console.error('Failed to add reaction');
                             }
@@ -377,43 +512,62 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         .catch(error => {
                             console.error('Error:', error);
                         });
-
-                    reactionPicker._targetMessageId = null;
-                });
-
-                function attachReactionListeners() {
-                    document.querySelectorAll('.react-btn').forEach(button => {
-                        button.replaceWith(button.cloneNode(true));
-                    });
-
-                    document.querySelectorAll('.react-btn').forEach(button => {
-                        button.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            reactionPicker._targetMessageId = button.dataset.messageId;
-                            reactionPicker.togglePicker(button);
-                        });
-                    });
+                } else {
+                    updateReactionDisplay(messageId, emoji);
                 }
-
-                attachReactionListeners();
             }
 
-            function updateReactions(messageId, newEmoji) {
+            function updateReactionDisplay(messageId, emoji) {
                 const reactionsContainer = document.querySelector(`[data-message-id="${messageId}"]`);
                 if (reactionsContainer) {
-                    const newReaction = document.createElement('span');
-                    newReaction.className = 'badge bg-light text-dark border me-1 reaction-badge';
-                    newReaction.style.fontSize = '0.9rem';
-                    newReaction.textContent = newEmoji;
+                    const existingReaction = Array.from(reactionsContainer.children).find(child =>
+                        child.textContent.includes(emoji)
+                    );
 
-                    const reactButton = reactionsContainer.parentElement.querySelector('.react-btn');
-                    if (reactButton) {
-                        reactionsContainer.insertBefore(newReaction, reactButton);
+                    if (existingReaction) {
+                        const countElement = existingReaction.querySelector('small');
+                        if (countElement) {
+                            const currentCount = parseInt(countElement.textContent) || 1;
+                            countElement.textContent = currentCount + 1;
+                        } else {
+                            existingReaction.innerHTML = `${emoji} <small class="ms-1">2</small>`;
+                        }
                     } else {
+                        const newReaction = document.createElement('span');
+                        newReaction.className = 'badge bg-light text-dark border me-1 reaction-badge';
+                        newReaction.style.fontSize = '0.9rem';
+                        newReaction.textContent = emoji;
                         reactionsContainer.appendChild(newReaction);
                     }
                 }
             }
+
+            function attachReactionListeners() {
+                document.querySelectorAll('.react-btn').forEach(button => {
+                    const newButton = button.cloneNode(true);
+                    button.parentNode.replaceChild(newButton, button);
+                });
+
+                document.querySelectorAll('.react-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        document.querySelectorAll('.reaction-picker').forEach(picker => picker.remove());
+
+                        createReactionPicker(button);
+                    });
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.reaction-picker') && !e.target.closest('.react-btn')) {
+                    document.querySelectorAll('.reaction-picker').forEach(picker => picker.remove());
+                }
+            });
+
+            populateEmojiPicker();
+            attachReactionListeners();
         });
     </script>
 
