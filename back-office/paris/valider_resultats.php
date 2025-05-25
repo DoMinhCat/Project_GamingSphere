@@ -26,17 +26,17 @@ if (isset($_POST['id_tournoi'], $_POST['id_gagnant'])) {
         $stmt2 = $bdd->prepare("UPDATE paris SET statut = ?, gain = ? WHERE id_pari = ?");
         $stmt2->execute([$statut, $gain, $pari['id_pari']]);
 
-        // Crédite le gain à l'utilisateur si gagné
-        if ($gagne && $gain > 0) {
-            $stmt3 = $bdd->prepare("UPDATE credits SET credits = credits + ? WHERE user_id = ?");
-            $stmt3->execute([$gain, $pari['id_utilisateur']]);
-        }
+      if ($gagne && $gain > 0) {
+    $stmt3 = $bdd->prepare("
+        INSERT INTO credits (user_id, credits)
+        VALUES (?, ?)
+        ON DUPLICATE KEY UPDATE credits = credits + VALUES(credits)
+    ");
+    $stmt3->execute([$pari['id_utilisateur'], $gain]);
+}
     }
 
-    // Ajoute le résultat dans tournament_results (vainqueur)
-    // On suppose que si c'est un tournoi solo, id_gagnant est un user_id, sinon c'est un team_id
     $is_team = false;
-    // Vérifie si le tournoi est solo ou équipe
     $stmt = $bdd->prepare("SELECT type FROM tournoi WHERE id_tournoi = ?");
     $stmt->execute([$id_tournoi]);
     $type = $stmt->fetchColumn();

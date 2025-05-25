@@ -25,6 +25,7 @@ if (!$user_id) {
     exit();
 }
 
+// Vérifier que le tournoi est ouvert aux paris
 $stmt = $bdd->prepare("SELECT pari_ouvert FROM tournoi WHERE id_tournoi = ?");
 $stmt->execute([$id_tournoi]);
 $tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -34,6 +35,15 @@ if (!$tournoi || !$tournoi['pari_ouvert']) {
     exit();
 }
 
+// S'assurer que la ligne credits existe
+$stmt = $bdd->prepare("
+    INSERT INTO credits (user_id, credits)
+    VALUES (?, 0)
+    ON DUPLICATE KEY UPDATE credits = credits
+");
+$stmt->execute([$user_id]);
+
+// Vérifier le solde
 $stmt = $bdd->prepare("SELECT credits FROM credits WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -43,7 +53,7 @@ if (!$user || $user['credits'] < $montant) {
     exit();
 }
 
-// Débiter les crédits de l'utilisateur
+// Débiter le montant
 $stmt = $bdd->prepare("UPDATE credits SET credits = credits - ? WHERE user_id = ?");
 $stmt->execute([$montant, $user_id]);
 
