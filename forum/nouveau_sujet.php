@@ -104,7 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             counter.textContent = `${textarea.value.length} / 1000`;
         }
 
-        // Met à jour les deux compteurs au chargement (utile si champs déjà remplis)
         document.addEventListener("DOMContentLoaded", () => {
             updateCounter();
             updateContentCounter();
