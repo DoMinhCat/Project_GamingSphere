@@ -25,6 +25,7 @@ if (isset($_GET['id_tournoi'])) {
     header('Location:' . tournois_back . '?error=no_id');
     exit();
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['credits'], $_POST['result_id'])) {
     foreach ($_POST['position'] as $participant_id => $position) {
         $position = intval($position);
@@ -47,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
             }
         } else {
             if (strtolower($tournoi['type']) === 'solo') {
-                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, user_id, position, credits_awarded) VALUES (?, ?, ?, ?)");
+                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, user_id, team_id, position, credits_awarded) VALUES (?, ?, NULL, ?, ?)");
                 $insertStmt->execute([$id_tournoi, $participant_id, $position, $credits]);
                 $updateCredits = $bdd->prepare("
                     INSERT INTO credits (user_id, credits)
@@ -58,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
             } else {
                 $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, team_id, user_id, position, credits_awarded) VALUES (?, ?, NULL, ?, ?)");
                 $insertStmt->execute([$id_tournoi, $participant_id, $position, $credits]);
-                // Si tu veux donner des crédits à chaque membre de l'équipe, il faut une autre logique ici
+                // Si tu veux donner des crédits à chaque membre de l'équipe, ajoute ici la logique
             }
         }
     }
