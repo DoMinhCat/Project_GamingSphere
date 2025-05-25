@@ -50,6 +50,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <form class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
                         <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
                         <input type="hidden" name="type_pari" value="<?= $tournoi['type'] ?>">
+                        <input type="hidden" name="cote" value="">
                         <?php
                         if ($tournoi['type'] === 'equipe') {
                             $stmt = $bdd->prepare("
@@ -65,7 +66,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         ?>
                                 <div class="col-auto">
                                     <label>
-                                        <input type="radio" name="choix" value="<?= $equipe['id_equipe'] ?>" required>
+                                        <input type="radio" name="choix" value="<?= $equipe['id_equipe'] ?>" data-cote="<?= htmlspecialchars($equipe['cote'] ?? 1) ?>" required>
                                         <?= htmlspecialchars($equipe['nom']) ?>
                                         <span class="badge bg-info text-dark ms-1">
                                             Cote : <?= htmlspecialchars($equipe['cote'] ?? 1) ?>
@@ -88,7 +89,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         ?>
                                 <div class="col-auto">
                                     <label>
-                                        <input type="radio" name="choix" value="<?= $joueur['id_utilisateurs'] ?>" required>
+                                        <input type="radio" name="choix" value="<?= $joueur['id_utilisateurs'] ?>" data-cote="<?= htmlspecialchars($joueur['cote'] ?? 1) ?>" required>
                                         <?= htmlspecialchars($joueur['pseudo']) ?>
                                         <span class="badge bg-info text-dark ms-1">
                                             Cote : <?= htmlspecialchars($joueur['cote'] ?? 1) ?>
@@ -114,6 +115,20 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php endforeach; ?>
     </div>
     <script>
+        // Met à jour le champ caché "cote" selon le choix sélectionné
+        document.querySelectorAll('.form-pari').forEach(form => {
+            const radios = form.querySelectorAll('input[type="radio"][name="choix"]');
+            const hiddenCote = form.querySelector('input[name="cote"]');
+            radios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    hiddenCote.value = this.getAttribute('data-cote') || 1;
+                });
+            });
+            // Préremplir si déjà coché au chargement
+            const checked = form.querySelector('input[type="radio"][name="choix"]:checked');
+            if (checked) hiddenCote.value = checked.getAttribute('data-cote') || 1;
+        });
+
         document.querySelectorAll('.form-pari').forEach(form => {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
