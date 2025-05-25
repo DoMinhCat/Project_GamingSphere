@@ -62,7 +62,7 @@ try {
     $user_registrations = [];
     if (isset($_SESSION['user_id'])) {
         $reg_stmt = $bdd->prepare("SELECT id_tournoi FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?;");
-        $reg_stmt->execute([[$tournoi['id_tournoi'], $user_id]]);
+        $reg_stmt->execute([$tournoi['id_tournoi'], $user_id]);
         $user_registrations = $reg_stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 } catch (PDOException $e) {

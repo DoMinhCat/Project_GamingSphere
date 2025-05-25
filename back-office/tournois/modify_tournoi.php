@@ -64,7 +64,7 @@ require('../head.php');
                 <label for="jeu" class="form-label">Jeu</label>
                 <input type="text" class="form-control" id="jeu" name="jeu" value="<?= $tournois['jeu'] ?>" required>
             </div>
-            <textarea class="mb-3">
+            <div class="mb-3">
                 <label for="description" class="form-label">Jeu</label>
                 <textarea rows="2" class="form-control" id="description" name="description"><?= $tournois['description'] ?></textarea>
             </div>
