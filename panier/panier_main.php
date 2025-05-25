@@ -7,7 +7,14 @@ require('../include/check_session.php');
 require_once __DIR__ . '/../path.php';
 
 $id_utilisateur = $_SESSION['user_id'];
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_id'])) {
+    $removeId = intval($_POST['remove_id']);
+ 
+    $stmt = $bdd->prepare("DELETE FROM panier WHERE id_utilisateur = ? AND id_jeu = ?");
+    $stmt->execute([$_SESSION['user_id'], $removeId]);
+    header('Location: panier_main.php');
+    exit;
+}
 $stmt = $bdd->prepare("SELECT p.id_jeu, j.nom, j.prix, j.image FROM panier p
                         JOIN jeu j ON p.id_jeu = j.id_jeu
                         WHERE p.id_utilisateur = ?");
@@ -54,9 +61,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <?php else: ?>
                                 <img src="/magasin/img/no_image.png" class="card-img-top" alt="Aucune image" style="height: 250px; object-fit: cover;">
                             <?php endif; ?>
-                            <div class="card-body">
-                                <h5 class="card-title"><?= htmlspecialchars($jeu['nom']) ?></h5>
-                                <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($jeu['prix']) ?> €</p>
+                            <div class="card-body d-flex flex-column">
+                            <h5 class="card-title"><?= htmlspecialchars($jeu['nom']) ?></h5>
+                            <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($jeu['prix']) ?> €</p>
+                            <form method="post" class="mt-auto">
+                            <input type="hidden" name="remove_id" value="<?= $jeu['id_jeu'] ?>">
+                            <button type="submit" class="btn btn-danger btn-sm mt-2">Retirer</button>
+                            </form>
                             </div>
                         </div>
                     </div>
