@@ -33,7 +33,7 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
 <!DOCTYPE html>
 <html lang="fr">
 <?php require('../include/head.php'); ?>
-<body class="bg-light">
+<body>
     <?php include('../include/header.php'); ?>
 
     <div class="container py-5">
