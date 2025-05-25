@@ -18,7 +18,7 @@ $tournois = $bdd->query("
 $participants_par_tournoi = [];
 foreach ($tournois as $tournoi) {
 $stmt = $bdd->prepare("
-    SELECT t.id_equipe AS id_team, t.nom_equipe AS nom_team, cp.cote
+    SELECT t.id_equipe AS id_team, t.nom AS nom_team, cp.cote
     FROM inscription_tournoi it
     JOIN equipe t ON it.id_team = t.id_equipe
     LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team
