@@ -44,7 +44,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <body>
     <?php include('../include/header.php'); ?>
 
-    <div class="container my-5">
+    <main class="container my-5">
         <h1 class="text-center mb-5">Mon Panier</h1>
 
         <?php if (count($panier) > 0): ?>
@@ -102,15 +102,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 </div>
                             </div>
                         </div>
-                    <?php else: ?>
-                        <p class="text-danger">Vous n'avez pas assez de crédits pour finaliser cet achat.</p>
-                    <?php endif; ?>
                     </div>
                 <?php else: ?>
-                    <p class="text-center mb-2">Votre panier est vide.</p>
-                    <a href="<?= magasin_main ?>" class="btn btn-primary text-center">Voir nos jeux</a>
+                    <p class="text-danger">Vous n'avez pas assez de crédits pour finaliser cet achat.</p>
                 <?php endif; ?>
             </div>
+        <?php else: ?>
+            <p class="text-center mb-2">Votre panier est vide.</p>
+            <a href="<?= magasin_main ?>" class="btn btn-primary text-center">Voir nos jeux</a>
+        <?php endif; ?>
+    </main>
 </body>
 <?php include('../include/footer.php'); ?>
 
