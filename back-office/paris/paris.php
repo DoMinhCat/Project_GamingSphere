@@ -38,7 +38,6 @@ foreach ($tournois as $tournoi) {
         $participants_par_tournoi[$tournoi['id_tournoi']] = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-// ...existing code...
 ?>
 
 <!DOCTYPE html>
@@ -75,33 +74,34 @@ foreach ($tournois as $tournoi) {
                 <tbody>
                 <?php if (count($tournois) > 0): ?>
                     <?php foreach ($tournois as $tournoi): ?>
-                            <td>
-                                <form method="post" action="edit_cote.php">
-                                    <table class="w-100">
-                                        <?php foreach ($participants_par_tournoi[$tournoi['id_tournoi']] as $participant): ?>
-                                            <tr>
-                                                <td style="width:40%;">
-                                                    <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
-                                                    <input type="hidden" name="id_team" value="<?= $participant['id_team'] ?>">
-                                                    <span><?= htmlspecialchars($participant['nom_team']) ?></span>
-                                                </td>
-                                                <td style="width:30%;">
-                                                    <input type="number" step="0.01" min="1" name="cote" value="<?= htmlspecialchars($participant['cote'] ?? 1) ?>" class="form-control form-control-sm w-100">
-                                                </td>
-                                                <td style="width:30%;">
-                                                    <button type="submit" class="btn btn-sm btn-primary w-100">Enregistrer</button>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </table>
-                                </form>
-                            </td>
                         <tr>
                             <td><?= htmlspecialchars($tournoi['id_tournoi']) ?></td>
                             <td><?= htmlspecialchars($tournoi['nom_tournoi']) ?></td>
                             <td><?= htmlspecialchars($tournoi['jeu']) ?></td>
                             <td><?= htmlspecialchars($tournoi['type']) ?></td>
-                            
+                            <td>
+                                <table class="w-100">
+                                    <?php foreach ($participants_par_tournoi[$tournoi['id_tournoi']] as $participant): ?>
+                                        <form method="post" action="edit_cote.php">
+                                            <tr>
+                                                <td style="width:40%;">
+                                                    <?= htmlspecialchars($participant['nom_team']) ?>
+                                                    <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
+                                                    <input type="hidden" name="id_team" value="<?= $participant['id_team'] ?>">
+                                                </td>
+                                                <td style="width:30%;">
+                                                    <input type="number" step="0.01" min="1" name="cote"
+                                                        value="<?= htmlspecialchars($participant['cote'] ?? 1) ?>"
+                                                        class="form-control form-control-sm w-100" style="min-width:80px;max-width:120px;">
+                                                </td>
+                                                <td style="width:30%;">
+                                                    <button type="submit" class="btn btn-sm btn-primary w-100" style="min-width:80px;">Enregistrer</button>
+                                                </td>
+                                            </tr>
+                                        </form>
+                                    <?php endforeach; ?>
+                                </table>
+                            </td>
                             <td>
                                 <form method="post" action="toggle_pariable.php" class="d-inline">
                                     <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
