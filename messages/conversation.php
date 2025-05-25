@@ -157,7 +157,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.min.js"></script>
 
     <script src="refresh.js"></script>
 
