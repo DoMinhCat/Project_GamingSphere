@@ -101,9 +101,9 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
           <a href="<?= panier ?>" class="btn btn-outline-dark d-flex align-items-center ms-3">
             <i class="bi bi-cart-fill"></i>
             <?php if ($panierCount > 0): ?>
-              <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-2 rounded-circle panier-badge"><?= $panierCount ?></span>
+              <span class="badge bg-danger position-relative top-0 start-100 translate-middle p-2 rounded-circle panier-badge"><?= $panierCount ?></span>
             <?php else: ?>
-              <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-2 rounded-circle panier-badge" style="display:none;"></span>
+              <span class="badge bg-danger position-relative top-0 start-100 translate-middle p-2 rounded-circle panier-badge" style="display:none;"></span>
             <?php endif; ?>
           </a>
           <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>

@@ -65,11 +65,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
                                 <h5 class="card-title"><?= htmlspecialchars($jeu['nom']) ?></h5>
                                 <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($jeu['prix']) ?> €</p>
-                                <a href="<?= magasin_game ?>?id=<?= $jeu['id_jeu'] ?>" class="btn btn-magasin btn-outline-primary w-50 mt-3 h-50">Voir détails</a>
-                                <form method="post" class="mt-auto">
-                                    <input type="hidden" name="remove_id" value="<?= $jeu['id_jeu'] ?>">
-                                    <button type="submit" class="btn btn-danger btn-sm mt-2">Retirer</button>
-                                </form>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <a href="<?= magasin_game ?>?id=<?= $jeu['id_jeu'] ?>" class="btn btn-magasin btn-outline-primary w-50 mt-3 h-50">Voir détails</a>
+                                    <form method="post" class="mt-auto">
+                                        <input type="hidden" name="remove_id" value="<?= $jeu['id_jeu'] ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm mt-2">Retirer</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -91,8 +91,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 $stmt->execute([$type_tournoi, $statut]);
                 $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                echo '<a href=' . magasin_category . '?category=' . urlencode($category) . '" class="mt-5 category_news_title">
-                    <h1>' . $titre . '</h1>
+                echo '<a href=' . tournois_category . '?category=' . urlencode($category) . '" class="category_news_title">
+                    <h1 class="mt-5">' . $titre . '</h1>
                 </a>';
 
                 if (count($tournois) > 0) {
