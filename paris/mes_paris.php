@@ -5,11 +5,6 @@ require('../include/check_session.php');
 require('../include/check_timeout.php');
 require_once __DIR__ . '/../path.php';
 
-// On vérifie que l'utilisateur est connecté
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php?message=Vous devez être connecté pour voir vos paris');
-    exit();
-}
 
 $user_id = intval($_SESSION['user_id']);
 
