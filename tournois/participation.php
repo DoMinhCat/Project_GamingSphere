@@ -29,7 +29,6 @@ try {
     }
 
     if ($tournoi['type'] === 'Équipe' || $tournoi['type'] === 'equipe') {
-        // Récupérer l'équipe du capitaine
         $stmt = $bdd->prepare("
             SELECT me.id_equipe 
             FROM membres_equipe me
@@ -43,7 +42,6 @@ try {
             exit();
         }
 
-        // Vérifier si l'équipe est déjà inscrite
         $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND id_team = ?");
         $stmt->execute([$id_tournoi, $id_equipe]);
         $already_registered = $stmt->fetchColumn();
@@ -53,14 +51,12 @@ try {
             exit();
         }
 
-        // Inscrire l'équipe (capitaine + équipe)
         $stmt = $bdd->prepare("INSERT INTO inscription_tournoi (id_tournoi, user_id, date_inscription, id_team) VALUES (?, ?, NOW(), ?)");
         $stmt->execute([$id_tournoi, $user_id, $id_equipe]);
 
         echo json_encode(['success' => true, 'message' => 'Votre équipe a été inscrite avec succès au tournoi.']);
         exit();
     } else {
-        // Solo : vérifier si déjà inscrit
         $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
         $stmt->execute([$id_tournoi, $user_id]);
         $already_registered = $stmt->fetchColumn();

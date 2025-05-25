@@ -50,8 +50,8 @@ foreach ($users as $user) {
       <li>De nouvelles fonctionnalités que vous allez adorer</li>
       <li>Des astuces pour tirer le meilleur parti de votre compte</li>
     </ul>
-    <p><a href='https://yourwebsite.com/login'>Revenez maintenant →</a></p>
-    <p style='font-size:small'>Pour vous désabonner, <a href='https://gamingsphere.duckdns.org/unsubscribe.php?token={$user['unsubscribe_token']}'>cliquez ici</a>.</p>";
+    <p><a href='https://gamingsphere.duckdns.org/connexion/login'>Revenez maintenant →</a></p>
+    <p style='font-size:small'>Pour vous désabonner, <a href='https://gamingsphere.duckdns.org/newsletter/unsubscribe.php?token={$user['unsubscribe_token']}'>cliquez ici</a>.</p>";
 
         $mail->send();
         $update = $bdd->prepare("UPDATE utilisateurs SET last_newsletter_sent = NOW() WHERE id_utilisateurs = ?");

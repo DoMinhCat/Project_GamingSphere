@@ -274,7 +274,7 @@ include('../include/head.php');
                         <h3 class="text-dark mb-4">
                             Bienvenue, hacker curieux !
                         </h3>
-                        <p class="lead text-muted">Voici quelques stats du projet :</p>
+                        <p class="lead text-dark">Voici quelques stats du projet :</p>
                     </div>
 
                     <!-- Stats -->
