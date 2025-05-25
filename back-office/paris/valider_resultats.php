@@ -14,10 +14,22 @@ if (isset($_POST['id_tournoi'], $_POST['id_gagnant'])) {
     $type = $stmt->fetchColumn();
     $is_team = ($type === 'equipe');
 
-    // Nombre de participants
-    $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ?");
-    $stmt->execute([$id_tournoi]);
-    $total_participants = intval($stmt->fetchColumn());
+    // Enregistre ou met à jour le résultat dans tournament_results (position 1)
+    if ($is_team) {
+        $stmt = $bdd->prepare("
+            INSERT INTO tournament_results (tournament_id, team_id, position, credits_awarded)
+            VALUES (?, ?, 1, 0)
+            ON DUPLICATE KEY UPDATE team_id = VALUES(team_id), credits_awarded = 0
+        ");
+        $stmt->execute([$id_tournoi, $id_gagnant]);
+    } else {
+        $stmt = $bdd->prepare("
+            INSERT INTO tournament_results (tournament_id, user_id, position, credits_awarded)
+            VALUES (?, ?, 1, 0)
+            ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), credits_awarded = 0
+        ");
+        $stmt->execute([$id_tournoi, $id_gagnant]);
+    }
 
     // Récupère les paris en attente
     $stmt = $bdd->prepare("SELECT * FROM paris WHERE id_tournoi = ? AND statut = 'en attente'");
@@ -27,20 +39,10 @@ if (isset($_POST['id_tournoi'], $_POST['id_gagnant'])) {
     foreach ($paris as $pari) {
         $gagne = false;
 
-        // Si un seul participant, ce pari est forcément gagnant
-        if ($total_participants === 1) {
-            if ($is_team) {
-                $gagne = ($pari['id_equipe'] == $id_gagnant);
-            } else {
-                $gagne = ($pari['id_joueur'] == $id_gagnant);
-            }
+        if ($is_team) {
+            $gagne = ($pari['id_equipe'] == $id_gagnant);
         } else {
-            // Sinon, vérifie si le pari correspond au gagnant
-            if ($is_team && $pari['id_equipe'] == $id_gagnant) {
-                $gagne = true;
-            } elseif (!$is_team && $pari['id_joueur'] == $id_gagnant) {
-                $gagne = true;
-            }
+            $gagne = ($pari['id_joueur'] == $id_gagnant);
         }
 
         $statut = $gagne ? 'gagné' : 'perdu';
@@ -59,15 +61,6 @@ if (isset($_POST['id_tournoi'], $_POST['id_gagnant'])) {
             ");
             $stmt3->execute([$pari['id_utilisateur'], $gain]);
         }
-    }
-
-    // Enregistre le résultat dans tournament_results
-    if ($is_team) {
-        $stmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, team_id, position, credits_awarded) VALUES (?, ?, 1, 0)");
-        $stmt->execute([$id_tournoi, $id_gagnant]);
-    } else {
-        $stmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, user_id, position, credits_awarded) VALUES (?, ?, 1, 0)");
-        $stmt->execute([$id_tournoi, $id_gagnant]);
     }
 
     header('Location: paris.php?message=Résultats traités');
