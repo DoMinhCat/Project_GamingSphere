@@ -30,100 +30,101 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 </style>
 
 <body>
-    <?php include('../include/header.php'); ?>
-    <div class="container mt-4">
-        <h1 class="mb-4">Matchs e-sport en cours</h1>
+<?php include('../include/header.php'); ?>
+<div class="container mt-4">
+    <h1 class="mb-4">Matchs e-sport en cours</h1>
 
-        <div class="mb-4">
-            <a href="mes_paris.php" class="btn btn-outline-primary">
-                🎯 Voir mes paris
-            </a>
-        </div>
-
-        <?php if (isset($_GET['message'])): ?>
-            <div class="alert alert-info"><?= htmlspecialchars($_GET['message']) ?></div>
-        <?php endif; ?>
-
-        <?php if (empty($rencontres)): ?>
-            <p>Aucun match en cours.</p>
-        <?php endif; ?>
-
-        <?php foreach ($rencontres as $tournoi): ?>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <?= htmlspecialchars($tournoi['nom_tournoi']) ?> (<?= htmlspecialchars($tournoi['type']) ?>)
-                    </h5>
-                    <form method="POST" action="parier.php" class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
-                        <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
-                        <input type="hidden" name="type_pari" value="<?= ($tournoi['type'] === 'equipe') ? 'equipe' : 'solo' ?>">
-                        <input type="hidden" name="cote" value="">
-                        <?php
-                        if ($tournoi['type'] === 'equipe') {
-                            $stmt = $bdd->prepare("
-                                SELECT e.id_equipe, e.nom, cp.cote
-                                FROM equipe_tournois et
-                                JOIN equipe e ON et.id_equipe = e.id_equipe
-                                LEFT JOIN cote_participant cp ON cp.id_tournoi = et.id_tournoi AND cp.id_team = et.id_equipe
-                                WHERE et.id_tournoi = ?
-                            ");
-                            $stmt->execute([$tournoi['id_tournoi']]);
-                            $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($equipes as $equipe):
-                        ?>
-                            <div class="col-auto">
-                                <label>
-                                    <input type="radio" name="id_equipe" value="<?= $equipe['id_equipe'] ?>" data-cote="<?= htmlspecialchars($equipe['cote'] ?? 1) ?>" required>
-                                    <?= htmlspecialchars($equipe['nom']) ?>
-                                    <span class="badge bg-info text-dark ms-1">
-                                        Cote : <?= htmlspecialchars($equipe['cote'] ?? 1) ?>
-                                    </span>
-                                </label>
-                            </div>
-                        <?php endforeach;
-                        } else {
-                            $stmt = $bdd->prepare("
-                                SELECT u.id_utilisateurs, u.pseudo, cp.cote
-                                FROM inscription_tournoi it
-                                JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
-                                LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.user_id
-                                WHERE it.id_tournoi = ?
-                            ");
-                            $stmt->execute([$tournoi['id_tournoi']]);
-                            $joueurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($joueurs as $joueur):
-                        ?>
-                            <div class="col-auto">
-                                <label>
-                                    <input type="radio" name="id_joueur" value="<?= $joueur['id_utilisateurs'] ?>" data-cote="<?= htmlspecialchars($joueur['cote'] ?? 1) ?>" required>
-                                    <?= htmlspecialchars($joueur['pseudo']) ?>
-                                    <span class="badge bg-info text-dark ms-1">
-                                        Cote : <?= htmlspecialchars($joueur['cote'] ?? 1) ?>
-                                    </span>
-                                </label>
-                            </div>
-                        <?php endforeach;
-                        }
-                        ?>
-
-                        <div class="col-auto">
-                            <input type="number" name="montant" min="1" class="form-control" placeholder="Coins" required>
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary">Parier</button>
-                        </div>
-                        <div class="col-12 mt-2">
-                            <div class="alert d-none" role="alert"></div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        <?php endforeach; ?>
-
+    <div class="mb-4">
+        <a href="mes_paris.php" class="btn btn-outline-primary">🎯 Voir mes paris</a>
     </div>
 
-    <script>
-       document.querySelectorAll('.form-pari').forEach(form => {
+    <?php if (isset($_GET['message'])): ?>
+        <div class="alert alert-info"><?= htmlspecialchars($_GET['message']) ?></div>
+    <?php endif; ?>
+
+    <?php if (empty($rencontres)): ?>
+        <p>Aucun match en cours.</p>
+    <?php endif; ?>
+
+    <?php foreach ($rencontres as $tournoi): ?>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <?= htmlspecialchars($tournoi['nom_tournoi']) ?> (<?= htmlspecialchars($tournoi['type']) ?>)
+                </h5>
+                <form method="POST" action="parier.php" class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
+                    <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
+                    <input type="hidden" name="type_pari" value="<?= ($tournoi['type'] === 'equipe') ? 'equipe' : 'solo' ?>">
+                    <input type="hidden" name="cote" value="">
+
+                    <?php
+                    if ($tournoi['type'] === 'equipe') {
+                        $stmt = $bdd->prepare("
+                            SELECT e.id_equipe, e.nom, cp.cote
+                            FROM inscription_tournoi it
+                            JOIN equipe e ON it.id_team = e.id_equipe
+                            LEFT JOIN cote_participant cp 
+                                ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team
+                            WHERE it.id_tournoi = ?
+                            GROUP BY e.id_equipe, e.nom, cp.cote
+                        ");
+                        $stmt->execute([$tournoi['id_tournoi']]);
+                        $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($equipes as $equipe):
+                    ?>
+                        <div class="col-auto">
+                            <label>
+                                <input type="radio" name="id_equipe" value="<?= $equipe['id_equipe'] ?>" data-cote="<?= htmlspecialchars($equipe['cote'] ?? 1) ?>" required>
+                                <?= htmlspecialchars($equipe['nom']) ?>
+                                <span class="badge bg-info text-dark ms-1">
+                                    Cote : <?= htmlspecialchars($equipe['cote'] ?? 1) ?>
+                                </span>
+                            </label>
+                        </div>
+                    <?php endforeach;
+                    } else {
+                        $stmt = $bdd->prepare("
+                            SELECT u.id_utilisateurs, u.pseudo, cp.cote
+                            FROM inscription_tournoi it
+                            JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
+                            LEFT JOIN cote_participant cp 
+                                ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.user_id
+                            WHERE it.id_tournoi = ?
+                        ");
+                        $stmt->execute([$tournoi['id_tournoi']]);
+                        $joueurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($joueurs as $joueur):
+                    ?>
+                        <div class="col-auto">
+                            <label>
+                                <input type="radio" name="id_joueur" value="<?= $joueur['id_utilisateurs'] ?>" data-cote="<?= htmlspecialchars($joueur['cote'] ?? 1) ?>" required>
+                                <?= htmlspecialchars($joueur['pseudo']) ?>
+                                <span class="badge bg-info text-dark ms-1">
+                                    Cote : <?= htmlspecialchars($joueur['cote'] ?? 1) ?>
+                                </span>
+                            </label>
+                        </div>
+                    <?php endforeach;
+                    }
+                    ?>
+
+                    <div class="col-auto">
+                        <input type="number" name="montant" min="1" class="form-control" placeholder="Coins" required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Parier</button>
+                    </div>
+                    <div class="col-12 mt-2">
+                        <div class="alert d-none" role="alert"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+<script>
+document.querySelectorAll('.form-pari').forEach(form => {
     const radios = form.querySelectorAll('input[type="radio"]');
     const hiddenCote = form.querySelector('input[name="cote"]');
 
@@ -147,41 +148,41 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             method: 'POST',
             body: formData
         })
-            .then(resp => resp.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const redirect = doc.querySelector('meta[http-equiv="refresh"]');
-                let msg = 'Pari enregistré avec succès !';
+        .then(resp => resp.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const redirect = doc.querySelector('meta[http-equiv="refresh"]');
+            let msg = 'Pari enregistré avec succès !';
 
-                if (redirect) {
-                    const content = redirect.getAttribute('content');
-                    const url = content.split('url=')[1];
-                    const params = new URLSearchParams(url.split('?')[1]);
-                    msg = decodeURIComponent(params.get('message').replace(/\+/g, ' '));
-                }
+            if (redirect) {
+                const content = redirect.getAttribute('content');
+                const url = content.split('url=')[1];
+                const params = new URLSearchParams(url.split('?')[1]);
+                msg = decodeURIComponent(params.get('message').replace(/\+/g, ' '));
+            }
 
-                alertBox.textContent = msg;
-                alertBox.classList.remove('d-none', 'alert-danger');
-                alertBox.classList.add('alert-success', 'fade-out');
-                setTimeout(() => alertBox.classList.add('hide'), 2000);
-            })
-            .catch(() => {
-                alertBox.textContent = "Erreur lors de l'enregistrement du pari.";
-                alertBox.classList.remove('d-none', 'alert-success');
-                alertBox.classList.add('alert-danger', 'fade-out');
-                setTimeout(() => alertBox.classList.add('hide'), 2000);
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    alertBox.classList.add('d-none');
-                    alertBox.classList.remove('fade-out', 'hide');
-                    btn.disabled = false;
-                    form.reset();
-                }, 2500);
-            });
+            alertBox.textContent = msg;
+            alertBox.classList.remove('d-none', 'alert-danger');
+            alertBox.classList.add('alert-success', 'fade-out');
+            setTimeout(() => alertBox.classList.add('hide'), 2000);
+        })
+        .catch(() => {
+            alertBox.textContent = "Erreur lors de l'enregistrement du pari.";
+            alertBox.classList.remove('d-none', 'alert-success');
+            alertBox.classList.add('alert-danger', 'fade-out');
+            setTimeout(() => alertBox.classList.add('hide'), 2000);
+        })
+        .finally(() => {
+            setTimeout(() => {
+                alertBox.classList.add('d-none');
+                alertBox.classList.remove('fade-out', 'hide');
+                btn.disabled = false;
+                form.reset();
+            }, 2500);
+        });
     });
 });
-    </script>
+</script>
 </body>
 </html>
