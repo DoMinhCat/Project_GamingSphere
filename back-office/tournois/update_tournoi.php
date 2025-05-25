@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_tournoi'])) {
     $statut = trim($_POST['statut']) ?? '';
     $type_tournoi = trim($_POST['type_tournoi']) ?? '';
     $id_edit = $_POST['id_tournoi'];
+    $description = trim($_POST['description']) ?? '';
 
     if (empty($nom_tournoi) || empty($date_debut) || empty($date_fin) || empty($jeu) || empty($statut) || empty($type_tournoi)) {
         header('Location:' . tournois_edit_back . '?error=missing_fields');
@@ -20,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_tournoi'])) {
     }
 
     try {
-        $stmt = $bdd->prepare("UPDATE tournoi SET nom_tournoi=?, date_debut=?, date_fin=?, status_ENUM=?, jeu=?, type=? WHERE id_tournoi = ?");
-        $stmt->execute([$nom_tournoi, $date_debut, $date_fin, $statut, $jeu, $type_tournoi, $id_edit]);
+        $stmt = $bdd->prepare("UPDATE tournoi SET nom_tournoi=?, date_debut=?, date_fin=?, status_ENUM=?, jeu=?, type=?, description=? WHERE id_tournoi = ?");
+        $stmt->execute([$nom_tournoi, $date_debut, $date_fin, $statut, $jeu, $type_tournoi, $id_edit, $description]);
         header('Location:' . tournois_back . '?updated=1');
         exit();
     } catch (PDOException $e) {

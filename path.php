@@ -26,6 +26,7 @@ define('success', '/credits/paiement'); // success.php
 //tournois
 define('tournois_main', '/tournois'); // tournois_main.php
 define('tournois_details', '/tournois/details'); // tournois_details.php
+define('tournois_category', '/tournois/category'); // tournois_category.php
 define('tournois_jeux', '/tournois/jeux'); // tournois_jeux.php
 
 //team

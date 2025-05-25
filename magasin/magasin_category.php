@@ -105,7 +105,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                         alt="<?= htmlspecialchars($game['nom']) ?>"
                                         style="object-fit: cover;">
                                 <?php else: ?>
-                                    <img src="/magasin/img/no_image2.png"
+                                    <img src="/magasin/img/no_image.png"
                                         class="card-img-top w-100 h-100"
                                         alt="Aucune image"
                                         style="object-fit: cover;">

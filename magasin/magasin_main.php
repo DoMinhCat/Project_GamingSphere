@@ -88,7 +88,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php endif; ?>
-
+        <div id="alert-container" class="container mt-3"></div>
         <!-- Content all categories-->
         <div class="container mt-5">
             <!-- Random -->
@@ -286,7 +286,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     setTimeout(() => alertBox.remove(), 5000);
 
                     const panierCount = data.panierCount;
-                    PHP.
                     updatePanierBadge(panierCount);
                 });
             });

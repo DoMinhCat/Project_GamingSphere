@@ -103,6 +103,12 @@ RewriteCond %{THE_REQUEST} \s/tournois/tournois_main\.php [NC]
 RewriteRule ^tournois/tournois_main\.php$ /tournois [R=301,L]
 RewriteRule ^tournois/?$ tournois/tournois_main.php [L]
 
+# tournois_category.php
+
+RewriteCond %{THE_REQUEST} \s/tournois/tournois_category\.php [NC]
+RewriteRule ^tournois/tournois_category\.php$ /tournois/category [R=301,L]
+RewriteRule ^tournois/category/?$ tournois/tournois_category.php [L]
+
 # tournois_details.php
 RewriteCond %{THE_REQUEST} \s/tournois/tournois_details\.php [NC]
 RewriteRule ^tournois/tournois_details\.php$ /tournois/details [R=301,L,QSA]

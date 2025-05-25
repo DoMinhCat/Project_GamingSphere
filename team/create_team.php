@@ -68,6 +68,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         </form>
     </div>
+    <?php include('../include/footer.php'); ?>
 </body>
 
 </html>
