@@ -78,6 +78,9 @@ define('paris_details', '/paris/details'); // paris_details.php
 //easter
 define('easter', '/easter'); // easter.php
 
+//newsletter
+define('unsubscribe', '/unsubscribe'); // unsubscribe.php
+
 
 
 

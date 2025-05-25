@@ -24,6 +24,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         opacity: 1;
         transition: opacity 1s;
     }
+
     .fade-out.hide {
         opacity: 0;
     }
@@ -31,7 +32,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
 <body>
     <?php include('../include/header.php'); ?>
-    <div class="container mt-4">
+    <div class="container my-5">
         <h1 class="mb-4">Matchs e-sport en cours</h1>
         <?php if (isset($_GET['message'])): ?>
             <div class="alert alert-info"><?= htmlspecialchars($_GET['message']) ?></div>
@@ -73,7 +74,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                         </span>
                                     </label>
                                 </div>
-                        <?php
+                            <?php
                             }
                         } else {
                             $stmt = $bdd->prepare("
@@ -86,7 +87,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             $stmt->execute([$tournoi['id_tournoi']]);
                             $joueurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             foreach ($joueurs as $joueur) {
-                        ?>
+                            ?>
                                 <div class="col-auto">
                                     <label>
                                         <input type="radio" name="choix" value="<?= $joueur['id_utilisateurs'] ?>" data-cote="<?= htmlspecialchars($joueur['cote'] ?? 1) ?>" required>
@@ -114,6 +115,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php endforeach; ?>
     </div>
+    <?php include('../include/footer.php'); ?>
+
     <script>
         // Met à jour le champ caché "cote" selon le choix sélectionné
         document.querySelectorAll('.form-pari').forEach(form => {
@@ -181,4 +184,5 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         });
     </script>
 </body>
+
 </html>

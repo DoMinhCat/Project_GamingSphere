@@ -65,6 +65,20 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php } ?>
+    <?php
+    if (isset($_GET['newsletter']) && !empty($_GET['newsletter'])) { ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($_GET['newsletter']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+    <?php
+    if (isset($_GET['error']) && !empty($_GET['error'])) { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($_GET['error']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
 
     <main class="mb-5">
         <div class="carousel-container">
@@ -205,9 +219,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                                 alt="<?= htmlspecialchars($game['nom']) ?>"
                                                 style="height: 200px; object-fit: cover;">
                                         <?php else: ?>
-                                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
-                                                <i class="bi bi-image text-white display-4"></i>
-                                            </div>
+                                            <img src="/magasin/img/no_image2.png"
+                                                class="card-img-top"
+                                                alt="<?= htmlspecialchars($game['nom']) ?>"
+                                                style="height: 200px; object-fit: cover;">
                                         <?php endif; ?>
                                         <div class="position-absolute top-0 end-0 m-2">
                                             <span class="badge bg-primary fs-6"><?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . ' €' : 'Gratuit') ?></span>
@@ -321,18 +336,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?php endif; ?>
                 </div>
 
-                <?php if (!empty($news)): ?>
-                    <div class="text-center mt-5">
-                        <a href="<?= actualite_main ?>" class="btn btn-info btn-lg">
-                            Voir toutes les actualités
-                            <i class="bi bi-arrow-right ms-2"></i>
-                        </a>
-                    </div>
-                <?php endif; ?>
+
             </div>
         </div>
     </main>
     <?php include('include/footer.php'); ?>
+    <script src="tournois/fluid.js"></script>
 </body>
 
 </html>

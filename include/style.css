@@ -755,3 +755,7 @@ body.offcanvas-backdrop {
 .bg-index {
   background-color: #f8f6ef !important;
 }
+
+.dark .bg-index {
+  background-color: #343434 !important;
+}

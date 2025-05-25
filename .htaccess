@@ -284,6 +284,12 @@ RewriteCond %{THE_REQUEST} \s/error_pages/easter\.php [NC]
 RewriteRule ^error_pages/easter\.php$ /easter [R=301,L,QSA]
 RewriteRule ^easter/?$ error_pages/easter.php [L]
 
+# unsubscribe.php (newsletter)
+
+RewriteCond %{THE_REQUEST} \s/newsletter/unsubscribe\.php [NC]
+RewriteRule ^newsletter/easter\.php$ /unsubscribe [R=301,L,QSA]
+RewriteRule ^unsubscribe/?$ newsletter/unsubscribe.php [L]
+
 
 
 
