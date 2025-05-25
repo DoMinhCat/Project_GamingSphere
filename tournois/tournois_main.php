@@ -107,7 +107,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         echo "<div class='col'>
                             <div class='card h-100 shadow-sm'>
                                 <div class='card-body'>
-                                    <h5 class='card-title'>" . htmlspecialchars($tournoi['nom_tournoi']) . "</h5>
+                                    <h5 class='card-title fw-bold text-center mb-3'>" . htmlspecialchars($tournoi['nom_tournoi']) . "</h5>
                                     <p class='card-text'><strong>Jeu :</strong> " . htmlspecialchars($tournoi['jeu']) . "</p>
                                     <p class='card-text'><strong>Date de Début :</strong> " . htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_debut']))) . "</p>
                                     <p class='card-text'><strong>Date de Fin :</strong> " . htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_fin']))) . "</p>

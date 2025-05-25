@@ -109,12 +109,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         </div>
         <div id="bande_sepe"></div>
 
-        <!-- IMPROVED TOURNAMENTS SECTION -->
+        <!-- tournois -->
         <div class="container-fluid py-5">
             <div class="text-center mb-5">
-                <a href="<?= tournois_main ?>" class="text-decoration-none">
-                    <h2 class="display-5 fw-bold text-primary mb-3">
-                        <i class="bi bi-trophy-fill me-3"></i>Tournois en cours
+                <a href="<?= tournois_main ?>" class="text-decoration-none category_news_title">
+                    <h2 class="display-5 fw-bold mb-3">
+                        Tournois en cours
                     </h2>
                     <p class="lead text-muted">Participez aux meilleurs tournois gaming du moment</p>
                 </a>
@@ -123,26 +123,26 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="container">
                 <div class="row g-4">
                     <?php if (!empty($tournois)): ?>
-                        <?php foreach ($tournois as $tournoi): ?>
+                        <?php foreach ($tournois as $tournoi):
+                            $user_id = $_SESSION['user_id'] ?? null;
+                            $is_registered = false;
+                            if ($user_id) {
+                                $check_stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?;");
+                                $check_stmt->execute([$tournoi['id_tournoi'], $user_id]);
+                                $is_registered = $check_stmt->fetchColumn() > 0;
+                            } ?>
                             <div class="col-lg-4 col-md-6 col-sm-12">
                                 <div class='card h-100 shadow-sm border-0'>
-                                    <div class="card-header bg-primary text-white text-center">
-                                        <i class="bi bi-controller me-2"></i>
-                                        <strong>Tournoi Gaming</strong>
-                                    </div>
                                     <div class='card-body'>
                                         <h5 class='card-title fw-bold text-center mb-3'><?= htmlspecialchars($tournoi['nom_tournoi']) ?></h5>
                                         <div class="tournament-info">
                                             <p class='card-text mb-2'>
-                                                <i class="bi bi-joystick text-primary me-2"></i>
                                                 <strong>Jeu :</strong> <?= htmlspecialchars($tournoi['jeu']) ?>
                                             </p>
                                             <p class='card-text mb-2'>
-                                                <i class="bi bi-calendar-event text-success me-2"></i>
                                                 <strong>Début :</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_debut']))) ?>
                                             </p>
                                             <p class='card-text mb-0'>
-                                                <i class="bi bi-calendar-x text-danger me-2"></i>
                                                 <strong>Fin :</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_fin']))) ?>
                                             </p>
                                         </div>
@@ -150,8 +150,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                     <div class='card-footer bg-light text-center'>
                                         <div class="d-flex gap-2 justify-content-center flex-wrap">
                                             <?php
-                                            // Check if user is registered (you'll need to implement this logic)
-                                            $is_registered = false; // Replace with actual registration check
                                             if ($is_registered): ?>
                                                 <button class="btn btn-outline-danger btn-sm desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">
                                                     <i class="bi bi-x-circle"></i> Se désinscrire
@@ -182,13 +180,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         </div>
 
-        <!-- IMPROVED SHOP SECTION -->
+        <!-- Magasin -->
         <div id="bande_sepe"></div>
-        <div class="container-fluid py-5 bg-light">
+        <div class="container-fluid py-5 bg-secondary">
             <div class="text-center mb-5">
-                <a href="<?= magasin_main ?>" class="text-decoration-none">
-                    <h2 class="display-5 fw-bold text-success mb-3">
-                        <i class="bi bi-shop me-3"></i>MAGASIN
+                <a href="<?= magasin_main ?>" class="text-decoration-none category_news_title">
+                    <h2 class="display-5 fw-bold mb-3">
+                        Magasin
                     </h2>
                     <p class="lead text-muted">Découvrez notre sélection des meilleurs jeux</p>
                 </a>
@@ -212,7 +210,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                             </div>
                                         <?php endif; ?>
                                         <div class="position-absolute top-0 end-0 m-2">
-                                            <span class="badge bg-primary fs-6"><?= htmlspecialchars($game['prix']) ?> €</span>
+                                            <span class="badge bg-primary fs-6"><?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . ' €' : 'Gratuit') ?></span>
                                         </div>
                                     </div>
                                     <div class="card-body d-flex flex-column">
@@ -221,10 +219,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                             <div class="d-grid gap-2">
                                                 <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
                                                     class="btn btn-outline-primary">
-                                                    <i class="bi bi-eye me-1"></i>Voir détails
+                                                    Voir détails
                                                 </a>
                                                 <button class="btn btn-success btn-add-to-cart" data-id="<?= $game['id_jeu'] ?>">
-                                                    <i class="bi bi-cart-plus me-1"></i>Ajouter au panier
+                                                    Ajouter au panier
                                                 </button>
                                             </div>
                                         </div>
@@ -245,13 +243,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         </div>
 
-        <!-- IMPROVED NEWS SECTION -->
+        <!-- actualités -->
         <div id="bande_sepe"></div>
         <div class="container-fluid py-5">
             <div class="text-center mb-5">
-                <a href="<?= actualite_main ?>" class="text-decoration-none">
-                    <h2 class="display-5 fw-bold text-info mb-3">
-                        <i class="bi bi-newspaper me-3"></i>Actualités
+                <a href="<?= actualite_main ?>" class="text-decoration-none category_news_title">
+                    <h2 class="display-5 fw-bold mb-3">
+                        Actualités
                     </h2>
                     <p class="lead text-muted">Restez informé des dernières nouvelles gaming</p>
                 </a>
@@ -269,7 +267,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                             <div class="card-header bg-info text-white">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <span class="badge bg-light text-dark">
-                                                        <i class="bi bi-star-fill me-1 text-warning"></i>À la une
+                                                        À la une
                                                     </span>
                                                     <small>
                                                         <i class="bi bi-calendar3 me-1"></i>
@@ -284,7 +282,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                                 <div class="mb-3">
                                                     <span class="text-muted">
                                                         <i class="bi bi-person-circle me-1"></i>
-                                                        par <strong class="text-dark"><?= htmlspecialchars($new['pseudo']) ?></strong>
+                                                        <strong class="text-dark"><?= htmlspecialchars($new['pseudo']) ?></strong>
                                                     </span>
                                                 </div>
                                                 <?php
@@ -299,7 +297,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                                     $contentShow = htmlspecialchars($content);
                                                 }
                                                 ?>
-                                                <p class="card-text text-muted lh-lg"><?= nl2br($contentShow) ?></p>
+                                                <p class="card-text text-dark lh-lg"><?= nl2br($contentShow) ?></p>
                                             </div>
                                             <div class="card-footer bg-transparent">
                                                 <div class="text-end">
@@ -316,7 +314,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?php else: ?>
                         <div class="col-12">
                             <div class="alert alert-info text-center py-4">
-                                <i class="bi bi-newspaper display-4 text-info mb-3"></i>
                                 <h4>Aucune actualité disponible</h4>
                                 <p class="mb-0">Les dernières nouvelles seront publiées bientôt !</p>
                             </div>
@@ -327,7 +324,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php if (!empty($news)): ?>
                     <div class="text-center mt-5">
                         <a href="<?= actualite_main ?>" class="btn btn-info btn-lg">
-                            <i class="bi bi-newspaper me-2"></i>
                             Voir toutes les actualités
                             <i class="bi bi-arrow-right ms-2"></i>
                         </a>
