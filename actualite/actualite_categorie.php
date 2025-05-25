@@ -105,7 +105,20 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                     <?= htmlspecialchars($new['titre']) ?>
                                 </h2>
                                 <p class="mb-0"><?= $new['date_article'] ?> par <strong><?= htmlspecialchars($new['pseudo']) ?></strong></p>
-                                <p><?= nl2br(htmlspecialchars($new['contenue'])) ?></p>
+                                <?php $maxLength = 100;
+                                $content = strip_tags($new['contenue']);
+                                if (mb_strlen($content) > $maxLength) {
+                                    $trimmed = mb_substr($content, 0, $maxLength);
+                                    $lastSpace = mb_strrpos($trimmed, ' ');
+                                    $trimmed = mb_substr($trimmed, 0, $lastSpace);
+                                    $contentShow = htmlspecialchars($trimmed . '...');
+                                } else {
+                                    $contentShow = htmlspecialchars($content);
+                                }
+                                ?>
+                                <p><?= nl2br($contentShow) ?></p>
+
+
                             </div>
                         </a>
                     </div>

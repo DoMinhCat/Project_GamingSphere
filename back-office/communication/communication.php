@@ -73,9 +73,9 @@ if (!empty($_GET['delete_bad'])) {
 }
 
 if (isset($_POST['add_mot'])) {
-    $word = strtolower(trim($_POST['add_mot']));
+    $word = strtolower(trim($_POST['mot']));
     try {
-        $query = $bdd->prepare("INSERT INTO mots_interdits(mot) VALUES (?);");
+        $query = $bdd->prepare("INSERT INTO mots_interdits (mot) VALUES (?);");
         $query->execute([$word]);
 
         header('Location:' . communication_back . '?message=add_success');
