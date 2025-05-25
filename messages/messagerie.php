@@ -53,14 +53,14 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
 <body>
     <?php include('../include/header.php'); ?>
-    <div class="container my-4">
+    <div class="container my-5">
         <h2 class="mb-4 text-center">Messagerie</h2>
 
         <?php if (!empty($conversations)): ?>
             <div class="list-group">
                 <?php foreach ($conversations as $conversation): ?>
                     <a href="<?= conversation . '?user=' . $conversation['id_utilisateurs'] ?>" class="list-group-item list-group-item-action d-flex align-items-center">
-                        <img src="/<?= htmlspecialchars($conversation['photo_profil'] ?: 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="Profil" class="rounded-circle me-3" width="50" height="50">
+                        <img src="/profil/<?= ($conversation['photo_profil'] ? htmlspecialchars($conversation['photo_profil']) : 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="Profil" class="rounded-circle me-3" width="50" height="50">
                         <span><?= htmlspecialchars($conversation['pseudo']) ?></span>
                     </a>
                 <?php endforeach; ?>

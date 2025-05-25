@@ -36,14 +36,15 @@ require('../head.php');
             $jeu = trim($_POST['jeu']) ?? '';
             $statut = trim($_POST['statut']) ?? '';
             $type_tournoi = trim($_POST['type_tournoi']) ?? '';
+            $description = trim($_POST['description']) ?? '';
 
             if (empty($nom_tournoi) || empty($date_debut) || empty($date_fin) || empty($jeu) || empty($statut) || empty($type_tournoi)) {
                 header('location:' . tournois_add_back . '?message=' . urlencode('Il faut remplir tous les champs nécessaires !'));
                 exit();
             } else {
                 try {
-                    $stmt = $bdd->prepare("INSERT INTO tournoi (nom_tournoi, date_debut, date_fin, jeu, status_ENUM, type) VALUES (?, ?, ?, ?, ?, ?)");
-                    $stmt->execute([$nom_tournoi, $date_debut, $date_fin, $jeu, $statut, $type_tournoi]);
+                    $stmt = $bdd->prepare("INSERT INTO tournoi (nom_tournoi, date_debut, date_fin, jeu, status_ENUM, type, description) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([$nom_tournoi, $date_debut, $date_fin, $jeu, $statut, $type_tournoi, $description]);
                     header('Location:' . tournois_back . '?message=tournoi_added');
                     exit();
                 } catch (PDOException $e) {
@@ -70,6 +71,10 @@ require('../head.php');
             <div class="mb-3">
                 <label for="jeu" class="form-label">Jeu</label>
                 <input type="text" class="form-control" id="jeu" name="jeu" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea rows="2" class="form-control" id="description" name="description"></textarea>
             </div>
             <div class="mb-3">
                 <label for="statut" class="form-label">Statut</label>

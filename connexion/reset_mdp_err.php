@@ -11,8 +11,6 @@ if (!empty($_SESSION['user_email'])) {
 <html lang="fr">
 <?php
 $title = 'Erreur de réinitialisation du mot de passe';
-$pageCategory = 'connexion';
-echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php')
 ?>
 

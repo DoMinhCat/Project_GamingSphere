@@ -44,7 +44,7 @@
             $stmt = $bdd->prepare("INSERT INTO forum_reponses (id_sujet, contenu, auteur) VALUES (?, ?, ?)");
             $stmt->execute([$id_sujet, $contenu_reponse, $auteur]);
 
-            header('Location: ' . sujet . '?id=' . $id_sujet);
+            header('Location: ' . sujet . '?id=' . $id_sujet . '&category=' . $categorie_nom);
             exit;
         } catch (PDOException) {
             header('Location:' . forum_main . '?message=' . urlencode('Erreur lors de l\'ajoute de la réponse !'));
@@ -63,7 +63,7 @@
         <div class="container my-5">
 
 
-            <div class="mb-4 mt-5">
+            <div class="mb-4">
                 <a href="<?= forum_category . '?nom=' . $sujet['categories'] ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
                     <i class="bi bi-chevron-left"></i>
                     <h1 class="m-0"><?= htmlspecialchars($categorie_nom) ?></h1>
@@ -74,7 +74,7 @@
 
             <div class="mb-5">
                 <div class="p-3 border rounded card m-0">
-                    <p><?= nl2br(htmlspecialchars($sujet['contenu'] ?? '')) ?></p>
+                    <p><?= nl2br(htmlspecialchars($sujet['contenu'])) ?></p>
                     <p class="text-muted text-end">Posté par <?= htmlspecialchars($sujet['auteur']) ?> le <?= date("d/m/Y à H:i", strtotime($sujet['date_msg'])) ?></p>
                 </div>
             </div>
@@ -94,15 +94,17 @@
             <?php endif; ?>
 
             <h4 class="mt-5 mb-3">Ajouter une réponse</h4>
-            <form method="post">
-                <div class="mb-4">
-                    <textarea name="contenu" class="form-control" rows="4" placeholder="Votre message..." required></textarea>
+            <form action="" method="post">
+                <div class="mb-2">
+                    <textarea name="contenu" id="content" class="form-control" rows="4" placeholder="Votre message..." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Envoyer</button>
             </form>
         </div>
 
         <?php include("../include/footer.php"); ?>
+
+
     </body>
 
     </html>

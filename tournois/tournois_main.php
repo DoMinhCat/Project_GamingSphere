@@ -31,6 +31,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     Vous êtes déjà inscrit à ce tournoi.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
+            <?php elseif ($_GET['message'] === 'bdd'): ?>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Erreur de la base de données, veuillez réessayer plus tard ! <?= $_GET['err'] ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             <?php elseif ($_GET['message'] === 'missing_id'): ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     ID du tournoi manquant.
@@ -38,7 +43,14 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             <?php endif; ?>
         <?php endif; ?>
-        <div class="mb-4 text-center">
+
+        <?php if (isset($_GET['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_GET['error']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif ?>
+        <div class="mb-4 mt-2 text-center">
             <?php
             $user_id = $_SESSION['user_id'] ?? null;
 
@@ -56,30 +68,32 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <a href="<?= team_details ?>?id_equipe=<?= htmlspecialchars($team['id_equipe']) ?>" class="btn btn-primary mb-2">
                         Voir les détails de votre équipe : <?= htmlspecialchars($team['nom_equipe']) ?>
                     </a>
-                    <a href="<?= create_team ?>" class="btn btn-secondary mb-2">Créer une autre équipe</a>
+                    <a href="<?= create_team ?>" class="btn btn-warning mb-2">Créer une autre équipe</a>
+                    <a href="<?= team_list ?>" class="btn btn-primary mb-2">Voir les équipes</a>
                 <?php else: ?>
                     <a href="../team/join_team.php" class="btn btn-success">Rejoindre une équipe</a>
-                    <a href="<?= create_team ?>" class="btn btn-secondary">Créer une équipe</a>
+                    <a href="<?= create_team ?>" class="btn btn-warning">Créer une équipe</a>
+                    <a href="<?= team_list ?>" class="btn btn-primary mb-2">Voir les équipes</a>
             <?php endif;
-            } else {
-                echo "<div class='alert alert-warning'>Vous devez être connecté pour gérer vos équipes.</div>";
             }
             ?>
         </div>
         <?php
-        function afficherTournois($bdd, $type_tournoi, $statut, $titre)
+        function afficherTournois($bdd, $type_tournoi, $statut, $titre, $category)
         {
             try {
                 $stmt = $bdd->prepare("
                 SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu 
                 FROM tournoi 
                 WHERE type = ? AND status_ENUM = ? 
-                ORDER BY date_debut DESC
+                ORDER BY date_debut DESC LIMIT 6;
             ");
                 $stmt->execute([$type_tournoi, $statut]);
                 $tournois = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                echo "<h2 class='mt-5'>$titre</h2>";
+                echo '<a href="' . tournois_category . '?category=' . $category . '" class="category_news_title">
+                    <h1 class="mt-5">' . $titre . '</h1>
+                </a>';
 
                 if (count($tournois) > 0) {
                     echo "<div class='row row-cols-1 row-cols-md-3 g-4'>";
@@ -87,7 +101,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         $user_id = $_SESSION['user_id'] ?? null;
                         $is_registered = false;
                         if ($user_id) {
-                            $check_stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
+                            $check_stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?;");
                             $check_stmt->execute([$tournoi['id_tournoi'], $user_id]);
                             $is_registered = $check_stmt->fetchColumn() > 0;
                         }
@@ -96,8 +110,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <div class='card-body'>
                                     <h5 class='card-title'>" . htmlspecialchars($tournoi['nom_tournoi']) . "</h5>
                                     <p class='card-text'><strong>Jeu :</strong> " . htmlspecialchars($tournoi['jeu']) . "</p>
-                                    <p class='card-text'><strong>Date de Début :</strong> " . htmlspecialchars($tournoi['date_debut']) . "</p>
-                                    <p class='card-text'><strong>Date de Fin :</strong> " . htmlspecialchars($tournoi['date_fin']) . "</p>
+                                    <p class='card-text'><strong>Date de Début :</strong> " . htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_debut']))) . "</p>
+                                    <p class='card-text'><strong>Date de Fin :</strong> " . htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_fin']))) . "</p>
                                 </div>
                                 <div class='card-footer text-center'>";
                         if ($is_registered): ?>
@@ -123,12 +137,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 echo "<div class='alert alert-danger'>Erreur lors de la récupération des tournois : " . htmlspecialchars($e->getMessage()) . "</div>";
             }
         }
-        afficherTournois($bdd, 'solo', 'en cours', 'Tournois solo en cours');
-        afficherTournois($bdd, 'Équipe', 'en cours', 'Tournois en équipe en cours');
-        afficherTournois($bdd, 'solo', 'en attente', 'Tournois solo en attente');
-        afficherTournois($bdd, 'Équipe', 'en attente', 'Tournois en équipe en attente');
-        afficherTournois($bdd, 'solo', 'terminé', 'Tournois solo terminés');
-        afficherTournois($bdd, 'Équipe', 'terminé', 'Tournois en équipe terminés');
+        afficherTournois($bdd, 'solo', 'en cours', 'Tournois solo en cours', 'solo_encours');
+        afficherTournois($bdd, 'Équipe', 'en cours', 'Tournois en équipe en cours', 'equipe_encours');
+        afficherTournois($bdd, 'solo', 'en attente', 'Tournois solo en attente', 'solo_attente');
+        afficherTournois($bdd, 'Équipe', 'en attente', 'Tournois en équipe en attente', 'equipe_attente');
+        afficherTournois($bdd, 'solo', 'terminé', 'Tournois solo terminés', 'solo_termine');
+        afficherTournois($bdd, 'Équipe', 'terminé', 'Tournois en équipe terminés', 'equipe_termine');
         ?>
     </main>
 

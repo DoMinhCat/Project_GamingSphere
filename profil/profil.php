@@ -93,7 +93,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             ?>
         </div>
     <?php endif; ?>
-    <div class="container my-5">
+    <main class="container my-5">
         <?php if (!empty($user['photo_profil'])): ?>
             <div class="text-center mb-3">
                 <img src="<?php echo htmlspecialchars($user['photo_profil']); ?>" alt="Photo de profil de <?php echo htmlspecialchars($user['pseudo']); ?>" class="img-fluid" style="max-width: 150px; border-radius: 30%;">
@@ -107,5 +107,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <button type="submit" class="btn btn-primary">Ajouter en ami</button>
             </form>
         <?php endif; ?>
-    </div>
+    </main>
+    <?php include('../include/footer.php'); ?>
 </body>

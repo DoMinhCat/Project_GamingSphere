@@ -10,8 +10,6 @@ if (!empty($_SESSION['user_email'])) {
 <html lang="fr">
 <?php
 $title = 'Se connecter';
-$pageCategory = 'connexion';
-echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php')
 ?>
 

@@ -101,9 +101,9 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
           <a href="<?= panier ?>" class="btn btn-outline-dark d-flex align-items-center ms-3">
             <i class="bi bi-cart-fill"></i>
             <?php if ($panierCount > 0): ?>
-              <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-2 rounded-circle panier-badge"><?= $panierCount ?></span>
+              <span class="position-relative top-0 start-100 translate-middle badge rounded-pill bg-danger"><?= $panierCount ?></span>
             <?php else: ?>
-              <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-2 rounded-circle panier-badge" style="display:none;"></span>
+              <span class="position-relative top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display:none;"></span>
             <?php endif; ?>
           </a>
           <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
@@ -130,15 +130,17 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
           <a class="nav-link lato16 px-2 py-1 <?= ($this_page == 'index.php') ? 'active' : '' ?>" href="<?= index_front ?>" style="color: #F5F0E1 !important;">
             Accueil
           </a>
-          <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php' || $this_page == 'game_info.php') ? 'active' : '' ?>" href="<?= magasin_main ?>" style="color: #F5F0E1 !important;">
+          <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php' || $this_page == 'game_info.php' || $this_page == 'magasin_category.php') ? 'active' : '' ?>" href="<?= magasin_main ?>" style="color: #F5F0E1 !important;">
             Magasin
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php' || $this_page == 'tournois_details.php' || $this_page == 'tournois_jeux.php' || $this_page == 'team_details.php' || $this_page == 'team_list.php') ? 'active' : '' ?>" href="<?= tournois_main ?>" style="color: #F5F0E1 !important;">
+          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php' || $this_page == 'create_team.php' || $this_page == 'tournois_category.php' || $this_page == 'tournois_details.php' || $this_page == 'tournois_jeux.php' || $this_page == 'team_details.php' || $this_page == 'team_list.php') ? 'active' : '' ?>" href="<?= tournois_main ?>" style="color: #F5F0E1 !important;">
             Tournois
           </a>
-          <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'paris_main.php') ? 'active' : '' ?>" href="<?= paris_main ?>" style="color: #F5F0E1 !important;">
-            Paris
-          </a>
+          <?php if (!empty($_SESSION['user_id'])) { ?>
+            <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'paris_main.php') ? 'active' : '' ?>" href="<?= paris_main ?>" style="color: #F5F0E1 !important;">
+              Paris
+            </a>
+          <?php } ?>
           <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php' || $this_page == 'actualite_article.php' || $this_page == 'actualite_categorie.php') ? 'active' : '' ?>" href="<?= actualite_main ?>" style="color: #F5F0E1 !important;">
             Actualités
           </a>
@@ -416,15 +418,17 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                   <a class="nav-link lato16 px-2 py-1 <?= ($this_page == 'index.php') ? 'active' : '' ?>" href="<?= index_front ?>" style="color: #F5F0E1 !important;">
                     Accueil
                   </a>
-                  <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php' || $this_page == 'game_info.php') ? 'active' : '' ?>" href="<?= magasin_main ?>" style="color: #F5F0E1 !important;">
+                  <a class="nav-link ms-4 lato16 px-2 py-1 <?= ($this_page == 'magasin_main.php' || $this_page == 'magasin_category.php' || $this_page == 'game_info.php') ? 'active' : '' ?>" href="<?= magasin_main ?>" style="color: #F5F0E1 !important;">
                     Magasin
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php' || $this_page == 'tournois_details.php' || $this_page == 'tournois_jeux.php' || $this_page == 'team_details.php' || $this_page == 'team_list.php') ? 'active' : '' ?>" href="<?= tournois_main ?>" style="color: #F5F0E1 !important;">
+                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'tournois_main.php' || $this_page == 'create_team.php' || $this_page == 'tournois_details.php' || $this_page == 'tournois_jeux.php' || $this_page == 'tournois_category.php' || $this_page == 'team_details.php' || $this_page == 'team_list.php') ? 'active' : '' ?>" href="<?= tournois_main ?>" style="color: #F5F0E1 !important;">
                     Tournois
                   </a>
-                  <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'paris_main.php') ? 'active' : '' ?>" href="<?= paris_main ?>" style="color: #F5F0E1 !important;">
-                    Communauté
-                  </a>
+                  <?php if (!empty($_SESSION['user_id'])) { ?>
+                    <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'paris_main.php') ? 'active' : '' ?>" href="<?= paris_main ?>" style="color: #F5F0E1 !important;">
+                      Communauté
+                    </a>
+                  <?php } ?>
                   <a class="nav-link lato16 ms-4 px-2 py-1 <?= ($this_page == 'actualite_main.php' || $this_page == 'actualite_article.php' || $this_page == 'actualite_categorie.php') ? 'active' : '' ?>" href="<?= actualite_main ?>" style="color: #F5F0E1 !important;">
                     Actualités
                   </a>

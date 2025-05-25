@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $messageErreur = "Veuillez remplir tous les champs.";
     } else {
         try {
-            $stmt = $bdd->prepare("INSERT INTO forum_sujets (titre, contenu, date_msg, categories, parent_id, auteur) VALUES (?, ?, NOW(), ?, NULL, ?);");
+            $stmt = $bdd->prepare("INSERT INTO forum_sujets (titre, contenu, date_msg, categories, auteur) VALUES (?, ?, NOW(), ?, NULL, ?);");
             $stmt->execute([$titre, $contenu, $categorie_nom, $auteur]);
 
             header('Location:' . forum_category . '?nom=' . urlencode($categorie_nom) . '&success=' . urlencode('Sujet ajouté !'));
@@ -104,7 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             counter.textContent = `${textarea.value.length} / 1000`;
         }
 
-        // Met à jour les deux compteurs au chargement (utile si champs déjà remplis)
         document.addEventListener("DOMContentLoaded", () => {
             updateCounter();
             updateContentCounter();

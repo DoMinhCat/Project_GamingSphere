@@ -13,8 +13,6 @@ require_once('../include/database.php');
 
 <?php
 $title = 'S\'inscrire';
-$pageCategory = 'connexion';
-echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
 $error = isset($_GET['error']) ? $_GET['error'] : "";
 

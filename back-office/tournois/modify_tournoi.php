@@ -65,11 +65,15 @@ require('../head.php');
                 <input type="text" class="form-control" id="jeu" name="jeu" value="<?= $tournois['jeu'] ?>" required>
             </div>
             <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea rows="2" class="form-control" id="description" name="description"><?= $tournois['description'] ?></textarea>
+            </div>
+            <div class="mb-3">
                 <label for="statut" class="form-label">Statut</label>
                 <select class="form-select" id="statut" name="statut" required>
-                    <option value="En attente" <?= $tournois['statut_ENUM'] === 'En attente' ? 'selected' : '' ?>>En attente</option>
-                    <option value="En cours" <?= $tournois['statut_ENUM'] === 'En cours' ? 'selected' : '' ?>>En cours</option>
-                    <option value="Terminé" <?= $tournois['statut_ENUM'] === 'Terminé' ? 'selected' : '' ?>>Terminé</option>
+                    <option value="En attente" <?= $tournois['status_ENUM'] === 'En attente' ? 'selected' : '' ?>>En attente</option>
+                    <option value="En cours" <?= $tournois['status_ENUM'] === 'En cours' ? 'selected' : '' ?>>En cours</option>
+                    <option value="Terminé" <?= $tournois['status_ENUM'] === 'Terminé' ? 'selected' : '' ?>>Terminé</option>
                 </select>
             </div>
             <div class="mb-4">

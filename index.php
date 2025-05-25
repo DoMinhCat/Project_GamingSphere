@@ -178,7 +178,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
 
         <?php
-        $stmt = $bdd->query("SELECT nom, prix, image FROM jeu");
+        $stmt = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu");
         $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
         <div id="bande_sepe"></div>
@@ -201,7 +201,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <?php if (!empty($game['image'])): ?>
                                 <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
                             <?php else: ?>
-                                <img src="../../assets/img/no_image.png" class="card-img-top" alt="Aucune image">
+                                <img src="/magasin/img/no_image.png" class="card-img-top" alt="Aucune image">
                             <?php endif; ?>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>

@@ -6,16 +6,16 @@ require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gameId'])) {
-    $gameId = htmlspecialchars($_POST['gameId']);
-    $category = htmlspecialchars($_POST['category']);
-    $releaseDate = htmlspecialchars($_POST['releaseDate']);
-    $gameName = htmlspecialchars($_POST['gameName']);
-    $gameRating = htmlspecialchars($_POST['gameRating']);
-    $platform = htmlspecialchars($_POST['platform']);
-    $gamePrice = htmlspecialchars($_POST['gamePrice']);
-    $gameType = htmlspecialchars($_POST['gameType']);
-    $gamePublisher = htmlspecialchars($_POST['gamePublisher']);
-    $gameDescription = htmlspecialchars($_POST['gameDescription']);
+    $gameId = $_POST['gameId'];
+    $category = $_POST['category'];
+    $releaseDate = $_POST['releaseDate'];
+    $gameName = $_POST['gameName'];
+    $gameRating = $_POST['gameRating'];
+    $platform = $_POST['platform'];
+    $gamePrice = $_POST['gamePrice'];
+    $gameType = $_POST['gameType'];
+    $gamePublisher = $_POST['gamePublisher'];
+    $gameDescription = $_POST['gameDescription'];
 
     $imagePath = null;
 

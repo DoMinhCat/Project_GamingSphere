@@ -28,10 +28,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif ?>
-        <h1 class="mt-5 mb-4">Forum - Catégories</h1>
+        <h1 class="mt-5 mb-4 text-center">Forum - Catégories</h1>
         <?php
         try {
-            $query = $bdd->query("SELECT DISTINCT categories FROM forum_sujets WHERE parent_id IS NULL");
+            $query = $bdd->query("SELECT DISTINCT categories FROM forum_sujets");
         } catch (PDOException) {
             header('location:' . index_front . '?message=bdd');
             exit;
@@ -41,11 +41,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             try {
                 $categorie = $row['categories'];
 
-                $stmt = $bdd->prepare("SELECT COUNT(*) FROM forum_sujets WHERE categories = ? AND parent_id IS NULL");
+                $stmt = $bdd->prepare("SELECT COUNT(*) FROM forum_sujets WHERE categories = ?");
                 $stmt->execute([$categorie]);
                 $nb_sujets = $stmt->fetchColumn();
 
-                $stmt = $bdd->prepare("SELECT id_sujet FROM forum_sujets WHERE categories = ? AND parent_id IS NULL");
+                $stmt = $bdd->prepare("SELECT id_sujet FROM forum_sujets WHERE categories = ?");
                 $stmt->execute([$categorie]);
                 $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
 

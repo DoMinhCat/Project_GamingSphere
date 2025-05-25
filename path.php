@@ -15,6 +15,7 @@ define('status_verify', '/connexion/status_verify'); // status_verify.php
 //magasin
 define('magasin_main', '/magasin'); // magasin_main.php
 define('magasin_game', '/magasin/game'); // game_info.php
+define('magasin_category', '/magasin/category'); // magasin_category.php
 
 //credits
 define('add_credits', '/credits/add'); // add_credits.php
@@ -25,6 +26,7 @@ define('success', '/credits/paiement'); // success.php
 //tournois
 define('tournois_main', '/tournois'); // tournois_main.php
 define('tournois_details', '/tournois/details'); // tournois_details.php
+define('tournois_category', '/tournois/category'); // tournois_category.php
 define('tournois_jeux', '/tournois/jeux'); // tournois_jeux.php
 
 //team
@@ -71,6 +73,8 @@ define('search', '/include/search'); // search.php
 define('paris_main', '/paris'); // paris_main.php
 define('parier', '/paris/parier'); // parier.php
 
+//easter
+define('easter', '/easter'); // easter.php
 
 
 

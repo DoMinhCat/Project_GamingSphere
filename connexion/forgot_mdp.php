@@ -11,8 +11,6 @@ if (!empty($_SESSION['user_email'])) {
 
 <?php
 $title = 'Mot de passe oublié';
-$pageCategory = 'connexion';
-echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
 ?>
 

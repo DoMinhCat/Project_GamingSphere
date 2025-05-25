@@ -78,7 +78,7 @@ require('../head.php');
 
                 <div class="mb-3">
                     <label for="gameRating" class="form-label">Note du jeu</label>
-                    <input type="number" step="0.1" class="form-control" id="gameRating" name="gameRating" value="<?php echo htmlspecialchars($game['note_jeu'] ?? ''); ?>" required>
+                    <input type="number" step="0.1" min="0" max="5" class="form-control" id="gameRating" name="gameRating" value="<?php echo htmlspecialchars($game['note_jeu'] ?? ''); ?>" required>
                 </div>
 
                 <div class="mb-3">
@@ -101,9 +101,9 @@ require('../head.php');
                     <input type="text" class="form-control" id="gamePublisher" name="gamePublisher" value="<?php echo htmlspecialchars($game['éditeur'] ?? ''); ?>" required>
                 </div>
 
-                <div class="mb-2">
+                <div class="mb-3">
                     <label for="gameDescription" class="form-label">Description:</label>
-                    <input type="text" id="gameDescription" name="gameDescription" class="form-control" value="<?php echo htmlspecialchars($game['description'] ?? ''); ?>" required>
+                    <textarea rows="3" id="gameDescription" name="gameDescription" class="form-control" value="<?php echo htmlspecialchars($game['description'] ?? ''); ?>" required></textarea>
                 </div>
 
                 <div class="mb-3">

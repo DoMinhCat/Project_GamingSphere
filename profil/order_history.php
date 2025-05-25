@@ -61,8 +61,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php endif; ?>
 
         <div class="text-center mt-5">
-            <a href="../jeux/index.php" class="btn btn-primary">🕹️ Parcourir les jeux</a>
-            <a href="../profil.php" class="btn btn-secondary">👤 Retour au profil</a>
+            <a href="<?= magasin_main ?>" class="btn btn-primary">🕹️ Parcourir les jeux</a>
+            <a href="../profil.php" class="btn btn-secondary">Retour au profil</a>
         </div>
     </div>
 

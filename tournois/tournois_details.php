@@ -16,7 +16,7 @@ if (!isset($_GET['id_tournoi']) || empty($_GET['id_tournoi'])) {
 $id_tournoi = intval($_GET['id_tournoi']);
 
 try {
-    $stmt = $bdd->prepare("SELECT id_tournoi, nom_tournoi, date_debut, date_fin, jeu, status_ENUM FROM tournoi WHERE id_tournoi = ?");
+    $stmt = $bdd->prepare("SELECT * FROM tournoi WHERE id_tournoi = ?");
     $stmt->execute([$id_tournoi]);
     $tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -53,17 +53,35 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <?php include('../include/header.php'); ?>
 
     <div class="container my-5">
-        <h1 class="mb-4 text-center">Détails du Tournoi</h1>
+        <h1 class="mb-5 text-center">Détails du Tournoi</h1>
 
-        <div class="card shadow-sm">
+        <div class="card shadow-sm mb-4">
             <div class="card-body">
-                <h2 class="card-title"><?= htmlspecialchars($tournoi['nom_tournoi']) ?></h2>
-                <p class="card-text"><strong>Jeu :</strong> <?= htmlspecialchars($tournoi['jeu']) ?></p>
-                <p class="card-text"><strong>Date de Début :</strong> <?= htmlspecialchars($tournoi['date_debut']) ?></p>
-                <p class="card-text"><strong>Date de Fin :</strong> <?= htmlspecialchars($tournoi['date_fin']) ?></p>
-                <p class="card-text"><strong>Statut :</strong> <?= htmlspecialchars($tournoi['status_ENUM']) ?></p>
+                <h2 class="card-title mb-5 text-center"><?= htmlspecialchars($tournoi['nom_tournoi']) ?></h2>
+
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <p class="card-text mb-1"><strong>Jeu :</strong> <?= htmlspecialchars($tournoi['jeu']) ?></p>
+                        <p class="card-text mb-1"><strong>Date de Début :</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_debut']))) ?></p>
+                        <p class="card-text mb-1"><strong>Date de Fin :</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_fin']))) ?></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="card-text mb-1"><strong>Type :</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($tournoi['type']))) ?></p>
+                        <p class="card-text mb-1"><strong>Statut :</strong> <?= htmlspecialchars($tournoi['status_ENUM']) ?></p>
+                    </div>
+                </div>
+
+                <?php if (!empty($tournoi['description'])): ?>
+                    <div class="card-footer bg-light">
+                        <h5 class="mb-3"><i class="bi bi-info-circle"></i> Description</h5>
+                        <p class="card-text mb-0">
+                            <?= nl2br(htmlspecialchars($tournoi['description'])) ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
             </div>
-            <div class="card-footer text-center">
+
+            <div class="card-footer d-flex justify-content-center gap-2">
                 <a href="<?= tournois_main ?>" class="btn btn-secondary">Retour à la liste</a>
                 <?php if ($is_registered): ?>
                     <button class="btn btn-danger desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Se désinscrire</button>
@@ -72,6 +90,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php endif; ?>
             </div>
         </div>
+
     </div>
     <script src="/tournois/fluid.js"></script>
     <?php include('../include/footer.php'); ?>

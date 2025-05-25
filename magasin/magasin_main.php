@@ -3,19 +3,32 @@ session_start();
 require('../include/check_timeout.php');
 require('../include/database.php');
 require_once __DIR__ . '/../path.php';
+try {
+    $stmt = $bdd->query("SELECT * FROM jeu ORDER BY RAND() LIMIT 3;");
+    $carouselGames = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu LIMIT 3");
-$carouselGames = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $meilleurs = $bdd->query("SELECT * FROM jeu ORDER BY note_jeu DESC LIMIT 3;");
+    $games = $meilleurs->fetchAll(PDO::FETCH_ASSOC);
 
-$stmtAllGames = $bdd->query("SELECT id_jeu, nom, prix, image FROM jeu");
-$games = $stmtAllGames->fetchAll(PDO::FETCH_ASSOC);
+    $nouveaux = $bdd->query("SELECT * FROM jeu ORDER BY date_sortie DESC LIMIT 3;");
+    $new_games = $nouveaux->fetchAll(PDO::FETCH_ASSOC);
+
+    $gratuits = $bdd->query("SELECT * FROM jeu WHERE prix=0 LIMIT 3;");
+    $free_games = $gratuits->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $bdd->query("SELECT * FROM jeu ORDER BY RAND() LIMIT 3;");
+    $random_games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException) {
+    header('location:' . index_front . '?message=bdd');
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 
 <?php
-$title = 'Boutique';
+$title = 'Magasin';
 $pageCategory = 'magasin';
 echo "<script>const pageCategory = '$pageCategory';</script>";
 include('../include/head.php');
@@ -25,25 +38,24 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 ?>
 
 <body>
-    <?php include('../include/header.php');
-    if (isset($_GET['message']) && $_GET['message'] == 'bdd') { ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            Erreur de la base de données, veuillez reéssayer plus tard ! !
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php } elseif (!empty($_GET['error'])) { ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= htmlspecialchars($_GET['error']) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php }  ?>
+    <?php include('../include/header.php'); ?>
 
-    <main class="container mt-2 mb-5">
-        <h1 class="text-center mb-4">Boutique de jeux</h1>
+    <main class="mb-5">
+        <?php if (isset($_GET['message']) && $_GET['message'] == 'bdd') { ?>
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                Erreur de la base de données, veuillez reéssayer plus tard !
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php } elseif (!empty($_GET['error'])) { ?>
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                <?= htmlspecialchars($_GET['error']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php } ?>
 
         <?php if (count($carouselGames) > 0): ?>
             <div class="d-flex justify-content-center mb-5">
-                <div class="carousel-container mx-auto" style="max-width: 800px;">
+                <div class="carousel-container mx-auto" style="width: 100%;">
                     <div id="gameCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
                         <div class="carousel-indicators">
                             <?php foreach ($carouselGames as $index => $game): ?>
@@ -54,14 +66,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <?php foreach ($carouselGames as $index => $game): ?>
                                 <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
                                     <?php if (!empty($game['image'])): ?>
-                                        <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="d-block w-100" alt="<?= htmlspecialchars($game['nom']) ?>" style="height: 400px; object-fit: cover;">
+                                        <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" onclick="window.location.href='<?= magasin_game . '?id=' . $game['id_jeu'] ?>'" class="d-block w-100" alt="<?= htmlspecialchars($game['nom']) ?>" style="height: 400px; object-fit: contain;">
                                     <?php else: ?>
-                                        <!-- fix link img here (no dossier assets, ../../ -> tu sors du dossier root PA) -->
-                                        <img src="../../assets/img/no_image.png" class="d-block w-100" alt="Aucune image" style="height: 400px; object-fit: cover;">
+                                        <img src="/magasin/img/no_image2.png" class="d-block w-100" alt="Aucune image" onclick="window.location.href='<?= magasin_game . '?id=' . $game['id_jeu'] ?>'" style="height: 400px; object-fit: contain;">
                                     <?php endif; ?>
                                     <div class="carousel-caption d-none d-md-block">
                                         <h5><?= htmlspecialchars($game['nom']) ?></h5>
-                                        <p><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -78,28 +88,182 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
             </div>
         <?php endif; ?>
-
-        <h2 class="mb-3 text-center">Tous les jeux</h2>
-        <div class="row">
-            <?php foreach ($games as $game): ?>
-                <div class="col-md-4 mb-4 d-flex align-items-stretch">
-                    <div class="card shadow-sm w-100 d-flex flex-column">
-                        <?php if (!empty($game['image'])): ?>
-                            <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
-                        <?php else: ?>
-                            <img src="../../assets/img/no_image.png" class="card-img-top" alt="Aucune image">
-                        <?php endif; ?>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
-                            <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                            <div class="mt-auto d-flex justify-content-between gap-2 align-items-center">
-                                <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>" class="btn btn-magasin btn-outline-primary w-50 mt-3 h-50">Voir détails</a>
-                                <button class="btn btn-magasin btn-success mt-3 btn-add-to-cart h-50" data-id="<?= $game['id_jeu'] ?>">Ajouter au panier</button>
+        <div id="alert-container" class="container mt-3"></div>
+        <!-- Content all categories-->
+        <div class="container mt-5">
+            <!-- Random -->
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= magasin_category . '?category=random' ?>" class="mb-3 category_news_title">
+                    <h1>Découvrir un nouveau jeu</h1>
+                </a>
+                <div class="row">
+                    <?php foreach ($random_games as $game): ?>
+                        <div class="col-md-4 mb-4 d-flex align-items-stretch px-0">
+                            <div class="card shadow-sm w-100 d-flex flex-column">
+                                <?php if (!empty($game['image'])): ?>
+                                    <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
+                                <?php else: ?>
+                                    <img src="/magasin/img/no_image2.png" class="card-img-top" alt="Aucune image">
+                                <?php endif; ?>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
+                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . '€' : 'Gratuit') ?> </p>
+                                    <p class="p-0"><strong>Note :</strong></p>
+                                    <div class="d-flex align-items-center">
+                                        <?php
+                                        $note = (float)$game['note_jeu'];
+                                        for ($i = 1; $i <= 5; $i++):
+                                            echo '<i class="bi bi-star-fill text-warning"></i>';
+                                        ?>
+                                        <?php endfor; ?>
+                                        <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
+                                    </div>
+                                    <div class="mt-auto d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-stretch">
+                                        <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
+                                            class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
+                                            Voir détails
+                                        </a>
+                                        <button class="btn btn-magasin btn-success mt-3 flex-fill btn-add-to-cart d-flex align-items-center justify-content-center text-center small"
+                                            data-id="<?= $game['id_jeu'] ?>">
+                                            Ajouter au panier
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
+            </div>
+            <!-- Meilleurs -->
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= magasin_category . '?category=meilleur' ?>" class="mb-3 category_news_title">
+                    <h1>Meilleurs jeux</h1>
+                </a>
+                <div class="row">
+                    <?php foreach ($games as $game): ?>
+                        <div class="col-md-4 mb-4 d-flex align-items-stretch px-0">
+                            <div class="card shadow-sm w-100 d-flex flex-column">
+                                <?php if (!empty($game['image'])): ?>
+                                    <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
+                                <?php else: ?>
+                                    <img src="/magasin/img/no_image2.png" class="card-img-top" alt="Aucune image">
+                                <?php endif; ?>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
+                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . '€' : 'Gratuit') ?> </p>
+                                    <p class="p-0"><strong>Note :</strong></p>
+                                    <div class="d-flex align-items-center">
+                                        <?php
+                                        $note = (float)$game['note_jeu'];
+                                        for ($i = 1; $i <= 5; $i++):
+                                            echo '<i class="bi bi-star-fill text-warning"></i>';
+                                        ?>
+                                        <?php endfor; ?>
+                                        <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
+                                    </div>
+                                    <div class="mt-auto d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-stretch">
+                                        <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
+                                            class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
+                                            Voir détails
+                                        </a>
+                                        <button class="btn btn-magasin btn-success mt-3 flex-fill btn-add-to-cart d-flex align-items-center justify-content-center text-center small"
+                                            data-id="<?= $game['id_jeu'] ?>">
+                                            Ajouter au panier
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <!-- Nouveaux -->
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= magasin_category . '?category=nouveau' ?>" class="mb-3 category_news_title">
+                    <h1>Nouveaux jeux</h1>
+                </a>
+                <div class="row">
+                    <?php foreach ($new_games as $game): ?>
+                        <div class="col-md-4 mb-4 d-flex align-items-stretch px-0">
+                            <div class="card shadow-sm w-100 d-flex flex-column">
+                                <?php if (!empty($game['image'])): ?>
+                                    <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
+                                <?php else: ?>
+                                    <img src="/magasin/img/no_image2.png" class="card-img-top" alt="Aucune image">
+                                <?php endif; ?>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
+                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . '€' : 'Gratuit') ?> </p>
+                                    <p class="p-0"><strong>Note :</strong></p>
+                                    <div class="d-flex align-items-center">
+                                        <?php
+                                        $note = (float)$game['note_jeu'];
+                                        for ($i = 1; $i <= 5; $i++):
+                                            echo '<i class="bi bi-star-fill text-warning"></i>';
+                                        ?>
+                                        <?php endfor; ?>
+                                        <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
+                                    </div>
+                                    <div class="mt-auto d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-stretch">
+                                        <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
+                                            class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
+                                            Voir détails
+                                        </a>
+                                        <button class="btn btn-magasin btn-success mt-3 flex-fill btn-add-to-cart d-flex align-items-center justify-content-center text-center small"
+                                            data-id="<?= $game['id_jeu'] ?>">
+                                            Ajouter au panier
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <!-- Gratuit -->
+            <div class="d-flex flex-column mb-5">
+                <a href="<?= magasin_category . '?category=gratuit' ?>" class="mb-3 category_news_title">
+                    <h1>Jeux gratuits</h1>
+                </a>
+                <div class="row">
+                    <?php foreach ($free_games as $game): ?>
+                        <div class="col-md-4 mb-4 d-flex align-items-stretch px-0">
+                            <div class="card shadow-sm w-100 d-flex flex-column">
+                                <?php if (!empty($game['image'])): ?>
+                                    <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($game['nom']) ?>">
+                                <?php else: ?>
+                                    <img src="/magasin/img/no_image2.png" class="card-img-top" alt="Aucune image">
+                                <?php endif; ?>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
+                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . '€' : 'Gratuit') ?> </p>
+                                    <p class="p-0"><strong>Note :</strong></p>
+                                    <div class="d-flex align-items-center">
+                                        <?php
+                                        $note = (float)$game['note_jeu'];
+                                        for ($i = 1; $i <= 5; $i++):
+                                            echo '<i class="bi bi-star-fill text-warning"></i>';
+                                        ?>
+                                        <?php endfor; ?>
+                                        <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
+                                    </div>
+                                    <div class="mt-auto d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-stretch">
+                                        <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
+                                            class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
+                                            Voir détails
+                                        </a>
+                                        <button class="btn btn-magasin btn-success mt-3 flex-fill btn-add-to-cart d-flex align-items-center justify-content-center text-center small"
+                                            data-id="<?= $game['id_jeu'] ?>">
+                                            Ajouter au panier
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
         </div>
     </main>
     <?php include('../include/footer.php'); ?>
@@ -112,20 +276,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     const response = await fetch(`../panier/add_to_cart.php?id=${gameId}`);
                     const data = await response.json();
 
-                    // Créer une alerte
                     const alertBox = document.createElement("div");
                     alertBox.className = `alert mt-3 text-center alert-${data.status === "success" ? "success" : "danger"}`;
                     alertBox.textContent = data.message;
 
-                    // Ajouter l'alerte au conteneur d'alertes
                     const alertContainer = document.getElementById("alert-container");
                     alertContainer.appendChild(alertBox);
 
-                    // Supprimer l'alerte après 5 secondes
                     setTimeout(() => alertBox.remove(), 5000);
 
-                    // Mettre à jour le badge du panier
-                    const panierCount = data.panierCount; // Assurez-vous que vous envoyez ce champ depuis le PHP.
+                    const panierCount = data.panierCount;
                     updatePanierBadge(panierCount);
                 });
             });
@@ -136,9 +296,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             if (badge) {
                 if (count > 0) {
                     badge.textContent = count;
-                    badge.style.display = 'inline'; // Afficher le badge si il y a des articles
+                    badge.style.display = 'inline';
                 } else {
-                    badge.style.display = 'none'; // Cacher le badge si le panier est vide
+                    badge.style.display = 'none';
                 }
             }
         }
@@ -195,6 +355,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
     .card-img-top {
         height: 250px;
-        object-fit: cover;
+        object-fit: contain;
     }
 </style>
