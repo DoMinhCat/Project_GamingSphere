@@ -118,35 +118,41 @@ require('../head.php');
                         try {
                             if (strtolower($tournoi['type']) === 'solo') {
                                 $stmt = $bdd->prepare("
-                                SELECT u.id_utilisateurs AS participant_id, u.pseudo, 
-                                       COALESCE(r.result_id, 0) AS result_id,
-                                       COALESCE(r.position, '') AS position,
-                                       COALESCE(r.credits_awarded, 0) AS credits_awarded
-                                FROM inscription_tournoi it
-                                JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
-                                LEFT JOIN tournament_results r ON r.tournament_id = ? AND r.user_id = u.id_utilisateurs
-                                WHERE it.id_tournoi = ?
-                                ORDER BY r.position ASC, u.pseudo ASC
-                            ");
+                                    SELECT u.id_utilisateurs AS participant_id, u.pseudo, 
+                                           COALESCE(r.result_id, 0) AS result_id,
+                                           COALESCE(r.position, '') AS position,
+                                           COALESCE(r.credits_awarded, 0) AS credits_awarded
+                                    FROM inscription_tournoi it
+                                    JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
+                                    LEFT JOIN tournament_results r ON r.tournament_id = ? AND r.user_id = u.id_utilisateurs
+                                    WHERE it.id_tournoi = ?
+                                    ORDER BY r.position ASC, u.pseudo ASC
+                                ");
                                 $stmt->execute([$id_tournoi, $id_tournoi]);
                             } else {
                                 $stmt = $bdd->prepare("
-                                SELECT e.id_equipe AS participant_id, e.nom AS nom_equipe, 
-                                       COALESCE(r.result_id, 0) AS result_id,
-                                       COALESCE(r.position, '') AS position,
-                                       COALESCE(r.credits_awarded, 0) AS credits_awarded
-                                FROM equipes_tournois et
-                                JOIN equipe e ON et.id_equipe = e.id_equipe
-                                LEFT JOIN tournament_results r ON r.tournament_id = ? AND r.team_id = e.id_equipe
-                                WHERE et.id_tournoi = ?
-                                ORDER BY r.position ASC, e.nom ASC
-                            ");
+                                    SELECT e.id_equipe AS participant_id, e.nom AS nom_equipe, 
+                                           COALESCE(r.result_id, 0) AS result_id,
+                                           COALESCE(r.position, '') AS position,
+                                           COALESCE(r.credits_awarded, 0) AS credits_awarded
+                                    FROM inscription_tournoi it
+                                    JOIN equipe e ON it.id_team = e.id_equipe
+                                    LEFT JOIN tournament_results r ON r.tournament_id = ? AND r.team_id = e.id_equipe
+                                    WHERE it.id_tournoi = ?
+                                    ORDER BY r.position ASC, e.nom ASC
+                                ");
                                 $stmt->execute([$id_tournoi, $id_tournoi]);
                             }
                             $participants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                             if (count($participants) === 0) {
                                 echo "<tr><td colspan='4' class='text-center'>Aucun participant enregistré pour ce tournoi.</td></tr>";
+                            echo "<tr><td colspan='4'><pre>";
+    print_r([
+        'id_tournoi' => $id_tournoi,
+        'requete' => $stmt->queryString,
+    ]);
+    echo "</pre></td></tr>";
                             } else {
                                 foreach ($participants as $participant): ?>
                                     <tr>
@@ -198,8 +204,7 @@ require('../head.php');
         }
 
         document.getElementById('search_results').addEventListener('input', fetchFilteredUsers);
-        document.addEventListener('DOMContentLoaded', fetchfetchFilteredUsersStats);
+        document.addEventListener('DOMContentLoaded', fetchFilteredUsers);
     </script>
 </body>
-
 </html>
