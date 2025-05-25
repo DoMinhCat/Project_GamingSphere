@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   participerButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const tournoiId = btn.getAttribute("data-id");
-      fetch("actions/participer_tournoi.php", {
+      fetch("/tournois/participation.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   desinscrireButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const tournoiId = btn.getAttribute("data-id");
-      fetch("actions/desinscrire_tournoi.php", {
+      fetch("/tournois/desinscription.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
