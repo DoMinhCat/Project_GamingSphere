@@ -34,7 +34,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <?php include('../include/header.php'); ?>
     <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1> Matchs e-sport en cours</h1>
+            <h1> Tournois e-sport en cours</h1>
             <a href="mes_paris.php" class="btn btn-outline-primary">
                 Voir mes paris
             </a>

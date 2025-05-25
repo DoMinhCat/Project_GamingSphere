@@ -1,4 +1,7 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 try {
     if ($_SERVER['HTTP_HOST'] === 'localhost:81') {
         // Connexion en local
@@ -11,4 +14,3 @@ try {
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
 }
-?>
