@@ -67,13 +67,34 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <h4><strong>Total : <?= htmlspecialchars($total) ?> €</strong></h4>
                 <p>Crédits disponibles : <?= htmlspecialchars((string) ($credits ?? '0')) ?> €</p>
                 <?php if ($credits >= $total): ?>
-                    <a href="finaliser_achat.php" class="btn btn-success">Finaliser l'achat</a>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        Finaliser l'achat
+                    </button>
+
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirmation d'achat</h1>
+
+                                </div>
+                                <div class="modal-body">
+                                    Veuillez confirmer votre achat, n'oubliez pas de vérifier les informations de votre achat !
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Annuler</button>
+                                    <button type="button" class="btn btn-danger">Confirmer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <?php else: ?>
                     <p class="text-danger">Vous n'avez pas assez de crédits pour finaliser cet achat.</p>
                 <?php endif; ?>
             </div>
         <?php else: ?>
-            <p class="text-center">Votre panier est vide.</p>
+            <p class="text-center mb-2">Votre panier est vide.</p>
+            <a href="<?= magasin_main ?>" class="btn btn-primary text-center">Voir nos jeux</a>
         <?php endif; ?>
     </div>
 </body>

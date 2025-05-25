@@ -35,7 +35,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <body>
     <?php include('../include/header.php'); ?>
 
-    <div class="container mt-4">
+    <div class="container my5-4">
         <h1 class="text-center mb-4">🎉 Achat Confirmé !</h1>
 
         <?php if (count($achats) > 0): ?>
@@ -45,9 +45,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <div class="col-md-4 mb-4">
                         <div class="card shadow-sm h-100">
                             <?php if (!empty($jeu['image'])): ?>
-                                <img src="../back-office/uploads/<?= htmlspecialchars($jeu['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($jeu['nom']) ?>" style="height: 250px; object-fit: cover;">
+                                <img src="/back-office/uploads/<?= htmlspecialchars($jeu['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($jeu['nom']) ?>" style="height: 250px; object-fit: cover;">
                             <?php else: ?>
-                                <img src="../../assets/img/no_image.png" class="card-img-top" alt="Jeu" style="height: 250px; object-fit: cover;">
+                                <img src="/magasin/img/no_image2.png" class="card-img-top" alt="Jeu" style="height: 250px; object-fit: cover;">
                             <?php endif; ?>
                             <div class="card-body">
                                 <h5 class="card-title"><?= htmlspecialchars($jeu['nom']) ?></h5>
@@ -64,8 +64,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
         <div class="text-center mt-4">
             <p>Merci pour votre achat ! Vos crédits ont été mis à jour avec succès.</p>
-            <a href="<?= magasin_main ?>" class="btn btn-primary">🕹️ Voir d'autres jeux</a>
-            <a href="<?= my_account ?>" class="btn btn-secondary">👤 Mon profil</a>
+            <a href="<?= magasin_main ?>" class="btn btn-primary">Voir d'autres jeux</a>
+            <a href="<?= my_account ?>" class="btn btn-secondary">Mon profil</a>
         </div>
     </div>
 </body>
