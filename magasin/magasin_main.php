@@ -73,16 +73,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                     <div class="carousel-caption d-none d-md-block">
                                         <h5><?= htmlspecialchars($game['nom']) ?></h5>
                                         <p><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                                        <p><strong>Note :</strong></p>
-                                        <div class="d-flex align-items-center">
-                                            <?php
-                                            $note = (float)$game['note_jeu'];
-                                            for ($i = 1; $i <= 5; $i++):
-                                                echo '<i class="bi bi-star-fill text-warning"></i>';
-                                            ?>
-                                            <?php endfor; ?>
-                                            <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
-                                        </div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -119,6 +109,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
                                     <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                                    <p><strong>Note :</strong></p>
+                                    <div class="d-flex align-items-center">
+                                        <?php
+                                        $note = (float)$game['note_jeu'];
+                                        for ($i = 1; $i <= 5; $i++):
+                                            echo '<i class="bi bi-star-fill text-warning"></i>';
+                                        ?>
+                                        <?php endfor; ?>
+                                        <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
+                                    </div>
                                     <div class="mt-auto d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-stretch">
                                         <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
                                             class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
@@ -152,6 +152,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
                                     <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                                    <p><strong>Note :</strong></p>
+                                    <div class="d-flex align-items-center">
+                                        <?php
+                                        $note = (float)$game['note_jeu'];
+                                        for ($i = 1; $i <= 5; $i++):
+                                            echo '<i class="bi bi-star-fill text-warning"></i>';
+                                        ?>
+                                        <?php endfor; ?>
+                                        <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
+                                    </div>
                                     <div class="mt-auto d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-stretch">
                                         <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
                                             class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
@@ -185,6 +195,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
                                     <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                                    <p><strong>Note :</strong></p>
+                                    <div class="d-flex align-items-center">
+                                        <?php
+                                        $note = (float)$game['note_jeu'];
+                                        for ($i = 1; $i <= 5; $i++):
+                                            echo '<i class="bi bi-star-fill text-warning"></i>';
+                                        ?>
+                                        <?php endfor; ?>
+                                        <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
+                                    </div>
                                     <div class="mt-auto d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-stretch">
                                         <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
                                             class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
@@ -218,6 +238,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
                                     <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                                    <p><strong>Note :</strong></p>
+                                    <div class="d-flex align-items-center">
+                                        <?php
+                                        $note = (float)$game['note_jeu'];
+                                        for ($i = 1; $i <= 5; $i++):
+                                            echo '<i class="bi bi-star-fill text-warning"></i>';
+                                        ?>
+                                        <?php endfor; ?>
+                                        <span class="ms-2 text-muted">(<?= $note ?>/5)</span>
+                                    </div>
                                     <div class="mt-auto d-flex flex-column flex-sm-row justify-content-between gap-2 align-items-stretch">
                                         <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
                                             class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
