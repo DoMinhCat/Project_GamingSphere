@@ -158,6 +158,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     </div>
 
     <script src="refresh.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/emoji-button.min.js"></script>
 
     <script>
         const button = document.querySelector('#emoji-button');
@@ -204,8 +205,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             });
         });
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.min.js"></script>
 
 </body>
 
