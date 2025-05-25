@@ -4,19 +4,19 @@ require('../include/check_timeout.php');
 require('../include/database.php');
 require_once __DIR__ . '/../path.php';
 try {
-    $stmt = $bdd->query("SELECT * image FROM jeu ORDER BY RAND() LIMIT 3;");
+    $stmt = $bdd->query("SELECT * FROM jeu ORDER BY RAND() LIMIT 3;");
     $carouselGames = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $meilleurs = $bdd->query("SELECT * image FROM jeu ORDER BY note_jeu DESC LIMIT 3;");
+    $meilleurs = $bdd->query("SELECT * FROM jeu ORDER BY note_jeu DESC LIMIT 3;");
     $games = $meilleurs->fetchAll(PDO::FETCH_ASSOC);
 
-    $nouveaux = $bdd->query("SELECT * image FROM jeu ORDER BY date_sortie DESC LIMIT 3;");
+    $nouveaux = $bdd->query("SELECT * FROM jeu ORDER BY date_sortie DESC LIMIT 3;");
     $new_games = $nouveaux->fetchAll(PDO::FETCH_ASSOC);
 
     $gratuits = $bdd->query("SELECT * FROM jeu WHERE prix=0 LIMIT 3;");
     $free_games = $gratuits->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmt = $bdd->query("SELECT * image FROM jeu ORDER BY RAND() LIMIT 3;");
+    $stmt = $bdd->query("SELECT * FROM jeu ORDER BY RAND() LIMIT 3;");
     $random_games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException) {
     header('location:' . index_front . '?message=bdd');
