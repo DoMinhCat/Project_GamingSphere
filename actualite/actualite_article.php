@@ -71,26 +71,28 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="<?= actualite_main ?>" class="text-decoration-none">Actualités</a>
+                            <a href="<?= actualite_main ?>" class="text-decoration-none footer-link">Actualités</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="<?= actualite_categorie . '?category=' . $origin_category ?>" class="text-decoration-none"><?= htmlspecialchars($category) ?></a>
+                            <a href="<?= actualite_categorie . '?category=' . $origin_category ?>" class="text-decoration-none footer-link"><?= htmlspecialchars($category) ?></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Article</li>
+                        <li class="breadcrumb-item active footer-link" aria-current="page">Article</li>
                     </ol>
                 </nav>
 
                 <div class="mb-4">
-                    <a href="<?= actualite_categorie . '?category=' . $origin_category ?>" class="btn btn-outline-primary">
-                        <i class="bi bi-chevron-left"></i> Retour à <?= htmlspecialchars($category) ?>
+                    <a href="<?= actualite_categorie . '?category=' . $origin_category ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
+                        <i class="bi bi-chevron-left"></i>
+                        <h1 class="m-0"><?= htmlspecialchars($category) ?></h1>
                     </a>
                 </div>
+
             </div>
         </div>
 
         <!-- Article content -->
         <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
+            <div class="col-lg-10 col-md-10">
                 <article class="bg-white shadow-sm rounded p-4 mb-5">
                     <header class="text-center mb-4">
                         <h1 class="display-5 fw-bold text-primary mb-3"><?= htmlspecialchars($article['titre']) ?></h1>
@@ -114,7 +116,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     </div>
 
                     <div class="article-content">
-                        <p class="lead"><?= nl2br(htmlspecialchars($article['contenue'])) ?></p>
+                        <p class="lead text-dark"><?= nl2br(htmlspecialchars($article['contenue'])) ?></p>
                     </div>
                 </article>
             </div>
@@ -125,7 +127,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="col-12">
                 <div class="border-top pt-5">
                     <h2 class="h3 mb-4 text-center">
-                        <i class="bi bi-newspaper"></i> Autres articles de la catégorie "<?= htmlspecialchars($category) ?>"
+                        Autres articles de la catégorie "<?= htmlspecialchars($category) ?>"
                     </h2>
 
                     <div class="row g-4">
