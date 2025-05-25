@@ -278,13 +278,6 @@ RewriteCond %{THE_REQUEST} \s/paris/parier\.php [NC]
 RewriteRule ^paris/parier\.php$ /paris/parier [R=301,L,QSA]
 RewriteRule ^paris/parier/?$ paris/parier.php [L]
 
-# mes_paris.php (paris)
-RewriteCond %{THE_REQUEST} \s/paris/mes_paris\.php [NC]
-RewriteRule ^paris/mes_paris\.php$ /paris/mes_paris [R=301,L,QSA]
-RewriteRule ^paris/mes_paris/?$ paris/mes_paris.php [L]
-
-
-
 # easter.php 
 
 RewriteCond %{THE_REQUEST} \s/error_pages/easter\.php [NC]
@@ -411,11 +404,6 @@ RewriteRule ^back-office/jeux/add/?$ back-office/jeux/add_game.php [L]
 RewriteCond %{THE_REQUEST} \s/back-office/paris/paris\.php [NC]
 RewriteRule ^back-office/paris/paris\.php$ /back-office/paris [R=301,L,QSA]
 RewriteRule ^back-office/paris/?$ back-office/paris/paris.php [L]
-
-# back-office valider_resultats.php/
-RewriteCond %{THE_REQUEST} \s/back-office/paris/valider_resultats\.php [NC]
-RewriteRule ^back-office/paris/valider_resultats\.php$ /back-office/valider_resultats [R=301,L,QSA]
-RewriteRule ^back-office/valider_resultats/?$ back-office/paris/valider_resultats.php [L]
 
 # back-office profils.php/
 

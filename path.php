@@ -72,7 +72,8 @@ define('search', '/include/search'); // search.php
 //paris
 define('paris_main', '/paris'); // paris_main.php
 define('parier', '/paris/parier'); // parier.php
-define('mes_paris', '/paris/mes_paris'); // paris_details.php
+define('paris_details', '/paris/details'); // paris_details.php
+
 
 //easter
 define('easter', '/easter'); // easter.php
@@ -115,7 +116,6 @@ define('jeux_add_back', '/back-office/jeux/add'); // add_game.php
 
 //paris
 define('paris_back', '/back-office/paris'); // paris.php
-define('valider_resultats', '/back-office/paris/valider_resultats'); // valider_resultat.php
 
 //profils
 define('profils_back', '/back-office/profils'); // profils.php
