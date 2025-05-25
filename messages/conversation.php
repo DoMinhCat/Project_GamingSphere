@@ -101,7 +101,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 col-lg-6">
                 <div class="card shadow-sm my-4">
-                    <div class="card-header bg-light border-bottom p-3">
+                    <!-- Header -->
+                    <div class="card-header bg-sujet border-bottom p-3">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center">
                                 <a href="<?= messagerie ?>" class="btn btn-outline-primary btn-sm me-3">
@@ -121,7 +122,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                             style="width: 12px; height: 12px;"></span>
                                     </div>
                                     <div class="ms-3">
-                                        <h6 class="mb-0 fw-bold text-dark"><?= htmlspecialchars($otherUser['pseudo']) ?></h6>
+                                        <h6 class="mb-0 fw-bold text-white"><?= htmlspecialchars($otherUser['pseudo']) ?></h6>
                                         <small class="text-muted"><?= $isUserOnline ? 'En ligne' : 'Hors ligne' ?></small>
                                     </div>
                                 </a>
@@ -193,7 +194,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         </div>
                     </div>
 
-                    <!-- Message Input -->
+                    <!-- Input -->
                     <div class="card-footer bg-light border-top p-3">
                         <form action="<?= conversation . '?user=' . $otherUserId ?>" method="POST" class="d-flex align-items-end gap-2">
                             <div class="flex-grow-1">
@@ -224,36 +225,122 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         </div>
     </div>
 
-    <script src="https://unpkg.com/@joeattardi/emoji-button@4.6.4/dist/index.js"></script>
-    <script src="refresh.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.min.js"></script>
 
     <script>
-        const textarea = document.getElementById('messageTextarea');
-        textarea.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
-        });
-
-        const emojiButton = document.querySelector('#emoji-button');
-        const messageTextarea = document.querySelector('#messageTextarea');
-        let messagePicker;
-
         document.addEventListener('DOMContentLoaded', function() {
-            if (typeof EmojiButton !== 'undefined') {
+            const textarea = document.getElementById('messageTextarea');
+            const emojiButton = document.querySelector('#emoji-button');
+            const messageForm = document.querySelector('form');
+            const messageContainer = document.getElementById('message-container');
+
+            if (textarea) {
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+                });
+
+                textarea.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        if (this.value.trim() && messageForm) {
+                            messageForm.dispatchEvent(new Event('submit', {
+                                bubbles: true
+                            }));
+                        }
+                    }
+                });
+            }
+
+            function scrollToBottom() {
+                if (messageContainer) {
+                    messageContainer.scrollTop = messageContainer.scrollHeight;
+                }
+            }
+
+            scrollToBottom();
+
+            if (messageForm) {
+                messageForm.addEventListener('submit', async function(e) {
+                    if (!textarea || !textarea.value.trim()) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    const message = textarea.value.trim();
+                    const formData = new FormData(this);
+
+                    try {
+                        const response = await fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+
+                            if (result.success) {
+                                const messageDiv = document.createElement('div');
+                                messageDiv.className = 'd-flex mb-3 justify-content-end';
+
+                                messageDiv.innerHTML = `
+                                    <div class="order-2" style="max-width: 75%;">
+                                        <div class="bg-primary text-white rounded-3 p-3 shadow-sm position-relative">
+                                            <p class="mb-0">${message.replace(/\n/g, '<br>')}</p>
+                                        </div>
+                                        <div class="d-flex align-items-center mt-1 justify-content-end">
+                                            <div class="reactions-container d-flex align-items-center">
+                                                <div class="reactions me-2" data-message-id="new-message">
+                                                </div>
+                                                <button class="btn btn-light btn-sm rounded-circle p-1 react-btn border-0 shadow-sm" 
+                                                        data-message-id="new-message"
+                                                        style="width: 28px; height: 28px; font-size: 0.8rem;"
+                                                        title="Ajouter une réaction">
+                                                    <i class="bi bi-emoji-smile"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="text-end mt-1">
+                                            <small class="text-muted">${result.time}</small>
+                                        </div>
+                                    </div>
+                                `;
+
+                                messageContainer.appendChild(messageDiv);
+
+                                textarea.value = '';
+                                textarea.style.height = 'auto';
+
+                                scrollToBottom();
+                                attachReactionListeners();
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error sending message:', error);
+                    }
+
+                    e.preventDefault();
+                });
+            }
+
+            let messagePicker;
+            if (typeof EmojiButton !== 'undefined' && emojiButton && textarea) {
                 messagePicker = new EmojiButton({
                     position: 'top-end',
                     autoHide: false,
-                    showPreview: false,
-                    style: 'apple'
+                    showPreview: false
                 });
 
                 messagePicker.on('emoji', emoji => {
-                    const start = messageTextarea.selectionStart;
-                    const end = messageTextarea.selectionEnd;
-                    const text = messageTextarea.value;
-                    messageTextarea.value = text.substring(0, start) + emoji + text.substring(end);
-                    messageTextarea.focus();
-                    messageTextarea.setSelectionRange(start + emoji.length, start + emoji.length);
+                    const start = textarea.selectionStart;
+                    const end = textarea.selectionEnd;
+                    const text = textarea.value;
+                    textarea.value = text.substring(0, start) + emoji + text.substring(end);
+                    textarea.focus();
+                    textarea.setSelectionRange(start + emoji.length, start + emoji.length);
                 });
 
                 emojiButton.addEventListener('click', (e) => {
@@ -261,17 +348,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     messagePicker.togglePicker(emojiButton);
                 });
             }
-        });
 
-
-        let reactionPicker;
-        document.addEventListener('DOMContentLoaded', function() {
+            let reactionPicker;
             if (typeof EmojiButton !== 'undefined') {
                 reactionPicker = new EmojiButton({
                     position: 'top-start',
                     autoHide: true,
-                    showPreview: false,
-                    style: 'apple'
+                    showPreview: false
                 });
 
                 reactionPicker.on('emoji', emoji => {
@@ -299,54 +382,37 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     reactionPicker._targetMessageId = null;
                 });
 
-                document.querySelectorAll('.react-btn').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        reactionPicker._targetMessageId = button.dataset.messageId;
-                        reactionPicker.togglePicker(button);
+                function attachReactionListeners() {
+                    document.querySelectorAll('.react-btn').forEach(button => {
+                        button.replaceWith(button.cloneNode(true));
                     });
-                });
-            }
-        });
 
-        function updateReactions(messageId, newEmoji) {
-            const reactionsContainer = document.querySelector(`[data-message-id="${messageId}"]`);
-            if (reactionsContainer) {
-                const newReaction = document.createElement('span');
-                newReaction.className = 'badge bg-light text-dark border me-1 reaction-badge';
-                newReaction.style.fontSize = '0.9rem';
-                newReaction.textContent = newEmoji;
+                    document.querySelectorAll('.react-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            reactionPicker._targetMessageId = button.dataset.messageId;
+                            reactionPicker.togglePicker(button);
+                        });
+                    });
+                }
 
-                const reactButton = reactionsContainer.parentElement.querySelector('.react-btn');
-                reactionsContainer.insertBefore(newReaction, reactButton);
-            }
-        }
-
-        function scrollToBottom() {
-            const messageContainer = document.getElementById('message-container');
-            messageContainer.scrollTop = messageContainer.scrollHeight;
-        }
-
-        window.addEventListener('load', scrollToBottom);
-
-        const messageForm = document.querySelector('form');
-        messageForm.addEventListener('submit', function(e) {
-            const messageInput = document.getElementById('messageTextarea');
-            if (!messageInput.value.trim()) {
-                e.preventDefault();
-                return;
+                attachReactionListeners();
             }
 
-            setTimeout(() => {
-                messageInput.style.height = 'auto';
-            }, 100);
-        });
+            function updateReactions(messageId, newEmoji) {
+                const reactionsContainer = document.querySelector(`[data-message-id="${messageId}"]`);
+                if (reactionsContainer) {
+                    const newReaction = document.createElement('span');
+                    newReaction.className = 'badge bg-light text-dark border me-1 reaction-badge';
+                    newReaction.style.fontSize = '0.9rem';
+                    newReaction.textContent = newEmoji;
 
-        messageTextarea.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                if (this.value.trim()) {
-                    messageForm.dispatchEvent(new Event('submit'));
+                    const reactButton = reactionsContainer.parentElement.querySelector('.react-btn');
+                    if (reactButton) {
+                        reactionsContainer.insertBefore(newReaction, reactButton);
+                    } else {
+                        reactionsContainer.appendChild(newReaction);
+                    }
                 }
             }
         });

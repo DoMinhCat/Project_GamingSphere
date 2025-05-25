@@ -1,10 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector(".message-input-container");
-  const textarea = form.querySelector("textarea");
-  const messageList = document.querySelector(".message-list");
+  const form = document.querySelector("form[action*='conversation']");
+  const textarea = document.querySelector("#messageTextarea");
+  const messageContainer = document.querySelector("#message-container");
+
+  if (!form || !textarea || !messageContainer) {
+    console.log("Chat elements not found - refresh.js skipped");
+    return;
+  }
 
   form.addEventListener("submit", async (e) => {
-    e.preventDefault(); // empêcher le rechargement
+    e.preventDefault();
 
     const message = textarea.value.trim();
     if (message === "") return;
@@ -23,40 +28,49 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
 
       if (result.success) {
-        // Create the message block to be added
         const messageDiv = document.createElement("div");
-        messageDiv.classList.add("message", "sent", "mb-3");
+        messageDiv.classList.add("d-flex", "mb-3", "justify-content-end");
 
-        const col = document.createElement("div");
-        col.classList.add("d-flex", "flex-column");
+        messageDiv.innerHTML = `
+          <div class="order-2" style="max-width: 75%;">
+            <!-- Message Bubble -->
+            <div class="bg-primary text-white rounded-3 p-3 shadow-sm position-relative">
+              <p class="mb-0">${message.replace(/\n/g, "<br>")}</p>
+            </div>
+            
+            <!-- Reactions Section -->
+            <div class="d-flex align-items-center mt-1 justify-content-end">
+              <div class="reactions-container d-flex align-items-center">
+                <div class="reactions me-2" data-message-id="new-${Date.now()}">
+                </div>
+                
+                <!-- React Button -->
+                <button class="btn btn-light btn-sm rounded-circle p-1 react-btn border-0 shadow-sm" 
+                        data-message-id="new-${Date.now()}"
+                        style="width: 28px; height: 28px; font-size: 0.8rem;"
+                        title="Ajouter une réaction">
+                    <i class="bi bi-emoji-smile"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Message Time -->
+            <div class="text-end mt-1">
+              <small class="text-muted">${result.time}</small>
+            </div>
+          </div>
+        `;
 
-        // Create the message bubble
-        const bubble = document.createElement("div");
-        bubble.classList.add("message-bubble", "p-2");
+        messageContainer.appendChild(messageDiv);
 
-        // Create the message content and add it inside the bubble
-        const content = document.createElement("p");
-        content.innerHTML = message.replace(/\n/g, "<br>");
-        bubble.appendChild(content);
+        messageContainer.scrollTop = messageContainer.scrollHeight;
 
-        // Create the time div (outside the bubble) and append it after the bubble
-        const time = document.createElement("div");
-        time.classList.add("message-time");
-        time.textContent = result.time;
-
-        // Append both the bubble and time div to the messageDiv
-        col.appendChild(bubble); // Bubble first
-        col.appendChild(time); // Time outside and beneath the bubble
-        messageDiv.appendChild(col);
-
-        // Append the message div to the message list
-        messageList.appendChild(messageDiv);
-
-        // Auto scroll to the bottom of the message list
-        messageList.scrollTop = messageList.scrollHeight;
-
-        // Clear the input field
         textarea.value = "";
+        textarea.style.height = "auto";
+
+        if (typeof window.attachReactionListeners === "function") {
+          window.attachReactionListeners();
+        }
       }
     } catch (error) {
       console.error("Erreur lors de l'envoi du message :", error);
