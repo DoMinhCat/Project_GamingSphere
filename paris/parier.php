@@ -91,10 +91,10 @@ if ($type_pari === 'solo') {
     // Enregistrement du pari solo
     $stmt = $bdd->prepare("
         INSERT INTO paris (
-            id_tournoi, id_utilisateur, id_joueur, montant, cote, statut, date_pari, type_pari, gain
-        ) VALUES (?, ?, ?, ?, ?, 'en attente', NOW(), ?, 0)
+            id_utilisateur, id_tournoi, montant, id_joueur, type_pari, statut, gain, date_pari, cote, id_equipe
+        ) VALUES (?, ?, ?, ?, ?, 'en attente', 0, NOW(), ?, NULL)
     ");
-    $success = $stmt->execute([$id_tournoi, $user_id, $id_joueur, $montant, $cote, $type_pari]);
+    $success = $stmt->execute([$user_id, $id_tournoi, $montant, $id_joueur, $type_pari, $cote]);
 
 } elseif ($type_pari === 'equipe') {
     if (!isset($_POST['id_equipe']) || empty($_POST['id_equipe'])) {
@@ -114,10 +114,10 @@ if ($type_pari === 'solo') {
     // Enregistrement du pari équipe
     $stmt = $bdd->prepare("
         INSERT INTO paris (
-            id_tournoi, id_utilisateur, id_equipe, montant, cote, statut, date_pari, type_pari, gain
-        ) VALUES (?, ?, ?, ?, ?, 'en attente', NOW(), ?, 0)
+            id_utilisateur, id_tournoi, montant, id_equipe, type_pari, statut, gain, date_pari, cote, id_joueur
+        ) VALUES (?, ?, ?, ?, ?, 'en attente', 0, NOW(), ?, NULL)
     ");
-    $success = $stmt->execute([$id_tournoi, $user_id, $id_equipe, $montant, $cote, $type_pari]);
+    $success = $stmt->execute([$user_id, $id_tournoi, $montant, $id_equipe, $type_pari, $cote]);
 
 } else {
     header('Location:' . paris_main . '?message=Type de pari invalide');
