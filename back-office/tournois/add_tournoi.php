@@ -73,7 +73,7 @@ require('../head.php');
                 <input type="text" class="form-control" id="jeu" name="jeu" required>
             </div>
             <div class="mb-3">
-                <label for="description" class="form-label">Jeu</label>
+                <label for="description" class="form-label">Description</label>
                 <textarea rows="2" class="form-control" id="description" name="description"></textarea>
             </div>
             <div class="mb-3">
