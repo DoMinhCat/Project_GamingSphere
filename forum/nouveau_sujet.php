@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $messageErreur = "Veuillez remplir tous les champs.";
     } else {
         try {
-            $stmt = $bdd->prepare("INSERT INTO forum_sujets (titre, contenu, date_msg, categories, parent_id, auteur) VALUES (?, ?, NOW(), ?, NULL, ?);");
+            $stmt = $bdd->prepare("INSERT INTO forum_sujets (titre, contenu, date_msg, categories, auteur) VALUES (?, ?, NOW(), ?, NULL, ?);");
             $stmt->execute([$titre, $contenu, $categorie_nom, $auteur]);
 
             header('Location:' . forum_category . '?nom=' . urlencode($categorie_nom) . '&success=' . urlencode('Sujet ajouté !'));

@@ -19,10 +19,10 @@ if (empty($category)) {
 
 try {
     if (!empty($search)) {
-        $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? AND parent_id IS NULL AND (auteur LIKE ? OR titre LIKE ?) ORDER BY date_creation DESC");
+        $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? AND (auteur LIKE ? OR titre LIKE ?) ORDER BY date_creation DESC");
         $stmt->execute([$category, '%' . $search . '%', '%' . $search . '%']);
     } else {
-        $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? AND parent_id IS NULL ORDER BY date_creation DESC");
+        $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? ORDER BY date_creation DESC");
         $stmt->execute([$category]);
     }
 

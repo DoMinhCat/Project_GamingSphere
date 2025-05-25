@@ -12,7 +12,7 @@ if (!isset($_GET['nom']) || empty($_GET['nom'])) {
 $categorie_nom = $_GET['nom'];
 
 try {
-    $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? AND parent_id IS NULL ORDER BY date_creation DESC");
+    $stmt = $bdd->prepare("SELECT * FROM forum_sujets WHERE categories = ? ORDER BY date_creation DESC");
     $stmt->execute([$categorie_nom]);
     $sujets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException) {
