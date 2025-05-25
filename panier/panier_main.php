@@ -98,20 +98,19 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-success" data-bs-dismiss="modal">Annuler</button>
-                                    <button type="button" class="btn btn-danger">Confirmer</button>
+                                    <a href="finaliser_achat.php" class="btn btn-danger">Confirmer</a>
                                 </div>
                             </div>
                         </div>
+                    <?php else: ?>
+                        <p class="text-danger">Vous n'avez pas assez de crédits pour finaliser cet achat.</p>
+                    <?php endif; ?>
                     </div>
                 <?php else: ?>
-                    <p class="text-danger">Vous n'avez pas assez de crédits pour finaliser cet achat.</p>
+                    <p class="text-center mb-2">Votre panier est vide.</p>
+                    <a href="<?= magasin_main ?>" class="btn btn-primary text-center">Voir nos jeux</a>
                 <?php endif; ?>
             </div>
-        <?php else: ?>
-            <p class="text-center mb-2">Votre panier est vide.</p>
-            <a href="<?= magasin_main ?>" class="btn btn-primary text-center">Voir nos jeux</a>
-        <?php endif; ?>
-    </div>
 </body>
 <?php include('../include/footer.php'); ?>
 

@@ -49,7 +49,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <?php endif; ?>
                             <div class="card-body">
                                 <h5 class="card-title"><?= htmlspecialchars($jeu['nom']) ?></h5>
-                                <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($jeu['prix']) ?> €</p>
+                                <p class="card-text"><strong>Prix :</strong> <?= ($jeu['prix'] != 0 ? htmlspecialchars($jeu['prix']) : 'Gratuit') ?> €</p>
                                 <p class="text-muted"><small>Acheté le : <?= date('d/m/Y à H:i:s', strtotime($jeu['date_achat'])) ?></small></p>
                             </div>
                         </div>

@@ -57,10 +57,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php foreach ($friends as $friend): ?>
                     <div class="col">
                         <div class="card h-100 shadow-sm">
-                            <img src="/profil<?= (isset($friend['photo_profil']) ? htmlspecialchars($friend['photo_profil']) : 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="Photo de profil" class="card-img-top">
+                            <img src="/profil/<?= (isset($friend['photo_profil']) ? htmlspecialchars($friend['photo_profil']) : 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="Photo de profil" class="card-img-top">
                             <div class="card-body text-center">
                                 <h5 class="card-title"><?= htmlspecialchars($friend['pseudo']) ?></h5>
-                                <a href="profil.php?user=<?= urlencode($friend['pseudo']) ?>" class="btn btn-outline-primary">Voir le profil</a>
+                                <a href="<?= profil . '?user=' . urlencode($friend['pseudo']) ?>" class="btn btn-outline-primary">Voir le profil</a>
                             </div>
                         </div>
                     </div>
@@ -79,7 +79,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <img src="/profil/<?= (isset($request['photo_profil']) ? htmlspecialchars($request['photo_profil']) : 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="Photo de profil" class="card-img-top">
                             <div class="card-body text-center">
                                 <h5 class="card-title"><?= htmlspecialchars($request['pseudo']) ?></h5>
-                                <a href="profil.php?user=<?= urlencode($request['pseudo']) ?>" class="btn btn-outline-primary mb-2">Voir le profil</a>
+                                <a href="profil.php?user=<?= profil . '?user=' . urlencode($request['pseudo']) ?>" class="btn btn-outline-primary mb-2">Voir le profil</a>
                                 <div class="d-flex justify-content-around">
                                     <form method="POST" action="accept_friend.php">
                                         <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
