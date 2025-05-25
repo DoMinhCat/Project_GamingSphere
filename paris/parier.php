@@ -39,14 +39,6 @@ if ($type_pari === 'solo') {
     }
     $id_joueur = intval($_POST['id_joueur']);
 
-    // Vérifier que le joueur est inscrit
-    $stmt = $bdd->prepare("SELECT COUNT(*) FROM inscription_tournoi WHERE id_tournoi = ? AND user_id = ?");
-    $stmt->execute([$id_tournoi, $id_joueur]);
-    if ($stmt->fetchColumn() == 0) {
-        header('Location:' . paris_main . '?message=' . urlencode('Joueur non inscrit à ce tournoi'));
-        exit();
-    }
-
     // Enregistrement du pari solo
     $stmt = $bdd->prepare("
         INSERT INTO paris (
