@@ -14,19 +14,31 @@ $tournois = $bdd->query("
     ORDER BY date_debut DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
 
-// Pour chaque tournoi, récupérer les équipes inscrites et leur cote
 $participants_par_tournoi = [];
 foreach ($tournois as $tournoi) {
-$stmt = $bdd->prepare("
-    SELECT t.id_equipe AS id_team, t.nom AS nom_team, cp.cote
-    FROM inscription_tournoi it
-    JOIN equipe t ON it.id_team = t.id_equipe
-    LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team
-    WHERE it.id_tournoi = ?
-");
-    $stmt->execute([$tournoi['id_tournoi']]);
-    $participants_par_tournoi[$tournoi['id_tournoi']] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if ($tournoi['type'] === 'equipe') {
+        $stmt = $bdd->prepare("
+            SELECT t.id_equipe AS id_team, t.nom AS nom_team, cp.cote
+            FROM inscription_tournoi it
+            JOIN equipe t ON it.id_team = t.id_equipe
+            LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team
+            WHERE it.id_tournoi = ?
+        ");
+        $stmt->execute([$tournoi['id_tournoi']]);
+        $participants_par_tournoi[$tournoi['id_tournoi']] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else { // solo
+        $stmt = $bdd->prepare("
+            SELECT u.id_utilisateurs AS id_team, u.pseudo AS nom_team, cp.cote
+            FROM inscription_tournoi it
+            JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
+            LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.user_id
+            WHERE it.id_tournoi = ?
+        ");
+        $stmt->execute([$tournoi['id_tournoi']]);
+        $participants_par_tournoi[$tournoi['id_tournoi']] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
+// ...existing code...
 ?>
 
 <!DOCTYPE html>
