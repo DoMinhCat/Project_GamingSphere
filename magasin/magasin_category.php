@@ -117,7 +117,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <h5 class="card-title mb-2 text-truncate" title="<?= htmlspecialchars($game['nom']) ?>">
                                     <?= htmlspecialchars($game['nom']) ?>
                                 </h5>
-                                <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
+                                <p class="card-text mb-2"><strong>Prix :</strong> <?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . '€' : 'Gratuit') ?> </p>
 
                                 <!-- Buttons -->
                                 <div class="mt-auto">

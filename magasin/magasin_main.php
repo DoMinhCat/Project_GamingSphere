@@ -72,7 +72,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                     <?php endif; ?>
                                     <div class="carousel-caption d-none d-md-block">
                                         <h5><?= htmlspecialchars($game['nom']) ?></h5>
-                                        <p><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -108,8 +107,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <?php endif; ?>
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
-                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                                    <p><strong>Note :</strong></p>
+                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . '€' : 'Gratuit') ?> </p>
+                                    <p class="p-0"><strong>Note :</strong></p>
                                     <div class="d-flex align-items-center">
                                         <?php
                                         $note = (float)$game['note_jeu'];
@@ -151,8 +150,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <?php endif; ?>
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
-                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                                    <p><strong>Note :</strong></p>
+                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . '€' : 'Gratuit') ?> </p>
+                                    <p class="p-0"><strong>Note :</strong></p>
                                     <div class="d-flex align-items-center">
                                         <?php
                                         $note = (float)$game['note_jeu'];
@@ -194,8 +193,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <?php endif; ?>
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
-                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                                    <p><strong>Note :</strong></p>
+                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . '€' : 'Gratuit') ?> </p>
+                                    <p class="p-0"><strong>Note :</strong></p>
                                     <div class="d-flex align-items-center">
                                         <?php
                                         $note = (float)$game['note_jeu'];
@@ -237,8 +236,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <?php endif; ?>
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title"><?= htmlspecialchars($game['nom']) ?></h5>
-                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= htmlspecialchars($game['prix']) ?> €</p>
-                                    <p><strong>Note :</strong></p>
+                                    <p class="card-text mb-2"><strong>Prix :</strong> <?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . '€' : 'Gratuit') ?> </p>
+                                    <p class="p-0"><strong>Note :</strong></p>
                                     <div class="d-flex align-items-center">
                                         <?php
                                         $note = (float)$game['note_jeu'];

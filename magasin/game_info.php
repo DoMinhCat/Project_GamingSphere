@@ -63,7 +63,7 @@ include('../include/head.php');
                                 <!-- Prix -->
                                 <div class="mb-3">
                                     <span class="badge bg-success fs-5 px-3 py-2">
-                                        <?= htmlspecialchars($jeu['prix']) ?> €
+                                        <?= ($jeu['prix'] != 0 ? htmlspecialchars($jeu['prix']) . '€' : 'Gratuit') ?>
                                     </span>
                                 </div>
 
