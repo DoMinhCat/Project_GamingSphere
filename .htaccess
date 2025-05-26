@@ -494,6 +494,12 @@ RewriteCond %{THE_REQUEST} \s/back-office/newsletter/newsletter\.php [NC]
 RewriteRule ^back-office/newsletter/newsletter\.php$ /back-office/newsletter [R=301,L,QSA]
 RewriteRule ^back-office/newsletter/?$ back-office/newsletter/newsletter.php [L]
 
+# back-office easter.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/easter/easter\.php [NC]
+RewriteRule ^back-office/easter/easter\.php$ /back-office/easter [R=301,L,QSA]
+RewriteRule ^back-office/easter/?$ back-office/easter/easter.php [L]
+
 
 # Pages d'erreur
 

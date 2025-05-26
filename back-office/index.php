@@ -35,7 +35,6 @@ require('head.php');
         <?php if (isset($_GET['error']) && $_GET['error'] == "bdd") { ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <?php
-                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
                 echo "Erreur de la base de données : " . $_SESSION['error'];
                 unset($_SESSION['error']);
                 ?>
@@ -118,6 +117,13 @@ require('head.php');
                 <div class="h-100">
                     <a href="<?= newsletter_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         Newsletter
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100">
+                    <a href="<?= newsletter_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Easter egg
                     </a>
                 </div>
             </div>

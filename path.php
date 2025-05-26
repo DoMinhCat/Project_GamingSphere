@@ -139,3 +139,6 @@ define('stats_duree', '/back-office/stats/duree'); // log_display/duree.php
 
 //newsletter
 define('newsletter_back', '/back-office/newsletter'); // newsletter.php
+
+//easter back
+define('easter_back', '/back-office/easter'); // easter.php

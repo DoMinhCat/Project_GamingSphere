@@ -12,7 +12,7 @@ try {
 
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['reward'])) {
         $reward = $_POST['reward'];
-        $stmt = $bdd->prepare("INSERT INTO easter (reward) VALUES (?) WHERE id_easter=1;");
+        $stmt = $bdd->prepare("UPDATE easter set reward=? WHERE id_easter=1;");
         $stmt->execute([$reward]);
 
         $stmt = $bdd->prepare("SELECT * from utilisateurs WHERE easter_found=1;");
@@ -20,6 +20,7 @@ try {
         $finders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 } catch (PDOException $e) {
+    $_SESSION['error'] = $e->getMessage();
     header('Location:' . index_back . '?error=bdd');
     exit();
 }
