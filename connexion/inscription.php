@@ -35,16 +35,16 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
       <?php endif ?>
       <form class="row g-3 m-f" method="post" action="inscription_verification.php">
         <div class="col-md-4">
-          <label for="prenom_inscrire" class="form-label d-block text-start">Prénom</label>
+          <label for="prenom_inscrire" class="form-label d-block text-start">Prénom *</label>
           <input type="text" id="prenom_inscrire" name="prenom" required class="form-control f-inscription" placeholder="Frédéric" value="<?php echo isset($_GET['prenom']) ? htmlspecialchars($_GET['prenom']) : ''; ?>">
         </div>
         <div class="col-md-4">
-          <label for="nom_inscrire" class="form-label d-block text-start">Nom</label>
+          <label for="nom_inscrire" class="form-label d-block text-start">Nom *</label>
           <input type="text" class="form-control f-inscription" id="nom_inscrire" name="nom" required placeholder="Sananes"
             value="<?php echo isset($_GET['nom']) ? htmlspecialchars($_GET['nom']) : ''; ?>">
         </div>
         <div class="col-md-4">
-          <label for="pseudo_inscrire" class="form-label d-block text-start">Pseudo</label>
+          <label for="pseudo_inscrire" class="form-label d-block text-start">Pseudo *</label>
           <div class="input-group">
             <span class="input-group-text" id="inputGroupPrepend2">@</span>
             <input type="text" class="form-control f-inscription <?php echo ($error == 'pseudo_exists') ? 'is-invalid' : ''; ?>" placeholder="Meilleur prof de C" id="pseudo_inscrire" aria-describedby="inputGroupPrepend2" name="pseudo" required
@@ -58,7 +58,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           <?php
           $error = isset($_GET['error']) ? $_GET['error'] : "";
           ?>
-          <label for="email_inscrire" class="form-label d-block text-start">Email</label>
+          <label for="email_inscrire" class="form-label d-block text-start">Email *</label>
           <input type="email" name="email"
             class="form-control f-inscription <?php echo ($error == 'email_exists') ? 'is-invalid' : ''; ?>"
             value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>"
@@ -72,7 +72,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           <?php
           $error = isset($_GET['error']) ? $_GET['error'] : "";
           ?>
-          <label for="mdp_inscrire" class="form-label d-block text-start">Mot de passe</label>
+          <label for="mdp_inscrire" class="form-label d-block text-start">Mot de passe *</label>
           <input type="password" class="form-control f-inscription <?php echo ($error == 'password_length' || $error == 'password_special_char' || $error == 'password_number' || $error == 'password_upper') ? 'is-invalid' : ''; ?>" aria-describedby="passwordHelpBlock"
             id="mdp_inscrire" name="mot_de_passe" placeholder="Top secret" required>
           <div id="passwordHelpBlock" class="form-text text-start">
@@ -93,7 +93,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
         <div class="col-12">
           <div class="row mb-2">
             <div class="col-12 col-lg-9 mb-3">
-              <label for="rue_inscrire" class="form-label d-block text-start">Rue</label>
+              <label for="rue_inscrire" class="form-label d-block text-start">Rue *</label>
               <input
                 type="text" name="rue"
                 class="form-control f-inscription" id="rue_inscrire" required
@@ -101,7 +101,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
                 value="<?php echo isset($_GET['rue']) ? htmlspecialchars($_GET['rue']) : ''; ?>">
             </div>
             <div class="col-12 col-lg-3 mb-3">
-              <label for="cp_inscrire" class="form-label d-block text-start">Code postal</label>
+              <label for="cp_inscrire" class="form-label d-block text-start">Code postal *</label>
               <input type="text" placeholder="75012" name="code_postal" id="cp_inscrire" class="form-control <?php echo ($error == 'invalid_cp') ? 'is-invalid' : ''; ?>" value="<?php echo isset($_GET['code_postal']) ? htmlspecialchars($_GET['code_postal']) : ''; ?>">
               <?php
               if ($error == 'invalid_cp') {
@@ -112,7 +112,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           </div>
           <div class="row">
             <div class="col-12 col-lg-6 mb-3">
-              <label for="ville_inscrire" class="form-label d-block text-start">Ville</label>
+              <label for="ville_inscrire" class="form-label d-block text-start">Ville *</label>
               <input
                 type="text" name="ville"
                 placeholder="Paris"
@@ -120,7 +120,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
                 value="<?php echo isset($_GET['ville']) ? htmlspecialchars($_GET['ville']) : ''; ?>">
             </div>
             <div class="col-12 col-lg-6 mb-3">
-              <label for="region_inscrire" class="form-label d-block text-start">Région</label>
+              <label for="region_inscrire" class="form-label d-block text-start">Région *</label>
               <select class="form-select f-inscription" name="region"
                 id="region_inscrire" required
                 value="<?php echo isset($_GET['region']) ? htmlspecialchars($_GET['region']) : ''; ?>">
@@ -149,7 +149,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           $stmt->execute();
           $random_question = $stmt->fetch(PDO::FETCH_ASSOC);
           ?>
-          <p class="text-start mb-1" id="captcha_question"><?= 'Question captcha : ' . ucfirst(htmlspecialchars($random_question['question'])) ?></p>
+          <p class="text-start mb-1" id="captcha_question"><?= 'Question captcha * : ' . ucfirst(htmlspecialchars($random_question['question'])) ?></p>
           <input type="text" id="captcha_answer" name="captcha_answer" class="form-control f-inscription mb-2 <?php echo ($error == 'captcha_invalid') ? 'is-invalid' : ''; ?>" required>
           <input type="hidden" name="id_captcha" value="<?= $random_question['id_captcha'] ?>">
           <?php if ($error == 'captcha_invalid') {
@@ -158,7 +158,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : "";
           <div class="form-check text-start mt-2">
             <input class="form-check-input" type="checkbox" value="1" id="checkbox_inscrire" required>
             <label class="form-check-label" for="checkbox_inscrire">
-              Accepter les conditions générales d'utilisations
+              Accepter les conditions générales d'utilisations *
             </label>
           </div>
         </div>

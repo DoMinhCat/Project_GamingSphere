@@ -1,10 +1,6 @@
 <?php
 session_start();
 require_once __DIR__ . '/../path.php';
-if (!empty($_SESSION['user_email'])) {
-  header('Location: ../' . index_front);
-  exit();
-}
 
 if (!isset($_GET['token']) || empty($_GET['token'])) {
   header('Location:' . reset_mdp_err . '?message=' . urldecode("Cette page est actuellement indisponible"));
@@ -57,11 +53,11 @@ include('../include/head.php')
         <div class="d-flex flex-column pt-2 py-3 row-gap-1 lato16">
           <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
 
-          <label class="form-label text-start lato24  ">Votre nouveau mot de passe</label>
+          <label class="form-label text-start lato24  ">Votre nouveau mot de passe *</label>
           <input type="password" name="new_mdp" required class="form-control input_field">
           <div id="mdp_help" class="form-text text-start">Votre mot de passe doit contenir au moins 8 caractères, une lettre majuscule, un chiffre, un symbole spécial et ne peut pas être l'un des 3 mots de passe les plus récents</div>
 
-          <label class="form-label text-start lato24">Confirmation de votre nouveau mot de passe</label>
+          <label class="form-label text-start lato24">Confirmation de votre nouveau mot de passe *</label>
           <input type="password" name="confirm_mdp" required class="form-control input_field">
 
           <div class="d-flex flex-column pt-3">

@@ -38,7 +38,7 @@ include('../include/head.php');
 
       <form method="POST" action="resend_verification.php">
         <div class="d-flex flex-column pt-2 py-3 mb-1 row-gap-1 lato16">
-          <input type="email" name="email" placeholder="Votre email" required aria-describedby="emailHelp" class="form-control input_field">
+          <input type="email" name="email" placeholder="Votre email *" required aria-describedby="emailHelp" class="form-control input_field">
 
           <div class="d-flex flex-column pt-3">
             <input type="submit" class="btn btn-primary" value="Envoyer le lien de vérification">
