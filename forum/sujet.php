@@ -73,7 +73,7 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <li class="breadcrumb-item">
                             <a href="<?= forum_category . '?nom=' . $sujet['categories'] ?>" class="text-decoration-none footer-link"><?= htmlspecialchars($categorie_nom) ?></a>
                         </li>
-                        <li class="breadcrumb-item active footer-link" aria-current="page">Discussion</li>
+                        <li class="breadcrumb-item active footer-link" aria-current="page"><?= htmlspecialchars($sujet['titre']) ?></li>
                     </ol>
                 </nav>
 
@@ -102,10 +102,12 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <p class="mb-0 lh-lg"><?= nl2br(htmlspecialchars($sujet['contenu'])) ?></p>
                         </div>
                         <div class="border-top pt-3">
-                            <div class="d-flex align-items-center justify-content-between text-muted small">
+                            <div class="d-flex align-items-center justify-content-between small">
                                 <div class="d-flex align-items-center">
-                                    <i class="bi bi-person-circle me-1"></i>
-                                    <strong><?= htmlspecialchars($sujet['auteur']) ?></strong>
+                                    <a href="<?= profil . '?user=' . $sujet['auteur'] ?>">
+                                        <i class="bi bi-person-circle me-1 text-muted"></i>
+                                        <strong><?= htmlspecialchars($sujet['auteur']) ?></strong>
+                                    </a>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <i class="bi bi-clock me-1"></i>
@@ -193,7 +195,7 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <i class="bi bi-person-badge me-1"></i>
                                     Connecté en tant que: <strong><?= $_SESSION['user_pseudo'] ?? 'Anonyme' ?></strong>
                                 </small>
-                                <button type="submit" class="btn btn-success btn-lg">
+                                <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-send me-1"></i>
                                     Publier la réponse
                                 </button>

@@ -33,10 +33,11 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
 <!DOCTYPE html>
 <html lang="fr">
 <?php require('../include/head.php'); ?>
+
 <body>
     <?php include('../include/header.php'); ?>
 
-    <div class="container py-5">
+    <main class="container py-5">
         <div class="card shadow rounded-4">
             <div class="card-header bg-primary text-white rounded-top-4" style="background-color: #ff6e40 !important;">
                 <h2 class="mb-0">Mes Paris</h2>
@@ -76,16 +77,16 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
                                         <td><span class="badge bg-secondary"><?= htmlspecialchars($pari['montant']) ?> </span></td>
                                         <td><?= htmlspecialchars($pari['cote']) ?></td>
                                         <td>
-                                            <?php 
+                                            <?php
                                             switch ($pari['statut']) {
-                                                case 'gagné': 
-                                                    echo '<span class="badge bg-success">Gagné</span>'; 
+                                                case 'gagné':
+                                                    echo '<span class="badge bg-success">Gagné</span>';
                                                     break;
-                                                case 'perdu': 
-                                                    echo '<span class="badge bg-danger">Perdu</span>'; 
+                                                case 'perdu':
+                                                    echo '<span class="badge bg-danger">Perdu</span>';
                                                     break;
-                                                case 'en attente': 
-                                                    echo '<span class="badge bg-warning text-dark">En attente</span>'; 
+                                                case 'en attente':
+                                                    echo '<span class="badge bg-warning text-dark">En attente</span>';
                                                     break;
                                                 default:
                                                     echo htmlspecialchars($pari['statut']);
@@ -93,8 +94,8 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
                                             ?>
                                         </td>
                                         <td>
-                                            <?= $pari['gain'] > 0 
-                                                ? '<span class="text-success fw-bold">+' . htmlspecialchars($pari['gain']) . '</span>' 
+                                            <?= $pari['gain'] > 0
+                                                ? '<span class="text-success fw-bold">+' . htmlspecialchars($pari['gain']) . '</span>'
                                                 : '<span class="text-muted">-</span>' ?>
                                         </td>
                                     </tr>
@@ -105,12 +106,14 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
                 <?php endif; ?>
 
                 <div class="text-end mt-4">
-                    <a href="<?= paris_main ?>" class="btn btn-outline-primary">
-                    Retour aux paris
+                    <a href="<?= paris_main ?>" class="btn btn-primary">
+                        Retour aux paris
                     </a>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+    <?php include('../include/header.php'); ?>
 </body>
+
 </html>

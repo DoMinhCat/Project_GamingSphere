@@ -97,10 +97,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <header class="text-center mb-4">
                         <h1 class="display-5 fw-bold text-primary mb-3"><?= htmlspecialchars($article['titre']) ?></h1>
 
-                        <div class="d-flex justify-content-center align-items-center flex-wrap gap-3 text-muted">
+                        <div class="d-flex justify-content-center align-items-center flex-wrap gap-3 text-dark">
                             <span class="badge bg-secondary"><?= htmlspecialchars($category) ?></span>
                             <span><i class="bi bi-calendar3"></i> <?= $article['date_article'] ?></span>
-                            <span><i class="bi bi-person-fill"></i> <?= $auteur['pseudo'] ?></span>
+                            <a href="<?= profil . '?user=' . $auteur['pseudo'] ?>">
+                                <span><i class="bi bi-person-fill"></i> <?= $auteur['pseudo'] ?></span>
+                            </a>
                         </div>
                     </header>
 
