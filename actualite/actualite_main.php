@@ -6,7 +6,7 @@ require_once __DIR__ . '/../path.php';
 function fetchNews(PDO $bdd, string $category): array
 {
     try {
-        $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category, pseudo 
+        $stmt = $bdd->prepare("SELECT id_news, titre, date_article, category, pseudo, image
                                FROM news 
                                JOIN utilisateurs ON id_utilisateurs = news.auteur 
                                WHERE news.category = :category 
@@ -153,8 +153,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <!-- LEFT CARD -->
                         <div class="col-md-7 d-flex">
                             <a href="actualite_article.php?id=<?= $big_article['id_news'] . '&category=alaune' ?>" class="card w-100 card_news" style="text-decoration: none;">
-
-                                <img src="lienDeImage.jpg" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
+                                <?php if (!empty($big_article['image'])): ?>
+                                    <img src="../back-office/uploads/<?= htmlspecialchars($big_article['image']) ?>" alt="Image de l'article" class="card-img-top" style="max-height: 250px; object-fit: cover;">
+                                <?php else: ?>
+                                    <img src="../assets/img/default_article.jpg" alt="Image par défaut" class="card-img-top" style="max-height: 250px; object-fit: cover;">
+                                <?php endif; ?>
                                 <div class="card-body p-3">
                                     <h4 class="card-title" style="text-decoration: underline;"><?= $big_article['titre'] ?></h4>
                                     <p class="mb-1"><strong><?= $big_article['pseudo'] ?></strong></p>
