@@ -37,7 +37,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
 
         if ($user['reset_mdp_token'] && strtotime($user['token_expiry']) > time()) {
             writeLogDemandResetMdp($email, false,  "demande déjà éffectuée");
-            header('Location' . forgot_mdp . '?return=already_requested');
+            header('Location:' . forgot_mdp . '?return=already_requested');
             exit();
         }
 
@@ -63,7 +63,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
             exit();
         }
     } else {
-        writeLogDemandResetMdp("visiteur", false,  "l'adresse de l'email non existe");
+        writeLogDemandResetMdp($email, false,  "l'adresse de l'email non existe");
         header('Location:' . forgot_mdp . '?return=not_found');
         exit();
     }
