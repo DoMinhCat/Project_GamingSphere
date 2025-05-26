@@ -10,10 +10,10 @@ try {
         $reward = $_POST['reward'];
         $stmt = $bdd->prepare("UPDATE easter set reward=? WHERE id_easter=1;");
         $stmt->execute([$reward]);
-        header('loccation:' . easter_back . '?message=edit_ok');
+        header('location:' . easter_back . '?message=edit_ok');
         exit;
     } else {
-        header('loccation:' . easter_back . '?error=invalid');
+        header('location:' . easter_back . '?error=invalid');
         exit;
     }
 } catch (PDOException $e) {

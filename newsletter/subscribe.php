@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email'])) {
             exit;
         } else {
             $stmt = $bdd->prepare("UPDATE utilisateurs SET newsletter_date=?, newsletter_sub = 1, unsubscribe_token = ? WHERE email = ?");
-            $today = date("d/m/Y");
+            $today = date("Y-m-d");
             $stmt->execute([$today, $token, $email]);
 
             if ($stmt->rowCount() > 0) {
