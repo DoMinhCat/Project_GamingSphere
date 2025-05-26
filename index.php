@@ -79,6 +79,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php } ?>
+    <?php
+    if (isset($_GET['acc_del']) && !empty($_GET['acc_del'])) { ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($_GET['acc_del']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
 
     <main class="mb-5">
         <div class="carousel-container">
