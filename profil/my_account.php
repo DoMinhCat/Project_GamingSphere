@@ -219,7 +219,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="col-12">
                 <div class="card">
                     <div class="card-header text-danger">
-                        <h4>Actions</h4>
+                        <h4 class="m-0">Actions</h4>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
@@ -243,7 +243,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
+                    Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible !
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
