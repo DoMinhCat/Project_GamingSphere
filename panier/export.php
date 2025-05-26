@@ -13,6 +13,7 @@ use Dompdf\Options;
 
 $id_utilisateur = $_SESSION['user_id'];
 $email_utilisateur = $_SESSION['user_email'] ?? '';
+$pseudo = $_SESSION['user_pseudo'] ?? '';
 
 $stmt = $bdd->prepare("
     SELECT j.nom, j.prix, b.date_achat
@@ -48,7 +49,7 @@ $html = "
 <head>
     <style>
         body { font-family: DejaVu Sans, sans-serif; }
-        h1 { color: #007bff; }
+        h1 { color: #2f608e; text-align: center;}
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
@@ -58,7 +59,7 @@ $html = "
 <body>
     <h1>Facture - Gaming Sphère</h1>
     <p><strong>Date :</strong> $date_now</p>
-    <p><strong>Client :</strong> " . htmlspecialchars($email_utilisateur) . "</p>
+    <p><strong>Client :</strong> " . htmlspecialchars($email_utilisateur) . " - " . $pseudo . "</p>
 
     <table>
         <thead>
