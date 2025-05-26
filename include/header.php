@@ -98,14 +98,16 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
               </select>
             </div>
           </form>
-          <a href="<?= panier ?>" class="btn btn-outline-dark d-flex align-items-center ms-3">
-            <i class="bi bi-cart-fill"></i>
-            <?php if ($panierCount > 0): ?>
-              <span class="position-relative top-0 start-100 translate-middle badge rounded-pill bg-danger"><?= $panierCount ?></span>
-            <?php else: ?>
-              <span class="position-relative top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display:none;"></span>
-            <?php endif; ?>
-          </a>
+          <?php if (!empty($_SESSION['user_id'])): ?>
+            <a href="<?= panier ?>" class="btn btn-outline-dark d-flex align-items-center ms-3">
+              <i class="bi bi-cart-fill"></i>
+              <?php if ($panierCount > 0): ?>
+                <span class="position-relative top-0 start-100 translate-middle badge rounded-pill bg-danger"><?= $panierCount ?></span>
+              <?php else: ?>
+                <span class="position-relative top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display:none;"></span>
+              <?php endif; ?>
+            </a>
+          <?php endif ?>
           <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
             <a href="<?= index_back ?>" class="btn btn-warning ms-2 px-2" style="background-color: #ffc107; color: #212529; border-radius: 10px; font-weight: bold; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
               <i class="bi bi-gear-fill"></i>Back office
@@ -514,13 +516,13 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                   </nav>
                 </div>
 
-                <!-- Cart -->
-                <div class="py-3 border-top mt-auto">
-                  <a href="<?= panier ?>" class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-cart-fill me-2"></i>Panier
-                  </a>
-                </div>
-
+                <?php if (!empty($_SESSION['user_id'])): ?>
+                  <div class="py-3 border-top mt-auto">
+                    <a href="<?= panier ?>" class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center">
+                      <i class="bi bi-cart-fill me-2"></i>Panier
+                    </a>
+                  </div>
+                <?php endif ?>
               </div>
             </div>
           </div>
