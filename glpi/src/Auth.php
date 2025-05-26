@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -63,12 +63,6 @@ class Auth extends CommonGLPI
      * @var boolean
      */
     public $user_found = false;
-
-    /**
-     * Indicated if an error occurs during connection to the user LDAP.
-     * @var boolean
-     */
-    public $user_ldap_error = false;
 
     /** @var resource|boolean LDAP connection descriptor */
     public $ldap_connection;
@@ -146,7 +140,6 @@ class Auth extends CommonGLPI
      */
     public function userExists($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request(
@@ -199,7 +192,7 @@ class Auth extends CommonGLPI
         $oldlevel = error_reporting(16);
        // No retry (avoid lock account when password is not correct)
         try {
-            $config = Toolbox::parseMailServerConnectString($host, false, false);
+            $config = Toolbox::parseMailServerConnectString($host);
 
             $ssl = false;
             if ($config['ssl']) {
@@ -209,7 +202,7 @@ class Auth extends CommonGLPI
                 $ssl = 'TLS';
             }
 
-            $protocol = Toolbox::getMailServerProtocolInstance($config['type'], false);
+            $protocol = Toolbox::getMailServerProtocolInstance($config['type']);
             if ($protocol === null) {
                 throw new \RuntimeException(sprintf(__('Unsupported mail server type:%s.'), $config['type']));
             }
@@ -234,23 +227,20 @@ class Auth extends CommonGLPI
     }
 
     /**
-     * Find a user in LDAP
+     * Find a user in a LDAP and return is BaseDN
      * Based on GRR auth system
      *
-     * @param string    $ldap_method ldap_method array to use
-     * @param string    $login       User Login
-     * @param string    $password    User Password
-     * @param bool|null $error       Boolean flag that will be set to `true` if a LDAP error occurs during connection
+     * @param string $ldap_method ldap_method array to use
+     * @param string $login       User Login
+     * @param string $password    User Password
      *
-     * @return false|array
+     * @return string basedn of the user / false if not founded
      */
-    public function connection_ldap($ldap_method, $login, $password, ?bool &$error = null)
+    public function connection_ldap($ldap_method, $login, $password)
     {
-        $error = false;
 
        // we prevent some delay...
         if (empty($ldap_method['host'])) {
-            $error = true;
             return false;
         }
 
@@ -268,7 +258,7 @@ class Auth extends CommonGLPI
                 $params['fields']['sync_field'] = $ldap_method['sync_field'];
             }
             try {
-                $info = AuthLDAP::searchUserDn($this->ldap_connection, [
+                $infos = AuthLDAP::searchUserDn($this->ldap_connection, [
                     'basedn'            => $ldap_method['basedn'],
                     'login_field'       => $ldap_method['login_field'],
                     'search_parameters' => $params,
@@ -281,30 +271,19 @@ class Auth extends CommonGLPI
                 ]);
             } catch (\Throwable $e) {
                 ErrorHandler::getInstance()->handleException($e, true);
-                $info = false;
-            }
-
-            $ldap_errno = ldap_errno($this->ldap_connection);
-            if ($info === false) {
-                if ($ldap_errno > 0 && $ldap_errno !== 32) {
-                    $this->addToError(__('Unable to connect to the LDAP directory'));
-                    $error = true;
-                } else {
-                    // 32 = LDAP_NO_SUCH_OBJECT => This should not be considered as a connection error, as it just means that user was not found.
-                    $this->addToError(__('Incorrect username or password'));
-                }
+                $this->addToError(__('Unable to connect to the LDAP directory'));
                 return false;
             }
 
-            $dn = $info['dn'];
+            $dn = $infos['dn'];
             $this->user_found = $dn != '';
 
             $bind_result = $this->user_found ? @ldap_bind($this->ldap_connection, $dn, $password) : false;
 
             if ($this->user_found && $bind_result !== false) {
                 //Hook to implement to restrict access by checking the ldap directory
-                if (Plugin::doHookFunction(Hooks::RESTRICT_LDAP_AUTH, $info)) {
-                    return $info;
+                if (Plugin::doHookFunction(Hooks::RESTRICT_LDAP_AUTH, $infos)) {
+                    return $infos;
                 }
                 $this->addToError(__('User not authorized to connect in GLPI'));
                 //Use is present by has no right to connect because of a plugin
@@ -316,9 +295,8 @@ class Auth extends CommonGLPI
                 return false;
             }
         } else {
-            //Directory is not available
             $this->addToError(__('Unable to connect to the LDAP directory'));
-            $error = true;
+            //Directory is not available
             return false;
         }
     }
@@ -399,10 +377,6 @@ class Auth extends CommonGLPI
      */
     public function connection_db($name, $password)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
         global $CFG_GLPI, $DB;
 
         $pass_expiration_delay = (int)$CFG_GLPI['password_expiration_delay'];
@@ -496,8 +470,9 @@ class Auth extends CommonGLPI
                     ]
                 );
 
-                $this->user->fields = $result;
-                $this->user->willProcessRuleRight();
+                $this->user->fields = $result + [
+                    '_ruleright_process' => true,
+                ];
 
                 return true;
             }
@@ -515,7 +490,6 @@ class Auth extends CommonGLPI
      */
     public function getAlternateAuthSystemsUserLogin($authtype = 0)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         switch ($authtype) {
@@ -525,14 +499,8 @@ class Auth extends CommonGLPI
                     return false;
                 }
 
-                // Adapt phpCAS::client() signature.
-                // A new signature has been introduced in 1.6.0 version of the official package.
-                // This new signature has been backported in the `1.3.6-1` version of the debian package,
-                // so we have to check for method argument names too.
-                $has_service_base_url_arg = version_compare(phpCAS::getVersion(), '1.6.0', '>=')
-                    || ((new ReflectionMethod(phpCAS::class, 'client'))->getParameters()[4]->getName() ?? null) === 'service_base_url';
-                if (!$has_service_base_url_arg) {
-                    // Prior to version 1.6.0, `$service_base_url` argument was not present, and 5th argument was `$changeSessionID`.
+                if (version_compare(phpCAS::getVersion(), '1.6.0', '<')) {
+                    // Prior to version 1.6.0, 5th argument was `$changeSessionID`.
                     phpCAS::client(
                         constant($CFG_GLPI["cas_version"]),
                         $CFG_GLPI["cas_host"],
@@ -541,16 +509,13 @@ class Auth extends CommonGLPI
                         false
                     );
                 } else {
-                    // Starting from version 1.6.0, `$service_base_url` argument was added at 5th position, and `$changeSessionID`
-                    // was moved at 6th position.
-                    $url_base = parse_url($CFG_GLPI["url_base"]);
-                    $service_base_url = $url_base["scheme"] . "://" . $url_base["host"] . (isset($url_base["port"]) ? ":" . $url_base["port"] : "");
+                    // Starting from version 1.6.0, 5th argument is `$service_base_url`.
                     phpCAS::client(
                         constant($CFG_GLPI["cas_version"]),
                         $CFG_GLPI["cas_host"],
                         intval($CFG_GLPI["cas_port"]),
                         $CFG_GLPI["cas_uri"],
-                        $service_base_url,
+                        $CFG_GLPI["url_base"],
                         false
                     );
                 }
@@ -773,11 +738,7 @@ class Auth extends CommonGLPI
      */
     public function login($login_name, $login_password, $noauto = false, $remember_me = false, $login_auth = '')
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $this->getAuthMethods();
         $this->user_present  = 1;
@@ -826,7 +787,7 @@ class Auth extends CommonGLPI
                 $ldapservers = [];
                 $ldapservers_status = false;
                //if LDAP enabled too, get user's infos from LDAP
-                if ((!isset($this->user->fields['authtype']) || $this->user->fields['authtype'] === self::LDAP) && Toolbox::canUseLdap()) {
+                if (Toolbox::canUseLdap()) {
                    //User has already authenticated, at least once: it's ldap server if filled
                     if (
                         isset($this->user->fields["auths_id"])
@@ -966,8 +927,7 @@ class Auth extends CommonGLPI
                                 $login_password,
                                 $this->user->fields["auths_id"]
                             );
-                            if ($this->user_ldap_error === false && !$this->auth_succeded && !$this->user_found) {
-                                 // Mark user as deleted, unless an error occured during connection to user LDAP server.
+                            if ($this->ldap_connection !== false && (!$this->auth_succeded && !$this->user_found)) {
                                  $search_params = [
                                      'name'     => addslashes($login_name),
                                      'authtype' => $this::LDAP
@@ -1127,7 +1087,6 @@ class Auth extends CommonGLPI
      */
     public static function dropdown($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $p = [
@@ -1324,7 +1283,6 @@ class Auth extends CommonGLPI
     public static function useAuthExt()
     {
 
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        //Get all the ldap directories
@@ -1377,11 +1335,10 @@ class Auth extends CommonGLPI
      *                                (false by default)
      * @param string  $redirect_string redirect string if exists (default '')
      *
-     * @return false|integer nothing if redirect is true, else Auth system ID
+     * @return void|integer nothing if redirect is true, else Auth system ID
      */
     public static function checkAlternateAuthSystems($redirect = false, $redirect_string = '')
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (isset($_GET["noAUTO"]) || isset($_POST["noAUTO"])) {
@@ -1409,7 +1366,8 @@ class Auth extends CommonGLPI
         $ssovariable = Dropdown::getDropdownName('glpi_ssovariables', $CFG_GLPI["ssovariables_id"]);
         if (
             $CFG_GLPI["ssovariables_id"]
-            && !empty($_SERVER[$ssovariable])
+            && ((isset($_SERVER[$ssovariable]) && !empty($_SERVER[$ssovariable]))
+              /*|| (isset($_REQUEST[$ssovariable]) && !empty($_REQUEST[$ssovariable]))*/)
         ) {
             if ($redirect) {
                 Html::redirect($CFG_GLPI["root_doc"] . "/front/login.php" . $redir_string);
@@ -1453,7 +1411,6 @@ class Auth extends CommonGLPI
      */
     public static function redirectIfAuthenticated($redirect = null)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!Session::getLoginUserID()) {
@@ -1501,11 +1458,7 @@ class Auth extends CommonGLPI
      */
     public static function showSynchronizationForm(User $user)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         if (Session::haveRight("user", User::UPDATEAUTHENT)) {
             echo "<form method='post' action='" . Toolbox::getItemTypeFormURL('User') . "'>";
@@ -1530,7 +1483,7 @@ class Auth extends CommonGLPI
                             'name' => 'force_ldap_resynch'
                         ]);
 
-                        if (strlen($authldap->fields['sync_field'] ?? "") > 0) {
+                        if (strlen($authldap->fields['sync_field']) > 0) {
                             echo Html::submit("<i class='fas fa-broom'></i><span>" . __s('Clean LDAP fields and force synchronisation') . "</span>", [
                                 'name' => 'clean_ldap_fields'
                             ]);
@@ -1572,10 +1525,7 @@ class Auth extends CommonGLPI
      */
     public static function isValidLogin($login)
     {
-        return $login !== null && (
-            preg_match("/^[[:alnum:]'@.\-_ ]+$/iu", $login)
-            || filter_var($login, FILTER_VALIDATE_EMAIL) != false
-        );
+        return $login !== null && preg_match("/^[[:alnum:]'@.\-_ ]+$/iu", $login);
     }
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
@@ -1620,7 +1570,6 @@ class Auth extends CommonGLPI
      */
     public static function showOtherAuthList()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!Config::canUpdate()) {
@@ -1827,7 +1776,6 @@ class Auth extends CommonGLPI
      */
     public static function getLoginAuthMethods()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $elements = [
@@ -1907,15 +1855,14 @@ class Auth extends CommonGLPI
      */
     public static function setRememberMeCookie(string $cookie_value): void
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $cookie_name     = session_name() . '_rememberme';
         $cookie_lifetime = empty($cookie_value) ? time() - 3600 : time() + $CFG_GLPI['login_remember_time'];
         $cookie_path     = ini_get('session.cookie_path');
         $cookie_domain   = ini_get('session.cookie_domain');
-        $cookie_secure   = filter_var(ini_get('session.cookie_secure'), FILTER_VALIDATE_BOOLEAN);
-        $cookie_httponly = filter_var(ini_get('session.cookie_httponly'), FILTER_VALIDATE_BOOLEAN);
+        $cookie_secure   = (bool)ini_get('session.cookie_secure');
+        $cookie_httponly = (bool)ini_get('session.cookie_httponly');
         $cookie_samesite = ini_get('session.cookie_samesite');
 
         if (empty($cookie_value) && !isset($_COOKIE[$cookie_name])) {

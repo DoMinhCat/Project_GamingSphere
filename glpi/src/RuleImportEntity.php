@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -45,6 +45,16 @@ class RuleImportEntity extends Rule
     public function getTitle()
     {
         return __('Rules for assigning an item to an entity');
+    }
+
+
+    /**
+     * @see Rule::maxActionsCount()
+     **/
+    public function maxActionsCount()
+    {
+       // Unlimited
+        return 5;
     }
 
     public function executeActions($output, $params, array $input = [])
@@ -138,15 +148,11 @@ class RuleImportEntity extends Rule
      **/
     public function displayAdditionalRuleCondition($condition, $criteria, $name, $value, $test = false)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var array $PLUGIN_HOOKS
-         */
-        global $CFG_GLPI, $PLUGIN_HOOKS;
+        global $PLUGIN_HOOKS, $CFG_GLPI;
 
         if ($criteria['field'] == '_source') {
             $tab = ['GLPI' => __('GLPI'), 'NATIVE_INVENTORY' => AutoUpdateSystem::getLabelFor(AutoUpdateSystem::NATIVE_INVENTORY)];
-            foreach ($PLUGIN_HOOKS['import_item'] ?? [] as $plug => $types) {
+            foreach ($PLUGIN_HOOKS['import_item'] as $plug => $types) {
                 if (!Plugin::isPluginActive($plug)) {
                     continue;
                 }
@@ -170,11 +176,11 @@ class RuleImportEntity extends Rule
                 return true;
 
             case Rule::PATTERN_EXISTS:
-                Dropdown::showYesNo($name, 1, 0);
+                echo Dropdown::showYesNo($name, 1, 0);
                 return true;
 
             case Rule::PATTERN_DOES_NOT_EXISTS:
-                Dropdown::showYesNo($name, 1, 0);
+                echo Dropdown::showYesNo($name, 1, 0);
                 return true;
         }
         return false;
@@ -256,12 +262,12 @@ class RuleImportEntity extends Rule
                 'type' => 'yesno'
             ],
             'groups_id_tech' => [
-                'name' => __('Group in charge'),
+                'name' => __('Group in charge of the hardware'),
                 'type' => 'dropdown',
                 'table' => Group::getTable()
             ],
             'users_id_tech' => [
-                'name' => __('Technician in charge'),
+                'name' => __('Technician in charge of the hardware'),
                 'type' => 'dropdown_users'
             ]
         ];

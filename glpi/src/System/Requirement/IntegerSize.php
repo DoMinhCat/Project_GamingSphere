@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -39,11 +39,9 @@ final class IntegerSize extends AbstractRequirement
 {
     public function __construct()
     {
-        parent::__construct(
-            __('PHP maximal integer size'),
-            __('Support of 64 bits integers is required for IP addresses related operations (network inventory, API clients IP filtering, ...).'),
-            true
-        );
+        $this->title = __('PHP maximal integer size');
+        $this->description = __('Support of 64 bits integers is required for IP addresses related operations (network inventory, API clients IP filtering, ...).');
+        $this->optional = true;
     }
 
     protected function check()

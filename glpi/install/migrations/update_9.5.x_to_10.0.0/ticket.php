@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33,12 +33,13 @@
  * ---------------------------------------------------------------------
  */
 
+/**
+ * @var DB $DB
+ * @var Migration $migration
+ */
+
 /* Remove global_validation field from templates (should not be defined manually). */
 foreach (['glpi_tickettemplatemandatoryfields', 'glpi_tickettemplatepredefinedfields'] as $table) {
-    /**
-     * @var \DBmysql $DB
-     * @var \Migration $migration
-     */
     $migration->addPostQuery(
         $DB->buildDelete(
             $table,
@@ -51,6 +52,5 @@ foreach (['glpi_tickettemplatemandatoryfields', 'glpi_tickettemplatepredefinedfi
 /* /Remove global_validation field from templates (should not be defined manually). */
 
 /* Add dedicated right for ITILFollowupTemplate */
-/** @var \Migration $migration */
 $migration->addRight('itilfollowuptemplate', ALLSTANDARDRIGHT, ['dropdown' => UPDATE]);
 /* Add dedicated right for ITILFollowupTemplate */

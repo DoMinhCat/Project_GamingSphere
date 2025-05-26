@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -50,7 +50,7 @@ class Item_DeviceProcessor extends Item_Devices
         return [
             'frequency' => [
                 'long name'  => sprintf(__('%1$s (%2$s)'), __('Frequency'), __('MHz')),
-                'short name' => sprintf(__('%1$s (%2$s)'), __('Frequency'), __('MHz')),
+                'short name' => __('Frequency'),
                 'size'       => 10,
                 'id'         => 20,
                 'datatype'   => 'integer',

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -69,7 +69,7 @@ class ComputerVirtualMachine extends CommonDBChild
 
         if (
             !$withtemplate
-            && $item instanceof Computer
+            && ($item->getType() == 'Computer')
             && Computer::canView()
         ) {
             $nb = 0;
@@ -412,7 +412,6 @@ class ComputerVirtualMachine extends CommonDBChild
      **/
     public static function findVirtualMachine($fields = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!isset($fields['uuid']) || empty($fields['uuid'])) {
@@ -492,8 +491,6 @@ class ComputerVirtualMachine extends CommonDBChild
             'datatype'           => 'string',
             'massiveaction'      => false,
         ];
-
-        $tab = array_merge($tab, Computer::rawSearchOptionsToAdd("ComputerVirtualMachine"));
 
         return $tab;
     }

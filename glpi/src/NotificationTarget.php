@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -389,7 +389,7 @@ class NotificationTarget extends CommonDBChild
      * @param $event              the event which will be used (default '')
      * @param $options   array    of options
      *
-     * @return NotificationTarget|false
+     * @return a notificationtarget class or false
      **/
     public static function getInstanceByType($itemtype, $event = '', $options = [])
     {
@@ -550,7 +550,6 @@ class NotificationTarget extends CommonDBChild
      **/
     public function addToRecipientsList(array $data)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $new_target = null;
@@ -586,17 +585,6 @@ class NotificationTarget extends CommonDBChild
                 $this->getEntity(),
                 true
             );
-
-            // If one of the item is recursive, then we should also check the child entities
-            if ($this->isTargetItemRecursive()) {
-                $filt = [
-                    'OR' => [
-                        $filt,
-                        ['entities_id' => getSonsOf(Entity::getTable(), $this->getEntity())]
-                    ]
-                ];
-            }
-
             $prof = Profile_User::getUserProfiles($data['users_id'], $filt);
             if (!count($prof)) {
                 // No right on the entity of the object
@@ -688,7 +676,6 @@ class NotificationTarget extends CommonDBChild
      **/
     public function formatURL($usertype, $redirect)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (urldecode($redirect) === $redirect) {
@@ -701,13 +688,14 @@ class NotificationTarget extends CommonDBChild
 
         switch ($usertype) {
             case self::EXTERNAL_USER:
-            case self::GLPI_USER:
                 return $CFG_GLPI["url_base"] . "/index.php?redirect=$redirect";
 
-            // case self::ANONYMOUS_USER:
-            default:
-                // No URL
+            case self::ANONYMOUS_USER:
+               // No URL
                 return '';
+
+            case self::GLPI_USER:
+                return $CFG_GLPI["url_base"] . "/index.php?redirect=$redirect&noAUTO=1";
         }
     }
 
@@ -845,7 +833,6 @@ class NotificationTarget extends CommonDBChild
      **/
     final public function addForGroup($manager, $group_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // members/managers of the group allowed on object entity
@@ -867,10 +854,10 @@ class NotificationTarget extends CommonDBChild
                     ]
                 ]
             ],
-            $criteria['INNER JOIN'] ?? []
+            $criteria['INNER JOIN']
         );
         $criteria['WHERE'] = array_merge(
-            $criteria['WHERE'] ?? [],
+            $criteria['WHERE'],
             [
                 Group_User::getTable() . '.groups_id'  => $group_id,
                 Group::getTable() . '.is_notify'       => 1,
@@ -923,28 +910,18 @@ class NotificationTarget extends CommonDBChild
      * Return main notification events for the object type
      * Internal use only => should use getAllEvents
      *
-     * @return array an array which contains : event => event label
+     * @return an array which contains : event => event label
      **/
     public function getEvents()
     {
         return [];
     }
 
-    /**
-     * Return whether the notification content corresponding to the given event can be disclosed.
-     *
-     * @return bool
-     */
-    public function canNotificationContentBeDisclosed(string $event): bool
-    {
-        return true;
-    }
-
 
     /**
      * Return all (GLPI + plugins) notification events for the object type
      *
-     * @return array which contains : event => event label
+     * @return an array which contains : event => event label
      **/
     public function getAllEvents()
     {
@@ -975,10 +952,9 @@ class NotificationTarget extends CommonDBChild
 
     public function addProfilesToTargets()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
-        foreach ($DB->request(Profile::getTable()) as $data) {
+        foreach ($DB->request('glpi_profiles') as $data) {
             $this->addTarget(
                 $data["id"],
                 sprintf(__('%1$s: %2$s'), Profile::getTypeName(1), $data["name"]),
@@ -993,7 +969,6 @@ class NotificationTarget extends CommonDBChild
      **/
     final public function addGroupsToTargets($entity)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Filter groups which can be notified and have members (as notifications are sent to members)
@@ -1112,7 +1087,6 @@ class NotificationTarget extends CommonDBChild
      **/
     final public function addUserByField($field, $search_in_object = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $id = [];
@@ -1187,7 +1161,6 @@ class NotificationTarget extends CommonDBChild
      */
     final public function addForProfile($profiles_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $criteria = $this->getDistinctUserCriteria() + $this->getProfileJoinCriteria();
@@ -1231,9 +1204,6 @@ class NotificationTarget extends CommonDBChild
      **/
     public function getReplyTo(): array
     {
-        if (!$this->allowResponse()) {
-            return Config::getNoReplyEmailSender($this->getEntity());
-        }
         return Config::getReplyToEmailSender($this->getEntity());
     }
 
@@ -1356,11 +1326,11 @@ class NotificationTarget extends CommonDBChild
      * Get SQL join to restrict by profile and by config to avoid send notification
      * to a user without rights.
      *
-     * @return array
+     * @return string
      */
     public function getProfileJoinCriteria()
     {
-        $criteria = [
+        return [
             'INNER JOIN'   => [
                 Profile_User::getTable() => [
                     'ON' => [
@@ -1369,26 +1339,13 @@ class NotificationTarget extends CommonDBChild
                     ]
                 ]
             ],
-            'WHERE' => getEntitiesRestrictCriteria(
+            'WHERE'        => getEntitiesRestrictCriteria(
                 Profile_User::getTable(),
                 'entities_id',
                 $this->getEntity(),
                 true
             )
         ];
-
-        if ($this->isTargetItemRecursive()) {
-            $criteria['WHERE'] = [
-                'OR' => [
-                    $criteria['WHERE'],
-                    [
-                        Profile_User::getTableField('entities_id') => getSonsOf(Entity::getTable(), $this->getEntity())
-                    ]
-                ]
-            ];
-        }
-
-        return $criteria;
     }
 
 
@@ -1432,7 +1389,6 @@ class NotificationTarget extends CommonDBChild
      */
     private function getGlobalTagsData(): array
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         return [
@@ -1467,7 +1423,7 @@ class NotificationTarget extends CommonDBChild
 
         if ($p['tag']) {
             if (is_array($p['events'])) {
-                $events = $this->getAllEvents();
+                $events = $this->getEvents();
                 $tmp = [];
 
                 foreach ($p['events'] as $event) {
@@ -1504,8 +1460,8 @@ class NotificationTarget extends CommonDBChild
 
         if (!$withtemplate && Notification::canView()) {
             $nb = 0;
-            switch (get_class($item)) {
-                case Group::class:
+            switch ($item->getType()) {
+                case 'Group':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = self::countForGroup($item);
                     }
@@ -1514,7 +1470,7 @@ class NotificationTarget extends CommonDBChild
                         $nb
                     );
 
-                case Notification::class:
+                case 'Notification':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(
                             $this->getTable(),
@@ -1539,7 +1495,6 @@ class NotificationTarget extends CommonDBChild
      **/
     public static function countForGroup(Group $group)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $count = $DB->request([
@@ -1576,7 +1531,6 @@ class NotificationTarget extends CommonDBChild
      **/
     public static function showForGroup(Group $group)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!Notification::canView()) {
@@ -1662,9 +1616,9 @@ class NotificationTarget extends CommonDBChild
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
-        if (get_class($item) == Group::class) {
+        if ($item->getType() == 'Group') {
             self::showForGroup($item);
-        } else if (get_class($item) == Notification::class) {
+        } else if ($item->getType() == 'Notification') {
             $target = self::getInstanceByType(
                 $item->getField('itemtype'),
                 $item->getField('event'),
@@ -1742,27 +1696,5 @@ class NotificationTarget extends CommonDBChild
         $this->allow_response = $allow_response;
 
         return $this;
-    }
-
-    /**
-     * Check if at least one target item is recursive
-     *
-     * @return bool
-     */
-    protected function isTargetItemRecursive(): bool
-    {
-        // If the notification target more than one item, we can't handle the
-        // entity restriction correctly and must discard any potential child
-        // entities check
-        if (count($this->target_object) > 1) {
-            return false;
-        }
-
-        // Not all items support recursion
-        if (!($this->obj instanceof CommonDBTM)  || !$this->obj->maybeRecursive()) {
-            return false;
-        }
-
-        return $this->obj->isRecursive();
     }
 }

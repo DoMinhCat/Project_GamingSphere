@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -61,11 +61,7 @@ class Link_Itemtype extends CommonDBChild
      **/
     public static function showForLink($link)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB,$CFG_GLPI;
 
         $links_id = $link->getField('id');
 
@@ -167,7 +163,6 @@ class Link_Itemtype extends CommonDBChild
             $nb = 0;
             switch ($item->getType()) {
                 case 'Link':
-                    /** @var Link $item */
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(
                             $this->getTable(),
@@ -205,7 +200,6 @@ class Link_Itemtype extends CommonDBChild
      */
     public static function deleteForItemtype($itemtype)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $DB->delete(

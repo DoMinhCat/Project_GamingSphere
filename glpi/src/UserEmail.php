@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33,8 +33,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\Toolbox\Sanitizer;
-
 /**
  * UserEmail class
  **/
@@ -54,40 +52,6 @@ class UserEmail extends CommonDBChild
         return _n('Email', 'Emails', $nb);
     }
 
-    public function canChildItem($methodItem, $methodNotItem)
-    {
-        $users_id = $this->input['users_id'] ?? $this->fields['users_id'] ?? null;
-        if ($users_id !== null && !$this->canAlterUserEmails((int) $users_id)) {
-            return false;
-        }
-
-        return parent::canChildItem($methodItem, $methodNotItem);
-    }
-
-    /**
-     * Indicates whether the current user can alter the email addresses from the target user.
-     *
-     * @param int $target_user_id
-     * @return bool
-     */
-    private function canAlterUserEmails(int $target_user_id): bool
-    {
-        $session_user_id = Session::getLoginUserID();
-
-        if ($session_user_id === false) {
-            // No active user session, action is made by a cron or a system routine, no need to check.
-            return true;
-        }
-
-        if ($target_user_id === $session_user_id) {
-            // Email is attached to the current user, no need to check.
-            return true;
-        }
-
-        // Current user can alter target user's emails only if he has more rights.
-        $user = new User();
-        return $user->currentUserHaveMoreRightThan($target_user_id);
-    }
 
     /**
      * Get default email for user. If no default email get first one
@@ -98,7 +62,6 @@ class UserEmail extends CommonDBChild
      **/
     public static function getDefaultForUser($users_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Get default one
@@ -128,7 +91,6 @@ class UserEmail extends CommonDBChild
      **/
     public static function getAllForUser($users_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $emails = [];
@@ -158,7 +120,6 @@ class UserEmail extends CommonDBChild
      **/
     public static function isEmailForUser($users_id, $email)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -255,14 +216,9 @@ class UserEmail extends CommonDBChild
             !$user->can($users_id, READ)
             && ($users_id != Session::getLoginUserID())
         ) {
-            return;
+            return false;
         }
-        $canedit = (
-            (
-                $user->can($users_id, UPDATE)
-                && ($user->currentUserHaveMoreRightThan($users_id)))
-            || ($users_id == Session::getLoginUserID())
-        );
+        $canedit = ($user->can($users_id, UPDATE) || ($users_id == Session::getLoginUserID()));
 
         parent::showChildsForItemForm($user, '_useremails', $canedit);
     }
@@ -278,12 +234,7 @@ class UserEmail extends CommonDBChild
         if (!$user->can($users_id, READ) && ($users_id != Session::getLoginUserID())) {
             return false;
         }
-        $canedit = (
-            (
-                $user->can($users_id, UPDATE)
-                && ($user->currentUserHaveMoreRightThan($users_id)))
-            || ($users_id == Session::getLoginUserID())
-        );
+        $canedit = ($user->can($users_id, UPDATE) || ($users_id == Session::getLoginUserID()));
 
         parent::showAddChildButtonForItemForm($user, '_useremails', $canedit);
 
@@ -323,7 +274,7 @@ class UserEmail extends CommonDBChild
      */
     private function checkInputEmailValidity(array $input): bool
     {
-        return isset($input['email']) && !empty($input['email']) && GLPIMailer::validateAddress(Sanitizer::unsanitize($input['email']));
+        return isset($input['email']) && !empty($input['email']) && GLPIMailer::validateAddress($input['email']);
     }
 
 
@@ -340,9 +291,8 @@ class UserEmail extends CommonDBChild
     }
 
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // if default is set : unsed others for the users
@@ -368,7 +318,6 @@ class UserEmail extends CommonDBChild
 
     public function post_addItem()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // if default is set : unset others for the users
@@ -391,7 +340,6 @@ class UserEmail extends CommonDBChild
 
     public function post_deleteFromDB()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // if default is set : set default to another one

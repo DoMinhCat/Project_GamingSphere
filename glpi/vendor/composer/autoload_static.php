@@ -4,16 +4,15 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
+class ComposerStaticInit1de80ebd1bc340bbad5845e176f0c69a
 {
     public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '383eaff206634a77a1be54e64e6459c7' => __DIR__ . '/..' . '/sabre/uri/lib/functions.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '2b9d0f43f9552984cfa82fee95491826' => __DIR__ . '/..' . '/sabre/event/lib/coroutine.php',
@@ -21,14 +20,10 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'a1cce3d26cc15c00fcd0b3354bd72c88' => __DIR__ . '/..' . '/sabre/event/lib/Promise/functions.php',
         '3569eecfeed3bcf0bad3c998a494ecb8' => __DIR__ . '/..' . '/sabre/xml/lib/Deserializer/functions.php',
         '93aa591bc4ca510c520999e34229ee79' => __DIR__ . '/..' . '/sabre/xml/lib/Serializer/functions.php',
+        '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'ebdb698ed4152ae445614b69b5e4bb6a' => __DIR__ . '/..' . '/sabre/http/lib/functions.php',
-        '89efb1254ef2d1c5d80096acd12c4098' => __DIR__ . '/..' . '/twig/twig/src/Resources/core.php',
-        'ffecb95d45175fd40f75be8a23b34f90' => __DIR__ . '/..' . '/twig/twig/src/Resources/debug.php',
-        'c7baa00073ee9c61edf148c51917cfb4' => __DIR__ . '/..' . '/twig/twig/src/Resources/escaper.php',
-        'f844ccf1d25df8663951193c3fc307c8' => __DIR__ . '/..' . '/twig/twig/src/Resources/string_loader.php',
         'da5f6548f070d3d306f90eee42dd5de6' => __DIR__ . '/..' . '/donatj/phpuseragentparser/src/UserAgentParser.php',
-        '73087aa164ae0ee1334fd9d19596ee7f' => __DIR__ . '/..' . '/glpi-project/inventory_format/lib/php/Schema.php',
         'e1b904afbd54085bf43ec4d5eeb961d5' => __DIR__ . '/..' . '/glpi-project/inventory_format/lib/php/Converter.php',
         '6f00a0b76de6ce056d502806cbb082c7' => __DIR__ . '/..' . '/glpi-project/inventory_format/lib/php/FilesToJSON.php',
         'ef836782e1b8d747e78815386b148139' => __DIR__ . '/..' . '/htmlawed/htmlawed/htmLawed.php',
@@ -351,8 +346,8 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         ),
         'League\\OAuth2\\Client\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/oauth2-google/src',
-            1 => __DIR__ . '/..' . '/league/oauth2-client/src',
+            0 => __DIR__ . '/..' . '/league/oauth2-client/src',
+            1 => __DIR__ . '/..' . '/league/oauth2-google/src',
         ),
         'League\\Csv\\' => 
         array (
@@ -449,7 +444,6 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Brick\\Math\\Internal\\Calculator\\GmpCalculator' => __DIR__ . '/..' . '/brick/math/src/Internal/Calculator/GmpCalculator.php',
         'Brick\\Math\\Internal\\Calculator\\NativeCalculator' => __DIR__ . '/..' . '/brick/math/src/Internal/Calculator/NativeCalculator.php',
         'Brick\\Math\\RoundingMode' => __DIR__ . '/..' . '/brick/math/src/RoundingMode.php',
-        'CURLStringFile' => __DIR__ . '/..' . '/symfony/polyfill-php81/Resources/stubs/CURLStringFile.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
@@ -510,7 +504,6 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Glpi\\Console\\Cache\\DebugCommand' => __DIR__ . '/../..' . '/src/Console/Cache/DebugCommand.php',
         'Glpi\\Console\\Cache\\SetNamespacePrefixCommand' => __DIR__ . '/../..' . '/src/Console/Cache/SetNamespacePrefixCommand.php',
         'Glpi\\Console\\CommandLoader' => __DIR__ . '/../..' . '/src/Console/CommandLoader.php',
-        'Glpi\\Console\\Command\\ConfigurationCommandInterface' => __DIR__ . '/../..' . '/src/Console/Command/ConfigurationCommandInterface.php',
         'Glpi\\Console\\Command\\ForceNoPluginsOptionCommandInterface' => __DIR__ . '/../..' . '/src/Console/Command/ForceNoPluginsOptionCommandInterface.php',
         'Glpi\\Console\\Command\\GlpiCommandInterface' => __DIR__ . '/../..' . '/src/Console/Command/GlpiCommandInterface.php',
         'Glpi\\Console\\Config\\SetCommand' => __DIR__ . '/../..' . '/src/Console/Config/SetCommand.php',
@@ -627,7 +620,6 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Glpi\\Features\\Teamwork' => __DIR__ . '/../..' . '/src/Features/Teamwork.php',
         'Glpi\\Features\\Timeline' => __DIR__ . '/../..' . '/src/Features/Timeline.php',
         'Glpi\\Features\\TreeBrowse' => __DIR__ . '/../..' . '/src/Features/TreeBrowse.php',
-        'Glpi\\Http\\Firewall' => __DIR__ . '/../..' . '/src/Http/Firewall.php',
         'Glpi\\Http\\ProxyRouter' => __DIR__ . '/../..' . '/src/Http/ProxyRouter.php',
         'Glpi\\Http\\Response' => __DIR__ . '/../..' . '/src/Http/Response.php',
         'Glpi\\Inventory\\Asset\\Antivirus' => __DIR__ . '/../..' . '/src/Inventory/Asset/Antivirus.php',
@@ -669,7 +661,6 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Glpi\\Inventory\\Inventory' => __DIR__ . '/../..' . '/src/Inventory/Inventory.php',
         'Glpi\\Inventory\\Request' => __DIR__ . '/../..' . '/src/Inventory/Request.php',
         'Glpi\\Mail\\Protocol\\ProtocolInterface' => __DIR__ . '/../..' . '/src/Mail/Protocol/ProtocolInterface.php',
-        'Glpi\\Mail\\SMTP\\OAuthTokenProvider' => __DIR__ . '/../..' . '/src/Mail/SMTP/OAuthTokenProvider.php',
         'Glpi\\Mail\\SMTP\\OauthConfig' => __DIR__ . '/../..' . '/src/Mail/SMTP/OauthConfig.php',
         'Glpi\\Mail\\SMTP\\OauthProvider\\Azure' => __DIR__ . '/../..' . '/src/Mail/SMTP/OauthProvider/Azure.php',
         'Glpi\\Mail\\SMTP\\OauthProvider\\Google' => __DIR__ . '/../..' . '/src/Mail/SMTP/OauthProvider/Google.php',
@@ -735,10 +726,8 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Glpi\\System\\Status\\StatusChecker' => __DIR__ . '/../..' . '/src/System/Status/StatusChecker.php',
         'Glpi\\System\\Variables' => __DIR__ . '/../..' . '/src/System/Variables.php',
         'Glpi\\Team\\Team' => __DIR__ . '/../..' . '/src/Team/Team.php',
-        'Glpi\\Toolbox\\ArrayNormalizer' => __DIR__ . '/../..' . '/src/Toolbox/ArrayNormalizer.php',
         'Glpi\\Toolbox\\DataExport' => __DIR__ . '/../..' . '/src/Toolbox/DataExport.php',
         'Glpi\\Toolbox\\DatabaseSchema' => __DIR__ . '/../..' . '/src/Toolbox/DatabaseSchema.php',
-        'Glpi\\Toolbox\\Filesystem' => __DIR__ . '/../..' . '/src/Toolbox/Filesystem.php',
         'Glpi\\Toolbox\\FrontEnd' => __DIR__ . '/../..' . '/src/Toolbox/FrontEnd.php',
         'Glpi\\Toolbox\\MarkdownBuilder' => __DIR__ . '/../..' . '/src/Toolbox/MarkdownBuilder.php',
         'Glpi\\Toolbox\\Sanitizer' => __DIR__ . '/../..' . '/src/Toolbox/Sanitizer.php',
@@ -2370,7 +2359,6 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Symfony\\Contracts\\Service\\ServiceSubscriberInterface' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceSubscriberInterface.php',
         'Symfony\\Contracts\\Service\\ServiceSubscriberTrait' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceSubscriberTrait.php',
         'Symfony\\Contracts\\Service\\Test\\ServiceLocatorTest' => __DIR__ . '/..' . '/symfony/service-contracts/Test/ServiceLocatorTest.php',
-        'Symfony\\Contracts\\Service\\Test\\ServiceLocatorTestCase' => __DIR__ . '/..' . '/symfony/service-contracts/Test/ServiceLocatorTestCase.php',
         'Symfony\\Contracts\\Translation\\LocaleAwareInterface' => __DIR__ . '/..' . '/symfony/translation-contracts/LocaleAwareInterface.php',
         'Symfony\\Contracts\\Translation\\Test\\TranslatorTest' => __DIR__ . '/..' . '/symfony/translation-contracts/Test/TranslatorTest.php',
         'Symfony\\Contracts\\Translation\\TranslatableInterface' => __DIR__ . '/..' . '/symfony/translation-contracts/TranslatableInterface.php',
@@ -2402,12 +2390,9 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'TrueBV\\Exception\\LabelOutOfBoundsException' => __DIR__ . '/..' . '/true/punycode/src/Exception/LabelOutOfBoundsException.php',
         'TrueBV\\Exception\\OutOfBoundsException' => __DIR__ . '/..' . '/true/punycode/src/Exception/OutOfBoundsException.php',
         'TrueBV\\Punycode' => __DIR__ . '/..' . '/true/punycode/src/Punycode.php',
-        'Twig\\Attribute\\YieldReady' => __DIR__ . '/..' . '/twig/twig/src/Attribute/YieldReady.php',
         'Twig\\Cache\\CacheInterface' => __DIR__ . '/..' . '/twig/twig/src/Cache/CacheInterface.php',
-        'Twig\\Cache\\ChainCache' => __DIR__ . '/..' . '/twig/twig/src/Cache/ChainCache.php',
         'Twig\\Cache\\FilesystemCache' => __DIR__ . '/..' . '/twig/twig/src/Cache/FilesystemCache.php',
         'Twig\\Cache\\NullCache' => __DIR__ . '/..' . '/twig/twig/src/Cache/NullCache.php',
-        'Twig\\Cache\\ReadOnlyFilesystemCache' => __DIR__ . '/..' . '/twig/twig/src/Cache/ReadOnlyFilesystemCache.php',
         'Twig\\Compiler' => __DIR__ . '/..' . '/twig/twig/src/Compiler.php',
         'Twig\\Environment' => __DIR__ . '/..' . '/twig/twig/src/Environment.php',
         'Twig\\Error\\Error' => __DIR__ . '/..' . '/twig/twig/src/Error/Error.php',
@@ -2428,7 +2413,6 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Twig\\Extension\\SandboxExtension' => __DIR__ . '/..' . '/twig/twig/src/Extension/SandboxExtension.php',
         'Twig\\Extension\\StagingExtension' => __DIR__ . '/..' . '/twig/twig/src/Extension/StagingExtension.php',
         'Twig\\Extension\\StringLoaderExtension' => __DIR__ . '/..' . '/twig/twig/src/Extension/StringLoaderExtension.php',
-        'Twig\\Extension\\YieldNotReadyExtension' => __DIR__ . '/..' . '/twig/twig/src/Extension/YieldNotReadyExtension.php',
         'Twig\\Extra\\String\\StringExtension' => __DIR__ . '/..' . '/twig/string-extra/StringExtension.php',
         'Twig\\FileExtensionEscapingStrategy' => __DIR__ . '/..' . '/twig/twig/src/FileExtensionEscapingStrategy.php',
         'Twig\\Lexer' => __DIR__ . '/..' . '/twig/twig/src/Lexer.php',
@@ -2445,12 +2429,10 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Twig\\NodeVisitor\\OptimizerNodeVisitor' => __DIR__ . '/..' . '/twig/twig/src/NodeVisitor/OptimizerNodeVisitor.php',
         'Twig\\NodeVisitor\\SafeAnalysisNodeVisitor' => __DIR__ . '/..' . '/twig/twig/src/NodeVisitor/SafeAnalysisNodeVisitor.php',
         'Twig\\NodeVisitor\\SandboxNodeVisitor' => __DIR__ . '/..' . '/twig/twig/src/NodeVisitor/SandboxNodeVisitor.php',
-        'Twig\\NodeVisitor\\YieldNotReadyNodeVisitor' => __DIR__ . '/..' . '/twig/twig/src/NodeVisitor/YieldNotReadyNodeVisitor.php',
         'Twig\\Node\\AutoEscapeNode' => __DIR__ . '/..' . '/twig/twig/src/Node/AutoEscapeNode.php',
         'Twig\\Node\\BlockNode' => __DIR__ . '/..' . '/twig/twig/src/Node/BlockNode.php',
         'Twig\\Node\\BlockReferenceNode' => __DIR__ . '/..' . '/twig/twig/src/Node/BlockReferenceNode.php',
         'Twig\\Node\\BodyNode' => __DIR__ . '/..' . '/twig/twig/src/Node/BodyNode.php',
-        'Twig\\Node\\CaptureNode' => __DIR__ . '/..' . '/twig/twig/src/Node/CaptureNode.php',
         'Twig\\Node\\CheckSecurityCallNode' => __DIR__ . '/..' . '/twig/twig/src/Node/CheckSecurityCallNode.php',
         'Twig\\Node\\CheckSecurityNode' => __DIR__ . '/..' . '/twig/twig/src/Node/CheckSecurityNode.php',
         'Twig\\Node\\CheckToStringNode' => __DIR__ . '/..' . '/twig/twig/src/Node/CheckToStringNode.php',
@@ -2496,7 +2478,6 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Twig\\Node\\Expression\\ConstantExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/ConstantExpression.php',
         'Twig\\Node\\Expression\\FilterExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/FilterExpression.php',
         'Twig\\Node\\Expression\\Filter\\DefaultFilter' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/Filter/DefaultFilter.php',
-        'Twig\\Node\\Expression\\Filter\\RawFilter' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/Filter/RawFilter.php',
         'Twig\\Node\\Expression\\FunctionExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/FunctionExpression.php',
         'Twig\\Node\\Expression\\GetAttrExpression' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/GetAttrExpression.php',
         'Twig\\Node\\Expression\\InlinePrint' => __DIR__ . '/..' . '/twig/twig/src/Node/Expression/InlinePrint.php',
@@ -2526,7 +2507,6 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Twig\\Node\\IncludeNode' => __DIR__ . '/..' . '/twig/twig/src/Node/IncludeNode.php',
         'Twig\\Node\\MacroNode' => __DIR__ . '/..' . '/twig/twig/src/Node/MacroNode.php',
         'Twig\\Node\\ModuleNode' => __DIR__ . '/..' . '/twig/twig/src/Node/ModuleNode.php',
-        'Twig\\Node\\NameDeprecation' => __DIR__ . '/..' . '/twig/twig/src/Node/NameDeprecation.php',
         'Twig\\Node\\Node' => __DIR__ . '/..' . '/twig/twig/src/Node/Node.php',
         'Twig\\Node\\NodeCaptureInterface' => __DIR__ . '/..' . '/twig/twig/src/Node/NodeCaptureInterface.php',
         'Twig\\Node\\NodeOutputInterface' => __DIR__ . '/..' . '/twig/twig/src/Node/NodeOutputInterface.php',
@@ -2547,7 +2527,6 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Twig\\RuntimeLoader\\ContainerRuntimeLoader' => __DIR__ . '/..' . '/twig/twig/src/RuntimeLoader/ContainerRuntimeLoader.php',
         'Twig\\RuntimeLoader\\FactoryRuntimeLoader' => __DIR__ . '/..' . '/twig/twig/src/RuntimeLoader/FactoryRuntimeLoader.php',
         'Twig\\RuntimeLoader\\RuntimeLoaderInterface' => __DIR__ . '/..' . '/twig/twig/src/RuntimeLoader/RuntimeLoaderInterface.php',
-        'Twig\\Runtime\\EscaperRuntime' => __DIR__ . '/..' . '/twig/twig/src/Runtime/EscaperRuntime.php',
         'Twig\\Sandbox\\SecurityError' => __DIR__ . '/..' . '/twig/twig/src/Sandbox/SecurityError.php',
         'Twig\\Sandbox\\SecurityNotAllowedFilterError' => __DIR__ . '/..' . '/twig/twig/src/Sandbox/SecurityNotAllowedFilterError.php',
         'Twig\\Sandbox\\SecurityNotAllowedFunctionError' => __DIR__ . '/..' . '/twig/twig/src/Sandbox/SecurityNotAllowedFunctionError.php',
@@ -2556,7 +2535,6 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Twig\\Sandbox\\SecurityNotAllowedTagError' => __DIR__ . '/..' . '/twig/twig/src/Sandbox/SecurityNotAllowedTagError.php',
         'Twig\\Sandbox\\SecurityPolicy' => __DIR__ . '/..' . '/twig/twig/src/Sandbox/SecurityPolicy.php',
         'Twig\\Sandbox\\SecurityPolicyInterface' => __DIR__ . '/..' . '/twig/twig/src/Sandbox/SecurityPolicyInterface.php',
-        'Twig\\Sandbox\\SourcePolicyInterface' => __DIR__ . '/..' . '/twig/twig/src/Sandbox/SourcePolicyInterface.php',
         'Twig\\Source' => __DIR__ . '/..' . '/twig/twig/src/Source.php',
         'Twig\\Template' => __DIR__ . '/..' . '/twig/twig/src/Template.php',
         'Twig\\TemplateWrapper' => __DIR__ . '/..' . '/twig/twig/src/TemplateWrapper.php',
@@ -2588,9 +2566,9 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
         'Twig\\TwigFunction' => __DIR__ . '/..' . '/twig/twig/src/TwigFunction.php',
         'Twig\\TwigTest' => __DIR__ . '/..' . '/twig/twig/src/TwigTest.php',
         'Twig\\Util\\DeprecationCollector' => __DIR__ . '/..' . '/twig/twig/src/Util/DeprecationCollector.php',
-        'Twig\\Util\\ReflectionCallable' => __DIR__ . '/..' . '/twig/twig/src/Util/ReflectionCallable.php',
         'Twig\\Util\\TemplateDirIterator' => __DIR__ . '/..' . '/twig/twig/src/Util/TemplateDirIterator.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'UploadHandler' => __DIR__ . '/..' . '/blueimp/jquery-file-upload/server/php/UploadHandler.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
         'Webmozart\\Assert\\InvalidArgumentException' => __DIR__ . '/..' . '/webmozart/assert/src/InvalidArgumentException.php',
@@ -2659,10 +2637,10 @@ class ComposerStaticInit7d3ef89fff994fb241798a675b138cd3
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit7d3ef89fff994fb241798a675b138cd3::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit7d3ef89fff994fb241798a675b138cd3::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit7d3ef89fff994fb241798a675b138cd3::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit7d3ef89fff994fb241798a675b138cd3::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1de80ebd1bc340bbad5845e176f0c69a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1de80ebd1bc340bbad5845e176f0c69a::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit1de80ebd1bc340bbad5845e176f0c69a::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit1de80ebd1bc340bbad5845e176f0c69a::$classMap;
 
         }, null, ClassLoader::class);
     }

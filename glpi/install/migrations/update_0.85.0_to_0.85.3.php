@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40,10 +40,6 @@
  **/
 function update0850to0853()
 {
-    /**
-     * @var \DBmysql $DB
-     * @var \Migration $migration
-     */
     global $DB, $migration;
 
     $updateresult     = true;
@@ -63,7 +59,7 @@ function update0850to0853()
             $migration->displayWarning("$new_table table already exists. " .
                                     "A backup have been done to backup_$new_table.");
             $backup_tables = true;
-            $migration->renameTable("$new_table", "backup_$new_table");
+            $query         = $migration->renameTable("$new_table", "backup_$new_table");
         }
     }
     if ($backup_tables) {
@@ -96,7 +92,7 @@ function update0850to0853()
                   UNIQUE KEY `unicity` (`itemtype`, `items_id`, `tickets_id`),
                   KEY `tickets_id` (`tickets_id`)
                 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-        $DB->doQueryOrDie($query, "0.85 add table glpi_items_tickets");
+        $DB->queryOrDie($query, "0.85 add table glpi_items_tickets");
 
         $query = "SELECT `itemtype`, `items_id`, `id`
                 FROM `glpi_tickets`
@@ -104,13 +100,13 @@ function update0850to0853()
                     AND `itemtype` <> ''
                 AND `items_id` != 0";
 
-        if ($result = $DB->doQuery($query)) {
+        if ($result = $DB->query($query)) {
             if ($DB->numrows($result) > 0) {
                 while ($data = $DB->fetchAssoc($result)) {
                     $query = "INSERT INTO `glpi_items_tickets`
                              (`id`, `items_id`, `itemtype`, `tickets_id`)
                           VALUES (NULL, '" . $data['items_id'] . "', '" . $data['itemtype'] . "', '" . $data['id'] . "')";
-                    $DB->doQueryOrDie($query, "0.85 associated ticket sitems migration");
+                    $DB->queryOrDie($query, "0.85 associated ticket sitems migration");
                 }
             }
         }
@@ -124,7 +120,7 @@ function update0850to0853()
     $query = "UPDATE `glpi_changes`
              SET `status` = 1
              WHERE `status` = 2";
-    $DB->doQueryOrDie($query, "0.85.3 correct status for change");
+    $DB->queryOrDie($query, "0.85.3 correct status for change");
 
     if (
         $migration->addField(
@@ -139,7 +135,7 @@ function update0850to0853()
         $query = 'UPDATE `glpi_entities`
                 SET `is_notif_enable_default` = 1
                 WHERE `id` = 0';
-        $DB->doQueryOrDie($query, "0.85.3 default value for is_notif_enable_default for root entity");
+        $DB->queryOrDie($query, "0.85.3 default value for is_notif_enable_default for root entity");
     }
 
    // ************ Keep it at the end **************
@@ -151,14 +147,14 @@ function update0850to0853()
                 FROM `glpi_displaypreferences`
                 WHERE `itemtype` = '$type'";
 
-        if ($result = $DB->doQuery($query)) {
+        if ($result = $DB->query($query)) {
             if ($DB->numrows($result) > 0) {
                 while ($data = $DB->fetchAssoc($result)) {
                     $query = "SELECT MAX(`rank`)
                          FROM `glpi_displaypreferences`
                          WHERE `users_id` = '" . $data['users_id'] . "'
                                AND `itemtype` = '$type'";
-                    $result = $DB->doQuery($query);
+                    $result = $DB->query($query);
                     $rank   = $DB->result($result, 0, 0);
                     $rank++;
 
@@ -168,13 +164,13 @@ function update0850to0853()
                             WHERE `users_id` = '" . $data['users_id'] . "'
                                   AND `num` = '$newval'
                                   AND `itemtype` = '$type'";
-                        if ($result2 = $DB->doQuery($query)) {
+                        if ($result2 = $DB->query($query)) {
                             if ($DB->numrows($result2) == 0) {
                                  $query = "INSERT INTO `glpi_displaypreferences`
                                          (`itemtype` ,`num` ,`rank` ,`users_id`)
                                   VALUES ('$type', '$newval', '" . $rank++ . "',
                                           '" . $data['users_id'] . "')";
-                                 $DB->doQuery($query);
+                                 $DB->query($query);
                             }
                         }
                     }
@@ -185,7 +181,7 @@ function update0850to0853()
                     $query = "INSERT INTO `glpi_displaypreferences`
                                 (`itemtype` ,`num` ,`rank` ,`users_id`)
                          VALUES ('$type', '$newval', '" . $rank++ . "', '0')";
-                    $DB->doQuery($query);
+                    $DB->query($query);
                 }
             }
         }

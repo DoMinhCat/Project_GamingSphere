@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -71,8 +71,8 @@ class Change_Ticket extends CommonDBRelation
 
         if (static::canView()) {
             $nb = 0;
-            switch (get_class($item)) {
-                case Change::class:
+            switch ($item->getType()) {
+                case 'Change':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(
                             'glpi_changes_tickets',
@@ -81,7 +81,7 @@ class Change_Ticket extends CommonDBRelation
                     }
                     return self::createTabEntry(Ticket::getTypeName(Session::getPluralNumber()), $nb);
 
-                case Ticket::class:
+                case 'Ticket':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(
                             'glpi_changes_tickets',
@@ -118,7 +118,6 @@ class Change_Ticket extends CommonDBRelation
             case 'add_task':
                 $tasktype = 'TicketTask';
                 if ($ttype = getItemForItemtype($tasktype)) {
-                    /** @var CommonITILTask $ttype */
                     $ttype->showMassiveActionAddTaskForm();
                     return true;
                 }
@@ -227,7 +226,6 @@ class Change_Ticket extends CommonDBRelation
      **/
     public static function showForChange(Change $change)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $change->getField('id');
@@ -354,7 +352,6 @@ class Change_Ticket extends CommonDBRelation
      **/
     public static function showForTicket(Ticket $ticket)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $ticket->getField('id');
@@ -463,7 +460,6 @@ class Change_Ticket extends CommonDBRelation
 
     public function post_addItem()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $donotif = !isset($this->input['_disablenotif']) && $CFG_GLPI["use_notifications"];

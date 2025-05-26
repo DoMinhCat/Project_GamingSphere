@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -76,22 +76,15 @@ class CheckRequirementsCommand extends AbstractCommand
                 $status = sprintf('<%s>[%s]</> ', 'fg=white;bg=yellow', __('SKIPPED'));
             } elseif ($requirement->isValidated()) {
                 $status = sprintf('<%s>[%s]</>', 'fg=black;bg=green', __('OK'));
-            } elseif (!$requirement->isOptional()) {
-                $status = sprintf('<%s>[%s]</> ', 'fg=white;bg=red', __('ERROR'));
-            } elseif ($requirement->isRecommendedForSecurity()) {
-                $status = sprintf('<%s>[%s]</> ', 'fg=white;bg=red', __('INFO'));
             } else {
-                $status = sprintf('<%s>[%s]</> ', 'fg=white;bg=yellow', __('INFO'));
+                $status = $requirement->isOptional()
+                    ? sprintf('<%s>[%s]</> ', 'fg=white;bg=yellow', __('INFO'))
+                    : sprintf('<%s>[%s]</> ', 'fg=white;bg=red', __('ERROR'));
             }
 
-            $badge = '';
-            if (!$requirement->isOptional()) {
-                $badge = sprintf('<%s>[%s]</> ', 'fg=black;bg=bright-yellow', mb_strtoupper(__('Required')));
-            } elseif ($requirement->isRecommendedForSecurity()) {
-                $badge = sprintf('<%s>[%s]</> ', 'fg=black;bg=red', mb_strtoupper(__('Security')));
-            } else {
-                $badge = sprintf('<%s>[%s]</> ', 'fg=black;bg=bright-blue', mb_strtoupper(__('Suggested')));
-            }
+            $badge = $requirement->isOptional()
+                ? sprintf('<%s>[%s]</> ', 'fg=black;bg=bright-blue', mb_strtoupper(__('Suggested')))
+                : sprintf('<%s>[%s]</> ', 'fg=black;bg=bright-yellow', mb_strtoupper(__('Required')));
             $title = $badge . '<options=bold>' . $requirement->getTitle() . '</>';
             if (!empty($description = $requirement->getDescription())) {
                 // wordwrap to keep table width acceptable

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -53,11 +53,11 @@ class NotificationTargetReservation extends NotificationTarget
         if ($event != 'alert') {
             $this->addTarget(
                 Notification::ITEM_TECH_IN_CHARGE,
-                __('Technician in charge')
+                __('Technician in charge of the hardware')
             );
             $this->addTarget(
                 Notification::ITEM_TECH_GROUP_IN_CHARGE,
-                __('Group in charge')
+                __('Group in charge of the hardware')
             );
             $this->addTarget(Notification::ITEM_USER, __('Hardware user'));
             $this->addTarget(Notification::AUTHOR, _n('Requester', 'Requesters', 1));
@@ -91,8 +91,6 @@ class NotificationTargetReservation extends NotificationTarget
 
             if ($item = getItemForItemtype($itemtype)) {
                 $item->getFromDB($reservationitem->getField('items_id'));
-                $this->data["##reservation.note##"]
-                                 = $reservationitem->getField('comment');
                 $this->data['##reservation.itemtype##']
                                  = $item->getTypeName(1);
                 $this->data['##reservation.item.name##']
@@ -178,10 +176,9 @@ class NotificationTargetReservation extends NotificationTarget
             'reservation.begin'       => __('Start date'),
             'reservation.end'         => __('End date'),
             'reservation.comment'     => __('Comments'),
-            'reservation.note'        => __('Notes'),
             'reservation.item.entity' => Entity::getTypeName(1),
             'reservation.item.name'   => _n('Associated item', 'Associated items', 1),
-            'reservation.item.tech'   => __('Technician in charge')
+            'reservation.item.tech'   => __('Technician in charge of the hardware')
         ];
 
         foreach ($tags_except_alert as $tag => $label) {

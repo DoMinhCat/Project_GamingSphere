@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -73,8 +73,10 @@
                 form.find('input[name=real_start_date]').parent()[0]._flatpickr.setDate(data.real_start_date);
                 form.find('input[name=real_end_date]').parent()[0]._flatpickr.setDate(data.real_end_date);
 
-                // Set content
-                setRichTextEditorContent("{{ content_field_id }}", data.description);
+                // Set tinymce
+                if (tasktinymce = tinymce.get("{{ content_field_id }}")) {
+                    tasktinymce.setContent(data.description);
+                }
 
                 // Set dropdowns and dates
                 form.find('select[name=projecttasks_id]').trigger("setValue", data.projecttasks_id);
@@ -218,25 +220,31 @@
         }
     ) }}
 
-    {{ fields.dropdownArrayField(
+    {{ fields.dropdownTimestampField(
         'planned_duration',
         item.fields.planned_duration,
-        duration_dropdown_to_add,
         __('Planned duration'),
         {
+            'min': 0,
+            'max': 8 * constant('HOUR_TIMESTAMP'),
+            'addfirstminutes': true,
+            'inhours': true,
+            'toadd': duration_dropdown_to_add,
             'field_class': 'col-12 col-sm-6 is_milestone ' ~ (item.fields.is_milestone ? 'd-none' : ''),
-            'display_emptychoice': true,
         },
     ) }}
 
-    {{ fields.dropdownArrayField(
+    {{ fields.dropdownTimestampField(
         'effective_duration',
         item.fields.effective_duration,
-        duration_dropdown_to_add,
         __('Effective duration'),
         {
+            'min': 0,
+            'max': 8 * constant('HOUR_TIMESTAMP'),
+            'addfirstminutes': true,
+            'inhours': true,
+            'toadd': duration_dropdown_to_add,
             'field_class': 'col-12 col-sm-6 is_milestone ' ~ (item.fields.is_milestone ? 'd-none' : ''),
-            'display_emptychoice': true,
         },
     ) }}
 

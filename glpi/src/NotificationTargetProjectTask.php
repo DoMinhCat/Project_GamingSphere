@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -60,8 +60,8 @@ class NotificationTargetProjectTask extends NotificationTarget
     public function addAdditionalTargets($event = '')
     {
 
-        $this->addTarget(Notification::TEAM_USER, __('Project task team user'));
-        $this->addTarget(Notification::TEAM_GROUP, __('Project task team group'));
+        $this->addTarget(Notification::TEAM_USER, __('Project team user'));
+        $this->addTarget(Notification::TEAM_GROUP, __('Project team group'));
         $this->addTarget(Notification::TEAM_GROUP_SUPERVISOR, __('Manager of group of project team'));
         $this->addTarget(
             Notification::TEAM_GROUP_WITHOUT_SUPERVISOR,
@@ -74,38 +74,39 @@ class NotificationTargetProjectTask extends NotificationTarget
 
     public function addSpecificTargets($data, $options)
     {
-        // Look for all targets whose type is Notification::ITEM_USER
+
+       //Look for all targets whose type is Notification::ITEM_USER
         switch ($data['type']) {
             case Notification::USER_TYPE:
                 switch ($data['items_id']) {
-                    // Send to the users in project team
+                   //Send to the users in project team
                     case Notification::TEAM_USER:
                         $this->addTeamUsers();
                         break;
 
-                    // Send to the groups in project task team
+                   //Send to the groups in project team
                     case Notification::TEAM_GROUP:
                         $this->addTeamGroups(0);
                         break;
 
-                    // Send to the groups supervisors in project team
+                   //Send to the groups supervisors in project team
                     case Notification::TEAM_GROUP_SUPERVISOR:
-                        $this->addProjectTeamGroups(1);
+                        $this->addTeamGroups(1);
                         break;
 
-                    // Send to the groups without supervisors in project team
+                 //Send to the groups without supervisors in project team
                     case Notification::TEAM_GROUP_WITHOUT_SUPERVISOR:
-                        $this->addProjectTeamGroups(2);
+                        $this->addTeamGroups(2);
                         break;
 
-                    // Send to the contacts in project team
+                 //Send to the contacts in project team
                     case Notification::TEAM_CONTACT:
-                        $this->addTeamContacts();
+                          $this->addTeamContacts();
                         break;
 
-                    // Send to the suppliers in project team
+                  //Send to the suppliers in project team
                     case Notification::TEAM_SUPPLIER:
-                        $this->addTeamSuppliers();
+                         $this->addTeamSuppliers();
                         break;
                 }
         }
@@ -119,7 +120,6 @@ class NotificationTargetProjectTask extends NotificationTarget
      **/
     public function addTeamUsers()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -151,7 +151,6 @@ class NotificationTargetProjectTask extends NotificationTarget
      **/
     public function addTeamGroups($manager)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -168,32 +167,6 @@ class NotificationTargetProjectTask extends NotificationTarget
         }
     }
 
-    /**
-     * Add project team groups to the notified user list
-     *
-     * @param integer $manager 0 all users, 1 only supervisors, 2 all users without supervisors
-     *
-     * @return void
-     **/
-    public function addProjectTeamGroups($manager)
-    {
-        /** @var \DBmysql $DB */
-        global $DB;
-
-        $iterator = $DB->request([
-            'SELECT' => 'items_id',
-            'FROM'   => 'glpi_projectteams',
-            'WHERE'  => [
-                'itemtype'    => 'Group',
-                'projects_id' => $this->obj->fields['projects_id']
-            ]
-        ]);
-
-        foreach ($iterator as $data) {
-            $this->addForGroup($manager, $data['items_id']);
-        }
-    }
-
 
     /**
      * Add team contacts to the notified user list
@@ -202,11 +175,7 @@ class NotificationTargetProjectTask extends NotificationTarget
      **/
     public function addTeamContacts()
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $iterator = $DB->request([
             'SELECT' => 'items_id',
@@ -237,11 +206,7 @@ class NotificationTargetProjectTask extends NotificationTarget
      **/
     public function addTeamSuppliers()
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $iterator = $DB->request([
             'SELECT' => 'items_id',
@@ -267,10 +232,6 @@ class NotificationTargetProjectTask extends NotificationTarget
 
     public function addDataForTemplate($event, $options = [])
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
         global $CFG_GLPI, $DB;
 
        //----------- Reservation infos -------------- //

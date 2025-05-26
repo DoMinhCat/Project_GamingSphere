@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -147,7 +147,6 @@ class RequestType extends CommonDropdown
 
     public function post_addItem()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $update = [];
@@ -183,9 +182,8 @@ class RequestType extends CommonDropdown
     /**
      * @see CommonDBTM::post_updateItem()
      **/
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
-        /** @var \DBmysql $DB */
         global $DB;
         $update = [];
 
@@ -238,18 +236,17 @@ class RequestType extends CommonDropdown
      *
      * @param $source string
      *
-     * @return integer requesttypes_id
+     * @return requesttypes_id
      **/
     public static function getDefault($source)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!in_array($source, ['mail', 'mailfollowup', 'helpdesk', 'followup'])) {
             return 0;
         }
 
-        foreach ($DB->request(self::getTable(), ['is_' . $source . '_default' => 1, 'is_active' => 1]) as $data) {
+        foreach ($DB->request('glpi_requesttypes', ['is_' . $source . '_default' => 1, 'is_active' => 1]) as $data) {
             return $data['id'];
         }
         return 0;

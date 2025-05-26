@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -51,10 +51,7 @@ class DbConfiguration extends AbstractRequirement
 
     public function __construct(DBmysql $db)
     {
-        parent::__construct(
-            __('DB configuration')
-        );
-
+        $this->title = __('DB configuration');
         $this->db = $db;
     }
 
@@ -72,7 +69,7 @@ class DbConfiguration extends AbstractRequirement
             $query .= ', @@GLOBAL.' . $this->db->quoteName('innodb_large_prefix as innodb_large_prefix');
         }
 
-        if (($db_config_res = $this->db->doQuery($query)) === false) {
+        if (($db_config_res = $this->db->query($query)) === false) {
             $this->validated = false;
             $this->validation_messages[] = __('Unable to validate database configuration variables.');
         }

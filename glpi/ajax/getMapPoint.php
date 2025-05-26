@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -64,7 +64,6 @@ if (!isset($_POST['itemtype']) || !isset($_POST['items_id']) || (int)$_POST['ite
     }
 
     if (!count($result)) {
-        /** @var CommonDBTM $item */
         $item = new $itemtype();
         $item->getFromDB($items_id);
         if (!empty($item->fields['latitude']) && !empty($item->fields['longitude'])) {

@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -89,7 +89,7 @@
                      {% endif %}
 
                      {% if item.isField('is_active') %}
-                        {% if withtemplate >= 1 %}
+                        {% if withtemplate is not empty or withtemplate == 1 %}
                            {{ fields.hiddenField('is_active', item.fields['is_active'], __('Is active'), {
                               'add_field_html': __('No')
                            }) }}
@@ -374,7 +374,7 @@
                            'User',
                            'users_id_tech',
                            item.fields['users_id_tech'],
-                           __('Technician in charge'),
+                           __('Technician in charge of the hardware'),
                            field_options|merge({
                               'entity': item.fields['entities_id'],
                               'right': 'own_ticket',
@@ -397,7 +397,7 @@
                            'Group',
                            'groups_id_tech',
                            item.fields['groups_id_tech'],
-                           __('Group in charge'),
+                           __('Group in charge of the hardware'),
                            field_options|merge({
                               'entity': item.fields['entities_id'],
                               'condition': {'is_assign': 1},
@@ -457,7 +457,7 @@
                      {% endif %}
 
                      {% if item.isField('sysdescr') %}
-                        {{ fields.textareaField('sysdescr', item.fields['sysdescr'], __('Sysdescr'), field_options) }}
+                        {{ fields.textareaField('sysdescr', item.fields['sysdescr'], __('Sysdescr')) }}
                      {% endif %}
 
                      {% if item.isField('snmpcredentials_id') %}

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -70,7 +70,6 @@ class Itil_Project extends CommonDBRelation
                 case Change::class:
                 case Problem::class:
                 case Ticket::class:
-                    /** @var Change|Problem|Ticket $item */
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(
                             self::getTable(),
@@ -84,7 +83,6 @@ class Itil_Project extends CommonDBRelation
                     break;
 
                 case Project::class:
-                    /** @var Project $item */
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(self::getTable(), ['projects_id' => $item->getID()]);
                     }
@@ -125,7 +123,6 @@ class Itil_Project extends CommonDBRelation
      **/
     public static function showForProject(Project $project)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $project->getField('id');
@@ -135,7 +132,7 @@ class Itil_Project extends CommonDBRelation
 
         $canedit = $project->canEdit($ID);
 
-        /** @var class-string<CommonITILObject> $itemtype */
+        /** @var CommonITILObject $itemtype */
         foreach ([Change::class, Problem::class, Ticket::class] as $itemtype) {
             $rand    = mt_rand();
 
@@ -275,7 +272,6 @@ class Itil_Project extends CommonDBRelation
      **/
     public static function showForItil(CommonITILObject $itil)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $itil->getField('id');

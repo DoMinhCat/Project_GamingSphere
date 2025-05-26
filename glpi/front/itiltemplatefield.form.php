@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -38,11 +38,6 @@ use Glpi\Event;
 include '../inc/includes.php';
 Session::checkRight('itiltemplate', UPDATE);
 
-/**
- * @var string|null $itiltype
- * @var string|null $fieldtype
- */
-
 if (!isset($itiltype)) {
     Html::displayErrorAndDie("Missing ITIL type");
 }
@@ -66,7 +61,6 @@ if (isset($_POST["add"]) || isset($_POST['massiveaction'])) {
     $item->check(-1, UPDATE, $_POST);
 
     if ($item->add($_POST)) {
-        $fieldtype_name = '';
         switch ($fieldtype) {
             case 'Hidden':
                 $fieldtype_name = __('hidden');

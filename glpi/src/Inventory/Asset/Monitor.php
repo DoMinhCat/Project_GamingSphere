@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -44,6 +44,8 @@ use RuleImportAssetCollection;
 
 class Monitor extends InventoryAsset
 {
+    private $import_monitor_on_partial_sn = false;
+
     public function prepare(): array
     {
         $serials = [];
@@ -99,7 +101,6 @@ class Monitor extends InventoryAsset
      */
     protected function getExisting(): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $db_existing = [];
@@ -159,7 +160,6 @@ class Monitor extends InventoryAsset
                 if ($data['found_inventories'][0] == 0) {
                     // add monitor
                     $val->entities_id = $entities_id;
-                    $val->is_recursive = $this->is_recursive;
                     $val->is_dynamic = 1;
                     $items_id = $monitor->add(Sanitizer::sanitize($this->handleInput($val, $monitor)));
                 } else {
@@ -199,7 +199,7 @@ class Monitor extends InventoryAsset
                 $this->addOrMoveItem($input);
             }
         } else {
-            // Check all fields from source:
+           // Check all fields from source:
             foreach ($monitors as $key => $monitors_id) {
                 foreach ($db_monitors as $keydb => $monits_id) {
                     if ($monitors_id == $monits_id) {
@@ -210,9 +210,11 @@ class Monitor extends InventoryAsset
                 }
             }
 
-            // Delete monitors links in DB
-            foreach ($db_monitors as $idtmp => $monits_id) {
-                $computer_Item->delete(['id' => $idtmp], true);
+           // Delete monitors links in DB
+            if (!$this->main_asset || !$this->main_asset->isPartial()) {
+                foreach ($db_monitors as $idtmp => $monits_id) {
+                    $computer_Item->delete(['id' => $idtmp], true);
+                }
             }
 
             foreach ($monitors as $key => $monitors_id) {
@@ -229,6 +231,7 @@ class Monitor extends InventoryAsset
 
     public function checkConf(Conf $conf): bool
     {
+        $this->import_monitor_on_partial_sn = $conf->import_monitor_on_partial_sn;
         return $conf->import_monitor == 1;
     }
 

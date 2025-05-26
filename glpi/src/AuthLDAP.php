@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35,7 +35,6 @@
 
 use Glpi\Application\ErrorHandler;
 use Glpi\Application\View\TemplateRenderer;
-use Glpi\Toolbox\Filesystem;
 use Glpi\Toolbox\Sanitizer;
 
 /**
@@ -307,10 +306,7 @@ class AuthLDAP extends CommonDBTM
             };
         }
 
-        if (!$this->checkFilesExist($input)) {
-            return false;
-        }
-
+        $this->checkFilesExist($input);
         return $input;
     }
 
@@ -491,8 +487,8 @@ class AuthLDAP extends CommonDBTM
             echo "</td></tr>";
 
             echo "<tr class='tab_bg_1'><td><label for='use_bind'>";
-            echo __('Use bind') . "</label>&nbsp;";
-            Html::showToolTip(__("Indicates whether a simple bind operation should be used during connection to LDAP server. Disabling this behaviour can be required when LDAPS bind is used."));
+            echo __('Use Bind (for non-anonymous binds)') . "</label>&nbsp;";
+            Html::showToolTip(__("Allow to use RootDN and Password for non-anonymous binds."));
             echo "</td>";
             echo "<td colspan='3'>";
             $rand_use_bind = mt_rand();
@@ -698,11 +694,12 @@ class AuthLDAP extends CommonDBTM
     /**
      * Show config replicates form
      *
+     * @var DBmysql $DB
+     *
      * @return void
      */
     public function showFormReplicatesConfig()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID     = $this->getField('id');
@@ -1532,7 +1529,6 @@ class AuthLDAP extends CommonDBTM
      */
     public static function ldapStamp2UnixStamp($ldapstamp, $ldap_time_offset = 0)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        //Check if timestamp is well format, otherwise return ''
@@ -1612,8 +1608,7 @@ class AuthLDAP extends CommonDBTM
      * Check if the sync_field is configured for an LDAP server
      *
      * @since 9.2
-     * @param integer $authldaps_id the LDAP server ID
-     *
+     * @param integer authldaps_id the LDAP server ID
      * @return boolean true if configured, false if not configured
      */
     public static function isSyncFieldConfigured($authldaps_id)
@@ -1683,7 +1678,6 @@ class AuthLDAP extends CommonDBTM
      */
     public static function displaySizeLimitWarning($limitexceeded = false)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if ($limitexceeded) {
@@ -2030,7 +2024,7 @@ class AuthLDAP extends CommonDBTM
      *
      * @param array   $options       possible options:
      *          - authldaps_id ID of the server to use
-     *          - mode user to synchronize or add?
+     *          - mode user to synchronise or add?
      *          - ldap_filter ldap filter to use
      *          - basedn force basedn (default authldaps_id one)
      *          - order display order
@@ -2040,11 +2034,10 @@ class AuthLDAP extends CommonDBTM
      * @param array   $results       result stats
      * @param boolean $limitexceeded limit exceeded exception
      *
-     * @return false|array
+     * @return array of the user
      */
     public static function getAllUsers(array $options, &$results, &$limitexceeded)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $config_ldap = new self();
@@ -2186,11 +2179,11 @@ class AuthLDAP extends CommonDBTM
                    // Only manage deleted user if ALL (because of entity visibility in delegated mode)
 
                     if ($user['auths_id'] == $options['authldaps_id']) {
-                        if (!$userfound && $user['is_deleted_ldap'] == 0) {
+                        if (!$user['is_deleted']) {
                              //If user is marked as coming from LDAP, but is not present in it anymore
                              User::manageDeletedUserInLdap($user['id']);
                              $results[self::USER_DELETED_LDAP]++;
-                        } elseif ($userfound && $user['is_deleted_ldap'] == 1) {
+                        } else {
                            // User is marked as coming from LDAP, but was previously deleted
                             User::manageRestoredUserInLdap($user['id']);
                             $results[self::USER_RESTORED_LDAP]++;
@@ -2239,7 +2232,7 @@ class AuthLDAP extends CommonDBTM
      * @param array  $ldap_infos ldap user search result
      * @param string $user_dn    user dn to look for
      *
-     * @return false|array false if the user dn doesn't exist, user ldap infos otherwise
+     * @return boolean false if the user dn doesn't exist, user ldap infos otherwise
      */
     public static function dnExistsInLdap($ldap_infos, $user_dn)
     {
@@ -2440,7 +2433,6 @@ class AuthLDAP extends CommonDBTM
         &$limitexceeded,
         $order = 'DESC'
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $config_ldap = new self();
@@ -2543,7 +2535,7 @@ class AuthLDAP extends CommonDBTM
      * @param resource $ldap_connection ldap connection to use
      * @param string   $group_dn        the group's dn
      *
-     * @return false|string the group cn
+     * @return string the group cn
      */
     public static function getGroupCNByDn($ldap_connection, $group_dn)
     {
@@ -2595,7 +2587,6 @@ class AuthLDAP extends CommonDBTM
         $search_in_groups = true,
         $groups = []
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
        //First look for groups in group objects
@@ -2760,7 +2751,6 @@ class AuthLDAP extends CommonDBTM
      */
     public static function ldapChooseDirectory($target)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -2845,10 +2835,9 @@ class AuthLDAP extends CommonDBTM
         $ldap_server,
         $display = false
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
-        $params      = Sanitizer::unsanitize($params);
+        $params      = Toolbox::stripslashes_deep($params);
         $config_ldap = new self();
         $res         = $config_ldap->getFromDB($ldap_server);
         $input = [];
@@ -2867,11 +2856,7 @@ class AuthLDAP extends CommonDBTM
 
         $search_parameters = [];
        //Connect to the directory
-        if (
-            isset(self::$conn_cache[$ldap_server])
-            // check that connection is still alive
-            && @ldap_read(self::$conn_cache[$ldap_server], '', '(objectclass=*)', ['dn'], 0, 1) !== false
-        ) {
+        if (isset(self::$conn_cache[$ldap_server])) {
             $ds = self::$conn_cache[$ldap_server];
         } else {
             $ds = $config_ldap->connect();
@@ -2895,12 +2880,7 @@ class AuthLDAP extends CommonDBTM
             ];
 
             try {
-                $error = null;
-                $infos = self::searchUserDn($ds, $attribs, $error);
-
-                if ($error === true) {
-                    return false;
-                }
+                $infos = self::searchUserDn($ds, $attribs);
 
                 if ($infos && $infos['dn']) {
                     $user_dn = $infos['dn'];
@@ -2914,16 +2894,16 @@ class AuthLDAP extends CommonDBTM
                             $ds,
                             $config_ldap->fields,
                             $user_dn,
-                            Sanitizer::sanitize($login),
+                            addslashes($login),
                             ($action == self::ACTION_IMPORT)
                         )
                     ) {
                         //Get the ID by sync field (Used to check if restoration is needed)
                         $searched_user = new User();
                         $user_found = false;
-                        if ($login === null || !($user_found = $searched_user->getFromDBbySyncField(Sanitizer::sanitize($login)))) {
+                        if ($login === null || !($user_found = $searched_user->getFromDBbySyncField($DB->escape($login)))) {
                          //In case user id has changed : get id by dn (Used to check if restoration is needed)
-                            $user_found = $searched_user->getFromDBbyDn(Sanitizer::sanitize($user_dn));
+                            $user_found = $searched_user->getFromDBbyDn($DB->escape($user_dn));
                         }
                         if ($user_found && $searched_user->fields['is_deleted_ldap'] && $searched_user->fields['user_dn']) {
                             User::manageRestoredUserInLdap($searched_user->fields['id']);
@@ -3063,16 +3043,15 @@ class AuthLDAP extends CommonDBTM
     /**
      * Connect to a LDAP server
      *
-     * @param string  $host                 LDAP host to connect
-     * @param string  $port                 port to use
-     * @param string  $login                login to use (default '')
-     * @param string  $password             password to use (default '')
-     * @param boolean $use_tls              use a TLS connection? (false by default)
-     * @param integer $deref_options        deref options used
-     * @param string  $tls_certfile         TLS CERT file name within config directory (default '')
-     * @param string  $tls_keyfile          TLS KEY file name within config directory (default '')
-     * @param boolean $use_bind             do we need to do an ldap_bind? (true by default)
-     * @param bool    $silent_bind_errors   Indicates whether bind errors must be silented
+     * @param string  $host          LDAP host to connect
+     * @param string  $port          port to use
+     * @param string  $login         login to use (default '')
+     * @param string  $password      password to use (default '')
+     * @param boolean $use_tls       use a TLS connection? (false by default)
+     * @param integer $deref_options deref options used
+     * @param string  $tls_certfile  TLS CERT file name within config directory (default '')
+     * @param string  $tls_keyfile   TLS KEY file name within config directory (default '')
+     * @param boolean $use_bind      do we need to do an ldap_bind? (true by default)
      *
      * @return resource|false|\LDAP\Connection link to the LDAP server : false if connection failed
      */
@@ -3086,8 +3065,7 @@ class AuthLDAP extends CommonDBTM
         $tls_certfile = "",
         $tls_keyfile = "",
         $use_bind = true,
-        $timeout = 0,
-        bool $silent_bind_errors = false
+        $timeout = 0
     ) {
 
         $ds = @ldap_connect($host, intval($port));
@@ -3098,8 +3076,7 @@ class AuthLDAP extends CommonDBTM
                     "Unable to connect to LDAP server %s:%s",
                     $host,
                     $port
-                ),
-                E_USER_WARNING
+                )
             );
             return false;
         }
@@ -3108,12 +3085,13 @@ class AuthLDAP extends CommonDBTM
             LDAP_OPT_PROTOCOL_VERSION => 3,
             LDAP_OPT_REFERRALS        => 0,
             LDAP_OPT_DEREF            => $deref_options,
+            LDAP_OPT_NETWORK_TIMEOUT  => $timeout
         ];
-
-        if ($timeout > 0) {
-            // Apply the timeout unless it is "unlimited" ("unlimited" is the default value defined in `libldap`).
-            // see https://linux.die.net/man/3/ldap_set_option
-            $ldap_options[LDAP_OPT_NETWORK_TIMEOUT] = $timeout;
+        if (!empty($tls_certfile) && file_exists($tls_certfile)) {
+            $ldap_options[LDAP_OPT_X_TLS_CERTFILE] = $tls_certfile;
+        }
+        if (!empty($tls_keyfile) && file_exists($tls_keyfile)) {
+            $ldap_options[LDAP_OPT_X_TLS_KEYFILE] = $tls_keyfile;
         }
 
         foreach ($ldap_options as $option => $value) {
@@ -3129,25 +3107,6 @@ class AuthLDAP extends CommonDBTM
                     ),
                     E_USER_WARNING
                 );
-            }
-        }
-
-        if (!empty($tls_certfile)) {
-            if (!Filesystem::isFilepathSafe($tls_certfile)) {
-                trigger_error("TLS certificate path is not safe.", E_USER_WARNING);
-            } elseif (!file_exists($tls_certfile)) {
-                trigger_error("TLS certificate path is not valid.", E_USER_WARNING);
-            } elseif (!@ldap_set_option(null, LDAP_OPT_X_TLS_CERTFILE, $tls_certfile)) {
-                trigger_error("Unable to set LDAP option `LDAP_OPT_X_TLS_CERTFILE`", E_USER_WARNING);
-            }
-        }
-        if (!empty($tls_keyfile)) {
-            if (!Filesystem::isFilepathSafe($tls_keyfile)) {
-                trigger_error("TLS key file path is not safe.", E_USER_WARNING);
-            } elseif (!file_exists($tls_keyfile)) {
-                trigger_error("TLS key file path is not valid.", E_USER_WARNING);
-            } elseif (!@ldap_set_option(null, LDAP_OPT_X_TLS_KEYFILE, $tls_keyfile)) {
-                trigger_error("Unable to set LDAP option `LDAP_OPT_X_TLS_KEYFILE`", E_USER_WARNING);
             }
         }
 
@@ -3169,7 +3128,7 @@ class AuthLDAP extends CommonDBTM
         }
 
         if (!$use_bind) {
-            return $ds;
+            return true;
         }
 
         if ($login != '') {
@@ -3180,20 +3139,18 @@ class AuthLDAP extends CommonDBTM
             $b = @ldap_bind($ds);
         }
         if ($b === false) {
-            if ($silent_bind_errors === false) {
-                trigger_error(
-                    static::buildError(
-                        $ds,
-                        sprintf(
-                            "Unable to bind to LDAP server `%s:%s` %s",
-                            $host,
-                            $port,
-                            ($login != '' ? "with RDN `$login`" : 'anonymously')
-                        )
-                    ),
-                    E_USER_WARNING
-                );
-            }
+            trigger_error(
+                static::buildError(
+                    $ds,
+                    sprintf(
+                        "Unable to bind to LDAP server `%s:%s` %s",
+                        $host,
+                        $port,
+                        ($login != '' ? "with RDN `$login`" : 'anonymously')
+                    )
+                ),
+                E_USER_WARNING
+            );
             return false;
         }
 
@@ -3229,11 +3186,10 @@ class AuthLDAP extends CommonDBTM
             $ldap_method['timeout']
         );
 
-        // Test with login and password of the user if exists
+       // Test with login and password of the user if exists
         if (
             !$ds
             && !empty($login)
-            && (bool) $ldap_method['use_bind']
         ) {
             $ds = self::connectToServer(
                 $ldap_method['host'],
@@ -3245,8 +3201,7 @@ class AuthLDAP extends CommonDBTM
                 $ldap_method['tls_certfile'] ?? '',
                 $ldap_method['tls_keyfile'] ?? '',
                 $ldap_method['use_bind'],
-                $ldap_method['timeout'],
-                true // silent bind error when trying to bind with user login/password
+                $ldap_method['timeout']
             );
         }
 
@@ -3273,7 +3228,6 @@ class AuthLDAP extends CommonDBTM
                 if (
                     !$ds
                     && !empty($login)
-                    && (bool) $ldap_method['use_bind']
                 ) {
                      $ds = self::connectToServer(
                          $replicate["host"],
@@ -3285,8 +3239,7 @@ class AuthLDAP extends CommonDBTM
                          $ldap_method['tls_certfile'] ?? '',
                          $ldap_method['tls_keyfile'] ?? '',
                          $ldap_method['use_bind'],
-                         $ldap_method['timeout'],
-                         true // silent bind error when trying to bind with user login/password
+                         $ldap_method['timeout']
                      );
                 }
                 if ($ds) {
@@ -3375,29 +3328,27 @@ class AuthLDAP extends CommonDBTM
     /**
      * Authentify a user by checking a specific directory
      *
-     * @param Auth      $auth        identification object
-     * @param string    $login       user login
-     * @param string    $password    user password
-     * @param array     $ldap_method ldap_method array to use
-     * @param string    $user_dn     user LDAP DN if present
-     * @param bool|null $error       Boolean flag that will be set to `true` if a LDAP error occurs during connection
+     * @param object $auth        identification object
+     * @param string $login       user login
+     * @param string $password    user password
+     * @param array  $ldap_method ldap_method array to use
+     * @param string $user_dn     user LDAP DN if present
      *
      * @return object identification object
      */
-    public static function ldapAuth($auth, $login, $password, $ldap_method, $user_dn, ?bool &$error = null)
+    public static function ldapAuth($auth, $login, $password, $ldap_method, $user_dn)
     {
 
-        $auth->auth_succeded = false;
-        $auth->extauth       = 1;
+        $oldlevel = error_reporting(0);
 
-        $infos  = $auth->connection_ldap($ldap_method, $login, $password, $error);
-
-        if ($infos === false) {
-            return $auth;
-        }
-
+        $infos  = $auth->connection_ldap($ldap_method, $login, $password);
         $user_dn = $infos['dn'];
         $user_sync = (isset($infos['sync_field']) ? $infos['sync_field'] : null);
+
+        error_reporting($oldlevel);
+
+        $auth->auth_succeded            = false;
+        $auth->extauth                  = 1;
 
         if ($user_dn) {
             $auth->auth_succeded            = true;
@@ -3436,7 +3387,7 @@ class AuthLDAP extends CommonDBTM
     /**
      * Try to authentify a user by checking all the directories
      *
-     * @param Auth    $auth     identification object
+     * @param object  $auth     identification object
      * @param string  $login    user login
      * @param string  $password user password
      * @param integer $auths_id auths_id already used for the user (default 0)
@@ -3448,7 +3399,6 @@ class AuthLDAP extends CommonDBTM
      */
     public static function tryLdapAuth($auth, $login, $password, $auths_id = 0, $user_dn = false, $break = true)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        //If no specific source is given, test all ldap directories
@@ -3485,14 +3435,7 @@ class AuthLDAP extends CommonDBTM
 
             foreach ($ldap_methods as $ldap_method) {
                 if ($ldap_method['is_active']) {
-                    $error = false;
-                    $auth = self::ldapAuth($auth, $login, $password, $ldap_method, $user_dn, $error);
-
-                    if ($error === true && in_array($ldap_method['id'], $known_servers_id)) {
-                        // Remember that an error occurs on the server on which we expect user to be find.
-                        // This will prevent user to be considered as deleted from the LDAP server.
-                        $auth->user_ldap_error = true;
-                    }
+                    $auth = self::ldapAuth($auth, $login, $password, $ldap_method, $user_dn);
 
                     if ($auth->user_found) {
                         $user_found = true;
@@ -3533,12 +3476,11 @@ class AuthLDAP extends CommonDBTM
      *          - search_parameters array of search parameters
      *          - user_params  array of parameters : method (IDENTIFIER_LOGIN or IDENTIFIER_EMAIL) + value
      *          - condition : ldap condition used
-     * @param bool|null $error  Boolean flag that will be set to `true` if a LDAP error occurs during operation
      *
      * @return array|boolean dn of the user, else false
      * @throws \RuntimeException
      */
-    public static function searchUserDn($ds, $options = [], ?bool &$error = null)
+    public static function searchUserDn($ds, $options = [])
     {
 
         $values = [
@@ -3567,11 +3509,7 @@ class AuthLDAP extends CommonDBTM
        //First : if a user dn is provided, look for it in the directory
        //Before trying to find the user using his login_field
         if ($values['user_dn']) {
-            $info = self::getUserByDn($ds, $values['user_dn'], $attrs, true, $error);
-
-            if ($error === true) {
-                return false;
-            }
+            $info = self::getUserByDn($ds, $values['user_dn'], $attrs);
 
             if ($info) {
                 $ret = [
@@ -3589,8 +3527,6 @@ class AuthLDAP extends CommonDBTM
         $filter_value = $values['user_params']['value'];
         if ($values['login_field'] == 'objectguid' && self::isValidGuid($filter_value)) {
             $filter_value = self::guidToHex($filter_value);
-        } else {
-            $filter_value = ldap_escape($filter_value, '', LDAP_ESCAPE_FILTER);
         }
         $filter = "(" . $values['login_field'] . "=" . $filter_value . ")";
 
@@ -3602,7 +3538,6 @@ class AuthLDAP extends CommonDBTM
         if ($result === false) {
             // 32 = LDAP_NO_SUCH_OBJECT => This error can be silented as it just means that search produces no result.
             if (ldap_errno($ds) !== 32) {
-                $error = true;
                 trigger_error(
                     static::buildError(
                         $ds,
@@ -3615,11 +3550,7 @@ class AuthLDAP extends CommonDBTM
         }
 
         //search has been done, let's check for found results
-        $info = self::get_entries_clean($ds, $result, $error);
-
-        if ($error === true) {
-            return false;
-        }
+        $info = self::get_entries_clean($ds, $result);
 
         if (is_array($info) && ($info['count'] == 1)) {
             $ret = [
@@ -3638,26 +3569,24 @@ class AuthLDAP extends CommonDBTM
     /**
      * Get an object from LDAP by giving his DN
      *
-     * @param resource  $ds         the active connection to the directory
-     * @param string    $condition  the LDAP filter to use for the search
-     * @param string    $dn         DN of the object
-     * @param array     $attrs      Array of the attributes to retrieve
-     * @param boolean   $clean      (true by default)
-     * @param bool|null $error      Boolean flag that will be set to `true` if a LDAP error occurs during operation
+     * @param resource $ds        the active connection to the directory
+     * @param string   $condition the LDAP filter to use for the search
+     * @param string   $dn        DN of the object
+     * @param array    $attrs     Array of the attributes to retrieve
+     * @param boolean  $clean     (true by default)
      *
      * @return array|boolean false if failed
      */
-    public static function getObjectByDn($ds, $condition, $dn, $attrs = [], $clean = true, ?bool &$error = null)
+    public static function getObjectByDn($ds, $condition, $dn, $attrs = [], $clean = true)
     {
         if (!$clean) {
             Toolbox::deprecated('Use of $clean = false is deprecated');
         }
 
-        $result = @ldap_read($ds, Sanitizer::unsanitize($dn), $condition, $attrs);
+        $result = @ldap_read($ds, $dn, $condition, $attrs);
         if ($result === false) {
             // 32 = LDAP_NO_SUCH_OBJECT => This error can be silented as it just means that search produces no result.
             if (ldap_errno($ds) !== 32) {
-                $error = true;
                 trigger_error(
                     static::buildError(
                         $ds,
@@ -3669,12 +3598,7 @@ class AuthLDAP extends CommonDBTM
             return false;
         }
 
-        $info = self::get_entries_clean($ds, $result, $error);
-
-        if ($error === true) {
-            return false;
-        }
-
+        $info = self::get_entries_clean($ds, $result);
         if (is_array($info) && ($info['count'] == 1)) {
             return $info[0];
         }
@@ -3686,21 +3610,20 @@ class AuthLDAP extends CommonDBTM
     /**
      * Get user by domain name
      *
-     * @param resource  $ds         the active connection to the directory
-     * @param string    $user_dn    domain name
-     * @param array     $attrs      attributes
-     * @param boolean   $clean      (true by default)
-     * @param bool|null $error      Boolean flag that will be set to `true` if a LDAP error occurs during operation
+     * @param resource $ds      the active connection to the directory
+     * @param string   $user_dn domain name
+     * @param array    $attrs   attributes
+     * @param boolean  $clean   (true by default)
      *
      * @return array|boolean false if failed
      */
-    public static function getUserByDn($ds, $user_dn, $attrs, $clean = true, ?bool &$error = null)
+    public static function getUserByDn($ds, $user_dn, $attrs, $clean = true)
     {
         if (!$clean) {
             Toolbox::deprecated('Use of $clean = false is deprecated');
         }
 
-        return self::getObjectByDn($ds, "objectClass=*", $user_dn, $attrs, $clean, $error);
+        return self::getObjectByDn($ds, "objectClass=*", $user_dn, $attrs);
     }
 
     /**
@@ -4093,6 +4016,8 @@ class AuthLDAP extends CommonDBTM
     /**
      * Get number of servers
      *
+     * @var DBmysql $DB
+     *
      * @return integer
      */
     public static function getNumberOfServers()
@@ -4217,22 +4142,22 @@ class AuthLDAP extends CommonDBTM
     /**
      * Get default ldap
      *
+     * @var DBmysql $DB DB instance
+     *
      * @return integer
      */
     public static function getDefault()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
-        foreach ($DB->request(self::getTable(), ['is_default' => 1, 'is_active' => 1]) as $data) {
+        foreach ($DB->request('glpi_authldaps', ['is_default' => 1, 'is_active' => 1]) as $data) {
             return $data['id'];
         }
         return 0;
     }
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (in_array('is_default', $this->updates) && $this->input["is_default"] == 1) {
@@ -4246,7 +4171,6 @@ class AuthLDAP extends CommonDBTM
 
     public function post_addItem()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (isset($this->fields['is_default']) && $this->fields["is_default"] == 1) {
@@ -4351,7 +4275,6 @@ class AuthLDAP extends CommonDBTM
      */
     public static function getServersWithImportByEmailActive()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ldaps = [];
@@ -4430,7 +4353,7 @@ class AuthLDAP extends CommonDBTM
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        /** @var CommonDBTM $item */
+
         if (
             !$withtemplate
             && $item->can($item->getField('id'), READ)
@@ -4450,7 +4373,7 @@ class AuthLDAP extends CommonDBTM
     }
 
     /**
-     * Choose which form to show
+     * Choose wich form to show
      *
      * @param CommonGLPI $item         Item instance
      * @param integer    $tabnum       Tab number
@@ -4460,7 +4383,7 @@ class AuthLDAP extends CommonDBTM
      */
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
-        /** @var AuthLDAP $item */
+
         switch ($tabnum) {
             case 1:
                 $item->showFormTestLDAP();
@@ -4493,17 +4416,15 @@ class AuthLDAP extends CommonDBTM
     /**
      * Get ldap query results and clean them at the same time
      *
-     * @param resource  $link   link to the directory connection
-     * @param array     $result the query results
-     * @param bool|null $error  Boolean flag that will be set to `true` if a LDAP error occurs during operation
+     * @param resource $link   link to the directory connection
+     * @param array    $result the query results
      *
      * @return array which contains ldap query results
      */
-    public static function get_entries_clean($link, $result, ?bool &$error = null)
+    public static function get_entries_clean($link, $result)
     {
         $entries = @ldap_get_entries($link, $result);
         if ($entries === false) {
-            $error = true;
             trigger_error(
                 static::buildError(
                     $link,
@@ -4525,7 +4446,6 @@ class AuthLDAP extends CommonDBTM
      */
     public static function getAllReplicateForAMaster($master_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $replicates = [];
@@ -4570,7 +4490,6 @@ class AuthLDAP extends CommonDBTM
      */
     public function getLdapExistingUser($name, $authldaps_id, $sync = null)
     {
-        /** @var \DBmysql $DB */
         global $DB;
         $user = new User();
 
@@ -4794,33 +4713,30 @@ class AuthLDAP extends CommonDBTM
 
     public function checkFilesExist(&$input)
     {
-        if (
-            isset($input['tls_certfile'])
-            && strlen($input['tls_certfile']) > 0
-            && (!Filesystem::isFilepathSafe($input['tls_certfile']) || !file_exists($input['tls_certfile']))
-        ) {
-            Session::addMessageAfterRedirect(
-                __('TLS certificate path is incorrect'),
-                false,
-                ERROR
-            );
-            return false;
+
+        if (isset($input['tls_certfile'])) {
+            $file = realpath($input['tls_certfile']);
+            if (!file_exists($file)) {
+                Session::addMessageAfterRedirect(
+                    __('TLS certificate path is incorrect'),
+                    false,
+                    ERROR
+                );
+                return false;
+            }
         }
 
-        if (
-            isset($input['tls_keyfile'])
-            && strlen($input['tls_keyfile']) > 0
-            && (!Filesystem::isFilepathSafe($input['tls_keyfile']) || !file_exists($input['tls_keyfile']))
-        ) {
-            Session::addMessageAfterRedirect(
-                __('TLS key file path is incorrect'),
-                false,
-                ERROR
-            );
-            return false;
+        if (isset($input['tls_keyfile'])) {
+            $file = realpath($input['tls_keyfile']);
+            if (!file_exists($file)) {
+                Session::addMessageAfterRedirect(
+                    __('TLS key file path is incorrect'),
+                    false,
+                    ERROR
+                );
+                return false;
+            }
         }
-
-        return true;
     }
 
 

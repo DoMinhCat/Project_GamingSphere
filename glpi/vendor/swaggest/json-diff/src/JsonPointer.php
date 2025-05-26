@@ -289,7 +289,6 @@ class JsonPointer
                             $isAssociative = true;
                             break;
                         }
-                        $i++;
                     }
                 }
 

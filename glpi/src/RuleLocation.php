@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -44,6 +44,12 @@ class RuleLocation extends Rule
         return __('Location rules');
     }
 
+
+    public function maxActionsCount()
+    {
+        return 2;
+    }
+
     public function executeActions($output, $params, array $input = [])
     {
         foreach ($this->actions as $action) {
@@ -58,15 +64,9 @@ class RuleLocation extends Rule
                                 $action->fields["value"],
                                 $regex_result
                             );
-
-                            // from rule test context just assign regex value to key
-                            if ($this->is_preview) {
-                                $output['locations_id'] = $regexvalue;
-                            } else {
-                                $compute_entities_id = $input['entities_id'] ?? 0;
-                                $location = new Location();
-                                $output['locations_id'] = $location->importExternal($regexvalue, $compute_entities_id);
-                            }
+                            $compute_entities_id = $input['entities_id'] ?? 0;
+                            $location = new Location();
+                            $output['locations_id'] = $location->importExternal($regexvalue, $compute_entities_id);
                         }
                     }
                     break;

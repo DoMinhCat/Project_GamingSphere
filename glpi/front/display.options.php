@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -53,12 +53,7 @@ if (!isset($_GET["sub_itemtype"])) {
 
 if ($item = getItemForItemtype($itemtype)) {
     if (isset($_GET['update']) || isset($_GET['reset'])) {
-        $sub_itemtype = $_GET["sub_itemtype"];
-        if (!is_a($sub_itemtype, CommonDBTM::class, true)) {
-            $sub_itemtype = '';
-            unset($_GET['sub_itemtype']);
-        }
-        $item->updateDisplayOptions($_GET, $sub_itemtype);
+        $item->updateDisplayOptions($_GET, $_GET["sub_itemtype"]);
     }
     $item->checkGlobal(READ);
     $item->showDislayOptions($_GET["sub_itemtype"]);

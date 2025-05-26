@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -101,7 +101,6 @@ class Dashboard extends \CommonDBTM
 
     public function getFromDB($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -195,7 +194,7 @@ class Dashboard extends \CommonDBTM
             return true;
         }
 
-        return self::canPurge();
+        return self::canDelete();
     }
 
 
@@ -237,10 +236,6 @@ class Dashboard extends \CommonDBTM
      */
     public function save(bool $skip_child = false)
     {
-        /**
-         * @var \DBmysql $DB
-         * @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE
-         */
         global $DB, $GLPI_CACHE;
 
         $DB->updateOrInsert(
@@ -351,7 +346,7 @@ class Dashboard extends \CommonDBTM
     /**
      * Save filter in DB for the  curent dashboard
      *
-     * @param string $filters filter parameters in JSON format
+     * @param string $filter filter parameters in JSON format
      *
      * @return void
      */
@@ -365,6 +360,8 @@ class Dashboard extends \CommonDBTM
 
     /**
      * Save filter in DB for the  curent dashboard
+     *
+     * @param string $filter filter parameters in JSON format
      *
      * @return string
      */
@@ -419,7 +416,6 @@ class Dashboard extends \CommonDBTM
      */
     public static function getAll(bool $force = false, bool $check_rights = true, ?string $context = 'core'): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($force || count(self::$all_dashboards) == 0) {

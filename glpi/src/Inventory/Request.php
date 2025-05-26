@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -158,7 +158,6 @@ class Request extends AbstractRequest
      */
     public function getParams($data)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $this->inventory = new Inventory();
@@ -192,7 +191,6 @@ class Request extends AbstractRequest
      */
     public function prolog($data)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if ($this->headers->hasHeader('GLPI-Agent-ID')) {
@@ -305,7 +303,6 @@ class Request extends AbstractRequest
      */
     public function contact($data)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $this->inventory = new Inventory();
@@ -319,24 +316,7 @@ class Request extends AbstractRequest
         //For the moment it's the Agent who informs us about the active tasks
         $raw_data = $this->inventory->getRawData();
         if ($raw_data !== null && property_exists($raw_data, 'enabled-tasks')) {
-            $enabled_tasks = $raw_data->{'enabled-tasks'};
-
-            // The following tasks depends on inventory.
-            // When they are enabled, we assume that inventory is enabled.
-            $taskneededinv = [
-                'esx',
-                'netdiscovery',
-                'netinventory',
-                'remoteinventory',
-            ];
-            if (
-                !empty(array_intersect($enabled_tasks, $taskneededinv)) &&
-                !in_array('inventory', $enabled_tasks)
-            ) {
-                $enabled_tasks[] = 'inventory';
-            }
-
-            foreach ($enabled_tasks as $task) {
+            foreach ($raw_data->{'enabled-tasks'} as $task) {
                 $handle = $this->handleTask($task);
                 if (is_array($handle) && count($handle)) {
                     // Insert related task information under tasks list property
@@ -363,7 +343,6 @@ class Request extends AbstractRequest
      */
     public function inventory($data)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if ($this->isDiscovery()) {

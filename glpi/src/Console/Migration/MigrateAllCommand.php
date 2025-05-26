@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -36,12 +36,11 @@
 namespace Glpi\Console\Migration;
 
 use Glpi\Console\AbstractCommand;
-use Glpi\Console\Command\ConfigurationCommandInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class MigrateAllCommand extends AbstractCommand implements ConfigurationCommandInterface
+class MigrateAllCommand extends AbstractCommand
 {
     protected function configure()
     {
@@ -86,14 +85,5 @@ class MigrateAllCommand extends AbstractCommand implements ConfigurationCommandI
         }
 
         return self::SUCCESS;
-    }
-
-    public function getConfigurationFilesToUpdate(InputInterface $input): array
-    {
-        $config_files_to_update = ['config_db.php'];
-        if (file_exists(GLPI_CONFIG_DIR . '/config_db_slave.php')) {
-            $config_files_to_update[] = 'config_db_slave.php';
-        }
-        return $config_files_to_update;
     }
 }

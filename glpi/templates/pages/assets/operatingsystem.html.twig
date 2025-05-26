@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -103,30 +103,9 @@
         field_options
     ) }}
 
-    {{ fields.textField(
-        'company',
-        item.fields['company'],
-        __('Company'),
-        field_options
-    ) }}
-
-    {{ fields.textField(
-        'owner',
-        item.fields['owner'],
-        __('Owner'),
-        field_options
-    ) }}
-
     {{ fields.htmlField(
         'install_date',
         item.fields['install_date']|formatted_datetime,
         __('Installation date')
-    ) }}
-
-    {{ fields.textField(
-        'hostid',
-        item.fields['hostid'],
-        __('Host ID'),
-        field_options
     ) }}
 {% endblock %}

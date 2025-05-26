@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -64,7 +64,7 @@ switch ($_REQUEST['action']) {
             die;
         }
 
-        /** @var class-string<CommonDBTM> $itemtype */
+        /** @var CommonDBTM $itemtype */
         $itemtype = $_REQUEST['itemtype'];
         if (!$itemtype::canView()) {
             http_response_code(403);
@@ -73,11 +73,7 @@ switch ($_REQUEST['action']) {
 
         $search_params = Search::manageParams($itemtype, $_REQUEST);
 
-        if (
-            isset($search_params['browse'])
-            && $search_params['browse'] == 1
-            && method_exists($itemtype, 'showBrowseView')
-        ) {
+        if (isset($search_params['browse']) && $search_params['browse'] == 1) {
             $itemtype::showBrowseView($itemtype, $search_params, true);
         } else {
             $results = Search::getDatas($itemtype, $search_params);

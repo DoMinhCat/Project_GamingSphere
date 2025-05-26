@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -37,8 +37,8 @@ namespace Glpi\Features;
 
 use CommonDBConnexity;
 use CommonDBTM;
-use Glpi\Toolbox\Sanitizer;
 use Session;
+use Toolbox;
 
 /**
  * Clonable objects
@@ -76,8 +76,7 @@ trait Clonable
             'date_mod',
             'date_creation',
             'template_name',
-            'is_template',
-            'sons_cache',
+            'is_template'
         ];
         foreach ($properties_to_clean as $property) {
             if (array_key_exists($property, $input)) {
@@ -118,10 +117,8 @@ trait Clonable
             $override_input[$classname::getItemField($this->getType())] = $this->getID();
 
            // Force entity / recursivity based on cloned parent, with fallback on session values
-            if ($classname::$disableAutoEntityForwarding !== true) {
-                $override_input['entities_id'] = $this->isEntityAssign() ? $this->getEntityID() : Session::getActiveEntity();
-                $override_input['is_recursive'] = $this->maybeRecursive() ? $this->isRecursive() : Session::getIsActiveEntityRecursive();
-            }
+            $override_input['entities_id'] = $this->isEntityAssign() ? $this->getEntityID() : Session::getActiveEntity();
+            $override_input['is_recursive'] = $this->maybeRecursive() ? $this->isRecursive() : Session::getIsActiveEntityRecursive();
 
             $cloned = []; // Link between old and new ID
             $relation_newitems = [];
@@ -135,16 +132,9 @@ trait Clonable
                 }
                 $origin_id = $relation_item->getID();
                 $itemtype = $relation_item->getType();
-                if (method_exists($relation_item, 'clone')) {
-                    $cloned[$itemtype][$origin_id] = $relation_item->clone($override_input, $history);
-                    $relation_item->getFromDB($cloned[$itemtype][$origin_id]);
-                    $relation_newitems[] = $relation_item;
-                } else {
-                    trigger_error(
-                        sprintf('Unable to clone %s', $itemtype),
-                        E_USER_WARNING
-                    );
-                }
+                $cloned[$itemtype][$origin_id] = $relation_item->clone($override_input, $history);
+                $relation_item->getFromDB($cloned[$itemtype][$origin_id]);
+                $relation_newitems[] = $relation_item;
             }
             // Update relations between cloned items
             foreach ($relation_newitems as $relation_newitem) {
@@ -184,7 +174,7 @@ trait Clonable
      * @param array   $override_input Custom input to override
      * @param boolean $history        Do history log ? (true by default)
      *
-     * @return bool the new ID of the clone (or false if fail)
+     * @return int|bool the new ID of the clone (or false if fail)
      */
     public function cloneMultiple(
         int $n,
@@ -219,20 +209,20 @@ trait Clonable
      * @param array $override_input custom input to override
      * @param boolean $history do history log ?
      *
-     * @return false|integer The new ID of the clone (or false if fail)
+     * @return integer The new ID of the clone (or false if fail)
      */
     public function clone(array $override_input = [], bool $history = true)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($DB->isSlave()) {
             return false;
         }
         $new_item = new static();
-
-        $input = array_merge($this->fields, $override_input);
-        $input = Sanitizer::sanitize($input);
+        $input = Toolbox::addslashes_deep($this->fields);
+        foreach ($override_input as $key => $value) {
+            $input[$key] = $value;
+        }
         $input = $new_item->cleanCloneInput($input);
 
         // Do not compute a clone name if a new name is specified (Like creating from template)
@@ -250,15 +240,6 @@ trait Clonable
         if ($newID !== false) {
             $new_item->cloneRelations($this, $history);
             $new_item->post_clone($this, $history);
-
-            if (
-                \Infocom::canApplyOn($this)
-                && isset($new_item->input['states_id'])
-                && !($new_item->input['is_template'] ?? false)
-            ) {
-                //Check if we have to automatically fill dates
-                \Infocom::manageDateOnStatusChange($new_item);
-            }
         }
 
         return $newID;
@@ -307,7 +288,7 @@ trait Clonable
      * The goal is to set the copy name as "{name} (copy {i})" unless it's
      * the first copy: in this case just "{name} (copy)" is acceptable
      *
-     * @param string $current_name The name of the current item
+     * @param string $current_item The item being copied
      * @param int    $copy_index   The index to append to the copy's name
      *
      * @return string The computed name of the new item to be created

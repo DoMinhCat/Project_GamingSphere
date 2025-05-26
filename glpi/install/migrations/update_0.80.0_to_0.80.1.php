@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40,10 +40,6 @@
  **/
 function update0800to0801()
 {
-    /**
-     * @var \DBmysql $DB
-     * @var \Migration $migration
-     */
     global $DB, $migration;
 
     $updateresult     = true;
@@ -58,7 +54,7 @@ function update0800to0801()
              FROM `glpi_groups_tickets`
              GROUP BY `tickets_id`, `type`, `groups_id`
              HAVING CPT > 1";
-    if ($result = $DB->doQuery($query)) {
+    if ($result = $DB->query($query)) {
         if ($DB->numrows($result) > 0) {
             while ($data = $DB->fetchArray($result)) {
                 // Skip first
@@ -69,13 +65,13 @@ function update0800to0801()
                             AND `groups_id` = '" . $data['groups_id'] . "'
                       ORDER BY `id` DESC
                       LIMIT 1,99999";
-                if ($result2 = $DB->doQuery($query)) {
+                if ($result2 = $DB->query($query)) {
                     if ($DB->numrows($result2)) {
                         while ($data2 = $DB->fetchArray($result2)) {
                             $query = "DELETE
                                FROM `glpi_groups_tickets`
                                WHERE `id` ='" . $data2['id'] . "'";
-                            $DB->doQueryOrDie($query, "0.80.1 clean to update glpi_groups_tickets");
+                            $DB->queryOrDie($query, "0.80.1 clean to update glpi_groups_tickets");
                         }
                     }
                 }
@@ -96,7 +92,7 @@ function update0800to0801()
              FROM `glpi_tickets_users`
              GROUP BY `tickets_id`, `type`, `users_id`, `alternative_email`
              HAVING CPT > 1";
-    if ($result = $DB->doQuery($query)) {
+    if ($result = $DB->query($query)) {
         if ($DB->numrows($result) > 0) {
             while ($data = $DB->fetchArray($result)) {
                 // Skip first
@@ -108,13 +104,13 @@ function update0800to0801()
                             AND `alternative_email` = '" . $data['alternative_email'] . "'
                       ORDER BY `id` DESC
                       LIMIT 1,99999";
-                if ($result2 = $DB->doQuery($query)) {
+                if ($result2 = $DB->query($query)) {
                     if ($DB->numrows($result2)) {
                         while ($data2 = $DB->fetchArray($result2)) {
                             $query = "DELETE
                                FROM `glpi_tickets_users`
                                WHERE `id` ='" . $data2['id'] . "'";
-                            $DB->doQueryOrDie($query, "0.80.1 clean to update glpi_tickets_users");
+                            $DB->queryOrDie($query, "0.80.1 clean to update glpi_tickets_users");
                         }
                     }
                 }
@@ -147,7 +143,7 @@ function update0800to0801()
                                         FROM `glpi_slas`
                                         WHERE `entities_id` = $entID
                                               AND `is_recursive` = 0)";
-            $DB->doQueryOrDie($query3, "0.80.1 update entities_id and is_recursive=0 in glpi_slalevels");
+            $DB->queryOrDie($query3, "0.80.1 update entities_id and is_recursive=0 in glpi_slalevels");
 
            // Recursive ones
             $query3 = "UPDATE `glpi_slalevels`
@@ -156,7 +152,7 @@ function update0800to0801()
                                         FROM `glpi_slas`
                                         WHERE `entities_id` = $entID
                                               AND `is_recursive` = 1)";
-            $DB->doQueryOrDie($query3, "0.80.1 update entities_id and is_recursive=1 in glpi_slalevels");
+            $DB->queryOrDie($query3, "0.80.1 update entities_id and is_recursive=1 in glpi_slalevels");
         }
     }
 

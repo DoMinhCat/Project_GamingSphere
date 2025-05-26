@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -33,8 +33,6 @@
  *
  * ---------------------------------------------------------------------
  */
-
-use Glpi\Toolbox\Sanitizer;
 
 class RuleImportAsset extends Rule
 {
@@ -72,6 +70,13 @@ class RuleImportAsset extends Rule
         $col = new RuleImportAssetCollection();
         return $col->getTitle();
     }
+
+
+    public function maxActionsCount()
+    {
+        return 1;
+    }
+
 
     public function getCriterias()
     {
@@ -441,12 +446,7 @@ class RuleImportAsset extends Rule
 
     public function findWithGlobalCriteria($input)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         * @var array $PLUGIN_HOOKS
-         */
-        global $CFG_GLPI, $DB, $PLUGIN_HOOKS;
+        global $DB, $PLUGIN_HOOKS, $CFG_GLPI;
 
         $this->complex_criteria = [];
         $this->restrict_entity = false;
@@ -513,7 +513,7 @@ class RuleImportAsset extends Rule
                 $this->handleOneJoinPerCriteria($item, $it_criteria);
             }
 
-            $this->handleFieldsCriteria($item, $it_criteria, Sanitizer::sanitize($input));
+            $this->handleFieldsCriteria($item, $it_criteria, $input);
 
             if (isset($PLUGIN_HOOKS['use_rules'])) {
                 foreach ($PLUGIN_HOOKS['use_rules'] as $plugin => $val) {
@@ -862,11 +862,7 @@ class RuleImportAsset extends Rule
                             ]
                         ];
                     } else {
-                        $it_criteria['WHERE'][] = [
-                            "RAW" => [
-                                "LOWER($itemtable.uuid)" => ComputerVirtualMachine::getUUIDRestrictCriteria($input['uuid'])
-                            ]
-                        ];
+                        $it_criteria['WHERE'][] = ["$itemtable.uuid" => $input['uuid']];
                     }
                     break;
 
@@ -926,13 +922,8 @@ class RuleImportAsset extends Rule
 
         if (count($this->actions)) {
             foreach ($this->actions as $action) {
-                if ($action->fields["value"] == self::RULE_ACTION_DENIED) {
+                if ($action->fields['field'] == '_ignore_import' || $action->fields["value"] == self::RULE_ACTION_DENIED) {
                     $output['action'] = self::LINK_RESULT_DENIED;
-                    return $output;
-                }
-
-                if ($action->fields['field'] == '_ignore_import') {
-                    $output['action'] = self::LINK_RESULT_CREATE;
                     return $output;
                 }
 
@@ -1006,14 +997,6 @@ class RuleImportAsset extends Rule
                         if (is_a($class, \Glpi\Inventory\Asset\MainAsset::class)) {
                             $back_class = $class->getItemtype();
                         }
-
-                        if ($back_class === Unmanaged::class) {
-                            $conf = new \Glpi\Inventory\Conf();
-                            if ($conf->import_unmanaged == 0) {
-                                return $output;
-                            }
-                        }
-
                         if ($class && !isset($params['return'])) {
                             $class->rulepassed("0", $back_class, $rules_id);
                         }
@@ -1064,7 +1047,6 @@ class RuleImportAsset extends Rule
      */
     public static function getItemTypesForRules()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $types = [];
@@ -1111,7 +1093,6 @@ class RuleImportAsset extends Rule
      */
     public function getGlobalCriteria(): array
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         $criteria = array_merge([

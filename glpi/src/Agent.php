@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -68,8 +68,6 @@ class Agent extends CommonDBTM
    //static $rightname = 'inventory';
 
     private static $found_address = false;
-
-    public $history_blacklist = ['last_contact'];
 
     public static function getTypeName($nb = 0)
     {
@@ -359,7 +357,6 @@ class Agent extends CommonDBTM
      */
     public function showForm($id, array $options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!empty($id)) {
@@ -391,7 +388,6 @@ class Agent extends CommonDBTM
      */
     public function handleAgent($metadata)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $deviceid = $metadata['deviceid'];
@@ -508,7 +504,6 @@ class Agent extends CommonDBTM
 
     public function prepareInputForAdd($input)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (isset($CFG_GLPI['threads_networkdiscovery']) && !isset($input['threads_networkdiscovery'])) {
@@ -552,7 +547,6 @@ class Agent extends CommonDBTM
      */
     public function guessAddresses(): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $addresses = [];
@@ -689,7 +683,6 @@ class Agent extends CommonDBTM
      */
     public function requestAgent($endpoint): Response
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (self::$found_address !== false) {
@@ -828,10 +821,6 @@ class Agent extends CommonDBTM
      */
     public static function cronCleanoldagents($task = null)
     {
-        /**
-         * @var \DBmysql $DB
-         * @var array $PLUGIN_HOOKS
-         */
         global $DB, $PLUGIN_HOOKS;
 
         $config = \Config::getConfigurationValues('inventory');

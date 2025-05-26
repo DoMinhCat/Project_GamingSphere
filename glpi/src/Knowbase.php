@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -79,7 +79,6 @@ class Knowbase extends CommonGLPI
     {
 
         if ($item->getType() == __CLASS__) {
-            /** @var Knowbase $item */
             switch ($tabnum) {
                 case 1: // all
                     $item->showSearchView();
@@ -104,7 +103,6 @@ class Knowbase extends CommonGLPI
     public static function showSearchView()
     {
 
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Search a solution
@@ -148,41 +146,22 @@ class Knowbase extends CommonGLPI
      **/
     public static function showBrowseView()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $rand        = mt_rand();
         $ajax_url    = $CFG_GLPI["root_doc"] . "/ajax/knowbase.php";
         $loading_txt = __s('Loading...');
         $start       = (int)($_REQUEST['start'] ?? 0);
-        $cat_id      = (int)($_GET["knowbaseitemcategories_id"] ?? $_SESSION['kb_cat_id'] ?? 0);
+        $cat_id      = (int)($_SESSION['kb_cat_id'] ?? 0);
 
         $category_list = json_encode(self::getTreeCategoryList());
         $no_cat_found  = __s("No category found");
 
         $JS = <<<JAVASCRIPT
          $(function() {
-            var loadingindicator  = $("<div class='loadingindicator'>$loading_txt</div>");
-            $('#items_list$rand').html(loadingindicator); // loadingindicator on doc ready
-            var loadNode = function(cat_id) {
-               $('#items_list$rand').html(loadingindicator);
-               $('#items_list$rand').load('$ajax_url', {
-                  'action': 'getItemslist',
-                  'cat_id': cat_id,
-                  'start': $start
-               });
-            };
-
             $('#tree_category$rand').fancytree({
                // load plugins
-               extensions: ['filter', 'glyph', 'persist'],
-
-               persist: {
-                  cookiePrefix: 'fancytree-kb-',
-                  expandLazy: true,
-                  overrideSource: true,
-                  store: "auto"
-               },
+               extensions: ['filter', 'glyph'],
 
                // Scroll node into visible area, when focused by keyboard
                autoScroll: true,
@@ -213,6 +192,16 @@ class Knowbase extends CommonGLPI
 
             });
 
+            var loadingindicator  = $("<div class='loadingindicator'>$loading_txt</div>");
+            $('#items_list$rand').html(loadingindicator); // loadingindicator on doc ready
+            var loadNode = function(cat_id) {
+               $('#items_list$rand').html(loadingindicator);
+               $('#items_list$rand').load('$ajax_url', {
+                  'action': 'getItemslist',
+                  'cat_id': cat_id,
+                  'start': $start
+               });
+            };
             loadNode($cat_id);
             $.ui.fancytree.getTree("#tree_category$rand").activateKey($cat_id);
 
@@ -242,7 +231,6 @@ JAVASCRIPT;
     public static function getTreeCategoryList()
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         $cat_table = KnowbaseItemCategory::getTable();

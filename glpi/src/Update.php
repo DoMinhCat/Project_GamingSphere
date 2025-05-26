@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -167,11 +167,10 @@ class Update
     /**
      * Verify the database schema integrity.
      *
-     * @return bool
+     * @return void
      */
-    final public function isUpdatedSchemaConsistent(): bool
+    private function checkSchemaIntegrity(): void
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $checker = new DatabaseSchemaIntegrityChecker($DB, false, true, true, true, true, true);
@@ -180,7 +179,16 @@ class Update
             true
         );
 
-        return count($differences) === 0;
+        if (count($differences) > 0) {
+            $this->migration->displayError(
+                __('The database schema is not consistent with the current GLPI version.')
+                . "\n"
+                . sprintf(
+                    __('It is recommended to run the "%s" command to see the differences.'),
+                    'php bin/console database:check_schema_integrity'
+                )
+            );
+        }
     }
 
     /**
@@ -215,7 +223,7 @@ class Update
             // e.g. with `NO_ZERO_DATE` flag `ALTER TABLE` operations fails when a row contains a `0000-00-00 00:00:00` datetime value.
             // Unitary removal of these flags is not pôssible as MySQL 8.0 triggers warning if
             // `STRICT_{ALL|TRANS}_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO` are not used all together.
-            $sql_mode = $DB->doQuery(sprintf('SELECT @@sql_mode as %s', $DB->quoteName('sql_mode')))->fetch_assoc()['sql_mode'] ?? '';
+            $sql_mode = $DB->query(sprintf('SELECT @@sql_mode as %s', $DB->quoteName('sql_mode')))->fetch_assoc()['sql_mode'] ?? '';
             $sql_mode_flags = array_filter(
                 explode(',', $sql_mode),
                 function (string $flag) {
@@ -231,7 +239,7 @@ class Update
                     );
                 }
             );
-            $DB->doQuery(sprintf('SET SESSION sql_mode = %s', $DB->quote(implode(',', $sql_mode_flags))));
+            $DB->query(sprintf('SET SESSION sql_mode = %s', $DB->quote(implode(',', $sql_mode_flags))));
         }
 
        // To prevent problem of execution time
@@ -344,6 +352,9 @@ class Update
                 true
             );
         }
+
+        // Check if schema has differences from the expected one but do not block the upgrade
+        $this->checkSchemaIntegrity();
     }
 
     /**
@@ -437,7 +448,6 @@ class Update
      */
     public static function isDbUpToDate(): bool
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!array_key_exists('dbversion', $CFG_GLPI)) {

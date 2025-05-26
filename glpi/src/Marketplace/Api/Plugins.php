@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -68,7 +68,6 @@ class Plugins
 
     public function __construct()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $options = [
@@ -98,7 +97,7 @@ class Plugins
      * @param array $options array of options for guzzle lib
      * @param string $method GET/POST, etc
      *
-     * @return \Psr\Http\Message\ResponseInterface|false
+     * @return Psr\Http\Message\ResponseInterface|false
      */
     private function request(
         string $endpoint = '',
@@ -203,7 +202,6 @@ class Plugins
         string $string_filter = "",
         string $sort = 'sort-alpha-asc'
     ) {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         $cache_key = self::getCacheKey('marketplace_all_plugins');
@@ -386,7 +384,6 @@ class Plugins
      */
     public function getTopTags(): array
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $response  = $this->request('tags/top', [
@@ -415,7 +412,6 @@ class Plugins
      */
     public function getPluginsForTag(string $tag = "", bool $force_refresh = false): array
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         $cache_key = self::getCacheKey("marketplace_tag_$tag");

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40,8 +40,8 @@ Session::checkLoginUser();
 
 switch ($_REQUEST['action']) {
     case "move_rule":
-        $rule_collection = getItemForItemtype($_POST['collection_classname']);
-        if ($rule_collection instanceof RuleCollection) {
+        if (is_subclass_of($_POST['collection_classname'], RuleCollection::getType())) {
+            $rule_collection = new $_POST['collection_classname']();
             $rule_collection->moveRule((int) $_POST['rule_id'], (int) $_POST['ref_id'], $_POST['sort_action']);
         }
         break;

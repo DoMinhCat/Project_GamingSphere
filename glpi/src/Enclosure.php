@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -130,7 +130,7 @@ class Enclosure extends CommonDBTM
             'field'              => 'completename',
             'name'               => __('Status'),
             'datatype'           => 'dropdown',
-            'condition'          => ['is_visible_enclosure' => 1]
+            'condition'          => ['is_visible_computer' => 1]
         ];
 
         $tab[] = [
@@ -188,7 +188,7 @@ class Enclosure extends CommonDBTM
             'table'              => 'glpi_users',
             'field'              => 'name',
             'linkfield'          => 'users_id_tech',
-            'name'               => __('Technician in charge'),
+            'name'               => __('Technician in charge of the hardware'),
             'datatype'           => 'dropdown',
             'right'              => 'own_ticket'
         ];
@@ -198,7 +198,7 @@ class Enclosure extends CommonDBTM
             'table'              => 'glpi_groups',
             'field'              => 'completename',
             'linkfield'          => 'groups_id_tech',
-            'name'               => __('Group in charge'),
+            'name'               => __('Group in charge of the hardware'),
             'condition'          => ['is_assign' => 1],
             'datatype'           => 'dropdown'
         ];
@@ -228,8 +228,6 @@ class Enclosure extends CommonDBTM
 
         $tab = array_merge($tab, Rack::rawSearchOptionsToAdd(get_class($this)));
 
-        $tab = array_merge($tab, DCRoom::rawSearchOptionsToAdd());
-
         return $tab;
     }
 
@@ -245,7 +243,6 @@ class Enclosure extends CommonDBTM
      */
     public function getFilled($itemtype = null, $items_id = null)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([

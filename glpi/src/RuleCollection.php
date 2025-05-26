@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -48,7 +48,7 @@ class RuleCollection extends CommonDBTM
     public $orderby                               = "ranking";
    /// Processing several rules : use result of the previous one to computer the current one
     public $use_output_rule_process_as_next_input = false;
-   /// Rule collection can be replay (for dictionary)
+   /// Rule collection can be replay (for dictionnary)
     public $can_replay_rules                      = false;
    /// List of rules of the rule collection
     public $RuleList                              = null;
@@ -106,7 +106,6 @@ class RuleCollection extends CommonDBTM
         $condition = 0,
         $children = 0
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $restrict = $this->getRuleListCriteria([
@@ -209,7 +208,7 @@ class RuleCollection extends CommonDBTM
     /**
      * Get Collection Part : retrieve descriptions of a range of rules
      *
-     * @param array $options array of options may be :
+     * @param $options array of options may be :
      *         - start : first rule (in the result set - default 0)
      *         - limit : max number of rules to retrieve (default 0)
      *         - recursive : boolean get recursive rules
@@ -217,7 +216,6 @@ class RuleCollection extends CommonDBTM
      **/
     public function getCollectionPart($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $p['start']     = 0;
@@ -254,15 +252,14 @@ class RuleCollection extends CommonDBTM
 
 
     /**
-     * Get Collection Data: retrieve descriptions and rules
+     * Get Collection Datas : retrieve descriptions and rules
      *
-     * @param integer $retrieve_criteria  Retrieve the criteria of the rules ? (default false)
-     * @param integer $retrieve_action    Retrieve the action of the rules ? (default 0)
-     * @param integer $condition          Retrieve with a specific condition
+     * @param $retrieve_criteria  Retrieve the criterias of the rules ? (default 0)
+     * @param $retrieve_action    Retrieve the action of the rules ? (default 0)
+     * @param $condition          Retrieve with a specific condition
      **/
     public function getCollectionDatas($retrieve_criteria = 0, $retrieve_action = 0, $condition = 0)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($this->RuleList === null) {
@@ -297,7 +294,7 @@ class RuleCollection extends CommonDBTM
                     ) {
                         $tempRule->can_sort = $can_sort;
 
-                        //Add the object to the list of rules
+                      //Add the object to the list of rules
                         $this->RuleList->list[] = $tempRule;
                     }
                 }
@@ -336,9 +333,9 @@ class RuleCollection extends CommonDBTM
      * Is a confirmation needed before replay on DB ?
      * If needed need to send 'replay_confirm' in POST
      *
-     * @param string $target filename : where to go when done
+     * @param $target filename : where to go when done
      *
-     * @return boolean true if confirmation is needed, else false
+     * @return  true if confirmtion is needed, else false
      **/
     public function warningBeforeReplayRulesOnExistingDB($target)
     {
@@ -349,10 +346,10 @@ class RuleCollection extends CommonDBTM
     /**
      * Replay Collection on DB
      *
-     * @param integer $offset  first row to work on (default 0)
-     * @param float   $maxtime max system time to stop working (default 0)
-     * @param array   $items   array containing items to replay. If empty -> all
-     * @param array   $params  array additional parameters if needed
+     * @param $offset             first row to work on (default 0)
+     * @param $maxtime   float    max system time to stop working (default 0)
+     * @param $items     array    containg items to replay. If empty -> all
+     * @param $params    array    additional parameters if needed
      *
      * @return int|false -1 if all rows done, else offset for next run, or false on error
      **/
@@ -365,7 +362,7 @@ class RuleCollection extends CommonDBTM
     /**
      * Get title used in list of rules
      *
-     * @return string Title of the rule collection
+     * @return Title of the rule collection
      **/
     public function getTitle()
     {
@@ -375,8 +372,6 @@ class RuleCollection extends CommonDBTM
 
     /**
      * Indicates if the rule can be affected to an entity or if it's global
-     *
-     * @return boolean
      **/
     public function isRuleEntityAssigned()
     {
@@ -388,8 +383,6 @@ class RuleCollection extends CommonDBTM
 
     /**
      * Indicates if the rule can be affected to an entity or if it's global
-     *
-     * @return boolean
      **/
     public function isRuleRecursive()
     {
@@ -400,8 +393,6 @@ class RuleCollection extends CommonDBTM
 
     /**
      * Indicates if the rule use conditions
-     *
-     * @return boolean
      **/
     public function isRuleUseConditions()
     {
@@ -411,16 +402,14 @@ class RuleCollection extends CommonDBTM
     }
 
     /**
-     * Get default rule conditions
-     *
-     * @return integer
+     * Indicates if the rule use conditions
      **/
     public function getDefaultRuleConditionForList()
     {
 
         $rule = $this->getRuleClass();
         $cond = $rule->getConditionsArray();
-        // Get max value
+       // Get max value
         if (count($cond)) {
             return max(array_keys($cond));
         }
@@ -432,7 +421,7 @@ class RuleCollection extends CommonDBTM
 
         echo "<table class='tab_cadre_fixe'><tr><th>";
 
-       //Display information about how the rules engine process the rules
+       //Display information about the how the rules engine process the rules
         if ($this->stop_on_first_match) {
            //The engine stop on the first matched rule
             echo "<span class='center b'>" . __('The engine stops on the first checked rule.') .
@@ -463,14 +452,13 @@ class RuleCollection extends CommonDBTM
     /**
      * Show the list of rules
      *
-     * @param string $target
-     * @param array $options
+     * @param $target
+     * @param $options   array
      *
      * @return void
      **/
     public function showListRules($target, $options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $p['inherited'] = 1;
@@ -575,7 +563,7 @@ class RuleCollection extends CommonDBTM
         $can_sort = $canedit && $nb;
         if (count($this->RuleList->list)) {
             $can_sort = $this->RuleList->list[0]->can_sort && $canedit && $nb;
-            Session::initNavigateListItems($ruletype, '', '');
+            Session::initNavigateListItems($ruletype);
         }
 
         if ($can_sort) {
@@ -717,7 +705,7 @@ JAVASCRIPT;
     /**
      * Show the list of rules
      *
-     * @param string $target
+     * @param $target
      *
      * @return void
      **/
@@ -729,15 +717,12 @@ JAVASCRIPT;
     /**
      * Modify rule's ranking and automatically reorder all rules
      *
-     * @param integer $ID        rule ID whose ranking must be modified
-     * @param string  $action    up or down
-     * @param integer $condition action on a specific condition
-     *
-     * @return boolean
+     * @param $ID     the rule ID whose ranking must be modified
+     * @param $action up or down
+     * @param $condition action on a specific condition
      **/
     public function changeRuleOrder($ID, $action, $condition = 0)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $criteria = [
@@ -855,13 +840,12 @@ JAVASCRIPT;
     /**
      * Update Rule Order when deleting a rule
      *
-     * @param integer $ranking rank of the deleted rule
+     * @param $ranking rank of the deleted rule
      *
-     * @return boolean
+     * @return true if all ok
      **/
     public function deleteRuleOrder($ranking)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->update(
@@ -889,7 +873,6 @@ JAVASCRIPT;
      **/
     public function moveRule($ID, $ref_ID, $type = self::MOVE_AFTER)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ruleDescription = new Rule();
@@ -982,7 +965,6 @@ JAVASCRIPT;
      **/
     public static function titleBackup()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $base_url = "{$CFG_GLPI["root_doc"]}/front/rule.backup.php";
@@ -1004,7 +986,7 @@ JAVASCRIPT;
     /**
      * Export rules in a xml format
      *
-     * @param array $items array the input data to transform to xml
+     * @param items array the input data to transform to xml
      *
      * @since 0.85
      *
@@ -1155,11 +1137,11 @@ JAVASCRIPT;
      *
      * @since 0.85
      *
-     * @param array   $available_criteria available criteria for this rule
-     * @param integer $condition          the rulecriteria condition
-     * @param string  $criterion          the criterion
+     * @param $available_criteria    available criterai for this rule
+     * @param $condition             the rulecriteria condition
+     * @param $criterion             the criterion
      *
-     * @return boolean true if a criterion is a dropdown, false otherwise
+     * @return true if a criterion is a dropdown, false otherwise
      **/
     public static function isCriteraADropdown($available_criteria, $condition, $criterion)
     {
@@ -1182,11 +1164,10 @@ JAVASCRIPT;
      *
      * @since 0.85
      *
-     * @return boolean
+     * @return true if all ok
      **/
     public static function previewImportRules()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!isset($_FILES["xml_file"]) || ($_FILES["xml_file"]["size"] == 0)) {
@@ -1299,7 +1280,7 @@ JAVASCRIPT;
                     ) {
                        //pass root entity and empty array (N/A value)
                         if (
-                            (in_array($action['field'], ['entities_id', 'new_entities_id'], true))
+                            (in_array($action['value'], ['entities_id', 'new_entities_id'], true))
                             && (($action['value'] == 0)
                             || ($action['value'] == ''))
                         ) {
@@ -1476,11 +1457,10 @@ JAVASCRIPT;
      *
      * @since 0.85
      *
-     * @return boolean
+     * @return true if all ok
      **/
     public static function processImportRules()
     {
-        /** @var \DBmysql $DB */
         global $DB;
         $ruleCriteria = new RuleCriteria();
         $ruleAction   = new RuleAction();
@@ -1683,11 +1663,9 @@ JAVASCRIPT;
     /**
      * Show form displaying results for rule collection preview
      *
-     * @param string  $target    where to go
-     * @param array   $values    array of data
-     * @param integer $condition condition to limit rules (default 0)
-     *
-     * @return array
+     * @param $target          where to go
+     * @param $values    array of data
+     * @param $condition       condition to limit rules (default 0)
      **/
     public function showRulesEnginePreviewCriteriasForm($target, array $values, $condition = 0)
     {
@@ -1751,12 +1729,12 @@ JAVASCRIPT;
     /**
      * Test all the rules collection
      *
-     * @param array   $input     array the input data used to check criterias
-     * @param array   $output    array the initial output array used to be manipulated by actions
-     * @param array   $params    array parameters for all internal functions
-     * @param integer $condition condition to limit rules (DEFAULT 0)
+     * @param input      array the input data used to check criterias
+     * @param output     array the initial ouput array used to be manipulate by actions
+     * @param params     array parameters for all internal functions
+     * @param $condition       condition to limit rules (DEFAULT 0)
      *
-     * @return array the output array updated by actions
+     * @return the output array updated by actions
      **/
     public function testAllRules($input = [], $output = [], $params = [], $condition = 0)
     {
@@ -1801,12 +1779,12 @@ JAVASCRIPT;
 
 
     /**
-     * Prepare input data for the rules collection
+     * Prepare input datas for the rules collection
      *
-     * @param array $input  the input data used to check criteria
-     * @param array $params parameters
+     * @param $input  the input data used to check criterias
+     * @param $params parameters
      *
-     * @return array the updated input data
+     * @return the updated input datas
      **/
     public function prepareInputDataForProcess($input, $params)
     {
@@ -1819,14 +1797,13 @@ JAVASCRIPT;
      *
      * @since 0.84
      *
-     * @param array $input  the input data used to check criterias
-     * @param array $params parameters
+     * @param $input  the input data used to check criterias
+     * @param $params parameters
      *
-     * @return array the updated input datas
+     * @return the updated input datas
      **/
     public function prepareInputDataForProcessWithPlugins($input, $params)
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         $input = $this->prepareInputDataForProcess($input, $params);
@@ -1858,15 +1835,14 @@ JAVASCRIPT;
 
 
     /**
-     * Prepare input data for the rules collection
+     * Prepare input datas for the rules collection
      *
-     * @param integer $condition condition to limit rules (DEFAULT 0)
+     * @param $condition condition to limit rules (DEFAULT 0)
      *
-     * @return array the updated input data
+     * @return the updated input datas
      **/
     public function prepareInputDataForTestProcess($condition = 0)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $limit = [];
@@ -1903,11 +1879,9 @@ JAVASCRIPT;
     /**
      * Show form displaying results for rule engine preview
      *
-     * @param string  $target    where to go
-     * @param array   $input     array of data
-     * @param integer $condition condition to limit rules (DEFAULT 0)
-     *
-     * @return void
+     * @param $target          where to go
+     * @param $input     array of data
+     * @param $condition       condition to limit rules (DEFAULT 0)
      **/
     public function showRulesEnginePreviewResultsForm($target, array $input, $condition = 0)
     {
@@ -1962,11 +1936,11 @@ JAVASCRIPT;
 
 
     /**
-     * Unset criteria from the rule's ouput results (begins by _)
+     * Unset criterias from the rule's ouput results (begins by _)
      *
-     * @param array $output array clean output array to clean
+     * @param $output    array clean output array to clean
      *
-     * @return array cleaned array
+     * @return cleaned array
      **/
     public function cleanTestOutputCriterias(array $output)
     {
@@ -1987,9 +1961,9 @@ JAVASCRIPT;
     /**
      * Show test results for a rule
      *
-     * @param Rule    $rule          rule object
-     * @param array   $output        output data array
-     * @param boolean $global_result global result
+     * @param $rule                     rule object
+     * @param $output          array    output data array
+     * @param $global_result   boolean  global result
      *
      * @return void
      **/
@@ -2019,13 +1993,10 @@ JAVASCRIPT;
 
 
     /**
-     * @param array $output
-     *
-     * @return array
+     * @param $output
      **/
     public function preProcessPreviewResults($output)
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         if (isset($PLUGIN_HOOKS['use_rules'])) {
@@ -2067,15 +2038,14 @@ JAVASCRIPT;
     /**
      * Get rulecollection classname by giving his itemtype
      *
-     * @param string  $itemtype               itemtype
-     * @param boolean $check_dictionnary_type check if the itemtype is a dictionary or not
+     * @param $itemtype                 itemtype
+     * @param $check_dictionnary_type   check if the itemtype is a dictionnary or not
      *                                  (false by default)
      *
      * @return RuleCollection|null
      */
     public static function getClassByType($itemtype, $check_dictionnary_type = false)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if ($plug = isPluginItemType($itemtype)) {
@@ -2114,12 +2084,9 @@ JAVASCRIPT;
 
     /**
      * Get all the fields needed to perform the rule
-     *
-     * @return array
      **/
     public function getFieldsToLookFor()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $params = [];
@@ -2153,8 +2120,6 @@ JAVASCRIPT;
      * For tabs management : force isNewItem
      *
      * @since 0.83
-     *
-     * @return boolean
      **/
     public function isNewItem()
     {
@@ -2162,6 +2127,9 @@ JAVASCRIPT;
     }
 
 
+    /**
+     * @see CommonGLPI::defineTabs()
+     **/
     public function defineTabs($options = [])
     {
 
@@ -2181,6 +2149,9 @@ JAVASCRIPT;
         return _n('Rule', 'Rules', Session::getPluralNumber());
     }
 
+    /**
+     * @see CommonGLPI::getTabNameForItem()
+     **/
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
@@ -2255,7 +2226,6 @@ JAVASCRIPT;
      */
     public static function getRules(): array
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $rules = [];
@@ -2305,7 +2275,7 @@ JAVASCRIPT;
 
 
     /**
-     * Get list of dictionaries
+     * Get list of dictionnaries
      *
      * @return array
      */

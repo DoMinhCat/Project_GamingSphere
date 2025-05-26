@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -44,8 +44,8 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (isset($_POST['name'])) {
-    echo "<textarea " . (isset($_POST['rows']) ? " rows='" . ((int) $_POST['rows']) . "' " : "") . " " .
-         (isset($_POST['cols']) ? " cols='" . ((int) $_POST['cols']) . "' " : "") . "  name='" . Html::cleanInputText($_POST['name']) . "'>";
+    echo "<textarea " . (isset($_POST['rows']) ? " rows='" . $_POST['rows'] . "' " : "") . " " .
+         (isset($_POST['cols']) ? " cols='" . $_POST['cols'] . "' " : "") . "  name='" . $_POST['name'] . "'>";
     echo Html::cleanPostForTextArea(Sanitizer::encodeHtmlSpecialChars(rawurldecode(($_POST["data"]))));
     echo "</textarea>";
 }

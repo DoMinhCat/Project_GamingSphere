@@ -37,7 +37,7 @@ class FileExtensionEscapingStrategy
             return 'html'; // return html for directories
         }
 
-        if (str_ends_with($name, '.twig')) {
+        if ('.twig' === substr($name, -5)) {
             $name = substr($name, 0, -5);
         }
 

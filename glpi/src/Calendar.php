@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -143,7 +143,7 @@ class Calendar extends CommonDropdown
                                  || ($input['entities_id'] != $item->getEntityID())
                             ) {
                                 if ($item->can(-1, CREATE, $options)) {
-                                    if (method_exists($item, 'clone') && $item->clone($options)) {
+                                    if ($item->clone($options)) {
                                          $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                                     } else {
                                          $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);
@@ -273,7 +273,7 @@ class Calendar extends CommonDropdown
     {
 
         if (!isset($this->fields['id'])) {
-            return 0;
+            return false;
         }
 
         if ($end < $start) {
@@ -398,7 +398,7 @@ class Calendar extends CommonDropdown
      * if delay >= DAY_TIMESTAMP : work in days
      * else work in minutes
      *
-     * @param string   $start               begin
+     * @param datetime $start               begin
      * @param integer  $delay               delay to add (in seconds)
      * @param integer  $additional_delay    delay to add (default 0)
      * @param boolean  $work_in_days        force working in days (false by default)
@@ -408,10 +408,6 @@ class Calendar extends CommonDropdown
      **/
     public function computeEndDate($start, $delay, $additional_delay = 0, $work_in_days = false, $end_of_working_day = false)
     {
-        // TODO 10.1: parameter $work_in_day make calculation for duration exprimed
-        // in days (e.g "+ 5 days") but we don't have anything for month.
-        // +1 month will push the date 30 working day when it should get the next
-        // valid calendar date at least one month away from the starting date.
 
         if (!isset($this->fields['id'])) {
             return false;
@@ -540,44 +536,26 @@ class Calendar extends CommonDropdown
 
             while ($delay >= 0) {
                 $actualdate = date('Y-m-d', $actualtime);
-                $dayofweek  = self::getDayNumberInWeek($actualtime);
-                if (!$this->isHoliday($actualdate) && $cache_duration[$dayofweek] > 0) {
+                if (!$this->isHoliday($actualdate)) {
                     $dayofweek = self::getDayNumberInWeek($actualtime);
                     $beginhour = '00:00:00';
 
                     if ($actualdate == $datestart) { // First day cannot use cache
-                        $beginhour = date('H:i:s', $timestart);
-                        if (!$negative_delay) {
-                            // Count to end of day
-                            $timeoftheday = CalendarSegment::getActiveTimeBetween(
-                                $this->fields['id'],
-                                $dayofweek,
-                                $beginhour,
-                                '24:00:00'
-                            );
-                        } else {
-                            // Count to start of day
-                            $timeoftheday = CalendarSegment::getActiveTimeBetween(
-                                $this->fields['id'],
-                                $dayofweek,
-                                "00:00:00",
-                                $beginhour
-                            );
-                        }
+                        $beginhour    = date('H:i:s', $timestart);
+                        $timeoftheday = CalendarSegment::getActiveTimeBetween(
+                            $this->fields['id'],
+                            $dayofweek,
+                            $beginhour,
+                            '24:00:00'
+                        );
                     } else {
                         $timeoftheday = $cache_duration[$dayofweek];
                     }
 
-                    if ($delay === 0 && $timeoftheday === 0 && $this->isAWorkingHour($timestart)) {
-                        // Special case:
-                        // - current day is a working day;
-                        // - there is no delay to add;
-                        // - current time it the exact last second of working hours of the current day.
-                        // -> we do not have to add any delay to current time
-                        break;
-                    }
-
-                    if ($delay >= $timeoftheday) {
+                    if (
+                        $timeoftheday <= $delay && !$negative_delay
+                        || $timeoftheday >= $delay && $negative_delay
+                    ) {
                          // Delay is greater or equal than remaining time in day
                          // -> pass to next day
                          $actualtime = self::getActualTime($actualtime, DAY_TIMESTAMP, $negative_delay);
@@ -588,14 +566,13 @@ class Calendar extends CommonDropdown
                             $this->fields['id'],
                             $dayofweek,
                             $beginhour,
-                            $delay,
-                            $negative_delay
+                            $delay
                         );
                         $actualtime = strtotime($actualdate . ' ' . $endhour);
                         break;
                     }
                 } else {
-                    // Holiday or non working day : pass to next day
+                    // Holiday : pass to next day
                     $actualtime = self::getActualTime($actualtime, DAY_TIMESTAMP, $negative_delay);
                 }
             }

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34,7 +34,6 @@
  */
 
 use Glpi\Features\Clonable;
-use Glpi\Plugin\Hooks;
 use Glpi\Toolbox\Sanitizer;
 
 /**
@@ -190,7 +189,6 @@ class MassiveAction
      **/
     public function __construct(array $POST, array $GET, $stage, ?int $items_id = null)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!empty($POST)) {
@@ -234,7 +232,7 @@ class MassiveAction
                             foreach ($ids as $id => $checked) {
                                 if ($checked == 1) {
                                     $items[$id] = $id;
-                                    $this->nb_items++;
+                                    $this->nb_items ++;
                                 }
                             }
                              $POST['items'][$itemtype] = $items;
@@ -415,8 +413,8 @@ class MassiveAction
             $this->timer->start();
             $this->fields_to_remove_when_reload[] = 'timer';
 
-            $max_time = (int) get_cfg_var("max_execution_time");
-            $max_time = ($max_time == 0) ? 60 : $max_time;
+            $max_time = (get_cfg_var("max_execution_time") == 0) ? 60
+                                                              : get_cfg_var("max_execution_time");
 
             $this->timeout_delay                  = ($max_time - 3);
             $this->fields_to_remove_when_reload[] = 'timeout_delay';
@@ -526,7 +524,7 @@ class MassiveAction
     /**
      * Get current action
      *
-     * @return string with the current action or NULL if we are at initial stage
+     * @return a string with the current action or NULL if we are at initial stage
      **/
     public function getAction()
     {
@@ -536,7 +534,7 @@ class MassiveAction
     /**
      * Get current action name.
      *
-     * @return string|null
+     * @return
      */
     public function getActionName(): ?string
     {
@@ -546,7 +544,7 @@ class MassiveAction
     /**
      * Get current action processor classname.
      *
-     * @return string|null
+     * @return
      */
     public function getProcessor(): ?string
     {
@@ -664,7 +662,6 @@ class MassiveAction
         ) {
             $itemtypes = [-1 => Dropdown::EMPTY_VALUE];
             foreach ($keys as $itemtype) {
-                /** @var class-string $itemtype */
                 $itemtypes[$itemtype] = $itemtype::getTypeName(Session::getPluralNumber());
             }
             echo __('Select the type of the item on which applying this action') . "<br>\n";
@@ -700,7 +697,6 @@ class MassiveAction
         if (
             Session::haveRight('transfer', READ)
             && Session::isMultiEntitiesMode()
-            && !isAPI()
         ) {
             $actions[__CLASS__ . self::CLASS_ACTION_SEPARATOR . 'add_transfer_list']
                   = "<i class='fa-fw fas fa-level-up-alt'></i>" .
@@ -713,15 +709,14 @@ class MassiveAction
      * Get the standard massive actions
      *
      * @param string|CommonDBTM $item        the item for which we want the massive actions
-     * @param boolean           $is_deleted  massive action for deleted items ?   (default false)
+     * @param boolean           $is_deleted  massive action for deleted items ?   (default 0)
      * @param CommonDBTM        $checkitem   link item to check right              (default NULL)
      * @param int|null          $items_id    Get actions for a single item
      *
      * @return array|false Array of massive actions or false if $item is not valid
      **/
-    public static function getAllMassiveActions($item, $is_deleted = false, ?CommonDBTM $checkitem = null, ?int $items_id = null)
+    public static function getAllMassiveActions($item, $is_deleted = 0, CommonDBTM $checkitem = null, ?int $items_id = null)
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         if (is_string($item)) {
@@ -825,8 +820,8 @@ class MassiveAction
             }
 
            // Plugin Specific actions
-            if (isset($PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION])) {
-                foreach (array_keys($PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]) as $plugin) {
+            if (isset($PLUGIN_HOOKS['use_massive_action'])) {
+                foreach (array_keys($PLUGIN_HOOKS['use_massive_action']) as $plugin) {
                     if (!Plugin::isPluginActive($plugin)) {
                         continue;
                     }
@@ -934,10 +929,6 @@ class MassiveAction
 
     public static function showMassiveActionsSubForm(MassiveAction $ma)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
         global $CFG_GLPI, $DB;
 
         switch ($ma->getAction()) {
@@ -947,7 +938,6 @@ class MassiveAction
                     $options_per_type = [];
                     $options_count   = [];
                     foreach ($itemtypes as $itemtype) {
-                        /** @var class-string $itemtype */
                         $options_per_type[$itemtype] = [];
                         $group                       = '';
                         $show_all                    = true;
@@ -1037,8 +1027,7 @@ class MassiveAction
                         $choose_itemtype  = true;
                         $itemtype_choices = [-1 => Dropdown::EMPTY_VALUE];
                         foreach ($itemtypes as $itemtype) {
-                            /** @var class-string $itemtype */
-                            $itemtype_choices[$itemtype] = $itemtype::getTypeName(Session::getPluralNumber());
+                             $itemtype_choices[$itemtype] = $itemtype::getTypeName(Session::getPluralNumber());
                         }
                     } else {
                         $options        = $options_per_type[$itemtypes[0]];
@@ -1433,7 +1422,6 @@ class MassiveAction
         CommonDBTM $item,
         array $ids
     ) {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $action = $ma->getAction();
@@ -1675,10 +1663,8 @@ class MassiveAction
                     if ($item->can($id, CREATE)) {
                         // recovers the item from DB
                         if ($item->getFromDB($id)) {
-                            if (
-                                method_exists($item, "cloneMultiple")
-                                && $item->cloneMultiple($input["nb_copy"])
-                            ) {
+                            $succeed = $item->cloneMultiple($input["nb_copy"]);
+                            if ($succeed) {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_OK);
                             } else {
                                 $ma->itemDone($item->getType(), $id, MassiveAction::ACTION_KO);

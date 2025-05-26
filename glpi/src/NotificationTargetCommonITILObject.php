@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -135,7 +135,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
             'add_followup'      => __("New followup"),
             'update_followup'   => __('Update of a followup'),
             'delete_followup'   => __('Deletion of a followup'),
-            'user_mention'      => __('User mentioned'),
+            'user_mention'      => __('User mentionned'),
         ];
 
         asort($events);
@@ -152,11 +152,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addLinkedUserByType($type)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $userlinktable = getTableForItemType($this->obj->userlinkclass);
         $fkfield       = $this->obj->getForeignKeyField();
@@ -249,7 +245,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addLinkedGroupByType($type)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $grouplinktable = getTableForItemType($this->obj->grouplinkclass);
@@ -284,7 +279,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addLinkedGroupWithoutSupervisorByType($type)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $grouplinktable = getTableForItemType($this->obj->grouplinkclass);
@@ -315,7 +309,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addLinkedGroupSupervisorByType($type)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $grouplinktable = getTableForItemType($this->obj->grouplinkclass);
@@ -353,7 +346,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addOldAssignTechnician()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (
@@ -414,7 +406,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addSupplier($sendprivate = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (
@@ -461,7 +452,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addValidationApprover($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (isset($options['validation_id'])) {
@@ -495,7 +485,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      **/
     public function addValidationRequester($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (isset($options['validation_id'])) {
@@ -530,7 +519,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addFollowupAuthor($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (isset($options['followup_id'])) {
@@ -568,7 +556,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addTaskAuthor($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // In case of delete task pass user id
@@ -616,7 +603,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addTaskAssignUser($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // In case of delete task pass user id
@@ -666,7 +652,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
      */
     public function addTaskAssignGroup($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // In case of delete task pass user id
@@ -695,7 +680,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
 
     public function addAdditionnalInfosForTarget()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -735,7 +719,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
 
     protected function getShowPrivateInfo(array $data)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!isset($data['users_id']) || count($this->private_profiles) === 0) {
@@ -759,7 +742,6 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
 
     protected function getIsSelfServiceInfo(array $data)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!isset($data['users_id']) || count($this->central_profiles) === 0) {
@@ -828,7 +810,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
     {
 
         if ($event === 'user_mention') {
-            $this->addTarget(Notification::MENTIONNED_USER, __('Mentioned user'));
+            $this->addTarget(Notification::MENTIONNED_USER, __('Mentionned user'));
             return; // Do not propose more targets
         }
 
@@ -1090,18 +1072,14 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
     /**
      * Get data from an item
      *
-     * @param CommonITILObject  $item    Object instance
-     * @param array             $options Options
-     * @param boolean           $simple  (false by default)
+     * @param CommonDBTM $item    Object instance
+     * @param array      $options Options
+     * @param boolean    $simple  (false by default)
      *
      * @return array
      **/
     public function getDataForObject(CommonDBTM $item, array $options, $simple = false)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
         global $CFG_GLPI, $DB;
 
         $is_self_service = $options['additionnaloption']['is_self_service'] ?? true;
@@ -1364,7 +1342,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
                 'glpi_itilfollowups',
                 [
                     'WHERE'  => $followup_restrict,
-                    'ORDER'  => ['date_mod DESC', 'id DESC']
+                    'ORDER'  => ['date_mod DESC', 'id ASC']
                 ]
             );
             $data['followups'] = [];
@@ -1445,7 +1423,7 @@ abstract class NotificationTargetCommonITILObject extends NotificationTarget
                     ]
                 ],
                 'WHERE'     => [
-                    $item->getAssociatedDocumentsCriteria(true),
+                    $item->getAssociatedDocumentsCriteria(),
                     'timeline_position' => ['>', CommonITILObject::NO_TIMELINE], // skip inlined images
                 ]
             ]);

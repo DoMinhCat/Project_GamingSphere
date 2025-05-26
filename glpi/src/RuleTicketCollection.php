@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -150,14 +150,6 @@ class RuleTicketCollection extends RuleCollection
                 foreach (Group_User::getUserGroups($uid) as $g) {
                     $input['_groups_id_of_requester'][$g['id']] = $g['id'];
                 }
-            }
-        }
-
-        // Required for rules on category code triggered by others rules
-        if (isset($input['itilcategories_id']) && $input['itilcategories_id']) {
-            $itilcategory = ITILCategory::getById($input['itilcategories_id']);
-            if ($itilcategory) {
-                $input['itilcategories_id_code'] = $itilcategory->fields['code'];
             }
         }
 

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -67,7 +67,6 @@ class Calendar_Holiday extends CommonDBRelation
      */
     public static function showForCalendar(Calendar $calendar)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $calendar->getField('id');
@@ -195,14 +194,15 @@ class Calendar_Holiday extends CommonDBRelation
 
         if (!$withtemplate) {
             $nb = 0;
-            if ($item instanceof Calendar) {
-                if ($_SESSION['glpishow_count_on_tabs']) {
-                    $nb = countElementsInTable($this->getTable(), ['calendars_id' => $item->getID()]);
-                }
-                return self::createTabEntry(
-                    _n('Close time', 'Close times', Session::getPluralNumber()),
-                    $nb
-                );
+            switch ($item->getType()) {
+                case 'Calendar':
+                    if ($_SESSION['glpishow_count_on_tabs']) {
+                        $nb = countElementsInTable($this->getTable(), ['calendars_id' => $item->getID()]);
+                    }
+                    return self::createTabEntry(
+                        _n('Close time', 'Close times', Session::getPluralNumber()),
+                        $nb
+                    );
             }
         }
         return '';
@@ -226,7 +226,7 @@ class Calendar_Holiday extends CommonDBRelation
         parent::post_addItem();
     }
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
 
         if (in_array('calendars_id', $this->updates)) {
@@ -255,10 +255,6 @@ class Calendar_Holiday extends CommonDBRelation
      */
     public function getHolidaysForCalendar(int $calendars_id): array
     {
-        /**
-         * @var \DBmysql $DB
-         * @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE
-         */
         global $DB, $GLPI_CACHE;
 
         $cache_key = $this->getCalendarHolidaysCacheKey($calendars_id);
@@ -296,7 +292,6 @@ class Calendar_Holiday extends CommonDBRelation
      */
     public function invalidateHolidayCache(int $holidays_id): bool
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $success = true;
@@ -338,7 +333,6 @@ class Calendar_Holiday extends CommonDBRelation
      */
     private function invalidateCalendarCache(int $calendars_id): bool
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
         return $GLPI_CACHE->delete($this->getCalendarHolidaysCacheKey($calendars_id));
     }

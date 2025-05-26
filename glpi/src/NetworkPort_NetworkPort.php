@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -131,7 +131,6 @@ class NetworkPort_NetworkPort extends CommonDBRelation
     public function connectToHub($ports_id, $hubs_id)
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         $netport = new NetworkPort();
@@ -177,18 +176,17 @@ class NetworkPort_NetworkPort extends CommonDBRelation
     /**
      * Disconnect a port
      *
-     * @param integer $ports_id Port id
+     * @param integer $id Hub id
      *
      * @return boolean
      */
     public function disconnectFrom($ports_id)
     {
-        return $this->deleteByCriteria([
-            'OR'  => [
-                'networkports_id_1'  => $ports_id,
-                'networkports_id_2'  => $ports_id,
-            ]
-        ]);
+        $opposite_id = $this->getOppositeContact($ports_id);
+        if ($opposite_id && $this->getFromDBForNetworkPort($opposite_id) || $this->getFromDBForNetworkPort($ports_id)) {
+            return $this->delete($this->fields);
+        }
+        return true; // Nothing to disconnect
     }
 
     /**
@@ -296,7 +294,7 @@ class NetworkPort_NetworkPort extends CommonDBRelation
     /**
      * Store connection log.
      *
-     * @param string $action Either add or remove
+     * @param string action Either add or remove
      *
      * @return void
      */

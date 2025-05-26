@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40,10 +40,6 @@
  **/
 function update0845to0846()
 {
-    /**
-     * @var \DBmysql $DB
-     * @var \Migration $migration
-     */
     global $DB, $migration;
 
     $updateresult     = true;
@@ -63,7 +59,7 @@ function update0845to0846()
             $migration->displayWarning("$new_table table already exists. " .
                                     "A backup have been done to backup_$new_table.");
             $backup_tables = true;
-            $migration->renameTable("$new_table", "backup_$new_table");
+            $query         = $migration->renameTable("$new_table", "backup_$new_table");
         }
     }
     if ($backup_tables) {
@@ -79,7 +75,7 @@ function update0845to0846()
                      ON  `doc`.`id` = `doc_i`.`documents_id`
                    SET `doc_i`.`entities_id` = `doc`.`entities_id`,
                        `doc_i`.`is_recursive` = `doc`.`is_recursive`";
-    $DB->doQueryOrDie($query_doc_i, "0.84.6 change entities_id in documents_items");
+    $DB->queryOrDie($query_doc_i, "0.84.6 change entities_id in documents_items");
 
     $status  = ['new'           => CommonITILObject::INCOMING,
         'assign'        => CommonITILObject::ASSIGNED,
@@ -100,7 +96,7 @@ function update0845to0846()
                 SET `value` = '$new'
                 WHERE `value` = '$old'
                       AND `num` = 12";
-        $DB->doQueryOrDie($query, "0.84.6 status in glpi_tickettemplatepredefinedfields $old to $new");
+        $DB->queryOrDie($query, "0.84.6 status in glpi_tickettemplatepredefinedfields $old to $new");
     }
     foreach (['glpi_ipaddresses', 'glpi_networknames'] as $table) {
         $migration->dropKey($table, 'item');

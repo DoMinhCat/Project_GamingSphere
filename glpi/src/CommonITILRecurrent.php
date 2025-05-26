@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -383,7 +383,7 @@ abstract class CommonITILRecurrent extends CommonDropdown
         ?int $create_before,
         ?int $calendars_id
     ): string {
-        $now = strtotime(Session::getCurrentTime());
+        $now = time();
         $periodicity_pattern = '/([0-9]+)(MONTH|YEAR)/';
 
         if ($begin_date === null || DateTime::createFromFormat('Y-m-d H:i:s', $begin_date) === false) {
@@ -411,7 +411,7 @@ abstract class CommonITILRecurrent extends CommonDropdown
         $matches = [];
         if (preg_match($periodicity_pattern, $periodicity, $matches)) {
             $periodicity_as_interval = "{$matches[1]} {$matches[2]}";
-            $periodicity_in_seconds  = (int)$matches[1]
+            $periodicity_in_seconds  = $matches[1]
             * MONTH_TIMESTAMP
             * ('YEAR' === $matches[2] ? 12 : 1);
         } else if ($periodicity % DAY_TIMESTAMP == 0) {
@@ -462,28 +462,10 @@ abstract class CommonITILRecurrent extends CommonDropdown
                 }
                // Jump to next working hour if occurence is outside working hours.
                 if (!$calendar->isAWorkingHour($occurence_time)) {
-                    $tmp_search_time = null;
-
-                    // Find the first calendar segment that is after the current date
-                    do {
-                        if ($tmp_search_time === null) {
-                            // On the first iteration, we work with the start of the day
-                            $tmp_search_time = date('Y-m-d', $occurence_time);
-                        } else {
-                            // If we iterate a second time, this mean the date returned was too early
-                            // We will add the periodicity once again to try to get a valid date
-                            $tmp_search_time = date(
-                                'Y-m-d H:i:s',
-                                strtotime("+ $periodicity_as_interval", strtotime($occurence_date))
-                            );
-                        }
-
-                        $occurence_date = $calendar->computeEndDate(
-                            $tmp_search_time,
-                            0 // 0 second delay to get the first working "second"
-                        );
-                    } while ($occurence_date < date('Y-m-d H:i:s', $now));
-
+                    $occurence_date = $calendar->computeEndDate(
+                        date('Y-m-d', $occurence_time),
+                        0 // 0 second delay to get the first working "second"
+                    );
                     $occurence_time = strtotime($occurence_date);
                 }
                 $creation_time  = $occurence_time - $create_before;

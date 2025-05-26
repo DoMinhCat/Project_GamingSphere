@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -217,23 +217,9 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
     }
 
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
-
-        // Handle rich-text images
-        $this->input = $this->addFiles(
-            $this->input,
-            [
-                'force_update'  => true,
-                'name'          => 'content',
-                'content_field' => 'content',
-            ]
-        );
+        global $DB, $CFG_GLPI;
 
         if (in_array('plan_start_date', $this->updates) || in_array('plan_end_date', $this->updates)) {
            //dates has changed, check for planning conflicts on attached team
@@ -310,18 +296,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
 
     public function post_addItem()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
-
-        // Handle rich-text images
-        $this->input = $this->addFiles(
-            $this->input,
-            [
-                'force_update'  => true,
-                'name'          => 'content',
-                'content_field' => 'content',
-            ]
-        );
 
        // ADD Documents
         $document_items = Document_Item::getItemsAssociatedTo($this->getType(), $this->fields['id']);
@@ -399,7 +374,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
 
     public function pre_deleteItem()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!isset($this->input['_disablenotif']) && $CFG_GLPI['use_notifications']) {
@@ -473,7 +447,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
     public function prepareInputForAdd($input)
     {
 
-        if (!isset($input['projects_id']) || (int) $input['projects_id'] === 0) {
+        if (!isset($input['projects_id'])) {
             Session::addMessageAfterRedirect(
                 __('A linked project is mandatory'),
                 false,
@@ -517,7 +491,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      **/
     public static function getAllForProject($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $tasks = [];
@@ -545,7 +518,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      **/
     public static function getAllForProjectTask($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $tasks = [];
@@ -573,7 +545,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      **/
     public static function getAllTicketsForProject($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -608,7 +579,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      *     - target form target
      *     - projects_id ID of the software for add process
      *
-     * @return boolean true if displayed  false if item not found or not right to display
+     * @return true if displayed  false if item not found or not right to display
      **/
     public function showForm($ID, array $options = [])
     {
@@ -627,19 +598,8 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
         }
 
         $duration_dropdown_to_add = [];
-        for ($i = 1; $i <= 10; $i++) {
-            $duration_dropdown_to_add[$i * MINUTE_TIMESTAMP] = sprintf('00h%02d', $i);
-        }
-        for ($i = 10; $i <= 10 * 60; $i += 5) {
-            $h = intdiv($i, 60);
-            $m = $i % 60;
-            $duration_dropdown_to_add[$i * MINUTE_TIMESTAMP] = sprintf('%02dh%02d', $h, $m);
-        }
-        for ($i = 10; $i <= 5 * 24; $i++) {
-            $duration_dropdown_to_add[$i * HOUR_TIMESTAMP] = sprintf('%02dh%02d', $i, 0);
-        }
-        for ($i = 5; $i <= 366; $i++) {
-            $duration_dropdown_to_add[$i * DAY_TIMESTAMP] = sprintf(_n('%s day', '%s days', $i), $i);
+        for ($i = 9; $i <= 100; $i++) {
+            $duration_dropdown_to_add[] = $i * HOUR_TIMESTAMP;
         }
 
         $this->initForm($ID, $options);
@@ -668,7 +628,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      **/
     public static function getTotalEffectiveDuration($projecttasks_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $item = new static();
@@ -714,7 +673,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      **/
     public static function getTotalEffectiveDurationForProject($projects_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -739,7 +697,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      **/
     public static function getTotalPlannedDurationForProject($projects_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -976,7 +933,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      **/
     public static function showFor($item)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $item->getField('id');
@@ -1214,8 +1170,8 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
     {
 
         $nb = 0;
-        switch (get_class($item)) {
-            case Project::class:
+        switch ($item->getType()) {
+            case 'Project':
                 if ($_SESSION['glpishow_count_on_tabs']) {
                     $nb = countElementsInTable(
                         $this->getTable(),
@@ -1384,11 +1340,7 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      **/
     public static function populatePlanning($options = []): array
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $interv = [];
         $ttask  = new self();
@@ -1610,7 +1562,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      **/
     public static function displayPlanningItem(array $val, $who, $type = "", $complete = 0)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $html = "";
@@ -1676,7 +1627,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
      */
     public static function recalculatePercentDone($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $projecttask = new self();
@@ -1738,7 +1688,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
     private static function getItemsAsVCalendars(array $criteria)
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         $query = [
@@ -1772,7 +1721,6 @@ class ProjectTask extends CommonDBChild implements CalDAVCompatibleItemInterface
     public function getAsVCalendar()
     {
 
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!$this->canViewItem()) {

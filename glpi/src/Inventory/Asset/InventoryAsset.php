@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -90,7 +90,7 @@ abstract class InventoryAsset
      * @param CommonDBTM $item Item instance
      * @param array|null $data Data part, optional
      */
-    public function __construct(CommonDBTM $item, ?array $data = null)
+    public function __construct(CommonDBTM $item, array $data = null)
     {
         $this->item = $item;
         if ($data !== null) {
@@ -109,21 +109,6 @@ abstract class InventoryAsset
     {
         $this->data = $data;
         return $this;
-    }
-
-    public function getEntity(): int
-    {
-        return $this->entities_id;
-    }
-
-    public function maybeRecursive()
-    {
-        return true;
-    }
-
-    public function isRecursive(): bool
-    {
-        return (bool) $this->is_recursive;
     }
 
     /**
@@ -336,19 +321,6 @@ abstract class InventoryAsset
     }
 
     /**
-     * Set entity recursive from main asset
-     *
-     * @param integer $is_recursive
-     *
-     * @return $this
-     */
-    public function setEntityRecursive($is_recursive): InventoryAsset
-    {
-        $this->is_recursive = $is_recursive;
-        return $this;
-    }
-
-    /**
      * Set request query
      *
      * @param string $query Requested query
@@ -436,7 +408,7 @@ abstract class InventoryAsset
         }
 
         $citem = new \Computer_Item();
-        $citem->add($input, [], !$this->item->isNewItem()); //log only if mainitem is not new
+        $citem->add($input, [], false);
     }
 
     protected function setNew(): self
@@ -453,12 +425,12 @@ abstract class InventoryAsset
 
     protected function handleInput(\stdClass $value, ?CommonDBTM $item = null): array
     {
-        $input = ['_auto' => 1];
+        $input = [];
         $locks = [];
 
         if ($item !== null) {
             $lockeds = new \Lockedfield();
-            $locks = $lockeds->getLockedNames($item->getType(), $item->isNewItem() ? 0 : $item->fields['id']);
+            $locks = $lockeds->getLockedNames($item->getType(), $item->fields['id'] ?? 0);
         }
 
         foreach ($value as $key => $val) {
@@ -474,12 +446,6 @@ abstract class InventoryAsset
                 $input[$key] = $val;
             }
         }
-
-        if (isset($this->agent->fields['tag'])) {
-            // Pass the tag that can be used in rules criteria
-            $input['_tag'] = $this->agent->fields['tag'];
-        }
-
         return $input;
     }
 

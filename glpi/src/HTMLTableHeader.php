@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -67,9 +67,25 @@ abstract class HTMLTableHeader extends HTMLTableEntity
     /**
      * check to see if it is a super header or not
      *
-     * @return boolean
+     * @return true if this is a super header
      **/
     abstract public function isSuperHeader();
+
+
+    /**
+     * @param string          $name     the name of the header
+     * @param string          $content  see HTMLTableEntity#__construct()
+     * @param HTMLTableHeader $father   HTMLTableHeader object:
+     *                                  the father of the current column (default NULL)
+     **/
+    public function __construct($name, $content, HTMLTableHeader $father = null)
+    {
+
+        parent::__construct($content);
+
+        $this->name           = $name;
+        $this->father         = $father;
+    }
 
 
     /**
@@ -83,24 +99,9 @@ abstract class HTMLTableHeader extends HTMLTableEntity
 
 
     /**
-     * @param string               $name    the name of the header
-     * @param string               $content see HTMLTableEntity#__construct()
-     * @param HTMLTableHeader|null $father  father of the current column (default NULL)
-     */
-    public function __construct($name, $content, ?HTMLTableHeader $father = null)
-    {
-
-        parent::__construct($content);
-
-        $this->name           = $name;
-        $this->father         = $father;
-    }
-
-
-    /**
-     * @param CommonDBTM $item
+     * @param $item      CommonDBTM object (default NULL)
      **/
-    public function checkItemType(?CommonDBTM $item = null)
+    public function checkItemType(CommonDBTM $item = null)
     {
 
         if (($item === null) && (count($this->itemtypes) > 0)) {
@@ -122,7 +123,7 @@ abstract class HTMLTableHeader extends HTMLTableEntity
 
 
     /**
-     * @param integer $colSpan
+     * @param $colSpan
      **/
     public function setColSpan($colSpan)
     {
@@ -149,7 +150,7 @@ abstract class HTMLTableHeader extends HTMLTableEntity
 
 
     /**
-     * @param boolean $with_content do we display the content ?
+     * @param boolean $with_content do we displaye the content ?
      * @param boolean $main_header  main header (from table) or secondary (from group) ? (true by default)
      **/
     public function displayTableHeader($with_content, $main_header = true)

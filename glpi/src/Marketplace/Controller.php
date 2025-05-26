@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -265,7 +265,7 @@ class Controller extends CommonGLPI
      *
      * @return string|false new version number
      */
-    public function checkUpdate(?Plugin $plugin_inst = null)
+    public function checkUpdate(Plugin $plugin_inst = null)
     {
         $api          = self::getAPI();
         $api_plugin   = $api->getPlugin($this->plugin_key);
@@ -323,9 +323,8 @@ class Controller extends CommonGLPI
      *
      * @return integer 0 : nothing to do 1 : done with success
      */
-    public static function cronCheckAllUpdates(?CronTask $task = null): int
+    public static function cronCheckAllUpdates(CronTask $task = null): int
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $cron_status = 0;

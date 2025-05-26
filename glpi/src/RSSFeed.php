@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -209,7 +209,6 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
     public static function addVisibilityJoins($forceall = false)
     {
        //not deprecated because used in Search
-        /** @var \DBmysql $DB */
         global $DB;
 
        //get and clean criteria
@@ -220,11 +219,11 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
         $it = new \DBmysqlIterator(null);
         $it->buildQuery($criteria);
         $sql = $it->getSql();
-        $sql = trim(str_replace(
-            'SELECT * FROM ' . $DB->quoteName(self::getTable()),
+        $sql = str_replace(
+            'SELECT * FROM ' . $DB->quoteName(self::getTable()) . ' ',
             '',
             $sql
-        ));
+        );
         return $sql;
     }
 
@@ -545,8 +544,8 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
 
         if (self::canView()) {
             $nb = 0;
-            switch (get_class($item)) {
-                case RSSFeed::class:
+            switch ($item->getType()) {
+                case 'RSSFeed':
                     $showtab = [1 => __('Content')];
                     if (Session::haveRight('rssfeed_public', UPDATE)) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
@@ -588,8 +587,8 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
-        switch (get_class($item)) {
-            case RSSFeed::class:
+        switch ($item->getType()) {
+            case 'RSSFeed':
                 switch ($tabnum) {
                     case 1:
                         $item->showFeedContent();
@@ -608,13 +607,6 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
         if (!$this->checkUrlInput($input['url'])) {
             return false;
         }
-
-        $current_user_id = Session::getLoginUserID();
-        if ($current_user_id === false) {
-            // RSSFeeds are not supposed to be created in a sessionless context.
-            return false;
-        }
-        $input['users_id'] = $current_user_id;
 
         if ($feed = self::getRSSFeed($input['url'])) {
             $input['have_error'] = 0;
@@ -650,10 +642,6 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
                 $input['comment'] = addslashes($feed->get_description());
             }
         }
-
-        // Owner cannot be changed
-        unset($input['users_id']);
-
         return $input;
     }
 
@@ -673,6 +661,20 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
         }
 
         return true;
+    }
+
+
+    public function pre_updateInDB()
+    {
+
+       // Set new user if initial user have been deleted
+        if (
+            ($this->fields['users_id'] == 0)
+            && ($uid = Session::getLoginUserID())
+        ) {
+            $this->fields['users_id'] = $uid;
+            $this->updates[]          = "users_id";
+        }
     }
 
 
@@ -727,13 +729,14 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
 
         echo "<tr class='tab_bg_1'><td>" . __('URL') . "</td>";
         echo "<td colspan='3'>";
-        echo "<input type='text' name='url' size='100' value='" . htmlspecialchars($this->fields["url"], ENT_QUOTES) . "' class='form-control'>";
+        echo "<input type='text' name='url' size='100' value='" . $this->fields["url"] . "' class='form-control'>";
         echo "</td></tr>";
 
         echo "<tr class='tab_bg_2'>";
         echo "<td>" . __('By') . "</td>";
         echo "<td>";
         echo getUserName($this->fields["users_id"]);
+        echo "<input type='hidden' name='users_id' value='" . $this->fields['users_id'] . "'>\n";
         echo "</td>";
         echo "<td rowspan='$rowspan'>" . __('Comments') . "</td>";
         echo "<td rowspan='$rowspan' class='middle'>";
@@ -891,7 +894,7 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
             if ($newfeed && !$newfeed->error()) {
                 $link = URL::sanitizeURL($newfeed->get_permalink());
                 if (!empty($link)) {
-                     echo "<a href='" . htmlspecialchars($newurl, ENT_QUOTES) . "'>" . $newfeed->get_title() . "</a>&nbsp;";
+                     echo "<a href='$newurl'>" . $newfeed->get_title() . "</a>&nbsp;";
                      Html::showSimpleForm(
                          $this->getFormURL(),
                          'update',
@@ -917,7 +920,6 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
      **/
     public static function getRSSFeed($url, $cache_duration = DAY_TIMESTAMP)
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         if (Sanitizer::isHtmlEncoded($url)) {
@@ -972,18 +974,14 @@ class RSSFeed extends CommonDBVisible implements ExtraVisibilityCriteria
     /**
      * Show list for central view
      *
-     * @param boolean $personal display rssfeeds created by me?
-     * @param boolean $display  if false, return html
+     * @param $personal boolean   display rssfeeds created by me ?
+     * @param $personal $display  if false, return html
      *
-     * @return false|void|string
+     * @return void
      **/
     public static function showListForCentral(bool $personal = true, bool $display = true)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $users_id             = Session::getLoginUserID();
 

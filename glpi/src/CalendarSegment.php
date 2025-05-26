@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -155,7 +155,6 @@ class CalendarSegment extends CommonDBChild
      **/
     public static function getActiveTimeBetween($calendars_id, $day, $begin_time, $end_time)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $sum = 0;
@@ -179,7 +178,7 @@ class CalendarSegment extends CommonDBChild
 
         foreach ($iterator as $data) {
             list($hour, $minute ,$second) = explode(':', $data['TDIFF']);
-            $sum += (int)$hour * HOUR_TIMESTAMP + (int)$minute * MINUTE_TIMESTAMP + (int)$second;
+            $sum += $hour * HOUR_TIMESTAMP + $minute * MINUTE_TIMESTAMP + $second;
         }
         return $sum;
     }
@@ -192,96 +191,41 @@ class CalendarSegment extends CommonDBChild
      * @param integer $day             day number
      * @param string  $begin_time      begin time
      * @param integer $delay           timestamp delay to add
-     * @param bool    $negative_delay  are we adding or removing time ?
      *
      * @return string|false Ending timestamp (HH:mm:dd) of delay or false if not applicable.
      **/
-    public static function addDelayInDay(
-        $calendars_id,
-        $day,
-        $begin_time,
-        $delay,
-        bool $negative_delay = false
-    ) {
-        // TODO: unit test this method with complex calendars using multiple
-        // disconnected segments per day
-        /** @var \DBmysql $DB */
+    public static function addDelayInDay($calendars_id, $day, $begin_time, $delay)
+    {
         global $DB;
 
-        // Common SELECT for both modes
-        $SELECT = [
-            new \QueryExpression(
-                sprintf(
-                    "TIMEDIFF(
-                        %s,
-                        GREATEST(%s, %s)
-                    ) AS %s",
-                    $DB->quoteName('end'),
-                    $DB->quoteName('begin'),
-                    $DB->quoteValue($begin_time),
-                    $DB->quoteName('TDIFF')
-                ),
-            )
-        ];
-
-        // Common WHERE for both modes
-        $WHERE = [
-            'calendars_id' => $calendars_id,
-            'day'          => $day,
-        ];
-
-        // Add specific SELECT and WHERE clauses
-        if (!$negative_delay) {
-            $SELECT[] = new \QueryExpression(
-                sprintf("GREATEST(%s, %s) AS %s", ...[
-                    $DB->quoteName('begin'),
-                    $DB->quoteValue($begin_time),
-                    $DB->quoteName('BEGIN'),
-                ])
-            );
-            $WHERE['end'] = ['>', $begin_time];
-        } else {
-            // When counting back time, "00:00:00" can't be used for some comparison
-            // as it is supposed to represent the end of the day
-            // (e.g. finding calendar segments that start before 00:00:00 would always
-            // return no results but using 23:59:59 get us the correct behavior).
-            $adjusted_time_for_comparaison_in_negative_delay_mode = $begin_time == "00:00:00" ? "23:59:59" : $begin_time;
-
-            $SELECT[] = new \QueryExpression(
-                sprintf(
-                    "LEAST(%s, %s) AS %s",
-                    $DB->quoteName('end'),
-                    $DB->quoteValue($adjusted_time_for_comparaison_in_negative_delay_mode),
-                    $DB->quoteName('END'),
-                )
-            );
-            $WHERE['begin'] = ['<', $adjusted_time_for_comparaison_in_negative_delay_mode];
-        }
-
+       // Do not check hour if day before the end day of after the begin day
         $iterator = $DB->request([
-            'SELECT' => $SELECT,
-            'FROM'   => self::getTable(),
-            'WHERE'  => $WHERE,
-            'ORDER'  => !$negative_delay ? 'begin' : 'end DESC'
+            'SELECT' => [
+                new \QueryExpression(
+                    "GREATEST(" . $DB->quoteName('begin') . ", " . $DB->quoteValue($begin_time)  . ") AS " . $DB->quoteName('BEGIN')
+                ),
+                new \QueryExpression(
+                    "TIMEDIFF(" . $DB->quoteName('end') . ", GREATEST(" . $DB->quoteName('begin') . ", " . $DB->quoteValue($begin_time) . ")) AS " . $DB->quoteName('TDIFF')
+                )
+            ],
+            'FROM'   => 'glpi_calendarsegments',
+            'WHERE'  => [
+                'calendars_id' => $calendars_id,
+                'day'          => $day,
+                'end'          => ['>', $begin_time]
+            ],
+            'ORDER'  => 'begin'
         ]);
 
         foreach ($iterator as $data) {
             list($hour, $minute, $second) = explode(':', $data['TDIFF']);
-            $tstamp = (int)$hour * HOUR_TIMESTAMP + (int)$minute * MINUTE_TIMESTAMP + (int)$second;
+            $tstamp = $hour * HOUR_TIMESTAMP + $minute * MINUTE_TIMESTAMP + $second;
 
-            // Delay is completed
+           // Delay is completed
             if ($delay <= $tstamp) {
-                if (!$negative_delay) {
-                    // Add time
-                    list($begin_hour, $begin_minute, $begin_second) = explode(':', $data['BEGIN']);
-                    $beginstamp = (int)$begin_hour * HOUR_TIMESTAMP + (int)$begin_minute * MINUTE_TIMESTAMP + (int)$begin_second;
-                    $endstamp = $beginstamp + $delay;
-                } else {
-                    // Substract time
-                    list($begin_hour, $begin_minute, $begin_second) = explode(':', $data['END']);
-                    $beginstamp = (int)$begin_hour * HOUR_TIMESTAMP + (int)$begin_minute * MINUTE_TIMESTAMP + (int)$begin_second;
-                    $endstamp = $beginstamp - $delay;
-                }
+                list($begin_hour, $begin_minute, $begin_second) = explode(':', $data['BEGIN']);
+                $beginstamp = $begin_hour * HOUR_TIMESTAMP + $begin_minute * MINUTE_TIMESTAMP + $begin_second;
+                $endstamp   = $beginstamp + $delay;
                 $units      = Toolbox::getTimestampTimeUnits($endstamp);
                 return str_pad($units['hour'], 2, '0', STR_PAD_LEFT) . ':' .
                      str_pad($units['minute'], 2, '0', STR_PAD_LEFT) . ':' .
@@ -304,7 +248,6 @@ class CalendarSegment extends CommonDBChild
      **/
     public static function getFirstWorkingHour($calendars_id, $day)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Do not check hour if day before the end day of after the begin day
@@ -330,7 +273,6 @@ class CalendarSegment extends CommonDBChild
      **/
     public static function getLastWorkingHour($calendars_id, $day)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Do not check hour if day before the end day of after the begin day
@@ -357,7 +299,6 @@ class CalendarSegment extends CommonDBChild
      **/
     public static function isAWorkingHour($calendars_id, $day, $hour)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Do not check hour if day before the end day of after the begin day
@@ -382,7 +323,6 @@ class CalendarSegment extends CommonDBChild
      **/
     public static function showForCalendar(Calendar $calendar)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $calendar->getField('id');
@@ -485,14 +425,15 @@ class CalendarSegment extends CommonDBChild
 
         if (!$withtemplate) {
             $nb = 0;
-            if ($item instanceof Calendar) {
-                if ($_SESSION['glpishow_count_on_tabs']) {
-                    $nb = countElementsInTable(
-                        $this->getTable(),
-                        ['calendars_id' => $item->getID()]
-                    );
-                }
-                return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
+            switch ($item->getType()) {
+                case 'Calendar':
+                    if ($_SESSION['glpishow_count_on_tabs']) {
+                        $nb = countElementsInTable(
+                            $this->getTable(),
+                            ['calendars_id' => $item->getID()]
+                        );
+                    }
+                    return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
             }
         }
         return '';

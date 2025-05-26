@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -92,11 +92,7 @@ class NetworkPort_Vlan extends CommonDBRelation
      **/
     public static function showForNetworkPort(NetworkPort $port)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $ID = $port->getID();
         if (!$port->can($ID, READ)) {
@@ -216,11 +212,7 @@ class NetworkPort_Vlan extends CommonDBRelation
 
     public static function showForVlan(Vlan $vlan)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $ID = $vlan->getID();
         if (!$vlan->can($ID, READ)) {
@@ -316,7 +308,6 @@ class NetworkPort_Vlan extends CommonDBRelation
      **/
     public static function getVlansForNetworkPort($portID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $vlans = [];
@@ -339,8 +330,8 @@ class NetworkPort_Vlan extends CommonDBRelation
 
         if (!$withtemplate) {
             $nb = 0;
-            switch (get_class($item)) {
-                case NetworkPort::class:
+            switch ($item->getType()) {
+                case 'NetworkPort':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(
                             $this->getTable(),
@@ -348,7 +339,7 @@ class NetworkPort_Vlan extends CommonDBRelation
                         );
                     }
                     return self::createTabEntry(Vlan::getTypeName(), $nb);
-                case Vlan::class:
+                case 'Vlan':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(
                             $this->getTable(),
@@ -365,10 +356,10 @@ class NetworkPort_Vlan extends CommonDBRelation
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
-        switch (get_class($item)) {
-            case NetworkPort::class:
+        switch ($item->getType()) {
+            case 'NetworkPort':
                 return self::showForNetworkPort($item);
-            case Vlan::class:
+            case 'Vlan':
                 return self::showForVlan($item);
         }
         return true;

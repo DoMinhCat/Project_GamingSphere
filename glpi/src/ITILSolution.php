@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -64,10 +64,7 @@ class ITILSolution extends CommonDBChild
         if ($item->isNewItem()) {
             return '';
         }
-        if (
-            ($item instanceof CommonITILObject)
-            && $item->maySolve()
-        ) {
+        if ($item->maySolve()) {
             $nb    = 0;
             $title = self::getTypeName(Session::getPluralNumber());
             if ($_SESSION['glpishow_count_on_tabs']) {
@@ -116,16 +113,8 @@ class ITILSolution extends CommonDBChild
 
     public function post_getFromDB()
     {
-        // Bandaid to avoid loading parent item if not needed
-        // TODO: replace by proper lazy loading in GLPI 10.1
-        if (
-            $this->item == null // No item loaded
-            || $this->item->getType() !== $this->fields['itemtype'] // Another item is loaded
-            || $this->item->getID() !== $this->fields['items_id']   // Another item is loaded
-        ) {
-            $this->item = new $this->fields['itemtype']();
-            $this->item->getFromDB($this->fields['items_id']);
-        }
+        $this->item = new $this->fields['itemtype']();
+        $this->item->getFromDB($this->fields['items_id']);
     }
 
     /**
@@ -278,7 +267,7 @@ class ITILSolution extends CommonDBChild
             );
 
            // Invalid template
-            if ($html === null) {
+            if (!$html) {
                 return false;
             }
 
@@ -354,7 +343,7 @@ class ITILSolution extends CommonDBChild
         return $input;
     }
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
         // Handle rich-text images and uploaded documents
         $this->input = $this->addFiles($this->input, ['force_update' => true]);
@@ -426,27 +415,5 @@ class ITILSolution extends CommonDBChild
     public static function getIcon()
     {
         return 'ti ti-check';
-    }
-
-    /**
-     * Allow to set the parent item
-     * Some subclasses will load their parent item in their `post_getFromDB` function
-     * If the parent is already loaded, it might be useful to set it with this method
-     * before loading the item, thus avoiding one useless DB query (or many more queries
-     * when looping on children items)
-     *
-     * TODO 10.1 move method and `item` property into parent class
-     *
-     * @param CommonITILObject $parent Parent item
-     *
-     * @return void
-     */
-    final public function setParentItem(CommonITILObject $parent): void
-    {
-        if (static::$itemtype !== 'itemtype' && !is_a($parent, static::$itemtype)) {
-            throw new LogicException("Invalid parent type");
-        }
-
-        $this->item = $parent;
     }
 }

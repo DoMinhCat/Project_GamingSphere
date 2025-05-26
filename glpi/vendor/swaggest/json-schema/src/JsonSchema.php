@@ -648,7 +648,7 @@ class JsonSchema extends ClassStructure
     /** @codeCoverageIgnoreEnd */
 
     /**
-     * @param array|string $type
+     * @param array $type
      * @return $this
      * @codeCoverageIgnoreStart
      */

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -61,7 +61,7 @@ class NetworkPortConnectionLog extends CommonDBChild
     /**
      * Get the tab name used for item
      *
-     * @param CommonGLPI $item the item object
+     * @param object $item the item object
      * @param integer $withtemplate 1 if is a template form
      * @return string|array name of the tab
      */
@@ -90,14 +90,14 @@ class NetworkPortConnectionLog extends CommonDBChild
     /**
      * Display the content of the tab
      *
-     * @param CommonGLPI $item
+     * @param object $item
      * @param integer $tabnum number of the tab to display
      * @param integer $withtemplate 1 if is a template form
      * @return boolean
      */
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
-        if (get_class($item) == NetworkPort::class && $item->getID() > 0) {
+        if ($item->getType() == NetworkPort::getType() && $item->getID() > 0) {
             $connectionlog = new self();
             $connectionlog->showForItem($item);
             return true;
@@ -107,7 +107,6 @@ class NetworkPortConnectionLog extends CommonDBChild
 
     public function showForItem(NetworkPort $netport, $user_filters = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -161,7 +160,7 @@ class NetworkPortConnectionLog extends CommonDBChild
                 echo sprintf(
                     '%1$s on %2$s',
                     $cport_link,
-                    $citem->getLink()
+                    $citem->getLink(1)
                 );
             } else if ($row['connected'] == 1) {
                 echo __('No longer exists in database');

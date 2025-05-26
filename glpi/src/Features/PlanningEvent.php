@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -43,7 +43,6 @@ use Dropdown;
 use Entity;
 use ExtraVisibilityCriteria;
 use Glpi\RichText\RichText;
-use Glpi\Toolbox\ArrayNormalizer;
 use Glpi\Toolbox\Sanitizer;
 use Group_User;
 use Html;
@@ -114,10 +113,7 @@ trait PlanningEvent
 
     public function prepareInputForAdd($input)
     {
-        /** @var \DBmysql $DB */
         global $DB;
-
-        $input = $this->prepareGuestsInput($input);
 
         if (
             $DB->fieldExists(static::getTable(), 'users_id')
@@ -125,6 +121,11 @@ trait PlanningEvent
               || empty($input['users_id']))
         ) {
             $input['users_id'] = Session::getLoginUserID();
+        }
+
+       // manage guests
+        if (isset($input['users_id_guests']) && is_array($input['users_id_guests'])) {
+            $input['users_id_guests'] = exportArrayToDB($input['users_id_guests']);
         }
 
         Toolbox::manageBeginAndEndPlanDates($input['plan']);
@@ -177,11 +178,12 @@ trait PlanningEvent
 
     public function prepareInputForUpdate($input)
     {
-        $input = $this->prepareGuestsInput($input);
+       // manage guests
+        if (isset($input['users_id_guests']) && is_array($input['users_id_guests'])) {
+            $input['users_id_guests'] = exportArrayToDB($input['users_id_guests']);
 
-        if (isset($this->fields['users_id_guests']) && is_array($this->fields['users_id_guests'])) {
-            // avoid warning on update method (string comparison with old value)
-            $this->fields['users_id_guests'] = exportArrayToDB($this->fields['users_id_guests']);
+           // avoid warning on update method (string comparison with old value)
+            $this->fields['users_id_guests'] = exportArrayToDB($input['users_id_guests']);
         }
 
         Toolbox::manageBeginAndEndPlanDates($input['plan']);
@@ -231,17 +233,6 @@ trait PlanningEvent
         return $input;
     }
 
-    private function prepareGuestsInput(array $input): array
-    {
-        if (isset($input['users_id_guests']) && is_array($input['users_id_guests'])) {
-            $input['users_id_guests'] = exportArrayToDB(
-                ArrayNormalizer::normalizeValues($input['users_id_guests'], 'intval')
-            );
-        }
-
-        return $input;
-    }
-
     public function encodeRrule(array $rrule = [])
     {
 
@@ -266,7 +257,7 @@ trait PlanningEvent
     }
 
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
         if (
             !isset($this->input['_no_check_plan'])
@@ -390,11 +381,7 @@ trait PlanningEvent
      **/
     public static function populatePlanning($options = []): array
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $default_options = [
             'genical'             => false,
@@ -665,11 +652,10 @@ trait PlanningEvent
      *                    default '')
      * @param $complete   complete display (more details) (default 0)
      *
-     * @return void (display function)
+     * @return Nothing (display function)
      **/
     public static function displayPlanningItem(array $val, $who, $type = "", $complete = 0)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $html = "";

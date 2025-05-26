@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -31,15 +31,16 @@
  # ---------------------------------------------------------------------
  #}
 
-<div class="d-flex timeline-header">
+{% set anchor = entry['type'] ~ '_' ~ entry_i['id'] %}
+
+<div class="d-flex timeline-header" id="{{ anchor }}">
    <div class="d-flex creator">
       {{ include('components/itilobject/timeline/timeline_item_header_badges.html.twig', {
          'users_id': users_id,
-         'user_object': user_object,
          'date_creation': date_creation,
          'date_mod': date_mod,
          'users_id_editor': entry_i['users_id_editor'],
-         'anchor': entry['type'] ~ '_' ~ entry_i['id'],
+         'anchor': anchor,
          'anonym_user': anonym_user,
       }, with_context = false) }}
    </div>

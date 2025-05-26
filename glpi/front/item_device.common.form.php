@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -44,10 +44,6 @@
 
 use Glpi\Event;
 
-/** @var array $CFG_GLPI */
-global $CFG_GLPI;
-
-/** @var Item_Devices|null $item_device */
 if (!($item_device instanceof Item_Devices)) {
     Html::displayErrorAndDie('');
 }
@@ -113,6 +109,10 @@ if (isset($_POST["add"])) {
         $menus = ["assets", strtolower($item_device->getType())];
     } else {
         $menus = ["config", "commondevice", $item_device->getType()];
+    }
+
+    if (!isset($options)) {
+        $options = [];
     }
 
     $item_device::displayFullPageForItem($_GET["id"], $menus, $options ?? []);

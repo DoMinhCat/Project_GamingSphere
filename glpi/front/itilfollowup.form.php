@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35,9 +35,6 @@
 
 use Glpi\Event;
 
-/** @var \DBmysql $DB */
-global $DB;
-
 include('../inc/includes.php');
 
 Session::checkLoginUser();
@@ -50,7 +47,7 @@ $handled = false;
 if (!isset($_POST['itemtype']) || !class_exists($_POST['itemtype'])) {
     Html::displayErrorAndDie('Lost');
 }
-$track = getItemForItemtype($_POST['itemtype']);
+$track = new $_POST['itemtype']();
 
 
 if (isset($_POST["add"])) {

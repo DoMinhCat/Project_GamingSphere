@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -78,7 +78,7 @@ trait CommonDeprecatedTrait
      * For each searchoption, update the UID ref to match the deprecated type
      *
      * @param array $soptions
-     * @return self Return self to allow method chaining
+     * @return CommonDeprecatedTrait Return self to allow method chaining
      */
     public function updateSearchOptionsUids(array &$soptions)
     {
@@ -102,7 +102,7 @@ trait CommonDeprecatedTrait
      * For each searchoption, update the table ref to match the deprecated type
      *
      * @param array $soptions
-     * @return self Return self to allow method chaining
+     * @return CommonDeprecatedTrait Return self to allow method chaining
      */
     public function updateSearchOptionsTables(array &$soptions)
     {
@@ -128,7 +128,7 @@ trait CommonDeprecatedTrait
      * @param array|object $fields
      * @param string $name
      * @param string $value
-     * @return self Return self to allow method chaining
+     * @return CommonDeprecatedTrait Return self to allow method chaining
      */
     public function addField(&$fields, string $name, string $value)
     {
@@ -151,7 +151,7 @@ trait CommonDeprecatedTrait
      * @param array|object $fields
      * @param string $old
      * @param string $new
-     * @return self Return self to allow method chaining
+     * @return CommonDeprecatedTrait Return self to allow method chaining
      */
     public function renameField(&$fields, string $old, string $new)
     {
@@ -175,7 +175,7 @@ trait CommonDeprecatedTrait
      *
      * @param array|object $fields
      * @param string $name
-     * @return self Return self to allow method chaining
+     * @return CommonDeprecatedTrait Return self to allow method chaining
      */
     public function deleteField(&$fields, string $name)
     {
@@ -195,10 +195,10 @@ trait CommonDeprecatedTrait
     /**
      * Add a searchoption
      *
-     * @param array $soptions
+     * @param array $fields
      * @param string $key
      * @param array $values
-     * @return self Return self to allow method chaining
+     * @return CommonDeprecatedTrait Return self to allow method chaining
      */
     public function addSearchOption(
         array &$soptions,
@@ -213,10 +213,10 @@ trait CommonDeprecatedTrait
     /**
      * Edit an existing searchoption
      *
-     * @param array $soptions
+     * @param array $fields
      * @param string $key
      * @param array $values
-     * @return self Return self to allow method chaining
+     * @return CommonDeprecatedTrait Return self to allow method chaining
      */
     public function alterSearchOption(
         array &$soptions,
@@ -233,9 +233,10 @@ trait CommonDeprecatedTrait
     /**
      * Delete an existing searchoption
      *
-     * @param array $soptions
+     * @param array $fields
      * @param string $key
-     * @return self Return self to allow method chaining
+     * @param array $values
+     * @return CommonDeprecatedTrait Return self to allow method chaining
      */
     public function deleteSearchOption(array &$soptions, string $key)
     {

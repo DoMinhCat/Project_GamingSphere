@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -219,7 +219,6 @@ class Reminder extends CommonDBVisible implements
     public static function addVisibilityJoins($forceall = false)
     {
        //not deprecated because used in Search
-        /** @var \DBmysql $DB */
         global $DB;
 
        //get and clean criteria
@@ -245,9 +244,9 @@ class Reminder extends CommonDBVisible implements
      **/
     public static function addVisibilityRestrict()
     {
-        //not deprecated because used in Search
+       //not deprecated because used in Search
 
-        //get and clean criteria
+       //get and clean criteria
         $criteria = self::getVisibilityCriteria();
         unset($criteria['LEFT JOIN']);
         $criteria['FROM'] = self::getTable();
@@ -280,7 +279,7 @@ class Reminder extends CommonDBVisible implements
         $join = [];
         $where = [];
 
-        // Users
+       // Users
         $join['glpi_reminders_users'] = [
             'FKEY' => [
                 'glpi_reminders_users'  => 'reminders_id',
@@ -299,7 +298,7 @@ class Reminder extends CommonDBVisible implements
             ];
         }
 
-        // Groups
+       // Groups
         if (
             $forceall
             || (isset($_SESSION["glpigroups"]) && count($_SESSION["glpigroups"]))
@@ -312,12 +311,7 @@ class Reminder extends CommonDBVisible implements
             ];
 
             $or = ['glpi_groups_reminders.no_entity_restriction' => 1];
-            $restrict = getEntitiesRestrictCriteria(
-                'glpi_groups_reminders',
-                '',
-                $_SESSION['glpiactiveentities'],
-                true
-            );
+            $restrict = getEntitiesRestrictCriteria('glpi_groups_reminders', '', '', true);
             if (count($restrict)) {
                 $or = $or + $restrict;
             }
@@ -329,7 +323,7 @@ class Reminder extends CommonDBVisible implements
             ];
         }
 
-        // Profiles
+       // Profiles
         if (
             $forceall
             || (isset($_SESSION["glpiactiveprofile"])
@@ -343,12 +337,7 @@ class Reminder extends CommonDBVisible implements
             ];
 
             $or = ['glpi_profiles_reminders.no_entity_restriction' => 1];
-            $restrict = getEntitiesRestrictCriteria(
-                'glpi_profiles_reminders',
-                '',
-                $_SESSION['glpiactiveentities'],
-                true
-            );
+            $restrict = getEntitiesRestrictCriteria('glpi_profiles_reminders', '', '', true);
             if (count($restrict)) {
                 $or = $or + $restrict;
             }
@@ -358,7 +347,7 @@ class Reminder extends CommonDBVisible implements
             ];
         }
 
-        // Entities
+       // Entities
         if (
             $forceall
             || (isset($_SESSION["glpiactiveentities"]) && count($_SESSION["glpiactiveentities"]))
@@ -554,8 +543,8 @@ class Reminder extends CommonDBVisible implements
 
         if (self::canView()) {
             $nb = 0;
-            switch (get_class($item)) {
-                case Reminder::class:
+            switch ($item->getType()) {
+                case 'Reminder':
                     if (Session::haveRight('reminder_public', CREATE)) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
                             $nb = $item->countVisibilities();
@@ -598,8 +587,8 @@ class Reminder extends CommonDBVisible implements
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
-        switch (get_class($item)) {
-            case Reminder::class:
+        switch ($item->getType()) {
+            case 'Reminder':
                 $item->showVisibility();
                 return true;
         }
@@ -625,7 +614,6 @@ class Reminder extends CommonDBVisible implements
      **/
     public function showForm($ID, array $options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $this->initForm($ID, $options);
@@ -831,7 +819,6 @@ class Reminder extends CommonDBVisible implements
      **/
     public static function displayPlanningItem(array $val, $who, $type = "", $complete = 0)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $html = "";
@@ -891,18 +878,14 @@ class Reminder extends CommonDBVisible implements
     /**
      * Show list for central view
      *
-     * @param boolean $personal display reminders created by me?
-     * @param boolean $display if false return html
+     * @param $personal boolean  : display reminders created by me ?
+     * @param $personal $display : if false return html
      *
-     * @return false|void|string
+     * @return void
      **/
     public static function showListForCentral(bool $personal = true, bool $display = true)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $users_id = Session::getLoginUserID();
         $today    = date('Y-m-d');
@@ -1119,7 +1102,6 @@ class Reminder extends CommonDBVisible implements
     private static function getItemsAsVCalendars(array $query)
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         $reminder_iterator = $DB->request($query);

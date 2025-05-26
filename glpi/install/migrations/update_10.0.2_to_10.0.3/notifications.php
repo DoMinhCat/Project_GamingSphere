@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -36,8 +36,8 @@
 use Glpi\Toolbox\Sanitizer;
 
 /**
- * @var \DBmysql $DB
- * @var \Migration $migration
+ * @var DB $DB
+ * @var Migration $migration
  */
 
 /* BEGIN: Fixes default notification targets */
@@ -97,10 +97,6 @@ $template_iterator = $DB->request([
     'FROM'   => 'glpi_notificationtemplatetranslations',
 ]);
 foreach ($template_iterator as $template_data) {
-    if ($template_data['content_html'] === null) {
-        continue;
-    }
-
     $content_html = Sanitizer::decodeHtmlSpecialChars($template_data['content_html']);
 
     if (str_contains($content_html, '&lt;p&gt;') && str_contains($content_html, '&lt;/p&gt;')) {

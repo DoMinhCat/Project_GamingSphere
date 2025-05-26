@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -52,17 +52,18 @@ class Pdu_Plug extends CommonDBRelation
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
         $nb = 0;
-        $field = get_class($item) == PDU::class ? 'pdus_id' : 'plugs_id';
-        if (
-            $_SESSION['glpishow_count_on_tabs']
-            && ($item instanceof CommonDBTM)
-        ) {
-            $nb = countElementsInTable(
-                self::getTable(),
-                [$field  => $item->getID()]
-            );
+        switch ($item->getType()) {
+            default:
+                $field = $item->getType() == PDU::getType() ? 'pdus_id' : 'plugs_id';
+                if ($_SESSION['glpishow_count_on_tabs']) {
+                    $nb = countElementsInTable(
+                        self::getTable(),
+                        [$field  => $item->getID()]
+                    );
+                }
+                return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
         }
-        return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
+        return '';
     }
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
@@ -80,7 +81,6 @@ class Pdu_Plug extends CommonDBRelation
      */
     public static function showItems(PDU $pdu)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $pdu->getID();

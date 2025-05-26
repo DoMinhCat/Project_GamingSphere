@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -70,7 +70,6 @@ class Impact extends CommonGLPI
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Class of the current item
@@ -239,17 +238,13 @@ class Impact extends CommonGLPI
      * Display the impact analysis as a list
      *
      * @param CommonDBTM $item   starting point of the graph
-     * @param array     $graph  array containing the graph nodes and egdes
-     * @param bool      $scripts
-     *
-     * @return void
+     * @param string     $graph  array containing the graph nodes and egdes
      */
     public static function displayListView(
         CommonDBTM $item,
         array $graph,
         bool $scripts = false
     ) {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $impact_item = ImpactItem::findForItem($item);
@@ -299,7 +294,6 @@ class Impact extends CommonGLPI
             echo '</thead>';
 
             foreach ($data as $itemtype => $items) {
-                /** @var class-string $itemtype */
                 echo '<tbody>';
 
                // Subheader
@@ -817,7 +811,6 @@ class Impact extends CommonGLPI
      */
     public static function printAssetSelectionForm(array $items)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Dropdown values
@@ -883,7 +876,6 @@ class Impact extends CommonGLPI
         string $filter,
         int $page = 0
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Check if this type is enabled in config
@@ -983,7 +975,6 @@ class Impact extends CommonGLPI
      */
     public static function printImpactNetworkContainer()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $action = $CFG_GLPI['root_doc'] . '/ajax/impact.php';
@@ -1014,13 +1005,10 @@ class Impact extends CommonGLPI
         $itemtypes = $CFG_GLPI["impact_asset_types"];
        // Sort by translated itemtypes
         uksort($itemtypes, function ($a, $b) {
-            /** @var class-string $a
-             *  @var class-string $b */
             return strcasecmp($a::getTypeName(), $b::getTypeName());
         });
         foreach ($itemtypes as $itemtype => $icon) {
-            /** @var class-string $itemtype */
-            // Do not display this itemtype if the user doesn't have READ rights
+           // Do not display this itemtype if the user doesn't have READ rights
             if (!Session::haveRight($itemtype::$rightname, READ)) {
                 continue;
             }
@@ -1194,7 +1182,6 @@ class Impact extends CommonGLPI
         int $direction,
         array $explored_nodes = []
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Source and target are determined by the direction in which we are
@@ -1295,7 +1282,6 @@ class Impact extends CommonGLPI
      */
     private static function addNode(array &$nodes, CommonDBTM $item)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Check if the node already exist
@@ -1673,7 +1659,6 @@ class Impact extends CommonGLPI
      */
     public static function clean(\CommonDBTM $item)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Skip if not a valid impact type
@@ -1759,15 +1744,17 @@ class Impact extends CommonGLPI
      */
     public static function getEnabledItemtypes(): array
     {
-        /** @var array $CFG_GLPI */
-        global $CFG_GLPI;
+       // Get configured values
+        $conf = Config::getConfigurationValues('core');
 
-        // Get configured values
-        $enabled = $CFG_GLPI[Impact::CONF_ENABLED] ?? [];
+        if (!isset($conf[self::CONF_ENABLED])) {
+            return [];
+        }
 
-        // Remove any forbidden values
+        $enabled = importArrayFromDB($conf[self::CONF_ENABLED]);
+
+       // Remove any forbidden values
         return array_filter($enabled, function ($itemtype) {
-            /** @var array $CFG_GLPI */
             global $CFG_GLPI;
 
             return isset($CFG_GLPI['impact_asset_types'][$itemtype]);
@@ -1781,7 +1768,6 @@ class Impact extends CommonGLPI
      */
     public static function getDefaultItemtypes()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $values = $CFG_GLPI["default_impact_asset_types"];
@@ -1793,7 +1779,6 @@ class Impact extends CommonGLPI
      */
     public static function showConfigForm()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Form head

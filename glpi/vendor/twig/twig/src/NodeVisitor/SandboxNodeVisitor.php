@@ -15,14 +15,12 @@ use Twig\Environment;
 use Twig\Node\CheckSecurityCallNode;
 use Twig\Node\CheckSecurityNode;
 use Twig\Node\CheckToStringNode;
-use Twig\Node\Expression\ArrayExpression;
 use Twig\Node\Expression\Binary\ConcatBinary;
 use Twig\Node\Expression\Binary\RangeBinary;
 use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Expression\FunctionExpression;
 use Twig\Node\Expression\GetAttrExpression;
 use Twig\Node\Expression\NameExpression;
-use Twig\Node\Expression\Unary\SpreadUnary;
 use Twig\Node\ModuleNode;
 use Twig\Node\Node;
 use Twig\Node\PrintNode;
@@ -36,11 +34,8 @@ use Twig\Node\SetNode;
 final class SandboxNodeVisitor implements NodeVisitorInterface
 {
     private $inAModule = false;
-    /** @var array<string, int> */
     private $tags;
-    /** @var array<string, int> */
     private $filters;
-    /** @var array<string, int> */
     private $functions;
     private $needsToStringWrap = false;
 
@@ -56,22 +51,22 @@ final class SandboxNodeVisitor implements NodeVisitorInterface
         } elseif ($this->inAModule) {
             // look for tags
             if ($node->getNodeTag() && !isset($this->tags[$node->getNodeTag()])) {
-                $this->tags[$node->getNodeTag()] = $node->getTemplateLine();
+                $this->tags[$node->getNodeTag()] = $node;
             }
 
             // look for filters
             if ($node instanceof FilterExpression && !isset($this->filters[$node->getNode('filter')->getAttribute('value')])) {
-                $this->filters[$node->getNode('filter')->getAttribute('value')] = $node->getTemplateLine();
+                $this->filters[$node->getNode('filter')->getAttribute('value')] = $node;
             }
 
             // look for functions
             if ($node instanceof FunctionExpression && !isset($this->functions[$node->getAttribute('name')])) {
-                $this->functions[$node->getAttribute('name')] = $node->getTemplateLine();
+                $this->functions[$node->getAttribute('name')] = $node;
             }
 
             // the .. operator is equivalent to the range() function
             if ($node instanceof RangeBinary && !isset($this->functions['range'])) {
-                $this->functions['range'] = $node->getTemplateLine();
+                $this->functions['range'] = $node;
             }
 
             if ($node instanceof PrintNode) {
@@ -121,19 +116,8 @@ final class SandboxNodeVisitor implements NodeVisitorInterface
     private function wrapNode(Node $node, string $name): void
     {
         $expr = $node->getNode($name);
-        if (($expr instanceof NameExpression || $expr instanceof GetAttrExpression) && !$expr->isGenerator()) {
-            // Simplify in 4.0 as the spread attribute has been removed there
-            $new = new CheckToStringNode($expr);
-            if ($expr->hasAttribute('spread')) {
-                $new->setAttribute('spread', $expr->getAttribute('spread'));
-            }
-            $node->setNode($name, $new);
-        } elseif ($expr instanceof SpreadUnary) {
-            $this->wrapNode($expr, 'node');
-        } elseif ($expr instanceof ArrayExpression) {
-            foreach ($expr as $name => $_) {
-                $this->wrapNode($expr, $name);
-            }
+        if ($expr instanceof NameExpression || $expr instanceof GetAttrExpression) {
+            $node->setNode($name, new CheckToStringNode($expr));
         }
     }
 

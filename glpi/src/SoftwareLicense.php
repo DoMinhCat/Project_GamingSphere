@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -225,7 +225,7 @@ class SoftwareLicense extends CommonTreeDropdown
      * @since 0.85
      * @see CommonDBTM::post_updateItem()
      **/
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
 
         if (in_array("is_valid", $this->updates)) {
@@ -330,24 +330,6 @@ class SoftwareLicense extends CommonTreeDropdown
         }
 
         return true;
-    }
-
-    /**
-     * Is the license recursive ?
-     *
-     * @return boolean
-     **/
-    public function isRecursive()
-    {
-        $soft = new Software();
-        if (
-            isset($this->fields["softwares_id"])
-            && $soft->getFromDB($this->fields["softwares_id"])
-        ) {
-            return $soft->isRecursive();
-        }
-
-        return false;
     }
 
 
@@ -483,15 +465,6 @@ class SoftwareLicense extends CommonTreeDropdown
             'field'              => 'comment',
             'name'               => __('Comments'),
             'datatype'           => 'text'
-        ];
-
-        $tab[] = [
-            'id'                 => '121',
-            'table'              => $this->getTable(),
-            'field'              => 'date_creation',
-            'name'               => __('Creation date'),
-            'datatype'           => 'datetime',
-            'massiveaction'      => false
         ];
 
         $tab[] = [
@@ -755,11 +728,7 @@ class SoftwareLicense extends CommonTreeDropdown
      **/
     public static function cronSoftware($task = null)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $cron_status = 1;
 
@@ -881,7 +850,6 @@ class SoftwareLicense extends CommonTreeDropdown
      */
     public static function countForVersion($softwareversions_id, $entity = '')
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request([
@@ -905,7 +873,6 @@ class SoftwareLicense extends CommonTreeDropdown
      **/
     public static function countForSoftware($softwares_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -960,7 +927,6 @@ class SoftwareLicense extends CommonTreeDropdown
      **/
     public static function showForSoftware(Software $software)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $softwares_id  = $software->getField('id');
@@ -1218,12 +1184,10 @@ class SoftwareLicense extends CommonTreeDropdown
     public function showDebug()
     {
 
-        $license = [
-            'softname'      => '',
-            'name'          => '',
-            'serial'        => '',
-            'expire'        => '',
-            'entities_id'   => '',
+        $license = ['softname' => '',
+            'name'     => '',
+            'serial'   => '',
+            'expire'   => ''
         ];
 
         $options['entities_id'] = $this->getEntityID();
@@ -1235,7 +1199,7 @@ class SoftwareLicense extends CommonTreeDropdown
     /**
      * Get fields to display in the unicity error message
      *
-     * @return array
+     * @return an array which contains field => label
      */
     public function getUnicityFieldsToDisplayInErrorMessage()
     {
@@ -1253,8 +1217,8 @@ class SoftwareLicense extends CommonTreeDropdown
 
         if (!$withtemplate) {
             $nb = 0;
-            switch (get_class($item)) {
-                case Software::class:
+            switch ($item->getType()) {
+                case 'Software':
                     if (!self::canView()) {
                         return '';
                     }
@@ -1265,8 +1229,8 @@ class SoftwareLicense extends CommonTreeDropdown
                         self::getTypeName(Session::getPluralNumber()),
                         (($nb >= 0) ? $nb : '&infin;')
                     );
-
-                case SoftwareLicense::class:
+                break;
+                case 'SoftwareLicense':
                     if (!self::canView()) {
                         return '';
                     }
@@ -1280,6 +1244,7 @@ class SoftwareLicense extends CommonTreeDropdown
                         self::getTypeName(Session::getPluralNumber()),
                         (($nb >= 0) ? $nb : '&infin;')
                     );
+                break;
             }
         }
         return '';
@@ -1303,7 +1268,6 @@ class SoftwareLicense extends CommonTreeDropdown
 
     public static function getSonsOf($item)
     {
-        /** @var \DBmysql $DB */
         global $DB;
         $entity_assign = $item->isEntityAssign();
         $nb            = 0;

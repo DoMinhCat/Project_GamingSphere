@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -50,35 +50,28 @@ abstract class AbstractRequirement implements RequirementInterface
     /**
      * Flag that indicates if requirement is considered as optional.
      *
-     * @var bool|null
+     * @var bool
      */
-    protected $optional;
-
-    /**
-     * Flag that indicates if requirement is recommended for security reasons.
-     *
-     * @var bool|null
-     */
-    protected ?bool $recommended_for_security;
+    protected $optional = false;
 
     /**
      * Flag that indicates if requirement is considered as out of context.
      *
-     * @var bool|null
+     * @var bool
      */
-    protected $out_of_context;
+    protected $out_of_context = false;
 
     /**
      * Requirement title.
      *
-     * @var string|null
+     * @var string
      */
     protected $title;
 
     /**
      * Requirement description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description;
 
@@ -95,20 +88,6 @@ abstract class AbstractRequirement implements RequirementInterface
      * @var string[]
      */
     protected $validation_messages = [];
-
-    public function __construct(
-        ?string $title,
-        ?string $description = null,
-        ?bool $optional = false,
-        ?bool $recommended_for_security = false,
-        ?bool $out_of_context = false
-    ) {
-        $this->title = $title;
-        $this->description = $description;
-        $this->optional = $optional;
-        $this->recommended_for_security = $recommended_for_security;
-        $this->out_of_context = $out_of_context;
-    }
 
     /**
      * Check requirement.
@@ -135,23 +114,13 @@ abstract class AbstractRequirement implements RequirementInterface
 
     public function getTitle(): string
     {
-        if ($this->title !== null) {
-            // No need to run checks if variable is defined by constructor.
-            return $this->title;
-        }
-
         $this->doCheck();
 
-        return $this->title ?? '';
+        return $this->title;
     }
 
     public function getDescription(): ?string
     {
-        if ($this->description !== null) {
-            // No need to run checks if variable is defined by constructor.
-            return $this->description;
-        }
-
         $this->doCheck();
 
         return $this->description;
@@ -173,38 +142,16 @@ abstract class AbstractRequirement implements RequirementInterface
 
     public function isOptional(): bool
     {
-        if ($this->optional !== null) {
-            // No need to run checks if variable is defined by constructor.
-            return $this->optional;
-        }
-
         $this->doCheck();
 
-        return $this->optional ?? false;
-    }
-
-    public function isRecommendedForSecurity(): bool
-    {
-        if ($this->recommended_for_security !== null) {
-            // No need to run checks if variable is defined by constructor.
-            return $this->recommended_for_security;
-        }
-
-        $this->doCheck();
-
-        return $this->recommended_for_security ?? false;
+        return $this->optional;
     }
 
     public function isOutOfContext(): bool
     {
-        if ($this->out_of_context !== null) {
-            // No need to run checks if variable is defined by constructor.
-            return $this->out_of_context;
-        }
-
         $this->doCheck();
 
-        return $this->out_of_context ?? false;
+        return $this->out_of_context;
     }
 
     public function isValidated(): bool

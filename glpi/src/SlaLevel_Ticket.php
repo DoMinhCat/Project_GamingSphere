@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -50,11 +50,10 @@ class SlaLevel_Ticket extends CommonDBTM
      *
      * @since 9.1 2 mandatory parameters
      *
-     * @return boolean
+     * @return true if succeed else false
      **/
     public function getFromDBForTicket($ID, $slaType)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -100,7 +99,6 @@ class SlaLevel_Ticket extends CommonDBTM
      **/
     public function deleteForTicket($tickets_id, $slaType)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -159,7 +157,6 @@ class SlaLevel_Ticket extends CommonDBTM
      **/
     public static function cronSlaTicket(CronTask $task)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $tot = 0;
@@ -323,7 +320,6 @@ class SlaLevel_Ticket extends CommonDBTM
      */
     public static function replayForTicket($tickets_id, $slaType)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $criteria = [

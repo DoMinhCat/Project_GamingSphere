@@ -1,14 +1,13 @@
 # Security Policy
 
-**⚠️ Please never use standard issues to report security problems; vulnerabilities are never published before a fix release is available. ⚠️**
-
-Critical and high advisories are published one month after the release. All other advisories are published one week after the fix release.
+**⚠️ Please never use standard issues to report security problems; vulnerabilities are published once a fix release is available. ⚠️**
 
 ## Reporting a Vulnerability
 
-If you found a security issue, please open an advisory on [github](https://github.com/glpi-project/glpi/security/advisories/new).
+If you found a security issue, please contact us by:
 
-If you do not have a github account, or if you want to contact us regarding a security issue, you can drop a mail to \[glpi-security AT ow2.org\].
+- [our huntr page](https://huntr.dev/repos/glpi-project/glpi/)
+- a mail to \[glpi-security AT ow2.org\]
 
 You should provide us all details about the issue and the way to reproduce it.
 You may also provide a script that can be used to check the issue exists.
@@ -24,7 +23,7 @@ Thank you for improving the security of glpi.
 | Version | Supported          |
 | ------- | ------------------ |
 | 10.0.x  | :heavy_check_mark: |
-| 9.5.x   | :x:                |
+| 9.5.x   | :heavy_check_mark: (only for critical issues) |
 | 9.4.x   | :x:                |
 | 9.3.x   | :x:                |
 | 9.2.x   | :x:                |

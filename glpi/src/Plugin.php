@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -39,7 +39,6 @@
 
 use Glpi\Application\View\TemplateRenderer;
 use Glpi\Cache\CacheManager;
-use Glpi\Dashboard\Grid;
 use Glpi\Marketplace\Controller as MarketplaceController;
 use Glpi\Marketplace\View as MarketplaceView;
 use Glpi\Plugin\Hooks;
@@ -102,11 +101,6 @@ class Plugin extends CommonDBTM
      * @var string
      */
     const OPTION_AUTOINSTALL_DISABLED = 'autoinstall_disabled';
-
-    /**
-     * Plugin key validation pattern.
-     */
-    private const PLUGIN_KEY_PATTERN = '/^[a-z0-9]+$/i';
 
     public static $rightname = 'config';
 
@@ -211,34 +205,6 @@ class Plugin extends CommonDBTM
         return false;
     }
 
-    public function prepareInputForAdd($input)
-    {
-        $input = $this->prepareInput($input);
-
-        return $input;
-    }
-
-    public function prepareInputForUpdate($input)
-    {
-        $input = $this->prepareInput($input);
-
-        return $input;
-    }
-
-    private function prepareInput(array $input)
-    {
-        if ($this->isNewItem() || array_key_exists('directory', $input)) {
-            if (preg_match(self::PLUGIN_KEY_PATTERN, $input['directory'] ?? '') !== 1) {
-                Session::addMessageAfterRedirect(
-                    __s('Invalid plugin directory'),
-                    false,
-                    ERROR
-                );
-                return false;
-            }
-        }
-        return $input;
-    }
 
     /**
      * Retrieve an item from the database using its directory
@@ -263,14 +229,13 @@ class Plugin extends CommonDBTM
      **/
     public function init(bool $load_plugins = false, array $excluded_plugins = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         self::$plugins_state_checked = false;
         self::$activated_plugins = [];
         self::$loaded_plugins = [];
 
-        if (!($DB instanceof DBmysql) || !$DB->connected) {
+        if (!isset($DB) || !$DB->connected) {
             // Cannot init plugins list if DB is not connected
             self::$plugins_state_checked = true;
             return;
@@ -413,10 +378,6 @@ class Plugin extends CommonDBTM
      **/
     public static function loadLang($plugin_key, $forcelang = '', $coretrytoload = '')
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \Laminas\I18n\Translator\Translator $TRANSLATE
-         */
         global $CFG_GLPI, $TRANSLATE;
 
        // For compatibility for plugins using $LANG
@@ -840,7 +801,6 @@ class Plugin extends CommonDBTM
      */
     public function getList(array $fields = [], array $order = ['name', 'directory'])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $query = [
@@ -893,9 +853,6 @@ class Plugin extends CommonDBTM
                 'state'   => self::NOTINSTALLED,
             ]);
             $this->unload($this->fields['directory']);
-
-            $this->resetHookableCacheEntries($this->fields['directory']);
-
             self::doHook(Hooks::POST_PLUGIN_UNINSTALL, $this->fields['directory']);
 
             $type = INFO;
@@ -937,7 +894,6 @@ class Plugin extends CommonDBTM
     public function install($ID, array $params = [])
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         $message = '';
@@ -979,10 +935,7 @@ class Plugin extends CommonDBTM
                         ]);
                         $message = sprintf(__('Plugin %1$s has been installed and must be configured!'), $this->fields['name']);
                     }
-
-                    $this->resetHookableCacheEntries($this->fields['directory']);
-
-                    self::doHook(Hooks::POST_PLUGIN_INSTALL, $this->fields['directory']);
+                    self::doHook(Hooks::POST_PLUGIN_UNINSTALL, $this->fields['directory']);
 
                     Event::log(
                         '',
@@ -1021,7 +974,6 @@ class Plugin extends CommonDBTM
      **/
     public function activate($ID)
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         if ($this->getFromDB($ID)) {
@@ -1073,8 +1025,6 @@ class Plugin extends CommonDBTM
                 $this->update(['id'    => $ID,
                     'state' => self::ACTIVATED
                 ]);
-
-                $this->resetHookableCacheEntries($this->fields['directory']);
 
                // Initialize session for the plugin
                 if (
@@ -1149,9 +1099,6 @@ class Plugin extends CommonDBTM
     {
 
         if ($this->getFromDB($ID)) {
-            // Load plugin hooks
-            self::load($this->fields['directory'], true);
-
             $deactivate_function = 'plugin_' . $this->fields['directory'] . '_deactivate';
             if (function_exists($deactivate_function)) {
                 $deactivate_function();
@@ -1162,9 +1109,6 @@ class Plugin extends CommonDBTM
                 'state' => self::NOTACTIVATED
             ]);
             $this->unload($this->fields['directory']);
-
-            $this->resetHookableCacheEntries($this->fields['directory']);
-
             self::doHook(Hooks::POST_PLUGIN_DISABLE, $this->fields['directory']);
 
            // reset menu
@@ -1209,7 +1153,6 @@ class Plugin extends CommonDBTM
      **/
     public function unactivateAll()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $DB->update(
@@ -1372,7 +1315,6 @@ class Plugin extends CommonDBTM
      **/
     public static function migrateItemType($types = [], $glpitables = [], $plugtables = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $typetoname = [0  => "",// For tickets
@@ -1601,7 +1543,6 @@ class Plugin extends CommonDBTM
      **/
     public static function registerClass($itemtype, $attrib = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $plug = isPluginItemType($itemtype);
@@ -1688,7 +1629,6 @@ class Plugin extends CommonDBTM
      **/
     public static function doHook($name, $param = null)
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         if ($param == null) {
@@ -1748,7 +1688,6 @@ class Plugin extends CommonDBTM
      **/
     public static function doHookFunction($name, $parm = null)
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         $ret = $parm;
@@ -1937,11 +1876,6 @@ class Plugin extends CommonDBTM
      */
     private function loadPluginSetupFile(string $plugin_key): bool
     {
-        if (preg_match(self::PLUGIN_KEY_PATTERN, $plugin_key) !== 1) {
-            // Prevent issues with illegal chars
-            return false;
-        }
-
         foreach (PLUGINS_DIRECTORIES as $base_dir) {
             if (!is_dir($base_dir)) {
                 continue;
@@ -2076,7 +2010,6 @@ class Plugin extends CommonDBTM
      **/
     public static function haveImport()
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         return (isset($PLUGIN_HOOKS['import_item']) && count($PLUGIN_HOOKS['import_item']));
@@ -2323,7 +2256,6 @@ class Plugin extends CommonDBTM
      */
     public function checkGlpiParameters($params)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $compat = true;
@@ -2616,11 +2548,7 @@ class Plugin extends CommonDBTM
 
     public static function getSpecificValueToDisplay($field, $values, array $options = [])
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var array $PLUGIN_HOOKS
-         */
-        global $CFG_GLPI, $PLUGIN_HOOKS;
+        global $PLUGIN_HOOKS, $CFG_GLPI;
 
         if (!is_array($values)) {
             $values = [$field => $values];
@@ -2915,7 +2843,6 @@ class Plugin extends CommonDBTM
      */
     public static function getWebDir(string $plugin_key = "", $full = true, $use_url_base = false)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $directory = self::getPhpDir($plugin_key, false);
@@ -3096,41 +3023,5 @@ class Plugin extends CommonDBTM
                 return;
         }
         parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
-    }
-
-    /**
-     * Reset cache entries that may be indirectly altered by plugins.
-     *
-     * @param string $plugin_key
-     *
-     * @return bool
-     */
-    private function resetHookableCacheEntries(string $plugin_key): bool
-    {
-        /**
-         * @var array $CFG_GLPI
-         * @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE
-         */
-        global $CFG_GLPI, $GLPI_CACHE;
-
-        $to_clear = [
-            // Plugin lowercase/case-sensitive class names mapping.
-            // see `DbUtils::fixItemtypeCase()`
-            sprintf('itemtype-case-mapping-%s', $plugin_key),
-
-            // Hookable using `$CFG_GLPI['*_types']` and `$CFG_GLPI['itemdevices_itemaffinity']`.
-            'item_device_affinities',
-
-            // Will be stale as long as a plugin adds/remove a custom right.
-            'all_possible_rights',
-        ];
-
-        foreach (array_keys($CFG_GLPI['languages']) as $language) {
-            // Hookable using `$CFG_GLPI['itemdevices']`, `$CFG_GLPI['device_types']`, `$CFG_GLPI['asset_types']`,
-            // and `Hooks::DASHBOARD_FILTERS`.
-            $to_clear[] = Grid::getAllDashboardCardsCacheKey($language);
-        }
-
-        return $GLPI_CACHE->deleteMultiple($to_clear);
     }
 }

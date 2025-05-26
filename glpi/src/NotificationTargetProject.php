@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -147,7 +147,6 @@ class NotificationTargetProject extends NotificationTarget
      **/
     public function addTeamUsers()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -178,7 +177,6 @@ class NotificationTargetProject extends NotificationTarget
      **/
     public function addTeamGroups($manager)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -203,11 +201,7 @@ class NotificationTargetProject extends NotificationTarget
      **/
     public function addTeamContacts()
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $iterator = $DB->request([
             'SELECT' => 'items_id',
@@ -238,11 +232,7 @@ class NotificationTargetProject extends NotificationTarget
      **/
     public function addTeamSuppliers()
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $iterator = $DB->request([
             'SELECT' => 'items_id',
@@ -268,10 +258,6 @@ class NotificationTargetProject extends NotificationTarget
 
     public function addDataForTemplate($event, $options = [])
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
         global $CFG_GLPI, $DB;
 
        //----------- Reservation infos -------------- //

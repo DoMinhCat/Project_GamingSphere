@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -125,13 +125,12 @@ class Inventory
         }
 
         $converter = new Converter();
-        $schema = $converter->getSchema();
         if (method_exists($this, 'getSchemaExtraProps')) {
-            $schema->setExtraProperties($this->getSchemaExtraProps());
+            $converter->setExtraProperties($this->getSchemaExtraProps());
         }
 
         if (method_exists($this, 'getSchemaExtraSubProps')) {
-            $schema->setExtraSubProperties($this->getSchemaExtraSubProps());
+            $converter->setExtraSubProperties($this->getSchemaExtraSubProps());
         }
 
         if (Request::XML_MODE === $format) {
@@ -146,7 +145,7 @@ class Inventory
         }
 
         try {
-            $schema->validate($data);
+            $converter->validate($data);
         } catch (\RuntimeException $e) {
             $this->errors[] = preg_replace(
                 '|\$ref\[file~2//.*/vendor/glpi-project/inventory_format/inventory.schema.json\]|',
@@ -239,7 +238,6 @@ class Inventory
      */
     public function doInventory($test_rules = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         //check
@@ -264,7 +262,7 @@ class Inventory
             }
 
             $converter = new Converter();
-            $schema = $converter->getSchema()->build();
+            $schema = $converter->buildSchema();
 
             $properties = array_keys((array)$schema->properties->content->properties);
             $properties = array_filter(
@@ -283,28 +281,12 @@ class Inventory
             $all_props = get_object_vars($contents);
             unset($all_props['versionclient'], $all_props['versionprovider']); //already handled in extractMetadata
 
-            $empty_props = [];
-            if (
-                (!property_exists($this->raw_data, 'itemtype') || $this->raw_data->itemtype == 'Computer')
-                && (!property_exists($this->raw_data, 'partial') || !$this->raw_data->partial)
-            ) {
-                //if inventory is not partial, we consider following properties are empty if not present; so they'll be removed
-                $empty_props = [
-                    'virtualmachines',
-                    'remote_mgmt',
-                    'monitors',
-                    'antivirus',
-                ];
-            }
-
             $data = [];
             //parse schema properties and handle if it exists in raw_data
             //it is important to keep schema order, changes may have side effects
             foreach ($properties as $property) {
                 if (property_exists($contents, $property)) {
                     $data[$property] = $contents->$property;
-                } else if (in_array($property, $empty_props)) {
-                    $data[$property] = [];
                 }
             }
 
@@ -415,9 +397,9 @@ class Inventory
 
 
     /**
-     * Get raw data
+     * Get rawdata
      *
-     * @return object|null
+     * @return array
      */
     public function getRawData(): ?object
     {
@@ -576,7 +558,7 @@ class Inventory
      */
     final public function processInventoryData()
     {
-        //map existing keys in inventory format to their respective Inventory\Asset class if needed.
+       //map existing keys in inventory format to their respective Inventory\Asset class if needed.
         foreach ($this->data as $key => &$value) {
             $assettype = false;
 
@@ -828,12 +810,7 @@ class Inventory
         return $this->metadata;
     }
 
-    public function getAssets()
-    {
-        return $this->assets;
-    }
-
-    public function getMainAsset(): MainAsset
+    public function getMainAsset(): InventoryAsset
     {
         return $this->mainasset;
     }
@@ -898,7 +875,6 @@ class Inventory
      **/
     public static function cronCleanorphans($task)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $cron_status = 0;

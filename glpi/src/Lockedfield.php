@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -66,52 +66,6 @@ class Lockedfield extends CommonDBTM
     public static function canCreate()
     {
         return Session::haveRight(self::$rightname, UPDATE);
-    }
-
-    public function canCreateItem()
-    {
-        return $this->canAccessItemEntity($this->fields['itemtype'], $this->fields['items_id']);
-    }
-
-    public function canUpdateItem()
-    {
-        return $this->canAccessItemEntity($this->fields['itemtype'], $this->fields['items_id']);
-    }
-
-    public function canPurgeItem()
-    {
-        return $this->canAccessItemEntity($this->fields['itemtype'], $this->fields['items_id']);
-    }
-
-    public static function isMassiveActionAllowed(int $items_id): bool
-    {
-        $lock = new self();
-        $lock->getFromDB($items_id);
-        if ($lock->canAccessItemEntity($lock->fields['itemtype'], $lock->fields['items_id'])) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check if user can access main item entity
-     *
-     * @param string $itemtype
-     * @param int    $items_id
-     *
-     * @return bool
-     */
-    private function canAccessItemEntity(string $itemtype, int $items_id): bool
-    {
-        $item = new $itemtype();
-        if (
-            $item->getFromDB($items_id) //not a global lock
-            && $item->isEntityAssign()
-            && !Session::haveAccessToEntity($item->getEntityID(), $item->isRecursive()) // no access to main item entity
-        ) {
-            return false;
-        }
-        return true;
     }
 
     public function rawSearchOptions()
@@ -209,40 +163,6 @@ class Lockedfield extends CommonDBTM
         return $this->getLocks($itemtype, $items_id, false);
     }
 
-
-    /**
-     * Get locked fields
-     *
-     * @param string  $itemtype Item type
-     * @param integer $items_id Item ID
-     *
-     * return array
-     */
-    final public function getFullLockedFields($itemtype, $items_id): array
-    {
-        /** @var \DBmysql $DB */
-        global $DB;
-
-        $iterator = $DB->request([
-            'FROM'   => $this->getTable(),
-            'WHERE'  => [
-                'itemtype'  => $itemtype,
-                [
-                    'OR' => [
-                        'items_id'  => $items_id,
-                        'is_global' => 1
-                    ]
-                ]
-            ]
-        ]);
-
-        $locks = [];
-        foreach ($iterator as $row) {
-            $locks[$row['id']] = $row;
-        }
-        return $locks;
-    }
-
     /**
      * Get locked fields
      *
@@ -253,7 +173,6 @@ class Lockedfield extends CommonDBTM
      */
     public function getLocks($itemtype, $items_id, bool $fields_only = true)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -287,7 +206,6 @@ class Lockedfield extends CommonDBTM
      */
     public function itemDeleted()
     {
-        /** @var \DBmysql $DB */
         global $DB;
         return $DB->delete(
             $this->getTable(),
@@ -305,7 +223,6 @@ class Lockedfield extends CommonDBTM
      */
     public function setLastValue($itemtype, $items_id, $field, $value)
     {
-        /** @var \DBmysql $DB */
         global $DB;
         return $DB->update(
             $this->getTable(),
@@ -387,12 +304,8 @@ class Lockedfield extends CommonDBTM
      *
      * @return array
      */
-    public function getFieldsToLock(?string $specific_itemtype = null): array
+    public function getFieldsToLock(string $specific_itemtype = null): array
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
         global $CFG_GLPI, $DB;
 
         $iterator = $DB->request([
@@ -422,7 +335,7 @@ class Lockedfield extends CommonDBTM
             'networks_id',
             'manufacturers_id',
             'uuid',
-            'comment'
+            'entities_id'
         ];
         $itemtypes = $CFG_GLPI['inventory_types'] + $CFG_GLPI['inventory_lockable_objects'];
 

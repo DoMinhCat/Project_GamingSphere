@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -254,7 +254,7 @@ class Rack extends CommonDBTM
             'table'              => 'glpi_users',
             'field'              => 'name',
             'linkfield'          => 'users_id_tech',
-            'name'               => __('Technician in charge'),
+            'name'               => __('Technician in charge of the hardware'),
             'datatype'           => 'dropdown',
             'right'              => 'own_ticket'
         ];
@@ -264,7 +264,7 @@ class Rack extends CommonDBTM
             'table'              => 'glpi_groups',
             'field'              => 'completename',
             'linkfield'          => 'groups_id_tech',
-            'name'               => __('Group in charge'),
+            'name'               => __('Group in charge of the hardware'),
             'condition'          => ['is_assign' => 1],
             'datatype'           => 'dropdown'
         ];
@@ -288,19 +288,6 @@ class Rack extends CommonDBTM
             'datatype'           => 'dropdown'
         ];
 
-        $tab[] = [
-            'id'                 => '81',
-            'table'              => Datacenter::getTable(),
-            'field'              => 'name',
-            'name'               => Datacenter::getTypeName(1),
-            'datatype'           => 'dropdown',
-            'joinparams'         => [
-                'beforejoin'         => [
-                    'table'              => DCRoom::getTable(),
-                ]
-            ]
-        ];
-
         $tab = array_merge($tab, Notepad::rawSearchOptionsToAdd());
 
         $tab = array_merge($tab, Datacenter::rawSearchOptionsToAdd(get_class($this)));
@@ -311,8 +298,8 @@ class Rack extends CommonDBTM
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
-        switch (get_class($item)) {
-            case DCRoom::class:
+        switch ($item->getType()) {
+            case DCRoom::getType():
                 $nb = 0;
                 if ($_SESSION['glpishow_count_on_tabs']) {
                     $nb = countElementsInTable(
@@ -351,11 +338,7 @@ class Rack extends CommonDBTM
      **/
     public static function showForRoom(DCRoom $room)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $room_id = $room->getID();
         $rand = mt_rand();
@@ -466,8 +449,8 @@ class Rack extends CommonDBTM
             $coord = explode(',', $item['position']);
             if (is_array($coord) && count($coord) == 2) {
                 list($x, $y) = $coord;
-                $item['_x'] = (int)$x - 1;
-                $item['_y'] = (int)$y - 1;
+                $item['_x'] = $x - 1;
+                $item['_y'] = $y - 1;
             } else {
                 $item['_x'] = null;
                 $item['_y'] = null;
@@ -744,7 +727,7 @@ JAVASCRIPT;
      *
      * @param array $input Input data
      *
-     * @return false|array
+     * @return array
      */
     private function prepareInput($input)
     {
@@ -791,14 +774,12 @@ JAVASCRIPT;
     /**
      * Get already filled places
      *
-     * @param string $itemtype Item type
-     * @param int    $items_id Item ID
+     * @param string $current Current position to exclude; defaults to null
      *
      * @return array [x => [left => [depth, depth, depth, depth]], [right => [depth, depth, depth, depth]]]
      */
     public function getFilled($itemtype = null, $items_id = null)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -144,7 +144,6 @@ class Item_SoftwareLicense extends CommonDBRelation
                 return true;
 
             case 'add_item':
-                /** @var array $CFG_GLPI */
                 global $CFG_GLPI;
                 echo "<table class='tab_cadre_fixe'>";
                 echo "<tr class='tab_bg_2 center'>";
@@ -282,7 +281,7 @@ class Item_SoftwareLicense extends CommonDBRelation
      * Get number of installed licenses of a license
      *
      * @param integer $softwarelicenses_id license ID
-     * @param integer|string $entity       to search for item in (default = all entities)
+     * @param integer $entity              to search for item in (default = all entities)
      *                                     (default '') -1 means no entity restriction
      * @param string $itemtype             Item type to filter on. Use null for all itemtypes
      *
@@ -290,7 +289,6 @@ class Item_SoftwareLicense extends CommonDBRelation
      **/
     public static function countForLicense($softwarelicenses_id, $entity = '', $itemtype = null)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -359,7 +357,6 @@ class Item_SoftwareLicense extends CommonDBRelation
      **/
     public static function countForSoftware($softwares_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $license_table = SoftwareLicense::getTable();
@@ -438,7 +435,6 @@ class Item_SoftwareLicense extends CommonDBRelation
      **/
     public static function showForLicenseByEntity(SoftwareLicense $license)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $softwarelicense_id = $license->getField('id');
@@ -518,11 +514,7 @@ class Item_SoftwareLicense extends CommonDBRelation
      **/
     public static function showForLicense(SoftwareLicense $license)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $searchID = $license->getField('id');
 
@@ -765,8 +757,8 @@ JAVASCRIPT;
                     $DB->quoteValue('') . " AS " . $DB->quoteName('state')
                 );
             }
-            $group_fkey  = Group::getForeignKeyField();
-            $group_table = Group::getTable();
+            $group_fkey  = State::getForeignKeyField();
+            $group_table = State::getTable();
             if ($DB->fieldExists($itemtable, $group_fkey)) {
                 $query['SELECT'][] = sprintf('%s.name AS groupe', $group_table);
                 $query['LEFT JOIN'][$group_table] = [
@@ -962,7 +954,6 @@ JAVASCRIPT;
      **/
     public static function getLicenseForInstallation($itemtype, $items_id, $softwareversions_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $lic = [];
@@ -1013,7 +1004,6 @@ JAVASCRIPT;
         $nb = 0;
         switch ($item->getType()) {
             case 'SoftwareLicense':
-                /** @var \Item_SoftwareLicense $item */
                 if (!$withtemplate) {
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = self::countForLicense($item->getID());
@@ -1060,7 +1050,6 @@ JAVASCRIPT;
      **/
     public static function countLicenses($softwares_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request([

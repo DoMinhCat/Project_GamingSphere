@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -48,20 +48,17 @@ class ExtensionGroup extends AbstractRequirement
     protected $extensions;
 
     /**
-     * @param string      $title        Extension group title.
+     * @param string      $name         Extension group title.
      * @param string[]    $extensions   Required extensions names.
      * @param bool        $optional     Indicate if extension is optional.
      * @param string|null $description  Describe usage of the extension.
      */
     public function __construct(string $title, array $extensions, bool $optional = false, ?string $description = null)
     {
-        parent::__construct(
-            $title,
-            $description,
-            $optional
-        );
-
+        $this->title = $title;
         $this->extensions = $extensions;
+        $this->optional = $optional;
+        $this->description = $description;
     }
 
     protected function check()

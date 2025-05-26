@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -57,7 +57,6 @@ class DisplayPreference extends CommonDBTM
 
     public function prepareInputForAdd($input)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request([
@@ -121,7 +120,6 @@ class DisplayPreference extends CommonDBTM
      **/
     public static function getForTypeUser($itemtype, $user_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -158,7 +156,6 @@ class DisplayPreference extends CommonDBTM
      **/
     public function activatePerso(array $input)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!Session::haveRight(self::$rightname, self::PERSONAL)) {
@@ -215,7 +212,6 @@ class DisplayPreference extends CommonDBTM
      **/
     public function orderItem(array $input, $action)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Get current item
@@ -281,7 +277,6 @@ class DisplayPreference extends CommonDBTM
      */
     protected function getFixedColumns(string $itemtype): array
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $fixed_columns = [];
@@ -325,7 +320,6 @@ class DisplayPreference extends CommonDBTM
      **/
     public function showFormPerso($target, $itemtype)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $searchopt = Search::getCleanedOptions($itemtype);
@@ -484,8 +478,8 @@ class DisplayPreference extends CommonDBTM
      * starting from the position before the item which we want to get the group name.
      * The first key of string type we encouter, is our item's group name.
      *
-     * @param array $search_options
-     * @param int   $search_option_key
+     * @param array $searchopt
+     * @param int   $searchoptkey
      *
      * @return string Return the name of the group or an empty string.
      *
@@ -515,7 +509,6 @@ class DisplayPreference extends CommonDBTM
      **/
     public function showFormGlobal($target, $itemtype)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $searchopt = Search::getCleanedOptions($itemtype);
@@ -667,7 +660,6 @@ class DisplayPreference extends CommonDBTM
      **/
     public static function showForUser($users_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $url = Toolbox::getItemTypeFormURL(__CLASS__);
@@ -783,7 +775,6 @@ class DisplayPreference extends CommonDBTM
                 return true;
 
             case __CLASS__:
-                /** @var DisplayPreference $item */
                 switch ($tabnum) {
                     case 1:
                         $item->showFormGlobal(Toolbox::cleanTarget($_GET['_target']), $_GET["displaytype"]);

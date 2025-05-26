@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -71,15 +71,15 @@ class Problem_Ticket extends CommonDBRelation
 
         if (static::canView()) {
             $nb = 0;
-            switch (get_class($item)) {
-                case Ticket::class:
+            switch ($item->getType()) {
+                case 'Ticket':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $problems = self::getTicketProblemsData($item->getID());
                         $nb = count($problems);
                     }
                     return self::createTabEntry(Problem::getTypeName(Session::getPluralNumber()), $nb);
 
-                case Problem::class:
+                case 'Problem':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $tickets = self::getProblemTicketsData($item->getID());
                         $nb = count($tickets);
@@ -112,7 +112,6 @@ class Problem_Ticket extends CommonDBRelation
      **/
     public function post_addItem()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $donotif = !isset($this->input['_disablenotif']) && $CFG_GLPI["use_notifications"];
@@ -135,7 +134,6 @@ class Problem_Ticket extends CommonDBRelation
      **/
     public function post_deleteFromDB()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $donotif = !isset($this->input['_disablenotif']) && $CFG_GLPI["use_notifications"];
@@ -161,9 +159,12 @@ class Problem_Ticket extends CommonDBRelation
     {
         switch ($ma->getAction()) {
             case 'add_task':
-                $ttype = new TicketTask();
-                $ttype->showMassiveActionAddTaskForm();
-                return true;
+                $tasktype = 'TicketTask';
+                if ($ttype = getItemForItemtype($tasktype)) {
+                    $ttype->showMassiveActionAddTaskForm();
+                    return true;
+                }
+                return false;
 
             case "solveticket":
                 $problem = new Problem();

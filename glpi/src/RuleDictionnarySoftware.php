@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -54,9 +54,17 @@ class RuleDictionnarySoftware extends Rule
     public function getTitle()
     {
        //TRANS: plural for software
-        return __('Dictionary of software');
+        return __('Dictionnary of software');
     }
 
+
+    /**
+     * @see Rule::maxActionsCount()
+     **/
+    public function maxActionsCount()
+    {
+        return 4;
+    }
 
     /**
      * @see Rule::getCriterias()

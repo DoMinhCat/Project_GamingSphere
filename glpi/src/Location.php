@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -93,6 +93,11 @@ class Location extends CommonTreeDropdown
                 'type'  => 'text',
                 'list'  => true
             ], [
+                'name'   => 'setlocation',
+                'type'   => 'setlocation',
+                'label'  => __('Location on map'),
+                'list'   => false
+            ], [
                 'name'  => 'latitude',
                 'label' => __('Latitude'),
                 'type'  => 'text',
@@ -107,17 +112,6 @@ class Location extends CommonTreeDropdown
                 'label' => __('Altitude'),
                 'type'  => 'text',
                 'list'  => true
-            ], [
-                'name'   => 'setlocation',
-                'type'   => 'setlocation',
-                'label'  => __('Location on map'),
-                'list'   => false,
-                'form_params' => [
-                    'full_width' => true,
-                    'full_width_adapt_column' => false,
-                    'label_class' => 'col-xxl-2',
-                    'input_class' => 'col-xxl-10',
-                ]
             ]
         ];
     }
@@ -393,7 +387,6 @@ class Location extends CommonTreeDropdown
     {
 
         if ($item->getType() == __CLASS__) {
-            /** @var Location $item */
             switch ($tabnum) {
                 case 1:
                     $item->showChildren();
@@ -416,11 +409,7 @@ class Location extends CommonTreeDropdown
      **/
     public function showItems()
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $locations_id = $this->fields['id'];
         $current_itemtype     = Session::getSavedOption(__CLASS__, 'criterion', '');

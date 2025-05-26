@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -59,7 +59,7 @@ class TicketTemplate extends ITILTemplate
         ];
     }
 
-    public static function getExtraAllowedFields($withtypeandcategory = false, $withitemtype = false)
+    public static function getExtraAllowedFields($withtypeandcategory = 0, $withitemtype = 0)
     {
         $itil_object = new Ticket();
         $tab =  [
@@ -137,7 +137,7 @@ class TicketTemplate extends ITILTemplate
                     return true;
 
                 case 2:
-                    static::showHelpdeskPreview($item);
+                    $item->showHelpdeskPreview($item);
                     return true;
             }
         }

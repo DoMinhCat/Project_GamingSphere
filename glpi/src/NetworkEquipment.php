@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -164,7 +164,6 @@ class NetworkEquipment extends CommonDBTM
      **/
     public function canUnrecurs()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $this->fields['id'];
@@ -222,9 +221,6 @@ class NetworkEquipment extends CommonDBTM
                     if ($item = getItemForItemtype($data["itemtype"])) {
                         // For each itemtype which are entity dependant
                         if ($item->isEntityAssign()) {
-                            if (count($ids = explode(',', $data["ids"])) > 1) {
-                                $data["ids"] = $ids;
-                            }
                             if (
                                 countElementsInTable($itemtable, ['id' => $data["ids"],
                                     'NOT' => ['entities_id' => $entities ]
@@ -449,7 +445,7 @@ class NetworkEquipment extends CommonDBTM
             'table'              => 'glpi_users',
             'field'              => 'name',
             'linkfield'          => 'users_id_tech',
-            'name'               => __('Technician in charge'),
+            'name'               => __('Technician in charge of the hardware'),
             'datatype'           => 'dropdown',
             'right'              => 'own_ticket'
         ];
@@ -459,7 +455,7 @@ class NetworkEquipment extends CommonDBTM
             'table'              => 'glpi_groups',
             'field'              => 'completename',
             'linkfield'          => 'groups_id_tech',
-            'name'               => __('Group in charge'),
+            'name'               => __('Group in charge of the hardware'),
             'condition'          => ['is_assign' => 1],
             'datatype'           => 'dropdown'
         ];
@@ -507,8 +503,6 @@ class NetworkEquipment extends CommonDBTM
         $tab = array_merge($tab, Socket::rawSearchOptionsToAdd());
 
         $tab = array_merge($tab, SNMPCredential::rawSearchOptionsToAdd());
-
-        $tab = array_merge($tab, DCRoom::rawSearchOptionsToAdd());
 
         return $tab;
     }

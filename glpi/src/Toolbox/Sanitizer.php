@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -67,10 +67,6 @@ class Sanitizer
                 },
                 $value
             );
-        }
-
-        if ($value instanceof \Stringable || (\is_object($value) && \method_exists($value, '__toString'))) {
-            $value = (string) $value;
         }
 
         if (!is_string($value)) {
@@ -151,7 +147,7 @@ class Sanitizer
      *
      * @param string $value
      *
-     * @return bool
+     * @return string
      */
     public static function isDbEscaped(string $value): bool
     {
@@ -286,12 +282,8 @@ class Sanitizer
                 if (is_array($value)) {
                     return self::encodeHtmlSpecialCharsRecursive($value);
                 }
-                if (
-                    is_string($value)
-                    || $value instanceof \Stringable
-                    || (\is_object($value) && \method_exists($value, '__toString'))
-                ) {
-                    return self::encodeHtmlSpecialChars((string) $value);
+                if (is_string($value)) {
+                    return self::encodeHtmlSpecialChars($value);
                 }
                 return $value;
             },
@@ -376,7 +368,6 @@ class Sanitizer
             return $value;
         }
 
-        /** @var \DBmysql $DB */
         global $DB;
         return $DB->escape($value);
     }
@@ -397,12 +388,8 @@ class Sanitizer
                 if (is_array($value)) {
                     return self::dbEscapeRecursive($value);
                 }
-                if (
-                    is_string($value)
-                    || $value instanceof \Stringable
-                    || (\is_object($value) && \method_exists($value, '__toString'))
-                ) {
-                    return self::dbEscape((string) $value);
+                if (is_string($value)) {
+                    return self::dbEscape($value);
                 }
                 return $value;
             },

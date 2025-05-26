@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -134,7 +134,7 @@ class DynamicRowFormatCommand extends AbstractCommand
         };
 
         foreach ($this->iterate($tables, $progress_message) as $table) {
-            $result = $this->db->doQuery(sprintf('ALTER TABLE %s ROW_FORMAT = DYNAMIC', $this->db->quoteName($table)));
+            $result = $this->db->query(sprintf('ALTER TABLE %s ROW_FORMAT = DYNAMIC', $this->db->quoteName($table)));
 
             if (!$result) {
                 $message = sprintf(

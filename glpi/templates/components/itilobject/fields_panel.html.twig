@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -228,8 +228,7 @@
                   field_options|merge({
                      'entity': item.fields['entities_id'],
                      'width': '100%',
-                     'hide_if_no_elements': true,
-                     'nochecklimit': true
+                     'hide_if_no_elements': true
                   })
                ) }}
             {% endif %}
@@ -287,7 +286,7 @@
          </h2>
          <div id="items" class="accordion-collapse collapse {{ items_show ? "show" : "" }}" aria-labelledby="items-heading">
             <div class="accordion-body accordion-items row m-0 mt-n2">
-               {{ item_ticket.itemAddForm(item, params|default({})|merge({entities_id: entities_id})) }}
+               {{ item_ticket.itemAddForm(item, params|default({})) }}
             </div>
          </div>
       </div>
@@ -422,7 +421,7 @@
          <h2 class="accordion-header" id="linked_tickets-heading" title="{{ 'Ticket_Ticket'|itemtype_name(nb_linked_tickets) }}" data-bs-toggle="tooltip">
             <button class="accordion-button {{ linked_tickets_show ? "" : "collapsed" }}" type="button" data-bs-toggle="collapse" data-bs-target="#linked_tickets" aria-expanded="true" aria-controls="linked_tickets">
                <i class="ti ti-link me-1"></i>
-               {% set linked_tickets = ticket_ticket.getLinkedTicketsTo(item.fields['id'], true) %}
+               {% set linked_tickets = ticket_ticket.getLinkedTicketsTo(item.fields['id']) %}
                {% set nb_linked_tickets = linked_tickets|length %}
                {% if item.isNewItem() and params['_link']['tickets_id_2'] > 0 %}
                   {% set nb_linked_tickets = 1 %}

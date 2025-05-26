@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -82,13 +82,17 @@ class Software extends CommonDBTM
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
-        if (
-            !$withtemplate
-            && $item instanceof self
-            && $item->isRecursive()
-            && $item->can($item->fields['id'], UPDATE)
-        ) {
-            return __('Merging');
+        if (!$withtemplate) {
+            switch ($item->getType()) {
+                case __CLASS__:
+                    if (
+                        $item->isRecursive()
+                        && $item->can($item->fields['id'], UPDATE)
+                    ) {
+                        return __('Merging');
+                    }
+                    break;
+            }
         }
         return '';
     }
@@ -97,7 +101,7 @@ class Software extends CommonDBTM
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
-        if ($item instanceof self) {
+        if ($item->getType() == __CLASS__) {
             $item->showMergeCandidates();
         }
         return true;
@@ -235,7 +239,6 @@ class Software extends CommonDBTM
 
     public function getEmpty()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!parent::getEmpty()) {
@@ -291,7 +294,7 @@ class Software extends CommonDBTM
         CommonDBTM $item,
         array $ids
     ) {
-        /** @var Software $item */
+
         switch ($ma->getAction()) {
             case 'merge':
                 $input = $ma->getInput();
@@ -653,7 +656,6 @@ class Software extends CommonDBTM
      **/
     public static function dropdownSoftwareToInstall($myname, $entity_restrict)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Make a select box
@@ -693,10 +695,6 @@ class Software extends CommonDBTM
      **/
     public static function dropdownLicenseToInstall($myname, $entity_restrict)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
         global $CFG_GLPI, $DB;
 
         $iterator = $DB->request([
@@ -749,14 +747,14 @@ class Software extends CommonDBTM
     /**
      * Create a new software
      *
-     * @param string   $name                the software's name (need to be addslashes)
-     * @param integer  $manufacturer_id     id of the software's manufacturer
-     * @param integer  $entity              the entity in which the software must be added
-     * @param string   $comment             (default '')
-     * @param boolean  $is_recursive        must the software be recursive (false by default)
-     * @param ?boolean $is_helpdesk_visible show in helpdesk, default : from config (false by default)
+     * @param name                          the software's name (need to be addslashes)
+     * @param manufacturer_id               id of the software's manufacturer
+     * @param entity                        the entity in which the software must be added
+     * @param comment                       (default '')
+     * @param is_recursive         boolean  must the software be recursive (false by default)
+     * @param is_helpdesk_visible           show in helpdesk, default : from config (false by default)
      *
-     * @return integer the software's ID
+     * @return the software's ID
      **/
     public function addSoftware(
         $name,
@@ -766,7 +764,6 @@ class Software extends CommonDBTM
         $is_recursive = false,
         $is_helpdesk_visible = null
     ) {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $input["name"]                = $name;
@@ -802,12 +799,12 @@ class Software extends CommonDBTM
     /**
      * Add a software. If already exist in trashbin restore it
      *
-     * @param string  $name                the software's name
-     * @param string  $manufacturer        the software's manufacturer
-     * @param integer $entity              the entity in which the software must be added
-     * @param string  $comment             comment (default '')
-     * @param boolean $is_recursive        must the software be recursive (false by default)
-     * @param boolean $is_helpdesk_visible show in helpdesk, default = config value (false by default)
+     * @param name                            the software's name
+     * @param manufacturer                    the software's manufacturer
+     * @param entity                          the entity in which the software must be added
+     * @param comment                         comment (default '')
+     * @param is_recursive           boolean  must the software be recursive (false by default)
+     * @param is_helpdesk_visible             show in helpdesk, default = config value (false by default)
      */
     public function addOrRestoreFromTrash(
         $name,
@@ -817,7 +814,6 @@ class Software extends CommonDBTM
         $is_recursive = false,
         $is_helpdesk_visible = null
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
        //Look for the software by his name in GLPI for a specific entity
@@ -867,7 +863,7 @@ class Software extends CommonDBTM
 
 
     /**
-     * Put software in trashbin because it's been removed by GLPI software dictionary
+     * Put software in trashbin because it's been removed by GLPI software dictionnary
      *
      * @param $ID        the ID of the software to put in trashbin
      * @param $comment   the comment to add to the already existing software's comment (default '')
@@ -876,7 +872,6 @@ class Software extends CommonDBTM
      **/
     public function putInTrash($ID, $comment = '')
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $this->getFromDB($ID);
@@ -891,7 +886,7 @@ class Software extends CommonDBTM
             $input["softwarecategories_id"] = $CFG_GLPI["softwarecategories_id_ondelete"];
         }
 
-       //Add dictionary comment to the current comment
+       //Add dictionnary comment to the current comment
         $input["comment"] = (($this->fields["comment"] != '') ? "\n" : '') . $comment;
 
         return $this->update($input);
@@ -932,7 +927,6 @@ class Software extends CommonDBTM
      **/
     public function showMergeCandidates()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID   = $this->getField('id');
@@ -1016,14 +1010,13 @@ class Software extends CommonDBTM
     /**
      * Merge software with current
      *
-     * @param array   $item array of software ID to be merged
-     * @param boolean $html display html progress bar
+     * @param $item array of software ID to be merged
+     * @param boolean display html progress bar
      *
      * @return boolean about success
      **/
     public function merge($item, $html = true)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $this->getField('id');
@@ -1159,10 +1152,10 @@ class Software extends CommonDBTM
         return "ti ti-apps";
     }
 
-    public function handleCategoryRules(array &$input, bool $is_dynamic = false)
+    public function handleCategoryRules(array &$input)
     {
-        //If category was not set by user (when manually adding a user)
-        if ($is_dynamic || !isset($input["softwarecategories_id"]) || !$input["softwarecategories_id"]) {
+       //If category was not set by user (when manually adding a user)
+        if (!isset($input["softwarecategories_id"]) || !$input["softwarecategories_id"]) {
             $softcatrule = new RuleSoftwareCategoryCollection();
             $result      = $softcatrule->processAllRules(null, null, Toolbox::stripslashes_deep($input));
 

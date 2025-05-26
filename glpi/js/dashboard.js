@@ -5,7 +5,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -138,9 +138,6 @@ class GLPIDashboard {
         // generate the css based on the grid width
         this.generateCss();
 
-        // set the width of the select box to match the selected option
-        this.resizeSelect();
-
         // init filters from storage
         this.initFilters();
         this.refreshDashboard();
@@ -271,9 +268,6 @@ class GLPIDashboard {
             var is_private;
             $.each(button.closest('.display-rights-form').serializeArray(), function() {
                 var current_val = this.value.split('-');
-                if (current_val.length !== 2) {
-                    return;
-                }
                 var right_name  = current_val[0];
                 var value       = current_val[1];
                 if (!(right_name in form_data)) {
@@ -850,6 +844,7 @@ class GLPIDashboard {
                 var count        = $(this);
                 var precision    = count.data('precision');
                 var number       = count.children('.number');
+                var suffix       = count.children('.suffix').text();
                 var targetNumber = number.text();
 
                 // Some custom formats may contain text in the number field, no animation in this case
@@ -861,10 +856,10 @@ class GLPIDashboard {
                     duration: 800,
                     easing: 'swing',
                     step: function () {
-                        number.text(this.Counter.toFixed(precision));
+                        number.text(this.Counter.toFixed(precision))+suffix;
                     },
                     complete: function () {
-                        number.text(targetNumber);
+                        number.text(targetNumber)+suffix;
                     }
                 });
             });
@@ -879,9 +874,7 @@ class GLPIDashboard {
         this.grid.setStatic(!activate);
 
         // set filters as sortable (draggable) or not
-        if ($(this.filters_selector).children().length > 0) {
-            sortable(this.filters_selector, activate ? 'enable' : 'disable');
-        }
+        sortable(this.filters_selector, activate ? 'enable' : 'disable');
 
         if (!this.edit_mode) {
             // save markdown textareas set as dirty
@@ -1255,7 +1248,7 @@ class GLPIDashboard {
                 filters = JSON.parse('{}');
             }
         });
-        return filters || {};
+        return filters;
     }
 
     /**
@@ -1279,35 +1272,5 @@ class GLPIDashboard {
                 }),
             }
         });
-    }
-
-    /**
-    * Set the width of the select box to match the selected option
-    */
-    resizeSelect() {
-        const select = document.querySelector(this.elem_id+' .dashboard_select');
-
-        // mini dashboard doesn't have any filter/select
-        if (select === null) {
-            return;
-        }
-
-        select.addEventListener('change', (event) => {
-            let tempSelect = document.createElement('select'),
-                tempOption = document.createElement('option');
-            tempOption.textContent = event.target.options[event.target.selectedIndex].text;
-            tempSelect.style.cssText += `
-              visibility: hidden;
-              position: fixed;
-           `;
-            tempSelect.appendChild(tempOption);
-            event.target.after(tempSelect);
-          
-            const tempSelectWidth = tempSelect.getBoundingClientRect().width;
-            event.target.style.width = `${tempSelectWidth}px`;
-            tempSelect.remove();
-        });
-        
-        select.dispatchEvent(new Event('change'));
     }
 }

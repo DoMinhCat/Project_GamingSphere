@@ -5,7 +5,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -368,17 +368,11 @@
 
    .tab_bg_1_2 {
       background-color: #cf9b9b;
-      @if $is_dark {
-         color: $dark;
-      }
    }
 
 
    .tab_bg_2_2 {
       background-color: #cf9b9b;
-      @if $is_dark {
-        color: $dark;
-     }
    }
 
    .tab_date {
@@ -720,6 +714,10 @@
          width: 100%;
          padding: 5px;
       }
+
+      tr {
+         display: block;
+      }
    }
 
    /* ################--------------- Notepad  ---------------#################### */
@@ -775,7 +773,6 @@
 
    .boxnotetext {
       padding: 5px;
-      margin-top: 1rem;
    }
 
    .error {
@@ -1134,24 +1131,6 @@
       }
    }
 
-   .input-group.copy_to_clipboard_wrapper {
-      &:after {
-         content: none;
-      }
-
-      i.copy_to_clipboard_wrapper {
-         font-style: normal;
-         
-         &:after {
-            left: 0;
-         }
-         
-         &:before {
-            content: none;
-         }
-      }
-   }
-
    /* ################--------------- Log history filters ---------------#################### */
 
    tr.log_history_filter_row {
@@ -1426,6 +1405,12 @@
    .tab_check td i.fa-solid {
       font-size: 12px;
       margin-right: 3px;
+   }
+   .tab_check td i.fa-check {
+      color: #008e2c;
+   }
+   .tab_check td i.fa-exclamation-triangle {
+      color: #ffa500;
    }
    /* /Styles for update page */
 

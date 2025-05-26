@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -86,7 +86,6 @@ class Session
      **/
     public static function init(Auth $auth)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if ($auth->auth_succeded) {
@@ -101,9 +100,7 @@ class Session
                 }
             }
             self::destroy();
-            if (!defined('TU_USER')) { //FIXME: no idea why this fails with phpunit... :(
-                session_regenerate_id();
-            }
+            session_regenerate_id();
             self::start();
             $_SESSION = $save;
             $_SESSION['valid_id'] = session_id();
@@ -171,11 +168,6 @@ class Session
                     self::loadLanguage();
 
                     if ($auth->password_expired) {
-                        // Make sure we are not in debug mode, as it could trigger some ajax request that would
-                        // fail the session check (as we use a special partial session here without profiles) and thus
-                        // destroy the session (which would make the "password expired" form impossible to submit as the
-                        // csrf check would fail as the session data would be empty).
-                        $_SESSION["glpi_use_mode"] = self::NORMAL_MODE;
                         $_SESSION['glpi_password_expired'] = 1;
                        // Do not init profiles, as user has to update its password to be able to use GLPI
                         return;
@@ -356,10 +348,9 @@ class Session
      **/
     public static function initNavigateListItems($itemtype, $title = "", $url = null)
     {
-        /** @var int $AJAX_INCLUDE */
         global $AJAX_INCLUDE;
 
-        if ($AJAX_INCLUDE && ($url === null)) {
+        if (isset($AJAX_INCLUDE) && ($url === null)) {
             return;
         }
         if (empty($title)) {
@@ -384,52 +375,12 @@ class Session
 
 
     /**
-     * Check if active entities should be reloaded.
-     *
-     * @return bool true if active entities should be reloaded, false otherwise
-     */
-    public static function shouldReloadActiveEntities(): bool
-    {
-        if (!array_key_exists('glpiactive_entity', $_SESSION)) {
-            return false;
-        }
-        $glpiactiveentities = $_SESSION['glpiactiveentities'] ?? [];
-        if (count($glpiactiveentities)) {
-            $glpiactive_entity = $_SESSION['glpiactive_entity'];
-            $glpiactive_entity_recursive = $_SESSION['glpiactive_entity_recursive'] ?? false;
-            $entities = [$glpiactive_entity => $glpiactive_entity];
-            if (
-                ($_SESSION["glpientity_fullstructure"] ?? false)
-                && isset($_SESSION['glpiactiveprofile']['entities'])
-            ) {
-                foreach ($_SESSION['glpiactiveprofile']['entities'] as $val) {
-                    $entities[$val['id']] = $val['id'];
-                    if ($val['is_recursive']) {
-                        $sons = getSonsOf("glpi_entities", $val['id']);
-                        foreach ($sons as $key2 => $val2) {
-                            $entities[$key2] = $key2;
-                        }
-                    }
-                }
-            } elseif ($glpiactive_entity_recursive) {
-                $entities = getSonsOf("glpi_entities", $glpiactive_entity);
-            }
-
-            return count($entities) !== count($glpiactiveentities)
-                || array_diff($entities, $glpiactiveentities) !== []
-                || array_diff($glpiactiveentities, $entities) !== [];
-        }
-        return false;
-    }
-
-
-    /**
      * Change active entity to the $ID one. Update glpiactiveentities session variable.
      * Reload groups related to this entity.
      *
-     * @param integer|string $ID           ID of the new active entity ("all"=>load all possible entities)
-     *                                     (default 'all')
-     * @param boolean         $is_recursive Also display sub entities of the active entity? (false by default)
+     * @param integer|'All' $ID           ID of the new active entity ("all"=>load all possible entities)
+     *                                    (default 'all')
+     * @param boolean       $is_recursive Also display sub entities of the active entity? (false by default)
      *
      * @return boolean true on success, false on failure
      **/
@@ -437,12 +388,9 @@ class Session
     {
 
         $newentities = [];
-        $ancestors = [];
-
-        $_SESSION["glpientity_fullstructure"] = ($ID === 'all');
-
         if (isset($_SESSION['glpiactiveprofile'])) {
             if ($ID === "all") {
+                $ancestors = [];
                 foreach ($_SESSION['glpiactiveprofile']['entities'] as $val) {
                     $ancestors               = array_unique(array_merge(
                         getAncestorsOf(
@@ -462,10 +410,7 @@ class Session
                         }
                     }
                 }
-                $is_recursive = true;
             } else {
-                $ID = (int)$ID;
-
                /// Check entity validity
                 $ancestors = getAncestorsOf("glpi_entities", $ID);
                 $ok        = false;
@@ -510,19 +455,7 @@ class Session
                 $active
             );
             $_SESSION["glpiactive_entity_shortname"] = getTreeLeafValueName("glpi_entities", $active);
-            if ($ID == "all") {
-                //TRANS: %s is the entity name
-                $_SESSION["glpiactive_entity_name"]      = sprintf(
-                    __('%1$s (%2$s)'),
-                    $_SESSION["glpiactive_entity_name"],
-                    __('full structure')
-                );
-                $_SESSION["glpiactive_entity_shortname"] = sprintf(
-                    __('%1$s (%2$s)'),
-                    $_SESSION["glpiactive_entity_shortname"],
-                    __('full structure')
-                );
-            } elseif ($is_recursive) {
+            if ($is_recursive) {
                 //TRANS: %s is the entity name
                 $_SESSION["glpiactive_entity_name"]      = sprintf(
                     __('%1$s (%2$s)'),
@@ -534,6 +467,18 @@ class Session
                      $_SESSION["glpiactive_entity_shortname"],
                      __('tree structure')
                  );
+            } elseif ($ID == "all") {
+                //TRANS: %s is the entity name
+                $_SESSION["glpiactive_entity_name"]      = sprintf(
+                    __('%1$s (%2$s)'),
+                    $_SESSION["glpiactive_entity_name"],
+                    __('full structure')
+                );
+                $_SESSION["glpiactive_entity_shortname"] = sprintf(
+                    __('%1$s (%2$s)'),
+                    $_SESSION["glpiactive_entity_shortname"],
+                    __('full structure')
+                );
             }
 
             if (countElementsInTable('glpi_entities') <= count($_SESSION['glpiactiveentities'])) {
@@ -583,20 +528,17 @@ class Session
                 Search::resetSaveSearch();
                 $active_entity_done = false;
 
-                // Try to load default entity if it is a root entity
+               // Try to load default entity if it is a root entity
                 foreach ($data['entities'] as $val) {
-                    if ($val['id'] === $_SESSION["glpidefault_entity"]) {
+                    if ($val['id'] == $_SESSION["glpidefault_entity"]) {
                         if (self::changeActiveEntities($val['id'], $val['is_recursive'])) {
-                            $active_entity_done = true;
+                             $active_entity_done = true;
                         }
                     }
                 }
                 if (!$active_entity_done) {
                    // Try to load default entity
-                    if (
-                        $_SESSION["glpidefault_entity"] === null
-                        || !self::changeActiveEntities($_SESSION["glpidefault_entity"], true)
-                    ) {
+                    if (!self::changeActiveEntities($_SESSION["glpidefault_entity"], true)) {
                         // Load all entities
                         self::changeActiveEntities("all");
                     }
@@ -620,7 +562,6 @@ class Session
      **/
     public static function initEntityProfiles($userID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $_SESSION['glpiprofiles'] = [];
@@ -703,7 +644,6 @@ class Session
      **/
     public static function loadGroups()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $_SESSION["glpigroups"] = [];
@@ -748,10 +688,6 @@ class Session
      **/
     public static function loadLanguage($forcelang = '', $with_plugins = true)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \Laminas\I18n\Translator\TranslatorInterface $TRANSLATE
-         */
         global $CFG_GLPI, $TRANSLATE;
 
         if (!isset($_SESSION["glpilanguage"])) {
@@ -847,7 +783,6 @@ class Session
      */
     public static function getPreferredLanguage(): string
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Extract accepted languages from headers
@@ -886,7 +821,6 @@ class Session
      */
     public static function getPluralNumber()
     {
-        /** @var int $DEFAULT_PLURAL_NUMBER */
         global $DEFAULT_PLURAL_NUMBER;
 
         if (isset($_SESSION['glpipluralnumber'])) {
@@ -983,7 +917,6 @@ class Session
      **/
     public static function checkValidSessionId()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (
@@ -1061,12 +994,11 @@ class Session
      **/
     public static function checkFaqAccess()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!$CFG_GLPI["use_public_faq"]) {
             self::checkValidSessionId();
-            if (!Session::haveRightsOr('knowbase', [KnowbaseItem::READFAQ, READ])) {
+            if (!self::haveRight('knowbase', KnowbaseItem::READFAQ)) {
                 Html::displayRightError("Missing FAQ right");
             }
         }
@@ -1271,11 +1203,11 @@ class Session
      * Check if you could access (read) to the entity of id = $ID
      *
      * @param integer $ID           ID of the entity
-     * @param boolean $is_recursive if recursive item (default false)
+     * @param boolean $is_recursive if recursive item (default 0)
      *
      * @return boolean
      **/
-    public static function haveAccessToEntity($ID, $is_recursive = false)
+    public static function haveAccessToEntity($ID, $is_recursive = 0)
     {
 
        // Quick response when passing wrong ID : default value of getEntityID is -1
@@ -1301,14 +1233,14 @@ class Session
 
 
     /**
-     * Check if you could access to one entity of a list
+     * Check if you could access to one entity of an list
      *
      * @param array   $tab          list ID of entities
-     * @param boolean $is_recursive if recursive item (default false)
+     * @param boolean $is_recursive if recursive item (default 0)
      *
      * @return boolean
      **/
-    public static function haveAccessToOneOfEntities($tab, $is_recursive = false)
+    public static function haveAccessToOneOfEntities($tab, $is_recursive = 0)
     {
 
         if (is_array($tab) && count($tab)) {
@@ -1352,11 +1284,10 @@ class Session
      * @param string  $module Module to check
      * @param integer $right  Right to check
      *
-     * @return boolean|int
+     * @return boolean
      **/
     public static function haveRight($module, $right)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (Session::isInventory()) {
@@ -1487,7 +1418,7 @@ class Session
      *  Force active Tab for an itemtype
      *
      * @param string  $itemtype item type
-     * @param mixed $tab      ID of the tab
+     * @param integer $tab      ID of the tab
      *
      * @return void
      **/
@@ -1559,7 +1490,6 @@ class Session
      **/
     public static function getNewCSRFToken(bool $standalone = false)
     {
-        /** @var string $CURRENTCSRFTOKEN */
         global $CURRENTCSRFTOKEN;
 
         $token = $standalone ? '' : $CURRENTCSRFTOKEN;
@@ -1573,7 +1503,7 @@ class Session
         if (!isset($_SESSION['glpicsrftokens'])) {
             $_SESSION['glpicsrftokens'] = [];
         }
-        $_SESSION['glpicsrftokens'][$token] = time() + (int) GLPI_CSRF_EXPIRES;
+        $_SESSION['glpicsrftokens'][$token] = time() + GLPI_CSRF_EXPIRES;
 
         if (!$standalone) {
             $CURRENTCSRFTOKEN = $token;
@@ -1601,7 +1531,7 @@ class Session
                         unset($_SESSION['glpicsrftokens'][$token]);
                     }
                 }
-                $overflow = count($_SESSION['glpicsrftokens']) - (int) GLPI_CSRF_MAX_TOKENS;
+                $overflow = count($_SESSION['glpicsrftokens']) - GLPI_CSRF_MAX_TOKENS;
                 if ($overflow > 0) {
                     $_SESSION['glpicsrftokens'] = array_slice(
                         $_SESSION['glpicsrftokens'],
@@ -1661,29 +1591,20 @@ class Session
     public static function checkCSRF($data)
     {
 
-        $message = __("The action you have requested is not allowed.");
-        if (
-            ($requestToken = $data['_glpi_csrf_token'] ?? null) !== null
-            && isset($_SESSION['glpicsrftokens'][$requestToken])
-            && ($_SESSION['glpicsrftokens'][$requestToken] < time())
-        ) {
-            $message = __("Your session has expired.");
-        }
-
         if (
             GLPI_USE_CSRF_CHECK
             && (!Session::validateCSRF($data))
         ) {
             $requested_url = (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'Unknown');
             $user_id = self::getLoginUserID() ?? 'Anonymous';
-            Toolbox::logInFile('access-errors', "CSRF check failed for User ID: $user_id at $requested_url\n");
+            Toolbox::logInFile('access-errors', "CSRF check failed for User ID: $user_id at $requested_url");
             // Output JSON if requested by client
             if (strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false) {
                 http_response_code(403);
-                die(json_encode(["message" => $message]));
+                die(json_encode(["message" => __("The action you have requested is not allowed.")]));
             }
 
-            Html::displayErrorAndDie($message, true);
+            Html::displayErrorAndDie(__("The action you have requested is not allowed."), true);
         }
     }
 
@@ -1692,7 +1613,7 @@ class Session
      * Get new IDOR token
      * This token validates the itemtype used by an ajax request is the one asked by a dropdown.
      * So, we avoid IDOR request where an attacker asks for an another itemtype
-     * than the originaly intended
+     * than the originaly indtended
      *
      * @since 9.5.3
      *
@@ -1703,11 +1624,6 @@ class Session
      **/
     public static function getNewIDORToken(string $itemtype = "", array $add_params = []): string
     {
-        if ($itemtype === '' && count($add_params) === 0) {
-            trigger_error('IDOR token cannot be generated with empty criteria.', E_USER_WARNING);
-            return '';
-        }
-
         $token = "";
         do {
             $token = bin2hex(random_bytes(32));
@@ -1718,7 +1634,7 @@ class Session
         }
 
         $_SESSION['glpiidortokens'][$token] = [
-            'expires'  => time() + (int) GLPI_IDOR_EXPIRES
+            'expires'  => time() + GLPI_IDOR_EXPIRES
         ] + ($itemtype !== "" ? ['itemtype' => $itemtype] : [])
         + $add_params;
 
@@ -1755,21 +1671,7 @@ class Session
             $idor_data =  $_SESSION['glpiidortokens'][$token];
             unset($idor_data['expires']);
 
-            // Ensure that `displaywith` and `condition` is checked if passed in data
-            $mandatory_properties = [
-                'displaywith' => [],
-                'condition'   => [],
-            ];
-            foreach ($mandatory_properties as $property_name => $default_value) {
-                if (!array_key_exists($property_name, $data)) {
-                    $data[$property_name] = $default_value;
-                }
-                if (!array_key_exists($property_name, $idor_data)) {
-                    $idor_data[$property_name] = $default_value;
-                }
-            }
-
-           // check all stored data for the idor token are present (and identical) in the posted data
+           // check all stored data for the idor token are present (and identifical) in the posted data
             $match_expected = function ($expected, $given) use (&$match_expected) {
                 if (is_array($expected)) {
                     if (!is_array($given)) {
@@ -1854,10 +1756,6 @@ class Session
      */
     public static function canImpersonate($user_id, ?string &$message = null)
     {
-        // Cannot impersonate if we don't have config right
-        if (!self::haveRight(Config::$rightname, UPDATE)) {
-            return false;
-        }
 
         if (
             $user_id <= 0 || self::getLoginUserID() == $user_id
@@ -1865,6 +1763,11 @@ class Session
         ) {
             $message = __("You can't impersonate yourself.");
             return false; // Cannot impersonate invalid user, self, or already impersonated user
+        }
+
+        // Cannot impersonate if we don't have config right
+        if (!self::haveRight(Config::$rightname, UPDATE)) {
+            return false;
         }
 
         // Cannot impersonate inactive user
@@ -2012,67 +1915,6 @@ class Session
     }
 
     /**
-     * Filter given entities ID list to return only these tht are matching current active entities in session.
-     *
-     * @since 10.0.13
-     *
-     * @param int|int[] $entities_ids
-     *
-     * @return int|int[]
-     */
-    public static function getMatchingActiveEntities(/*int|array*/ $entities_ids)/*: int|array*/
-    {
-        if (
-            (int)$entities_ids === -1
-            || (is_array($entities_ids) && count($entities_ids) === 1 && (int)reset($entities_ids) === -1)
-        ) {
-            // Special value that is generally used to fallback to all active entities.
-            return $entities_ids;
-        }
-
-        if (
-            !is_array($entities_ids)
-            && !is_int($entities_ids)
-            && (!is_string($entities_ids) || !ctype_digit($entities_ids))
-        ) {
-            // Unexpected value type.
-            return [];
-        }
-
-        $active_entities_ids = [];
-        foreach ($_SESSION['glpiactiveentities'] ?? [] as $active_entity_id) {
-            if (
-                !is_int($active_entity_id)
-                && (!is_string($active_entity_id) || !ctype_digit($active_entity_id))
-            ) {
-                // Ensure no unexpected value converted to int
-                // as it would be converted to `0` and would permit access to root entity
-                trigger_error(
-                    sprintf('Unexpected value `%s` found in `$_SESSION[\'glpiactiveentities\']`.', $active_entity_id ?? 'null'),
-                    E_USER_WARNING
-                );
-                continue;
-            }
-            $active_entities_ids[] = (int)$active_entity_id;
-        }
-
-        if (!is_array($entities_ids) && in_array((int)$entities_ids, $active_entities_ids, true)) {
-            return (int)$entities_ids;
-        }
-
-        $filtered = [];
-        foreach ((array)$entities_ids as $entity_id) {
-            if (
-                (is_int($entity_id) || (is_string($entity_id) && ctype_digit($entity_id)))
-                && in_array((int)$entity_id, $active_entities_ids, true)
-            ) {
-                $filtered[] = (int)$entity_id;
-            }
-        }
-        return $filtered;
-    }
-
-    /**
      * Get recursive state of active entity selection.
      *
      * @since 9.5.5
@@ -2087,12 +1929,9 @@ class Session
     /**
      * Start session for a given user
      *
-     * @param string    $token
-     * @param string    $token_type
-     * @param int|null  $entities_id
-     * @param bool|null $is_recursive
+     * @param int $users_id ID of the user
      *
-     * @return User|false
+     * @return User|bool
      */
     public static function authWithToken(
         string $token,
@@ -2162,16 +2001,5 @@ class Session
     public static function getLanguage(): ?string
     {
         return $_SESSION['glpilanguage'] ?? null;
-    }
-
-    /**
-     * Helper function to get the date stored in $_SESSION['glpi_currenttime']
-     *
-     * @return null|string
-     */
-    public static function getCurrentTime(): ?string
-    {
-        // TODO (10.1 refactoring): replace references to $_SESSION['glpi_currenttime'] by a call to this function
-        return $_SESSION['glpi_currenttime'] ?? null;
     }
 }

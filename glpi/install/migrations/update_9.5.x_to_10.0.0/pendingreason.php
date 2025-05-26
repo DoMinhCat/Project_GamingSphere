@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34,8 +34,8 @@
  */
 
 /**
- * @var \DBmysql $DB
- * @var \Migration $migration
+ * @var DB $DB
+ * @var Migration $migration
  */
 
 $default_charset = DBConnection::getDefaultCharset();
@@ -61,7 +61,7 @@ if (!$DB->tableExists('glpi_pendingreasons')) {
          KEY `is_recursive` (`is_recursive`),
          KEY `solutiontemplates_id` (`solutiontemplates_id`)
       ) ENGINE = InnoDB ROW_FORMAT = DYNAMIC DEFAULT CHARSET = $default_charset COLLATE = $default_collation;";
-    $DB->doQueryOrDie($query, "10.0 add table glpi_pendingreasons");
+    $DB->queryOrDie($query, "10.0 add table glpi_pendingreasons");
 }
 
 // Add pending reason items table
@@ -80,13 +80,15 @@ if (!$DB->tableExists('glpi_pendingreasons_items')) {
          KEY `pendingreasons_id` (`pendingreasons_id`),
          KEY `item` (`itemtype`,`items_id`)
       ) ENGINE = InnoDB ROW_FORMAT = DYNAMIC DEFAULT CHARSET = $default_charset COLLATE = $default_collation;";
-    $DB->doQueryOrDie($query, "10.0 add table glpi_pendingreasons_items");
+    $DB->queryOrDie($query, "10.0 add table glpi_pendingreasons_items");
 }
 
 // Add pendingreason right
 $migration->addRight('pendingreason', ALLSTANDARDRIGHT, ['itiltemplate' => UPDATE]);
 
 // Add user for automatic bump and followup
+$migration->addConfig('system_user', 'core');
+
 $config = Config::getConfigurationValues('core');
 if (empty($config['system_user'])) {
     $user = new User();
@@ -101,9 +103,11 @@ if (empty($config['system_user'])) {
         'password'      => '',
         'authtype'      => 1,
     ];
-    $DB->insertOrDie('glpi_users', $system_user_params, "Can't add 'glpi-system' user");
+    if (!$DB->insert('glpi_users', $system_user_params)) {
+        die("Can't add 'glpi-system' user");
+    }
 
-    $migration->addConfig(['system_user' => $DB->insertId()], 'core');
+    Config::setConfigurationValues('core', ['system_user' => $DB->insertId()]);
 }
 
 // Add crontask for auto bump and auto solve

@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -32,21 +32,16 @@
  #}
 
 {% set pending_reason_item_parent = call("PendingReason_Item::getForItem", [item]) %}
+{% set pending_item = call(entry['type'] ~ "::getById", [entry_i['id']]) %}
+{% set pending_reason_item = pending_item ? call("PendingReason_Item::getForItem", [pending_item]) : false %}
+{% set pending_reason = pending_reason_item ? call("PendingReason::getById", [pending_reason_item.fields['pendingreasons_id']]) : false %}
 
-{% if display_for_parent %}
-   {% set pending_reason = pending_reason_item_parent ? call("PendingReason::getById", [pending_reason_item_parent.fields['pendingreasons_id']]) : false %}
-{% else %}
-   {% set pending_item = pending_item ?? call(entry['type'] ~ "::getById", [entry_i['id']]) %}
-   {% set pending_reason_item = pending_item ? call("PendingReason_Item::getForItem", [pending_item]) : false %}
-   {% set pending_reason = pending_reason_item ? call("PendingReason::getById", [pending_reason_item.fields['pendingreasons_id']]) : false %}
-{% endif %}
-
-{% if pending_reason %}
-   <span class="badge bg-blue-lt {{ display_for_parent ? "mt-1 w-100 text-truncate" : "" }}">
+{% if pending_reason  %}
+   <span class="badge bg-blue-lt">
       <i class="fas fa-pause me-1"></i>
       {{ __("Pending: %s")|format(pending_reason.getLink())|raw }}
 
-      {% if display_for_parent or call("PendingReason_Item::isLastPendingForItem", [
+      {% if call("PendingReason_Item::isLastPendingForItem", [
          item,
          pending_item
       ]) %}

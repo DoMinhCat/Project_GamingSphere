@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -49,17 +49,6 @@ use Twig\TwigFunction;
  */
 class FrontEndAssetsExtension extends AbstractExtension
 {
-    /**
-     * GLPI root dir.
-     * @var string
-     */
-    private $root_dir;
-
-    public function __construct(string $root_dir = GLPI_ROOT)
-    {
-        $this->root_dir = $root_dir;
-    }
-
     public function getFunctions(): array
     {
         return [
@@ -95,34 +84,20 @@ class FrontEndAssetsExtension extends AbstractExtension
     {
         $is_debug = isset($_SESSION['glpi_use_mode']) && $_SESSION['glpi_use_mode'] === Session::DEBUG_MODE;
 
-        $file_path = parse_url($path, PHP_URL_PATH); // Strip potential quey string from path
-
-        $extra_params = parse_url($path, PHP_URL_QUERY) ?: '';
-
-        if (preg_match('/\.scss$/', $file_path)) {
-            $compiled_file = Html::getScssCompilePath($file_path, $this->root_dir);
+        if (preg_match('/\.scss$/', $path)) {
+            $compiled_file = Html::getScssCompilePath($path);
 
             if (!$is_debug && file_exists($compiled_file)) {
-                $path = str_replace($this->root_dir, '', $compiled_file);
+                $path = str_replace(GLPI_ROOT, '', $compiled_file);
             } else {
-                $path = '/front/css.php?file=' . $file_path;
-                if ($is_debug) {
-                    $extra_params .= ($extra_params !== '' ? '&' : '') . 'debug=1';
-                }
+                $path = '/front/css.php?file=' . $path . ($is_debug ? '&debug=1' : '');
             }
         } else {
-            $minified_path = str_replace('.css', '.min.css', $file_path);
+            $minified_path = str_replace('.css', '.min.css', $path);
 
-            if (!$is_debug && file_exists($this->root_dir . '/' . $minified_path)) {
+            if (!$is_debug && file_exists(GLPI_ROOT . '/' . $minified_path)) {
                 $path = $minified_path;
-            } else {
-                $path = $file_path;
             }
-        }
-
-        if ($extra_params !== '') {
-            // Append query string from initial path, if any
-            $path .= (str_contains($path, '?') ? '&' : '?') . $extra_params;
         }
 
         $path = Html::getPrefixedUrl($path);
@@ -145,7 +120,7 @@ class FrontEndAssetsExtension extends AbstractExtension
 
         $minified_path = str_replace('.js', '.min.js', $path);
 
-        if (!$is_debug && file_exists($this->root_dir . '/' . $minified_path)) {
+        if (!$is_debug && file_exists(GLPI_ROOT . '/' . $minified_path)) {
             $path = $minified_path;
         }
 
@@ -177,7 +152,6 @@ class FrontEndAssetsExtension extends AbstractExtension
      */
     public function customCss(): string
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $css = '';
@@ -204,9 +178,6 @@ class FrontEndAssetsExtension extends AbstractExtension
      */
     public function localesJs(): string
     {
-        /** @var array $CFG_GLPI */
-        global $CFG_GLPI;
-
         if (!isset($_SESSION['glpilanguage'])) {
             return '';
         }
@@ -222,11 +193,6 @@ class FrontEndAssetsExtension extends AbstractExtension
          $(function() {
             i18n.setLocale('{$_SESSION['glpilanguage']}');
          });
-
-         $.fn.select2.defaults.set(
-            'language',
-            '{$CFG_GLPI['languages'][$_SESSION['glpilanguage']][2]}',
-         );
 JAVASCRIPT;
 
         foreach ($locales_domains as $locale_domain => $locale_version) {

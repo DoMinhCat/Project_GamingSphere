@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -49,7 +49,7 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
      **/
     public function getTitle()
     {
-        return __('Dictionary of printers');
+        return __('Dictionnary of printers');
     }
 
 
@@ -71,7 +71,6 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
 
     public function replayRulesOnExistingDB($offset = 0, $maxtime = 0, $items = [], $params = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (isCommandLine()) {
@@ -130,7 +129,7 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
                 }
             }
 
-           //Replay printer dictionary rules
+           //Replay printer dictionnary rules
             $res_rule = $this->processAllRules($input, [], []);
 
             foreach (['manufacturer', 'is_global', 'name'] as $attr) {
@@ -157,7 +156,7 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
                     foreach ($print_iterator as $result) {
                         $IDs[] = $result["id"];
                     }
-                     //Replay dictionary on all the printers
+                     //Replay dictionnary on all the printers
                      $this->replayDictionnaryOnPrintersByID($IDs, $res_rule);
                 }
             }
@@ -165,7 +164,7 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
 
             if ($maxtime) {
                 $crt = explode(" ", microtime());
-                if (((float)$crt[0] + (float)$crt[1]) > $maxtime) {
+                if ($crt[0] + $crt[1] > $maxtime) {
                     break;
                 }
             }
@@ -204,7 +203,7 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
 
 
     /**
-     * Replay dictionary on several printers
+     * Replay dictionnary on several printers
      *
      * @param $IDs       array of printers IDs to replay
      * @param $res_rule  array of rule results
@@ -213,7 +212,6 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
      **/
     public function replayDictionnaryOnPrintersByID(array $IDs, $res_rule = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $new_printers  = [];
@@ -266,7 +264,7 @@ class RuleDictionnaryPrinterCollection extends RuleCollection
 
 
     /**
-     * Replay dictionary on one printer
+     * Replay dictionnary on one printer
      *
      * @param &$new_printers   array containing new printers already computed
      * @param $res_rule        array of rule results

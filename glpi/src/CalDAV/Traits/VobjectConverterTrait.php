@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -66,7 +66,6 @@ trait VobjectConverterTrait
      */
     protected function getVCalendarForItem(\CommonDBTM $item, $component_type): VCalendar
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!array_key_exists($component_type, VCalendar::$componentMap)) {
@@ -191,7 +190,6 @@ trait VobjectConverterTrait
      */
     protected function getTargetCaldavComponent(bool $is_planned, bool $is_task)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Use VTODO for tasks if available.

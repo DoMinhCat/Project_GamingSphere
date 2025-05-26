@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -44,14 +44,6 @@ class NotificationTargetUser extends NotificationTarget
         ];
     }
 
-    public function canNotificationContentBeDisclosed(string $event): bool
-    {
-        if ($event === 'passwordforget') {
-            return false;
-        }
-
-        return parent::canNotificationContentBeDisclosed($event);
-    }
 
     /**
      * @see NotificationTarget::addNotificationTargets()
@@ -96,7 +88,6 @@ class NotificationTargetUser extends NotificationTarget
 
     public function addDataForTemplate($event, $options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $events = $this->getEvents();

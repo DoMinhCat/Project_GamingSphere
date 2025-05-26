@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -167,7 +167,6 @@ class GLPIKey
      */
     public function generate(): bool
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Check ability to create/update key file.
@@ -216,7 +215,6 @@ class GLPIKey
      */
     public function getFields(): array
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         $fields = $this->fields;
@@ -236,7 +234,6 @@ class GLPIKey
      */
     public function getConfigs(): array
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         $configs = $this->configs;
@@ -276,7 +273,6 @@ class GLPIKey
      */
     protected function migrateFieldsInDb(?string $sodium_key): bool
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $success = true;
@@ -321,7 +317,6 @@ class GLPIKey
      */
     protected function migrateConfigsInDb($sodium_key): bool
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $success = true;

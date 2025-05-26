@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -182,7 +182,6 @@ abstract class FQDNLabel extends CommonDBChild
      **/
     public static function getIDsByLabelAndFQDNID($label, $fqdns_id, $wildcard_search = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $label = strtolower($label);
@@ -256,10 +255,7 @@ abstract class FQDNLabel extends CommonDBChild
         }
 
         foreach (self::getIDsByLabelAndFQDNID($label, $fqdns_id, $wildcard_search) as $class => $IDs) {
-            if (
-                ($FQDNlabel = getItemForItemtype($class))
-                && ($FQDNlabel instanceof CommonDBChild)
-            ) {
+            if ($FQDNlabel = getItemForItemtype($class)) {
                 foreach ($IDs as $ID) {
                     if ($FQDNlabel->getFromDB($ID)) {
                         $FQNDs_with_Items[] = array_merge(
@@ -268,11 +264,6 @@ abstract class FQDNLabel extends CommonDBChild
                         );
                     }
                 }
-            } else {
-                trigger_error(
-                    sprintf('%s is not a valid item type', $class),
-                    E_USER_WARNING
-                );
             }
         }
 

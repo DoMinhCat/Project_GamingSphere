@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -65,8 +65,6 @@ if (isset($_POST["test_smtp_send"])) {
         if ($provider !== null) {
             try {
                 $auth_url = $provider->getAuthorizationUrl();
-                $_SESSION['smtp_oauth2_state'] = $provider->getState();
-                Html::redirect($auth_url);
             } catch (\Throwable $e) {
                 ErrorHandler::getInstance()->handleException($e, true);
                 Session::addMessageAfterRedirect(
@@ -76,6 +74,8 @@ if (isset($_POST["test_smtp_send"])) {
                 );
                 Html::back();
             }
+            $_SESSION['smtp_oauth2_state'] = $provider->getState();
+            Html::redirect($auth_url);
         }
     }
 

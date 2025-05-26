@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -97,7 +97,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
      **/
     public static function getSQLCriteriaToSearchForItem($itemtype, $items_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $table = static::getTable();
@@ -199,7 +198,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
      **/
     public static function getOppositeByTypeAndID($itemtype, $items_id, &$relations_id = null)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($items_id < 0) {
@@ -246,7 +244,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
      *
      * @param $number
      *
-     * @return bool|CommonDBTM
+     * @return boolean
      **/
     public function getOnePeer($number)
     {
@@ -881,7 +879,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
         }
     }
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
 
         if (
@@ -1207,8 +1205,8 @@ abstract class CommonDBRelation extends CommonDBConnexity
     public static function getHTMLTableHeader(
         $itemtype,
         HTMLTableBase $base,
-        ?HTMLTableSuperHeader $super = null,
-        ?HTMLTableHeader $father = null,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -1248,12 +1246,11 @@ abstract class CommonDBRelation extends CommonDBConnexity
      * @param array         $options
      **/
     public static function getHTMLTableCellsForItem(
-        ?HTMLTableRow $row = null,
-        ?CommonDBTM $item = null,
-        ?HTMLTableCell $father = null,
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
         array $options = []
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (empty($item)) {
@@ -1478,7 +1475,7 @@ abstract class CommonDBRelation extends CommonDBConnexity
                     } else {
                         $options['name'] = 'peer_' . $peers_id;
                         if (isset($_POST['entity_restrict'])) {
-                            $options['entity'] = Session::getMatchingActiveEntities($_POST['entity_restrict']);
+                            $options['entity'] = $_POST['entity_restrict'];
                         }
                         if ($normalized_action == 'remove') {
                             $options['nochecklimit'] = true;
@@ -1534,7 +1531,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
         CommonDBTM $item,
         array $ids
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $action        = $ma->getAction();
@@ -1811,7 +1807,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
      */
     protected static function getListForItemParams(CommonDBTM $item, $noent = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (Session::isCron()) {
@@ -1898,7 +1893,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
      */
     public static function getListForItem(CommonDBTM $item)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $params = static::getListForItemParams($item);
@@ -1943,7 +1937,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
      */
     public static function getDistinctTypes($items_id, $extra_where = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $params = static::getDistinctTypesParams($items_id, $extra_where);
@@ -1980,7 +1973,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
      */
     protected static function getTypeItemsQueryParams($items_id, $itemtype, $noent = false, $where = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $item = getItemForItemtype($itemtype);
@@ -2052,7 +2044,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
      */
     public static function getTypeItems($items_id, $itemtype)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $params = static::getTypeItemsQueryParams($items_id, $itemtype);
@@ -2070,7 +2061,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
      */
     public static function countForItem(CommonDBTM $item)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $params = static::getListForItemParams($item);
@@ -2096,7 +2086,6 @@ abstract class CommonDBRelation extends CommonDBConnexity
      **/
     public static function countForMainItem(CommonDBTM $item, $extra_types_where = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $nb = 0;

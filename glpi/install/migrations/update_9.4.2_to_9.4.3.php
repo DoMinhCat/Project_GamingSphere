@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40,10 +40,6 @@
  **/
 function update942to943()
 {
-    /**
-     * @var \DBmysql $DB
-     * @var \Migration $migration
-     */
     global $DB, $migration;
 
     $updateresult     = true;
@@ -111,7 +107,7 @@ function update942to943()
             );
             foreach ($elements_to_fix as $data) {
                  $data['content'] = $DB->escape($fix_content_fct($data['content'], $data['items_id'], $itil_fkey));
-                 $DB->updateOrDie($itil_element_table, $data, ['id' => $data['id']]);
+                 $DB->update($itil_element_table, $data, ['id' => $data['id']]);
             }
         }
 
@@ -127,7 +123,7 @@ function update942to943()
         );
         foreach ($tasks_to_fix as $data) {
             $data['content'] = $DB->escape($fix_content_fct($data['content'], $data[$itil_fkey], $itil_fkey));
-            $DB->updateOrDie($task_table, $data, ['id' => $data['id']]);
+            $DB->update($task_table, $data, ['id' => $data['id']]);
         }
     }
     /** /Fix URL of images inside ITIL objects contents */

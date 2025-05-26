@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -188,7 +188,6 @@ final class DbUtils
      */
     public function getTableForItemType($itemtype)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Force singular for itemtype : States case
@@ -209,10 +208,6 @@ final class DbUtils
                 if (substr($itemtype, 0, \strlen(NS_GLPI)) === NS_GLPI) {
                     $table = substr($table, \strlen(NS_GLPI));
                 }
-            }
-            //handle PHPUnit mocks
-            if (str_starts_with($table, 'mock_')) {
-                $table = preg_replace('/^mock_(.+)_.+$/', '$1', $table);
             }
             $table = str_replace(['mock\\', '\\'], ['', '_'], $table);
             if (strstr($table, '_')) {
@@ -242,7 +237,6 @@ final class DbUtils
      */
     public function getItemTypeForTable($table)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (isset($CFG_GLPI['glpiitemtypetables'][$table])) {
@@ -346,7 +340,6 @@ final class DbUtils
      */
     public function fixItemtypeCase(string $itemtype, $root_dir = GLPI_ROOT)
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         // If a class exists for this itemtype, just return the declared class name.
@@ -391,14 +384,12 @@ final class DbUtils
         }
 
         if (
-            !defined('TU_USER')
-            && (
-                (
-                    $mapping[$context] !== null
-                    && ($_SESSION['glpi_use_mode'] ?? null) !== Session::DEBUG_MODE
-                )
-                || in_array($context, $already_scanned)
+            (
+                $mapping[$context] !== null
+                && ($_SESSION['glpi_use_mode'] ?? null) !== Session::DEBUG_MODE
+                && !defined('TU_USER')
             )
+            || in_array($context, $already_scanned)
         ) {
             // Do not scan class files if mapping was already cached, unless debug mode is used.
             //
@@ -452,10 +443,7 @@ final class DbUtils
      *
      * @param string $itemtype itemtype
      *
-     * @return CommonDBTM|false itemtype instance or false if class does not exists
-     * @template T
-     * @phpstan-param class-string<T> $itemtype
-     * @phpstan-return T|false
+     * @return object|false itemtype instance or false if class does not exists
      */
     public function getItemForItemtype($itemtype)
     {
@@ -502,14 +490,13 @@ final class DbUtils
     /**
      * Count the number of elements in a table.
      *
-     * @param string|array   $table     table name(s)
-     * @param string|array   $condition array of criteria
+     * @param string|array $table     table name(s)
+     * @param array        $condition array of criteria
      *
      * @return integer Number of elements in table
      */
     public function countElementsInTable($table, $condition = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!is_array($table)) {
@@ -523,7 +510,6 @@ final class DbUtils
        }*/
 
         if (!is_array($condition)) {
-            Toolbox::Deprecated('Condition must be an array!');
             if (empty($condition)) {
                 $condition = [];
             }
@@ -537,9 +523,9 @@ final class DbUtils
     /**
      * Count the number of elements in a table.
      *
-     * @param string|array   $table     table name(s)
-     * @param string         $field     field name
-     * @param array|string|null          $condition array of criteria
+     * @param string|array $table     table name(s)
+     * @param string       $field     field name
+     * @param array        $condition array of criteria
      *
      * @return int nb of elements in table
      */
@@ -547,7 +533,6 @@ final class DbUtils
     {
 
         if (!is_array($condition)) {
-            Toolbox::Deprecated('Condition must be an array!');
             if (empty($condition)) {
                 $condition = [];
             }
@@ -610,16 +595,15 @@ final class DbUtils
      * Get data from a table in an array :
      * CAUTION TO USE ONLY FOR SMALL TABLES OR USING A STRICT CONDITION
      *
-     * @param string         $table    Table name
-     * @param array|string|null          $criteria Request criteria
-     * @param boolean        $usecache Use cache (false by default)
-     * @param string         $order    Result order (default '')
+     * @param string  $table    Table name
+     * @param array   $criteria Request criteria
+     * @param boolean $usecache Use cache (false by default)
+     * @param string  $order    Result order (default '')
      *
      * @return array containing all the datas
      */
     public function getAllDataFromTable($table, $criteria = [], $usecache = false, $order = '')
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         static $cache = [];
@@ -664,7 +648,6 @@ final class DbUtils
      */
     public function isIndex($table, $field)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!$DB->tableExists($table)) {
@@ -672,7 +655,7 @@ final class DbUtils
             return false;
         }
 
-        $result = $DB->doQuery("SHOW INDEX FROM `$table`");
+        $result = $DB->query("SHOW INDEX FROM `$table`");
 
         if ($result && $DB->numrows($result)) {
             while ($data = $DB->fetchAssoc($result)) {
@@ -694,7 +677,6 @@ final class DbUtils
      */
     public function isForeignKeyContraint($table, $keyname)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $query = [
@@ -736,7 +718,6 @@ final class DbUtils
         $is_recursive = false,
         $complete_request = false
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $query = $separator . " ( ";
@@ -828,8 +809,8 @@ final class DbUtils
      * @param string $field             field where apply the limit (id != entities_id) (default '')
      * @param mixed $value              entity to restrict (if not set use $_SESSION['glpiactiveentities']).
      *                                  single item or array (default '')
-     * @param boolean|'auto' $is_recursive     need to use recursive process to find item
-     *                                  (field need to be named recursive) (false by default, set to 'auto' to automatic detection)
+     * @param boolean $is_recursive     need to use recursive process to find item
+     *                                  (field need to be named recursive) (false by default, set to auto to automatic detection)
      * @param boolean $complete_request need to use a complete request and not a simple one
      *                                  when have acces to all entities (used for reminders)
      *                                  (false by default)
@@ -924,10 +905,6 @@ final class DbUtils
      */
     public function getSonsOf($table, $IDf)
     {
-        /**
-         * @var \DBmysql $DB
-         * @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE
-         */
         global $DB, $GLPI_CACHE;
 
         $ckey = 'sons_cache_' . $table . '_' . $IDf;
@@ -1036,10 +1013,6 @@ final class DbUtils
      */
     public function getAncestorsOf($table, $items_id)
     {
-        /**
-         * @var \DBmysql $DB
-         * @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE
-         */
         global $DB, $GLPI_CACHE;
 
         if ($items_id === null) {
@@ -1178,7 +1151,6 @@ final class DbUtils
      */
     public function getTreeLeafValueName($table, $ID, $withcomment = false, $translate = true)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $name    = "";
@@ -1281,7 +1253,6 @@ final class DbUtils
      */
     public function getTreeValueCompleteName($table, $ID, $withcomment = false, $translate = true, $tooltip = true, string $default = '&nbsp;')
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $name    = "";
@@ -1392,7 +1363,7 @@ final class DbUtils
                         }
                         $acomment .= $country;
                     }
-                    if (trim($acomment) != '') {
+                    if (trim($acomment != '')) {
                         $comment .= "<span class='b'>&nbsp;" . __('Address:') . "</span> " . $acomment . "<br/>";
                     }
                 }
@@ -1433,7 +1404,6 @@ final class DbUtils
      */
     public function getTreeValueName($table, $ID, $wholename = "", $level = 0)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $parentIDfield = $this->getForeignKeyFieldForTable($table);
@@ -1472,7 +1442,6 @@ final class DbUtils
      */
     public function getTreeForItem($table, $IDf)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $parentIDfield = $this->getForeignKeyFieldForTable($table);
@@ -1584,7 +1553,6 @@ final class DbUtils
      **/
     public function regenerateTreeCompleteName($table)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -1623,7 +1591,6 @@ final class DbUtils
      */
     public function formatUserName($ID, $login, $realname, $firstname, $link = 1, $cut = 0, $force_config = false)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $before = "";
@@ -1689,11 +1656,10 @@ final class DbUtils
      *                      (default =0)
      * @param $disable_anon   bool  disable anonymization of username.
      *
-     * @return string[]|string username string (realname if not empty and name if realname is empty).
+     * @return string username string (realname if not empty and name if realname is empty).
      */
     public function getUserName($ID, $link = 0, $disable_anon = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $user = "";
@@ -1795,11 +1761,7 @@ final class DbUtils
      */
     public function autoName($objectName, $field, $isTemplate, $itemtype, $entities_id = -1)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         if (!$isTemplate) {
             return $objectName;
@@ -1964,7 +1926,6 @@ final class DbUtils
      */
     public function closeDBConnections()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Case of not init $DB object
@@ -1984,7 +1945,6 @@ final class DbUtils
      */
     public function getDateCriteria($field, $begin, $end)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $date_pattern = '/^\d{4}-\d{2}-\d{2}( \d{2}:\d{2}:\d{2})?$/'; // `YYYY-mm-dd` optionaly followed by ` HH:ii:ss`

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40,10 +40,6 @@
  **/
 function update0840to0841()
 {
-    /**
-     * @var \DBmysql $DB
-     * @var \Migration $migration
-     */
     global $DB, $migration;
 
     $updateresult     = true;
@@ -63,7 +59,7 @@ function update0840to0841()
             $migration->displayWarning("$new_table table already exists. " .
                                     "A backup have been done to backup_$new_table.");
             $backup_tables = true;
-            $migration->renameTable("$new_table", "backup_$new_table");
+            $query         = $migration->renameTable("$new_table", "backup_$new_table");
         }
     }
     if ($backup_tables) {
@@ -80,7 +76,7 @@ function update0840to0841()
                    INNER JOIN `glpi_documents` as `doc`
                      ON  `doc`.`id` = `doc_i`.`documents_id`
                    SET `doc_i`.`date_mod` = `doc`.`date_mod`";
-    $DB->doQueryOrDie(
+    $DB->queryOrDie(
         $query_doc_i,
         "0.84.1 update date_mod in glpi_documents_items"
     );
@@ -91,7 +87,7 @@ function update0840to0841()
                      ON  `doc`.`id` = `doc_i`.`documents_id`
                    SET `doc_i`.`entities_id` = `doc`.`entities_id`,
                        `doc_i`.`is_recursive` = `doc`.`is_recursive`";
-    $DB->doQueryOrDie($query_doc_i, "0.84.1 change entities_id in documents_items");
+    $DB->queryOrDie($query_doc_i, "0.84.1 change entities_id in documents_items");
 
    // add delete_problem
     $migration->addField(
@@ -112,14 +108,14 @@ function update0840to0841()
                 FROM `glpi_displaypreferences`
                 WHERE `itemtype` = '$type'";
 
-        if ($result = $DB->doQuery($query)) {
+        if ($result = $DB->query($query)) {
             if ($DB->numrows($result) > 0) {
                 while ($data = $DB->fetchAssoc($result)) {
                     $query = "SELECT MAX(`rank`)
                          FROM `glpi_displaypreferences`
                          WHERE `users_id` = '" . $data['users_id'] . "'
                                AND `itemtype` = '$type'";
-                    $result = $DB->doQuery($query);
+                    $result = $DB->query($query);
                     $rank   = $DB->result($result, 0, 0);
                     $rank++;
 
@@ -129,13 +125,13 @@ function update0840to0841()
                             WHERE `users_id` = '" . $data['users_id'] . "'
                                   AND `num` = '$newval'
                                   AND `itemtype` = '$type'";
-                        if ($result2 = $DB->doQuery($query)) {
+                        if ($result2 = $DB->query($query)) {
                             if ($DB->numrows($result2) == 0) {
                                   $query = "INSERT INTO `glpi_displaypreferences`
                                          (`itemtype` ,`num` ,`rank` ,`users_id`)
                                   VALUES ('$type', '$newval', '" . $rank++ . "',
                                           '" . $data['users_id'] . "')";
-                                  $DB->doQuery($query);
+                                  $DB->query($query);
                             }
                         }
                     }
@@ -146,7 +142,7 @@ function update0840to0841()
                     $query = "INSERT INTO `glpi_displaypreferences`
                                 (`itemtype` ,`num` ,`rank` ,`users_id`)
                          VALUES ('$type', '$newval', '" . $rank++ . "', '0')";
-                    $DB->doQuery($query);
+                    $DB->query($query);
                 }
             }
         }

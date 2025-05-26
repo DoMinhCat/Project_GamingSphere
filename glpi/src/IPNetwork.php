@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -461,7 +461,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
 
         $preparedInput = $this->prepareInput($input);
 
-        if (isset($preparedInput['error']) && !isset($input['_no_message'])) {
+        if (isset($preparedInput['error'])) {
             Session::addMessageAfterRedirect($preparedInput['error'], false, ERROR);
         }
 
@@ -479,7 +479,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
 
         $preparedInput = $this->prepareInput($input);
 
-        if (isset($preparedInput['error']) && !isset($input['_no_message'])) {
+        if (isset($preparedInput['error'])) {
             Session::addMessageAfterRedirect($preparedInput['error'], false, ERROR);
         }
 
@@ -506,7 +506,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
     }
 
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
 
         if ($this->networkUpdate) {
@@ -610,7 +610,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
      * @param integer $version    version of IP to look (only use when using arrays or string as input for
      *                            address or netmask n(default 0)
      *
-     * @return false|array  of networks found. If we want request several field, the return value will be
+     * @return array  of networks found. If we want request several field, the return value will be
      *                an array of array
      *
      * \warning The order of the elements inside the result are ordered from the nearest one to the
@@ -624,7 +624,6 @@ class IPNetwork extends CommonImplicitTreeDropdown
         $recursive = true,
         $version = 0
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (empty($relation)) {
@@ -752,7 +751,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
         }
 
         if (!empty($condition["where"])) {
-            $WHERE[] = new \QueryExpression($condition["where"]);
+            $WHERE .= " AND " . $condition["where"];
         }
 
         $iterator = $DB->request([
@@ -806,7 +805,6 @@ class IPNetwork extends CommonImplicitTreeDropdown
      **/
     public function getCriteriaForMatchingElement($tableName, $binaryFieldPrefix, $versionField)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $version = $this->fields["version"];
@@ -834,7 +832,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
      * @param IPAddress|integer[] $networkNetmask  (see \ref parameterType) the netmask of the network
      * @param integer             $version         of IP : only usefull for binary array as input (default 0)
      *
-     * @return boolean true if the network owns the IP address
+     * @return true if the network owns the IP address
      **/
     public static function checkIPFromNetwork($address, $networkAddress, $networkNetmask, $version = 0)
     {
@@ -1006,7 +1004,7 @@ class IPNetwork extends CommonImplicitTreeDropdown
         $end   = [];
         for ($i = 0; $i < 4; ++$i) {
             $start[$i] = IPAddress::convertNegativeIntegerToPositiveFloat($address[$i] & $netmask[$i]);
-            $end[$i]   = IPAddress::convertNegativeIntegerToPositiveFloat($address[$i] | ~(int)$netmask[$i]);
+            $end[$i]   = IPAddress::convertNegativeIntegerToPositiveFloat($address[$i] | ~$netmask[$i]);
         }
 
         if ($excludeBroadcastAndNetwork) {
@@ -1040,7 +1038,6 @@ class IPNetwork extends CommonImplicitTreeDropdown
      **/
     public static function recreateTree()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Reset the tree
@@ -1084,8 +1081,8 @@ class IPNetwork extends CommonImplicitTreeDropdown
     public static function getHTMLTableHeader(
         $itemtype,
         HTMLTableBase $base,
-        ?HTMLTableSuperHeader $super = null,
-        ?HTMLTableHeader $father = null,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -1113,9 +1110,9 @@ class IPNetwork extends CommonImplicitTreeDropdown
      * @param $options   array
      **/
     public static function getHTMLTableCellsForItem(
-        ?HTMLTableRow $row = null,
-        ?CommonDBTM $item = null,
-        ?HTMLTableCell $father = null,
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
         array $options = []
     ) {
         if (empty($item)) {
@@ -1182,7 +1179,6 @@ class IPNetwork extends CommonImplicitTreeDropdown
      **/
     public static function showIPNetworkProperties($entities_id = -1, $value = 0)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $rand = mt_rand();

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -77,8 +77,6 @@ if (isset($_POST["add"])) {
         //TRANS: %s is the user login
         sprintf(__('%s deletes an item'), $_SESSION["glpiname"])
     );
-    $computer = new Computer();
-    $computer->getFromDB($computer_vm->fields['computers_id']);
     Html::redirect(Toolbox::getItemTypeFormURL('Computer') . '?id=' . $computer_vm->fields['computers_id'] .
                   ($computer->fields['is_template'] ? "&withtemplate=1" : ""));
 } else if (isset($_POST["purge"])) {

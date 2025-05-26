@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -46,8 +46,6 @@ switch ($_REQUEST['action']) {
             'as_map'             => 0,
             'showmassiveactions' => true,
             'criteria'           => $_REQUEST['criteria'],
-            'sort'               => $_REQUEST['sort'] ?? [],
-            'order'              => $_REQUEST['order'] ?? [],
         ];
 
         $itemtype = $_REQUEST['itemtype'];
@@ -65,16 +63,15 @@ switch ($_REQUEST['action']) {
             }
         }
 
-        $_SESSION['treebrowse'][$itemtype] = [
+        $params['criteria'][] = [
             'link'   => "AND",
             'field'  => $field,
             'searchtype'   => "equals",
             'virtual'      => true,
             'value'  => ($_REQUEST['cat_id'] > 0) ? $_REQUEST['cat_id'] : 0,
         ];
-        $params['criteria'][] = $_SESSION['treebrowse'][$itemtype];
         Search::showList($itemtype, $params);
-        return;
+        break;
 }
 http_response_code(400);
 return;

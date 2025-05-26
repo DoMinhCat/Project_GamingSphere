@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -157,7 +157,6 @@ class Entity extends CommonTreeDropdown
 
     public function pre_updateInDB()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (($key = array_search('name', $this->updates)) !== false) {
@@ -187,7 +186,6 @@ class Entity extends CommonTreeDropdown
 
     public function pre_deleteItem()
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         // Security do not delete root entity
@@ -327,8 +325,8 @@ class Entity extends CommonTreeDropdown
      **/
     public function prepareInputForAdd($input)
     {
-        /** @var \DBmysql $DB */
         global $DB;
+
         $input['name'] = isset($input['name']) ? trim($input['name']) : '';
         if (empty($input["name"])) {
             Session::addMessageAfterRedirect(
@@ -365,13 +363,6 @@ class Entity extends CommonTreeDropdown
             $input['latitude'] = $parent->fields['latitude'];
             $input['longitude'] = $parent->fields['longitude'];
             $input['altitude'] = $parent->fields['altitude'];
-        }
-
-        if (!array_key_exists('custom_css_code', $input) || $input['custom_css_code'] === null) {
-            // The `custom_css_code` field is a textfield and therefore has no default value.
-            // The `Entity::getUsedConfig()` does not correctly handle the `null` value found in the root entity.
-            // See https://github.com/glpi-project/glpi/pull/17648
-            $input['custom_css_code'] = '';
         }
 
         if (!Session::isCron()) { // Filter input for connected
@@ -414,13 +405,6 @@ class Entity extends CommonTreeDropdown
             $input['max_closedate'] = $_SESSION["glpi_currenttime"];
         }
 
-        if (array_key_exists('custom_css_code', $input) && $input['custom_css_code'] === null) {
-            // The `custom_css_code` field is a textfield and therefore has no default value.
-            // The `Entity::getUsedConfig()` does not correctly handle the `null` value found in the root entity.
-            // See https://github.com/glpi-project/glpi/pull/17648
-            $input['custom_css_code'] = '';
-        }
-
         if (!Session::isCron()) { // Filter input for connected
             $input = $this->checkRightDatas($input);
         }
@@ -437,7 +421,6 @@ class Entity extends CommonTreeDropdown
      */
     private function handleConfigStrategyFields(array $input): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         foreach ($input as $field => $value) {
@@ -519,7 +502,6 @@ class Entity extends CommonTreeDropdown
     {
 
         if ($item->getType() == __CLASS__) {
-            /** @var Entity $item */
             switch ($tabnum) {
                 case 1:
                     $item->showChildren();
@@ -627,14 +609,19 @@ class Entity extends CommonTreeDropdown
         $_SESSION['glpiactiveentities_string']              .= ",'" . $this->fields['id'] . "'";
         // Root entity cannot be deleted, so if we added an entity this means GLPI is now multi-entity
         $_SESSION['glpi_multientitiesmode'] = 1;
+
+       // clean entity tree cache
+        $this->cleanEntitySelectorCache();
     }
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         parent::post_updateItem($history);
+
+       // clean entity tree cache
+        $this->cleanEntitySelectorCache();
 
         // Delete any cache entry corresponding to an updated entity config
         // for current entities and all its children
@@ -679,6 +666,9 @@ class Entity extends CommonTreeDropdown
                 Entity_RSSFeed::class,
             ]
         );
+
+       // clean entity tree cache
+        $this->cleanEntitySelectorCache();
     }
 
 
@@ -688,11 +678,12 @@ class Entity extends CommonTreeDropdown
      * @since 10.0
      *
      * @return void
-     * @deprecated 10.0.12
      */
     public function cleanEntitySelectorCache()
     {
-        Toolbox::deprecated('`Entity::cleanEntitySelectorCache()` no longer has any effect as the entity selector is no longer cached as a unique entry');
+        global $GLPI_CACHE;
+
+        $GLPI_CACHE->delete('entity_selector');
     }
 
     public function rawSearchOptions()
@@ -1398,7 +1389,7 @@ class Entity extends CommonTreeDropdown
         $tab[] = [
             'id'                 => '51',
             'table'              => $this->getTable(),
-            'field'              => 'entities_id_software',
+            'field'              => 'name',
             'linkfield'          => 'entities_id_software', // not a dropdown because of special value
                                  //TRANS: software in plural
             'name'               => __('Entity for software creation'),
@@ -1433,7 +1424,7 @@ class Entity extends CommonTreeDropdown
         $this->check($_POST["affectentity"], UPDATE);
 
         $collection = RuleCollection::getClassByType($_POST['sub_type']);
-        $rule       = $collection->getRuleClass();
+        $rule       = $collection->getRuleClass($_POST['sub_type']);
         $ruleid     = $rule->add($_POST);
 
         if ($ruleid) {
@@ -1490,7 +1481,6 @@ class Entity extends CommonTreeDropdown
      **/
     public static function getEntitiesToNotify($field)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $entities = [];
@@ -1759,7 +1749,8 @@ class Entity extends CommonTreeDropdown
             return false;
         }
 
-        $canedit = $entity->can($ID, UPDATE);
+       // Notification right applied
+        $canedit = (Infocom::canUpdate() && Session::haveAccessToEntity($ID));
 
         echo "<div class='spaced'>";
         if ($canedit) {
@@ -1945,11 +1936,11 @@ class Entity extends CommonTreeDropdown
             'value'      => $entity->fields['transfers_id'],
             'display_emptychoice' => false
         ];
-        $params['toadd'] = [
-            self::CONFIG_NEVER => __('No automatic transfer')
-        ];
         if ($entity->fields['id'] > 0) {
-            $params['toadd'][self::CONFIG_PARENT] = __('Inheritance of the parent entity');
+            $params['toadd'] = [
+                self::CONFIG_NEVER => __('No automatic transfer'),
+                self::CONFIG_PARENT => __('Inheritance of the parent entity')
+            ];
         }
         Dropdown::show('Transfer', $params);
         if ($entity->fields['transfers_strategy'] == self::CONFIG_PARENT) {
@@ -2275,7 +2266,7 @@ class Entity extends CommonTreeDropdown
         Alert::dropdownIntegerNever(
             'send_contracts_alert_before_delay',
             $entity->fields['send_contracts_alert_before_delay'],
-            ['max'            => 365,
+            ['max'            => 99,
                 'inherit_parent' => (($ID > 0) ? 1 : 0),
                 'unit'           => 'day',
                 'never_string'   => __('No')
@@ -2322,7 +2313,7 @@ class Entity extends CommonTreeDropdown
         Alert::dropdownIntegerNever(
             'send_infocoms_alert_before_delay',
             $entity->fields['send_infocoms_alert_before_delay'],
-            ['max'            => 365,
+            ['max'            => 99,
                 'inherit_parent' => (($ID > 0) ? 1 : 0),
                 'unit'           => 'day',
                 'never_string'   => __('No')
@@ -2356,7 +2347,7 @@ class Entity extends CommonTreeDropdown
         Alert::dropdownIntegerNever(
             'send_licenses_alert_before_delay',
             $entity->fields['send_licenses_alert_before_delay'],
-            ['max'            => 365,
+            ['max'            => 99,
                 'inherit_parent' => (($ID > 0) ? 1 : 0),
                 'unit'           => 'day',
                 'never_string'   => __('No')
@@ -2391,7 +2382,7 @@ class Entity extends CommonTreeDropdown
         Alert::dropdownIntegerNever(
             'send_certificates_alert_before_delay',
             $entity->fields['send_certificates_alert_before_delay'],
-            ['max'            => 365,
+            ['max'            => 99,
                 'inherit_parent' => (($ID > 0) ? 1 : 0),
                 'unit'           => 'day',
                 'never_string'   => __('No')
@@ -2426,7 +2417,7 @@ class Entity extends CommonTreeDropdown
         Alert::dropdownIntegerNever(
             'use_reservations_alert',
             $entity->fields['use_reservations_alert'],
-            ['max'            => 365,
+            ['max'            => 99,
                 'inherit_parent' => (($ID > 0) ? 1 : 0),
                 'unit'           => 'hour'
             ]
@@ -2445,7 +2436,7 @@ class Entity extends CommonTreeDropdown
         Alert::dropdownIntegerNever(
             'notclosed_delay',
             $entity->fields["notclosed_delay"],
-            ['max'            => 365,
+            ['max'            => 99,
                 'inherit_parent' => (($ID > 0) ? 1 : 0),
                 'unit'           => 'day'
             ]
@@ -2478,7 +2469,7 @@ class Entity extends CommonTreeDropdown
             'send_domains_alert_close_expiries_delay',
             $entity->fields["send_domains_alert_close_expiries_delay"],
             [
-                'max'            => 365,
+                'max'            => 99,
                 'inherit_parent' => (($ID > 0) ? 1 : 0),
                 'unit'           => 'day'
             ]
@@ -2494,7 +2485,7 @@ class Entity extends CommonTreeDropdown
             'send_domains_alert_expired_delay',
             $entity->fields["send_domains_alert_expired_delay"],
             [
-                'max'            => 365,
+                'max'            => 99,
                 'inherit_parent' => (($ID > 0) ? 1 : 0),
                 'unit'           => 'day'
             ]
@@ -2532,7 +2523,6 @@ class Entity extends CommonTreeDropdown
     public static function showUiCustomizationOptions(Entity $entity)
     {
 
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $ID = $entity->getField('id');
@@ -2643,6 +2633,7 @@ class Entity extends CommonTreeDropdown
             $this->fields['id'],
             'custom_css_code'
         );
+
         if (empty($custom_css_code)) {
             return '';
         }
@@ -2658,7 +2649,6 @@ class Entity extends CommonTreeDropdown
      **/
     private static function getEntityIDByField($field, $value)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -2751,7 +2741,6 @@ class Entity extends CommonTreeDropdown
      **/
     public static function showHelpdeskOptions(Entity $entity)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $ID = $entity->getField('id');
@@ -3257,10 +3246,6 @@ class Entity extends CommonTreeDropdown
      **/
     public static function getUsedConfig($fieldref, $entities_id, $fieldval = '', $default_value = -2)
     {
-        /**
-         * @var \DBmysql $DB
-         * @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE
-         */
         global $DB, $GLPI_CACHE;
 
         $id_using_strategy = [
@@ -3517,7 +3502,9 @@ class Entity extends CommonTreeDropdown
      *
      * @since 10.0.0
      *
-     * @return array
+     * @param integer|null $val if not set, ask for all values, else for 1 value (default NULL)
+     *
+     * @return string|array
      **/
     public static function getDisplayUsersInitialsValues()
     {
@@ -3535,7 +3522,9 @@ class Entity extends CommonTreeDropdown
      *
      * @since 9.5
      *
-     * @return array
+     * @param integer|null $val if not set, ask for all values, else for 1 value (default NULL)
+     *
+     * @return string|array
      **/
     public static function getSuppliersAsPrivateValues()
     {
@@ -3756,7 +3745,7 @@ class Entity extends CommonTreeDropdown
 
             case 'tickettemplates_id':
                 $strategy = $values['tickettemplates_strategy'] ?? $values[$field];
-                if ($strategy == self::CONFIG_PARENT) {
+                if ($values['tickettemplates_strategy'] == self::CONFIG_PARENT) {
                     return __('Inheritance of the parent entity');
                 }
                 return Dropdown::getDropdownName(TicketTemplate::getTable(), $values[$field]);
@@ -3773,7 +3762,6 @@ class Entity extends CommonTreeDropdown
             case 'transfers_id':
                 $strategy = $values['transfers_strategy'] ?? $values[$field];
                 if ($strategy == self::CONFIG_NEVER) {
-                    return __('No automatic transfer');
                 }
                 if ($strategy == self::CONFIG_PARENT) {
                     return __('Inheritance of the parent entity');
@@ -4038,7 +4026,7 @@ class Entity extends CommonTreeDropdown
      *
      * @param string $entity_string
      *
-     * @return string
+     * @return string|null
      */
     public static function badgeCompletename(string $entity_string = "", ?string $title = null): string
     {
@@ -4090,7 +4078,7 @@ class Entity extends CommonTreeDropdown
      *
      * @param object $entity
      *
-     * @return string
+     * @return string|null
      */
     public static function badgeCompletenameLink(object $entity): string
     {
@@ -4134,124 +4122,5 @@ class Entity extends CommonTreeDropdown
             return self::badgeCompletenameLink($entity);
         }
         return null;
-    }
-
-    private static function getEntityTree(int $entities_id_root): array
-    {
-        /** @var \DBmysql $DB */
-        global $DB;
-
-        $sons = getSonsOf('glpi_entities', $entities_id_root);
-        if (!isset($sons[$entities_id_root])) {
-            $sons[$entities_id_root] = $entities_id_root;
-        }
-
-        $iterator = $DB->request([
-            'SELECT' => ['id', 'name', 'entities_id'],
-            'FROM'   => 'glpi_entities',
-            'WHERE'  => ['entities_id' => $sons],
-            'ORDER'  => 'name'
-        ]);
-
-        $grouped = [];
-        foreach ($iterator as $row) {
-            if (!array_key_exists($row['entities_id'], $grouped)) {
-                $grouped[$row['entities_id']] = [];
-            }
-            $grouped[$row['entities_id']][] = [
-                'id'   => $row['id'],
-                'name' => $row['name']
-            ];
-        }
-
-        \Glpi\Debug\Profiler::getInstance()->start('constructTreeFromList');
-        $fn_construct_tree_from_list = static function (array $list, int $root) use (&$fn_construct_tree_from_list): array {
-            $tree = [];
-            if (array_key_exists($root, $list)) {
-                foreach ($list[$root] as $data) {
-                    $tree[$data['id']] = [
-                        'name' => $data['name'],
-                        'tree' => $fn_construct_tree_from_list($list, $data['id']),
-                    ];
-                }
-            }
-            return $tree;
-        };
-
-        $constructed = $fn_construct_tree_from_list($grouped, $entities_id_root);
-        \Glpi\Debug\Profiler::getInstance()->stop('constructTreeFromList');
-        return [
-            $entities_id_root => [
-                'name' => Dropdown::getDropdownName('glpi_entities', $entities_id_root),
-                'tree' => $constructed,
-            ],
-        ];
-    }
-
-    public static function getEntitySelectorTree(): array
-    {
-        /** @var array $CFG_GLPI */
-        global $CFG_GLPI;
-
-        $base_path = $CFG_GLPI['root_doc'] . "/front/central.php";
-        if (Session::getCurrentInterface() == 'helpdesk') {
-            $base_path = $CFG_GLPI["root_doc"] . "/front/helpdesk.public.php";
-        }
-
-        $ancestors = getAncestorsOf('glpi_entities', $_SESSION['glpiactive_entity']);
-
-        \Glpi\Debug\Profiler::getInstance()->start('Generate entity tree');
-        $entitiestree = [];
-        foreach ($_SESSION['glpiactiveprofile']['entities'] as $default_entity) {
-            $default_entity_id = $default_entity['id'];
-            $entitytree = $default_entity['is_recursive'] ? self::getEntityTree($default_entity_id) : [$default_entity['id'] => $default_entity];
-
-            $adapt_tree = static function (&$entities) use (&$adapt_tree, $base_path) {
-                foreach ($entities as $entities_id => &$entity) {
-                    $entity['key']   = $entities_id;
-
-                    $title = "<a href='$base_path?active_entity={$entities_id}'>{$entity['name']}</a>";
-                    $entity['title'] = $title;
-                    unset($entity['name']);
-
-                    if (isset($entity['tree']) && count($entity['tree']) > 0) {
-                        $entity['folder'] = true;
-
-                        $entity['title'] .= "<a href='$base_path?active_entity={$entities_id}&is_recursive=1'>
-            <i class='fas fa-angle-double-down ms-1' data-bs-toggle='tooltip' data-bs-placement='right' title='" . __('+ sub-entities') . "'></i>
-            </a>";
-
-                        $children = $adapt_tree($entity['tree']);
-                        $entity['children'] = array_values($children);
-                    }
-
-                    unset($entity['tree']);
-                }
-
-                return $entities;
-            };
-            $adapt_tree($entitytree);
-
-            $entitiestree = array_merge($entitiestree, $entitytree);
-        }
-        \Glpi\Debug\Profiler::getInstance()->stop('Generate entity tree');
-
-        /* scans the tree to select the active entity */
-        $select_tree = static function (&$entities) use (&$select_tree, $ancestors) {
-            foreach ($entities as &$entity) {
-                if (isset($ancestors[$entity['key']])) {
-                    $entity['expanded'] = 'true';
-                }
-                if ($entity['key'] == $_SESSION['glpiactive_entity']) {
-                    $entity['selected'] = 'true';
-                }
-                if (isset($entity['children'])) {
-                    $select_tree($entity['children']);
-                }
-            }
-        };
-        $select_tree($entitiestree);
-
-        return $entitiestree;
     }
 }

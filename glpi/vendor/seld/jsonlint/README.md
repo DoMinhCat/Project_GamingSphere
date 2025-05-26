@@ -1,7 +1,7 @@
 JSON Lint
 =========
 
-[![Build Status](https://github.com/Seldaek/jsonlint/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/Seldaek/jsonlint/actions/workflows/continuous-integration.yml)
+[![Build Status](https://secure.travis-ci.org/Seldaek/jsonlint.png)](http://travis-ci.org/Seldaek/jsonlint)
 
 Usage
 -----
@@ -34,8 +34,6 @@ You can also pass additional flags to `JsonParser::lint/parse` that tweak the fu
 - `JsonParser::DETECT_KEY_CONFLICTS` throws an exception on duplicate keys.
 - `JsonParser::ALLOW_DUPLICATE_KEYS` collects duplicate keys. e.g. if you have two `foo` keys they will end up as `foo` and `foo.2`.
 - `JsonParser::PARSE_TO_ASSOC` parses to associative arrays instead of stdClass objects.
-- `JsonParser::ALLOW_COMMENTS` parses while allowing (and ignoring) inline `//` and multiline `/* */` comments in the JSON document.
-- `JsonParser::ALLOW_DUPLICATE_KEYS_TO_ARRAY` collects duplicate keys. e.g. if you have two `foo` keys the `foo` key will become an object (or array in assoc mode) with all `foo` values accessible as an array in `$result->foo->__duplicates__` (or `$result['foo']['__duplicates__']` in assoc mode).
 
 Example:
 
@@ -59,9 +57,7 @@ Installation
 
 For a quick install with Composer use:
 
-```bash
-composer require seld/jsonlint
-```
+    $ composer require seld/jsonlint
 
 JSON Lint can easily be used within another app if you have a
 [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)

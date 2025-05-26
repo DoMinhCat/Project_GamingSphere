@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -101,7 +101,7 @@ abstract class AbstractRequest
     private $error = false;
     /** @var boolean */
     protected $test_rules = false;
-    /** @var \Glpi\Agent\Communication\Headers\Common */
+    /** @var Glpi\Agent\Communication\Headers\Common */
     protected $headers;
     /** @var int */
     private $http_response_code = 200;

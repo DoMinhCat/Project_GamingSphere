@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -66,11 +66,7 @@ class Report extends CommonGLPI
      **/
     public static function title()
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var array $PLUGIN_HOOKS
-         */
-        global $CFG_GLPI, $PLUGIN_HOOKS;
+        global $PLUGIN_HOOKS, $CFG_GLPI;
 
        // Report generation
        // Default Report included
@@ -187,11 +183,7 @@ class Report extends CommonGLPI
      **/
     public static function showDefaultReport()
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
        // Title
         echo "<span class='big b'>GLPI " . Report::getTypeName(Session::getPluralNumber()) . "</span><br><br>";
@@ -275,7 +267,6 @@ class Report extends CommonGLPI
         $items = array_flip($val);
 
         foreach ($items as $itemtype) {
-            /** @var class-string $itemtype */
             echo "<tr class='tab_bg_1'><td colspan='2' class='b'>" . $itemtype::getTypeName(Session::getPluralNumber()) .
               "</td></tr>";
 
@@ -366,7 +357,6 @@ class Report extends CommonGLPI
         array $order = [],
         $extra = ''
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // This SQL request matches the NetworkPort, then its NetworkName and IPAddreses. It also

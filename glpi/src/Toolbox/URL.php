@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -45,7 +45,7 @@ final class URL
      *
      * @param null|string $url
      *
-     * @return string
+     * @return string|null
      */
     final public static function sanitizeURL(?string $url): string
     {
@@ -73,43 +73,5 @@ final class URL
         }
 
         return $url;
-    }
-
-    /**
-     * Checks whether an URL can be considered as a valid GLPI relative URL.
-     *
-     * @param string $url
-     *
-     * @return bool
-     */
-    public static function isGLPIRelativeUrl(string $url): bool
-    {
-        if ($url === '') {
-            return false;
-        }
-
-        if (self::sanitizeURL($url) !== $url) {
-            return false;
-        }
-
-        $parsed_url = parse_url($url);
-
-        if (
-            // URL is not parsable, it is invalid.
-            $parsed_url === false
-            // A relative URL should not contain a `scheme` or a `host` token
-            || array_key_exists('scheme', $parsed_url)
-            || array_key_exists('host', $parsed_url)
-            // A relative URL should contain a `path` token.
-            || !array_key_exists('path', $parsed_url)
-            // GLPI URLs are not supposed to contain special chars.
-            || preg_match('#[^a-z0-9_/\.-]#i', $parsed_url['path']) === 1
-            // // The path refers to an hidden resource (name starts with `/.`), or contains a `/..` that may lead outside the GLPI tree.
-            || preg_match('#/\.#', $parsed_url['path']) === 1
-        ) {
-            return false;
-        }
-
-        return true;
     }
 }

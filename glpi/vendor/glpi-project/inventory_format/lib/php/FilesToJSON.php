@@ -1,23 +1,56 @@
 <?php
 
 /**
- * © Teclib' and contributors.
+ * ---------------------------------------------------------------------
+ * GLPI - Gestionnaire Libre de Parc Informatique
+ * Copyright (C) 2015-2018 Teclib' and contributors.
  *
- * This file is part of GLPI inventory format.
+ * http://glpi-project.org
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * based on GLPI - Gestionnaire Libre de Parc Informatique
+ * Copyright (C) 2003-2014 by the INDEPNET Development Team.
+ *
+ * ---------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of GLPI.
+ *
+ * GLPI is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GLPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
+ * ---------------------------------------------------------------------
+ *
+ * PHP version 7
+ *
+ * @category  Inventory
+ * @package   Glpi
+ * @author    Johan Cwiklinski <jcwiklinski@teclib.com>
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      https://glpi-project.org
  */
 
 namespace Glpi\Inventory;
 
-use RuntimeException;
-
 /**
- * Converts specific texts list files to JSON format
+ * Converts old FusionInventory XML format to new JSON schema
  * for automatic inventory.
  *
+ * @category  Inventory
+ * @package   Glpi
  * @author    Johan Cwiklinski <jcwiklinski@teclib.com>
+ * @copyright 2018-2023 GLPI Team and Contributors
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      https://glpi-project.org
  */
 final class FilesToJSON
 {
@@ -36,7 +69,7 @@ final class FilesToJSON
     /**
      * @var string
      */
-    private string $path = __DIR__ . '/../../data';
+    private $path = __DIR__ . '/../../data';
 
     /**
      * Get JSON file path
@@ -53,7 +86,7 @@ final class FilesToJSON
     /**
      * Download new sources
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return void
      */
     public function refreshSources()
@@ -63,7 +96,7 @@ final class FilesToJSON
             $contents = $this->callCurl($uri);
 
             if (file_put_contents($path, $contents) !== strlen($contents)) {
-                throw new RuntimeException(sprintf('Unable to write content in %s.', $path));
+                throw new \RuntimeException(sprintf('Unable to write content in %s.', $path));
             }
         }
     }
@@ -71,7 +104,7 @@ final class FilesToJSON
     /**
      * Runs all conversions
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return void
      */
     public function run(): void
@@ -106,7 +139,7 @@ final class FilesToJSON
                 $basename = 'iftype.csv';
                 break;
             default:
-                throw new RuntimeException('Unknown type ' . $type);
+                throw new \RuntimeException('Unknown type ' . $type);
         }
 
         return $basename;
@@ -128,7 +161,7 @@ final class FilesToJSON
      * Get file for type
      *
      * @param string  $type     Type
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return resource
      */
     private function getSourceFile(string $type)
@@ -140,14 +173,14 @@ final class FilesToJSON
             $path = __DIR__ . '/../../source_files/' . $this->getSourceFilename($type);
 
             if (!file_exists($path)) {
-                throw new RuntimeException(sprintf('Source file %s not found.', $this->getSourceFilename($type)));
+                throw new \RuntimeException(sprintf('Source file %s not found.', $this->getSourceFilename($type)));
             }
         }
 
         $file = fopen($path, 'r');
 
         if ($file === false) {
-            throw new RuntimeException(sprintf('Unable to open source file %s.', $path));
+            throw new \RuntimeException(sprintf('Unable to open source file %s.', $path));
         }
 
         return $file;
@@ -156,7 +189,7 @@ final class FilesToJSON
     /**
      * Convert PCI file from IDS to JSON
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return void
      */
     private function convertPciFile(): void
@@ -164,7 +197,6 @@ final class FilesToJSON
         $pciFile = $this->getSourceFile(self::TYPE_PCI);
         $pci_ids = [];
 
-        $vendorId = null;
         while ($buffer = fgets($pciFile)) {
             $stack = [];
             if (preg_match("/^(\w+)\s*(.+)/i", $buffer, $stack)) {
@@ -181,7 +213,7 @@ final class FilesToJSON
 
         if (!feof($pciFile)) {
             // Ensure source file reading reach end of file.
-            throw new RuntimeException('Error while reading PCI source file.');
+            throw new \RuntimeException('Error while reading PCI source file.');
         }
 
         $this->writeJsonFile(self::TYPE_PCI, $pci_ids);
@@ -190,7 +222,7 @@ final class FilesToJSON
     /**
      * Convert USB file from IDS to JSON
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return void
      */
     private function convertUsbFile(): void
@@ -198,7 +230,6 @@ final class FilesToJSON
         $usbFile = $this->getSourceFile(self::TYPE_USB);
         $usb_ids = [];
 
-        $vendorId = null;
         while ($buffer = fgets($usbFile)) {
             $stack = [];
             if (preg_match("/^(\w+)\s*(.+)/i", $buffer, $stack)) {
@@ -215,7 +246,7 @@ final class FilesToJSON
 
         if (!feof($usbFile)) {
             // Ensure source file reading reach end of file.
-            throw new RuntimeException('Error while reading USB source file.');
+            throw new \RuntimeException('Error while reading USB source file.');
         }
 
         $this->writeJsonFile(self::TYPE_USB, $usb_ids);
@@ -225,7 +256,7 @@ final class FilesToJSON
     /**
      * Convert OUI file from TXT to JSON
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return void
      */
     private function convertOUIFile(): void
@@ -243,7 +274,7 @@ final class FilesToJSON
 
         if (!feof($ouiFile)) {
             // Ensure source file reading reach end of file.
-            throw new RuntimeException('Error while reading OUI source file.');
+            throw new \RuntimeException('Error while reading OUI source file.');
         }
 
         $this->writeJsonFile(self::TYPE_OUI, $ouis);
@@ -252,7 +283,7 @@ final class FilesToJSON
     /**
      * Convert iftype file from CSV to JSON
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return void
      */
     private function convertIftypeFile(): void
@@ -271,7 +302,7 @@ final class FilesToJSON
 
         if (!feof($iftypeFile)) {
             // Ensure source file reading reach end of file.
-            throw new RuntimeException('Error while reading IFtype source file.');
+            throw new \RuntimeException('Error while reading IFtype source file.');
         }
 
         $this->writeJsonFile(self::TYPE_IFTYPE, $iftypes);
@@ -281,8 +312,8 @@ final class FilesToJSON
      * Write converted source into corresponding file.
      *
      * @param string $type
-     * @param array<string|int, mixed> $data
-     * @throws RuntimeException
+     * @param array $data
+     * @throws \RuntimeException
      * @return void
      */
     private function writeJsonFile(string $type, array $data): void
@@ -291,11 +322,11 @@ final class FilesToJSON
         $contents = json_encode($data, JSON_PRETTY_PRINT);
 
         if ($contents === false) {
-            throw new RuntimeException(sprintf('Error while encoding "%s" data to JSON.', $type));
+            throw new \RuntimeException(sprintf('Error while encoding "%s" data to JSON.', $type));
         }
 
-        if (file_put_contents($path, $contents) !== strlen($contents)) {
-            throw new RuntimeException(sprintf('Unable to write "%s" JSON into "%s".', $type, $path));
+        if (!file_put_contents($path, $contents) === strlen($contents)) {
+            throw new \RuntimeException(sprintf('Unable to write "%s" JSON into "%s".', $type, $path));
         }
     }
 
@@ -303,21 +334,12 @@ final class FilesToJSON
      * Executes a curl call
      *
      * @param string $url   URL to retrieve
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @return string
      */
-    private function callCurl(string $url): string
+    private function callCurl($url): string
     {
         $ch = curl_init($url);
-
-        if ($ch === false) {
-            throw new RuntimeException(
-                sprintf(
-                    'Unable to initialize curl for %s',
-                    $url
-                )
-            );
-        }
 
         $opts = [
             CURLOPT_URL             => $url,
@@ -349,10 +371,9 @@ final class FilesToJSON
         }
 
         if ($msgerr !== null) {
-            throw new RuntimeException($msgerr);
+            throw new \RuntimeException($msgerr);
         }
 
-        //force cast to make phpstan happy, but return is always string here
-        return (string)$content;
+        return $content;
     }
 }

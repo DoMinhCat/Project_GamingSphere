@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -94,7 +94,6 @@ class DatabaseInstance extends CommonDBTM
 
     public function getDatabases(): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
         $dbs = [];
 
@@ -115,7 +114,6 @@ class DatabaseInstance extends CommonDBTM
 
     public function showForm($ID, array $options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $rand = mt_rand();
@@ -237,7 +235,7 @@ class DatabaseInstance extends CommonDBTM
         echo "</td></tr>\n";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='dropdown_groups_id_tech$rand'>" . __('Group in charge') . "</label></td>";
+        echo "<td><label for='dropdown_groups_id_tech$rand'>" . __('Group in charge of the hardware') . "</label></td>";
         echo "<td>";
         Group::dropdown([
             'name'      => 'groups_id_tech',
@@ -259,7 +257,7 @@ class DatabaseInstance extends CommonDBTM
         echo "</textarea></td></tr>";
 
         echo "<tr class='tab_bg_1'>";
-        echo "<td><label for='dropdown_users_id_tech$rand'>" . __('Technician in charge') . "</label></td>";
+        echo "<td><label for='dropdown_users_id_tech$rand'>" . __('Technician in charge of the hardware') . "</label></td>";
         echo "<td>";
         User::dropdown(['name'   => 'users_id_tech',
             'value'  => $this->fields["users_id_tech"],
@@ -366,7 +364,7 @@ class DatabaseInstance extends CommonDBTM
             'id'               => '5',
             'table'            => DatabaseInstance::getTable(),
             'field'            => 'items_id',
-            'name'             => _n('Item', 'Items', 1),
+            'name'             => _n('Associated item', 'Associated items', 2),
             'nosearch'         => true,
             'massiveaction'    => false,
             'forcegroupby'     => true,
@@ -382,33 +380,6 @@ class DatabaseInstance extends CommonDBTM
             'field'              => 'version',
             'name'               => _n('Version', 'Versions', 1),
             'datatype'           => 'text'
-        ];
-
-        $tab[] = [
-            'id'                 => '7',
-            'table'              => DatabaseInstance::getTable(),
-            'field'              => 'is_active',
-            'name'               => __('Is active'),
-            'massiveaction'      => false,
-            'datatype'           => 'bool'
-        ];
-
-        $tab[] = [
-            'id'                 => '253',
-            'table'              => DatabaseInstance::getTable(),
-            'field'              => 'path',
-            'name'               => __('Path'),
-            'datatype'           => 'text'
-        ];
-
-        $tab[] = [
-            'id'                 => '8',
-            'table'              => DatabaseInstance::getTable(),
-            'field'              => 'itemtype',
-            'name'               => __('Item type'),
-            'massiveaction'      => false,
-            'datatype'           => 'itemtypename',
-            'types'              => self::getTypes()
         ];
 
         $tab[] = [
@@ -509,11 +480,8 @@ class DatabaseInstance extends CommonDBTM
                 if ($itemtype !== null && class_exists($itemtype)) {
                     if ($values[$field] > 0) {
                         $item = new $itemtype();
-                        if ($item->getFromDB($values[$field])) {
-                            return "<a href='" . $item->getLinkURL() . "'>" . $item->fields['name'] . "</a>";
-                        } else {
-                            return ' ';
-                        }
+                        $item->getFromDB($values[$field]);
+                        return "<a href='" . $item->getLinkURL() . "'>" . $item->fields['name'] . "</a>";
                     }
                 } else {
                     return ' ';
@@ -533,7 +501,6 @@ class DatabaseInstance extends CommonDBTM
      */
     public static function getTypes($all = false): array
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $types = $CFG_GLPI['databaseinstance_types'];
@@ -566,12 +533,12 @@ class DatabaseInstance extends CommonDBTM
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        if (
-            ($item instanceof CommonDBTM)
-            && self::canView()
-            && in_array($item->getType(), self::getTypes(true))
-        ) {
-            $nb = 0;
+        if (!self::canView()) {
+            return '';
+        }
+
+        $nb = 0;
+        if (in_array($item->getType(), self::getTypes(true))) {
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = countElementsInTable(self::getTable(), ['itemtype' => $item->getType(), 'items_id' => $item->fields['id']]);
             }
@@ -594,7 +561,6 @@ class DatabaseInstance extends CommonDBTM
 
     public static function showInstances(CommonDBTM $item, $withtemplate)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $instances = $DB->request([

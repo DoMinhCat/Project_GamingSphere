@@ -1,48 +1,89 @@
 <?php
 
 /**
- * © Teclib' and contributors.
+ * ---------------------------------------------------------------------
+ * GLPI - Gestionnaire Libre de Parc Informatique
+ * Copyright (C) 2015-2018 Teclib' and contributors.
  *
- * This file is part of GLPI inventory format.
+ * http://glpi-project.org
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * based on GLPI - Gestionnaire Libre de Parc Informatique
+ * Copyright (C) 2003-2014 by the INDEPNET Development Team.
+ *
+ * ---------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of GLPI.
+ *
+ * GLPI is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * GLPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with GLPI. If not, see <http://www.gnu.org/licenses/>.
+ * ---------------------------------------------------------------------
+ *
+ * PHP version 7
+ *
+ * @category  Inventory
+ * @package   Glpi
+ * @author    Johan Cwiklinski <jcwiklinski@teclib.com>
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      https://glpi-project.org
  */
 
 namespace Glpi\Inventory;
 
-use DateTime;
-use Exception;
-use RuntimeException;
-use UnexpectedValueException;
+use Swaggest\JsonSchema\Context;
+use Swaggest\JsonSchema\Schema;
 
 /**
  * Converts old FusionInventory XML format to new JSON schema
  * for automatic inventory.
  *
- * @author Johan Cwiklinski <jcwiklinski@teclib.com>
+ * @category  Inventory
+ * @package   Glpi
+ * @author    Johan Cwiklinski <jcwiklinski@teclib.com>
+ * @copyright 2018-2022 GLPI Team and Contributors
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GPL License 3.0 or (at your option) any later version
+ * @link      https://glpi-project.org
  */
 class Converter
 {
-    /** @var float */
-    private float $target_version;
+    public const LAST_VERSION = 0.1;
 
-    private Schema $schema;
+    /** @var ?double */
+    private $target_version;
+
     /** @var bool */
-    private bool $debug = false;
+    private $debug = false;
     /**
      * XML a different steps. Used for debug only
-     * @var array<int, mixed>
+     * @var array
      */
-    private array $steps; //@phpstan-ignore-line
+    private $steps;
 
-    /** @var array<string, float> */
-    private array $mapping = [
-        '01'   => 1.0
+    /** @var array */
+    private $mapping = [
+        '01'   => 0.1
     ];
 
+    /** @var array */
+    private $schema_patterns;
+    /** @var array */
+    private $extra_properties;
+    /** @var array */
+    private $extra_sub_properties;
+
     /**
-     * @var array<string, array<int, string>>
+     * @var array
      *
      * A two dimensions array with types as key,
      * and nodes names as values.
@@ -62,25 +103,32 @@ class Converter
      * @see Converter::getCastedValue() for supported types
      * @see Converter::convertTypes() for usage
      */
-    private array $convert_types;
+    private $convert_types;
 
     /**
      * Instantiate converter
      *
-     * @param ?float $target_version JSON schema based version to target. Use last version if null.
+     * @param double|null $target_version JSON schema based version to target. Use last version if null.
      */
-    public function __construct(?float $target_version = null)
+    public function __construct($target_version = null)
     {
-        $this->schema = new Schema();
-        $this->target_version = $target_version ?? $this->schema->getVersion();
+        if ($target_version === null) {
+            $target_version = self::LAST_VERSION;
+        }
+
+        if (!is_double($target_version)) {
+            throw new \UnexpectedValueException('Version must be a double!');
+        }
+
+        $this->target_version = $target_version;
     }
 
     /**
      * Get target version
      *
-     * @return float
+     * @return double
      */
-    public function getTargetVersion(): float
+    public function getTargetVersion()
     {
         return $this->target_version;
     }
@@ -92,9 +140,9 @@ class Converter
      *
      * @return Converter
      */
-    public function setDebug(bool $debug): self
+    public function setDebug($debug)
     {
-        $this->debug = $debug;
+        $this->debug = (bool)$debug;
         return $this;
     }
 
@@ -103,29 +151,134 @@ class Converter
      *
      * @return boolean
      */
-    public function isDebug(): bool
+    public function isDebug()
     {
         return $this->debug;
     }
 
     /**
-     * Get Schema instance
+     * Get path to schema
      *
-     * @return Schema
+     * @return string
      */
-    public function getSchema(): Schema
+    public function getSchemaPath()
     {
-        return $this->schema;
+        return realpath(__DIR__ . '/../../inventory.schema.json');
     }
 
     /**
-     * Get JSON schema
-     *
-     * @return object
+     * @param array $properties
+     * @return $this
      */
-    public function getJSONSchema(): object
+    public function setExtraProperties(array $properties)
     {
-        return $this->schema->build();
+        $this->extra_properties = $properties;
+        return $this;
+    }
+
+    /**
+     * @param array $properties
+     * @return $this
+     */
+    public function setExtraSubProperties(array $properties)
+    {
+        $this->extra_sub_properties = $properties;
+        return $this;
+    }
+
+    /**
+     * Build (extended) JSON schema
+     * @return mixed
+     */
+    public function buildSchema()
+    {
+        $schema = json_decode(file_get_contents($this->getSchemaPath()));
+
+        $properties = $schema->properties->content->properties;
+
+        if ($this->extra_properties != null) {
+            foreach ($this->extra_properties as $extra_property => $extra_config) {
+                if (!property_exists($properties, $extra_property)) {
+                    $properties->$extra_property = json_decode(json_encode($extra_config));
+                } else {
+                    trigger_error(
+                        sprintf('Property %1$s already exists in schema.', $extra_property),
+                        E_USER_WARNING
+                    );
+                }
+            }
+        }
+
+        if ($this->extra_sub_properties != null) {
+            foreach ($this->extra_sub_properties as $extra_sub_property => $extra_sub_config) {
+                if (property_exists($properties, $extra_sub_property)) {
+                    foreach ($extra_sub_config as $subprop => $subconfig) {
+                        $type = $properties->$extra_sub_property->type;
+                        switch ($type) {
+                            case 'array':
+                                if (!property_exists($properties->$extra_sub_property->items->properties, $subprop)) {
+                                    $properties->$extra_sub_property->items->properties->$subprop =
+                                        json_decode(json_encode($subconfig));
+                                } else {
+                                    trigger_error(
+                                        sprintf('Property %1$s already exists in schema.', $subprop),
+                                        E_USER_WARNING
+                                    );
+                                }
+                                break;
+                            case 'object':
+                                if (!property_exists($properties->$extra_sub_property->properties, $subprop)) {
+                                    $properties->$extra_sub_property->properties->$subprop =
+                                        json_decode(json_encode($subconfig));
+                                } else {
+                                    trigger_error(
+                                        sprintf(
+                                            'Property %1$s/%2$s already exists in schema.',
+                                            $extra_sub_property,
+                                            $subprop
+                                        ),
+                                        E_USER_WARNING
+                                    );
+                                }
+                                break;
+                            default:
+                                trigger_error('Unknown type ' . $type, E_USER_WARNING);
+                        }
+                    }
+                } else {
+                    trigger_error(
+                        sprintf('Property %1$s does not exists in schema.', $extra_sub_property),
+                        E_USER_WARNING
+                    );
+                }
+            }
+        }
+
+        return $schema;
+    }
+
+    /**
+     * Do validation (against last schema only!)
+     *
+     * @param array $json Converted data to validate
+     *
+     * @return boolean
+     */
+    public function validate($json)
+    {
+        try {
+            $schema = Schema::import($this->buildSchema());
+
+            $context = new Context();
+            $context->tolerateStrings = (!defined('TU_USER'));
+            $schema->in($json, $context);
+            return true;
+        } catch (\Exception $e) {
+            $errmsg = "JSON does not validate. Violations:\n";
+            $errmsg .= $e->getMessage();
+            $errmsg .= "\n";
+            throw new \RuntimeException($errmsg);
+        }
     }
 
     /**
@@ -135,7 +288,7 @@ class Converter
      *
      * @return string|false
      */
-    public function convert(string $xml)
+    public function convert($xml)
     {
         libxml_use_internal_errors(true);
         $sxml = simplexml_load_string($xml);
@@ -144,7 +297,7 @@ class Converter
             foreach (libxml_get_errors() as $error) {
                 $errmsg .= "\n" . $error->message;
             }
-            throw new RuntimeException($errmsg);
+            throw new \RuntimeException($errmsg);
         }
 
         //remove empty nodes
@@ -155,10 +308,10 @@ class Converter
         }
         //convert SimpleXML object to array, recursively.
         $data = json_decode(
-            (string)json_encode((array)$sxml),
+            json_encode((array)$sxml),
             true
         );
-        $this->schema->loadPatterns();
+        $this->loadSchemaPatterns();
 
         $methods = $this->getMethods();
         foreach ($methods as $method) {
@@ -168,7 +321,7 @@ class Converter
             }
 
             if (!$data = $this->$method($data)) {
-                throw new RuntimeException('Conversion has failed at ' . $method);
+                throw new \RuntimeException('Conversion has failed at ' . $method);
             }
         }
 
@@ -178,9 +331,9 @@ class Converter
     /**
      * Get methods names we'll have to call in order to convert
      *
-     * @return array<int, string>
+     * @return string[]
      */
-    public function getMethods(): array
+    public function getMethods()
     {
         $methods = [];
 
@@ -194,23 +347,13 @@ class Converter
     }
 
     /**
-     * Get versions mapping
+     * Converts to inventory format 0.1
      *
-     * @return array<string, float>
+     * @param array $data Contents
+     *
+     * @return array
      */
-    public function getMappings(): array
-    {
-        return $this->mapping;
-    }
-
-    /**
-     * Converts to inventory format 1.0
-     *
-     * @param array<string, mixed> $data Contents
-     *
-     * @return array<string, mixed>
-     */
-    private function convertTo01(array $data): array
+    private function convertTo01(array $data)
     {
         //all keys are now lowercase
         $data = $this->arrayChangeKeyCaseRecursive($data);
@@ -265,6 +408,8 @@ class Converter
                 'drives/free',
                 'drives/total',
                 'hardware/etime',
+                'hardware/memory',
+                'hardware/swap',
                 'storages/disksize',
                 'physical_volumes/free',
                 'physical_volumes/pe_size',
@@ -276,12 +421,16 @@ class Converter
                 'volume_groups/size',
                 'logical_volumes/seg_count',
                 'logical_volumes/size',
+                'memories/capacity',
                 'memories/numslots',
                 'processes/pid',
                 'processes/virtualmemory',
                 'networks/mtu',
                 'softwares/filesize',
+                'virtualmachines/memory',
                 'virtualmachines/vcpu',
+                'videos/memory',
+                'batteries/real_capacity',
                 'network_ports/ifinerrors',
                 'network_ports/ifinoctets',
                 'network_ports/ifinbytes',
@@ -297,6 +446,8 @@ class Converter
                 'network_ports/iftype',
                 'network_components/fru',
                 'network_components/index',
+                'network_device/ram',
+                'network_device/memory',
                 'network_device/credentials',
                 'pagecounters/total',
                 'pagecounters/black',
@@ -392,7 +543,7 @@ class Converter
                     if ($network['type'] == 'local') {
                         $network['type'] = 'loopback';
                     }
-                    if (!in_array($network['type'], $this->schema->getPatterns()['networks_types'])) {
+                    if (!in_array($network['type'], $this->schema_patterns['networks_types'])) {
                         unset($network['type']);
                     }
                 }
@@ -429,9 +580,9 @@ class Converter
                 if (isset($process['started'])) {
                     if (preg_match($ns_pattern, $process['started'])) {
                         try {
-                            $started = new DateTime($process['started']);
+                            $started = new \DateTime($process['started']);
                             $process['started'] = $started->format('Y-m-d H:i:s');
-                        } catch (Exception $e) {
+                        } catch (\Exception $e) {
                             //not valid, drop.
                             unset($process['started']);
                         }
@@ -484,7 +635,7 @@ class Converter
         if (isset($data['content']['operatingsystem']['boot_time'])) {
             //convert to 'Y-m-d H:i:s' if format = 'Y-d-m H:i:s'
             $boot_time  = $data['content']['operatingsystem']['boot_time'];
-            $boot_datetime =  DateTime::createFromFormat('Y-d-m H:i:s', $boot_time);
+            $boot_datetime =  \DateTime::createFromFormat('Y-d-m H:i:s', $boot_time);
             //check if create from 'Y-d-m H:i:s' format is OK (ie: 2022-21-09 05:21:23)
             //but he can return a new DateTime instead of false for '2022-10-04 05:21:23'
             //so check return value from strtotime because he only knows / handle 'English textual datetime'
@@ -653,7 +804,7 @@ class Converter
         }
 
         //missing hour in timezone offset
-        if (isset($data['content']['operatingsystem']['timezone'])) {
+        if (isset($data['content']['operatingsystem']) && isset($data['content']['operatingsystem']['timezone'])) {
             $timezone = &$data['content']['operatingsystem']['timezone'];
 
             if (preg_match('/^[+-][0-9]{2}$/', $timezone['offset'])) {
@@ -682,6 +833,7 @@ class Converter
             }
         }
 
+
         //Fix batteries capacities & voltages
         if (isset($data['content']['batteries'])) {
             foreach ($data['content']['batteries'] as &$battery) {
@@ -693,7 +845,7 @@ class Converter
                 foreach ($powers as $power) {
                     if (isset($battery[$power])) {
                         $value = $this->convertBatteryPower($battery[$power]);
-                        if (!$value) {
+                        if ($value == false) {
                             unset($battery[$power]);
                         } else {
                             $battery[$power] = $value;
@@ -703,7 +855,7 @@ class Converter
 
                 if (isset($battery['voltage'])) {
                     $voltage = $this->convertBatteryVoltage($battery['voltage']);
-                    if (!$voltage) {
+                    if ($voltage == false) {
                         unset($battery['voltage']);
                     } else {
                         $battery['voltage'] = $voltage;
@@ -717,7 +869,7 @@ class Converter
             foreach ($data['content']['powersupplies'] as &$psupply) {
                 if (isset($psupply['power_max'])) {
                     $value = $this->convertBatteryPower($psupply['power_max']);
-                    if (!$value) {
+                    if ($value == false) {
                         unset($psupply['power_max']);
                     } else {
                         $psupply['power_max'] = $value;
@@ -725,6 +877,7 @@ class Converter
                 }
             }
         }
+
 
         //type on ports is required
         if (isset($data['content']['ports'])) {
@@ -749,44 +902,6 @@ class Converter
                     }
                     unset($network['macaddr']);
                 }
-            }
-        }
-
-        //fix memories that can have a unit
-        if (isset($data['content']['hardware']['memory'])) {
-            $data['content']['hardware']['memory'] = $this->convertMemory($data['content']['hardware']['memory']);
-        }
-        if (isset($data['content']['hardware']['swap'])) {
-            $data['content']['hardware']['swap'] = $this->convertMemory($data['content']['hardware']['swap']);
-        }
-        if (isset($data['content']['memories'])) {
-            foreach ($data['content']['memories'] as &$memory) {
-                if (isset($memory['capacity'])) {
-                    $memory['capacity'] = $this->convertMemory($memory['capacity']);
-                }
-            }
-        }
-        if (isset($data['content']['videos'])) {
-            foreach ($data['content']['videos'] as &$video) {
-                if (isset($video['memory'])) {
-                    $video['memory'] = $this->convertMemory($video['memory']);
-                }
-            }
-        }
-        if (isset($data['content']['virtualmachines'])) {
-            foreach ($data['content']['virtualmachines'] as &$vm) {
-                if (isset($vm['memory'])) {
-                    $vm['memory'] = $this->convertMemory($vm['memory']);
-                }
-            }
-        }
-        if (isset($data['content']['network_device'])) {
-            $netdev = &$data['content']['network_device'];
-            if (isset($netdev['memory'])) {
-                $netdev['memory'] = $this->convertMemory($netdev['memory']);
-            }
-            if (isset($netdev['ram'])) {
-                $netdev['ram'] = $this->convertMemory($netdev['ram']);
             }
         }
 
@@ -872,6 +987,10 @@ class Converter
                 'health',
                 'status'
             ],
+            'simcards' => [
+                'serial',
+                'subscriber_id'
+            ],
             'network_components' => [
                 'ip',
                 'mac'
@@ -953,11 +1072,11 @@ class Converter
     /**
      * Set convert types
      *
-     * @param array<string, array<int, string>> $convert_types Convert types configuration
+     * @param array $convert_types COnvert types cnfiguration
      *
      * @return Converter
      */
-    public function setConvertTypes(array $convert_types): self
+    public function setConvertTypes(array $convert_types)
     {
         $this->convert_types = $convert_types;
         return $this;
@@ -969,18 +1088,18 @@ class Converter
      * Method must populate $convert_types array.
      * @see Converter::convert_types parameter
      *
-     * @param array<string, mixed> $data Input data, will be modified
+     * @param array $data Input data, will be modified
      *
      * @return void
      */
-    public function convertTypes(array &$data): void
+    public function convertTypes(&$data)
     {
         $types = $this->convert_types;
         foreach ($types as $type => $names) {
             foreach ($names as $name) {
                 $keys = explode('/', $name);
                 if (count($keys) != 2) {
-                    throw new RuntimeException($name . ' not supported!');
+                    throw new \RuntimeException($name . ' not supported!');
                 }
                 if (isset($data['content'][$keys[0]])) {
                     if (is_array($data['content'][$keys[0]])) {
@@ -1003,7 +1122,7 @@ class Converter
                         }
                     }
                 }
-                if (isset($data['content'][$keys[0]][$keys[1]])) {
+                if (isset($data['content'][$keys[0]]) && isset($data['content'][$keys[0]][$keys[1]])) {
                     $data['content'][$keys[0]][$keys[1]] = $this->getCastedValue(
                         $data['content'][$keys[0]][$keys[1]],
                         $type
@@ -1013,39 +1132,40 @@ class Converter
         }
     }
 
+
     /**
      * Get value casted
      *
      * @param string $value Original value
      * @param string $type  Requested type
      *
-     * @return bool|int|null
+     * @return mixed
      */
-    public function getCastedValue(string $value, string $type)
+    public function getCastedValue($value, $type)
     {
         switch ($type) {
             case 'boolean':
                 return (bool)$value;
             case 'integer':
                 $casted = (int)$value;
-                if (is_numeric($value) && $value == $casted) {
+                if ($value == $casted && is_numeric($value)) {
                     return $casted;
                 } else {
                     return null;
                 }
             default:
-                throw new UnexpectedValueException('Type ' . $type . ' not known.');
+                throw new \UnexpectedValueException('Type ' . $type . ' not known.');
         }
     }
 
     /**
      * Change array keys case recursively
      *
-     * @param array<string, mixed> $array Input array
+     * @param array $array Input array
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function arrayChangeKeyCaseRecursive(array $array): array
+    public function arrayChangeKeyCaseRecursive(array $array)
     {
         return array_map(
             function ($item) {
@@ -1066,7 +1186,7 @@ class Converter
      *
      * @return string|null
      */
-    public function convertDate(string $value, string $format = 'Y-m-d'): ?string
+    public function convertDate($value, $format = 'Y-m-d'): ?string
     {
         $nullables = ['n/a', 'boot_time'];
         if (empty($value) || isset(array_flip($nullables)[strtolower($value)])) {
@@ -1086,33 +1206,52 @@ class Converter
             'd.m.Y',
             'Ymd'
         ];
-
-        while ($current = array_shift($formats)) {
-            $d = DateTime::createFromFormat($current, $value);
-            if ($d !== false) {
-                break;
+        try {
+            while ($current = array_shift($formats)) {
+                $d = \DateTime::createFromFormat($current, $value);
+                if ($d !== false) {
+                    break;
+                }
             }
-        }
 
-        if ($d !== false) {
-            return $d->format($format);
+            if ($d !== false) {
+                return $d->format($format);
+            }
+            return $value;
+        } catch (\Exception $e) {
+            throw $e;
         }
-        return $value;
+    }
+
+    /**
+     * Load schema patterns that will be used to validate
+     *
+     * @return void
+     */
+    public function loadSchemaPatterns()
+    {
+        $string = file_get_contents($this->getSchemaPath());
+        $json = json_decode($string, true);
+
+        $this->schema_patterns['networks_types'] = explode(
+            '|',
+            str_replace(
+                ['^(', ')$'],
+                ['', ''],
+                $json['properties']['content']['properties']['networks']['items']['properties']['type']['pattern']
+            )
+        );
     }
 
     /**
      * Convert battery capacity
      *
-     * @param integer|string $capacity Inventoried capacity
+     * @param string $capacity Inventoried capacity
      *
      * @return integer|false
      */
     public function convertBatteryPower($capacity)
     {
-        if (is_int($capacity)) {
-            return $capacity;
-        }
-
         $capa_pattern = "/^([0-9]+(\.[0-9]+)?) Wh$/i";
         $matches = [];
         if (preg_match($capa_pattern, $capacity, $matches)) {
@@ -1125,7 +1264,7 @@ class Converter
             return (int)$matches[1];
         }
 
-        if (is_string($capacity) && ctype_digit($capacity)) {
+        if (ctype_digit($capacity)) {
             return (int)$capacity;
         }
 
@@ -1145,7 +1284,7 @@ class Converter
      *
      * @return integer|false
      */
-    public function convertBatteryVoltage(string $voltage)
+    public function convertBatteryVoltage($voltage)
     {
         $volt_pattern = "/^([0-9]+(\.[0-9]+)?) ?V$/i";
         $matches = [];
@@ -1167,59 +1306,11 @@ class Converter
     }
 
     /**
-     * Convert memory capacity
-     *
-     * @param string $capacity Inventoried capacity
-     *
-     * @return ?integer
-     */
-    public function convertMemory(string $capacity)
-    {
-        if (is_int($casted_capa = $this->getCastedValue($capacity, 'integer'))) {
-            return $casted_capa;
-        }
-
-        $mem_pattern = "/^([0-9]+([\.|,][0-9])?) ?(.?B)$/i";
-
-        $matches = [];
-        if (preg_match($mem_pattern, $capacity, $matches)) {
-            //we got a memory with a unit. first, convert to bytes
-            $real_value = $this->getCastedValue($matches[1], 'integer');
-            switch (strtolower($matches[3])) {
-                case 'pb':
-                    $real_value *= 1024;
-                    //no break, continue to next
-                case 'tb':
-                    $real_value *= 1024;
-                    //no break, continue to next
-                case 'gb':
-                    $real_value *= 1024;
-                    //no break, continue to next
-                case 'mb':
-                    $real_value *= 1024;
-                    //no break, continue to next
-                case 'kb':
-                    $real_value *= 1024;
-                    //no break, continue to next
-                case 'b':
-                    break;
-                default:
-                    return null;
-            }
-
-            //then return as Mb.
-            return $real_value / 1024 / 1024;
-        }
-
-        return null;
-    }
-
-    /**
      * Handle network inventory XML format
      *
-     * @param array<string, mixed> $data Contents
+     * @param array $data Contents
      *
-     * @return array<string, mixed>
+     * @return array
      */
     public function convertNetworkInventory(array $data): array
     {
@@ -1312,7 +1403,7 @@ class Converter
                                     $itemtype = 'NetworkEquipment';
                                     break;
                                 default:
-                                    throw new RuntimeException('Unhandled device type: ' . $device_info['type']);
+                                    throw new \RuntimeException('Unhandled device type: ' . $device_info['type']);
                             }
                         }
                         $data['itemtype'] = $itemtype;
@@ -1388,7 +1479,7 @@ class Converter
                 case 'modems':
                 case 'simcards':
                     //first, retrieve data from device
-                    $elements = $device_data;
+                    $elements = $device[$key];
                     if (!array_is_list($elements)) {
                         $elements = [$elements];
                     }
@@ -1432,12 +1523,10 @@ class Converter
                     break;
                 case "cartridges":
                 case "pagecounters":
-                case "drives":
-                case "error":
-                    $data['content'][$key] = $device_data;
+                    $data['content'][$key] = $device[$key];
                     break;
                 default:
-                    throw new RuntimeException('Key ' . $key . ' is not handled in network devices conversion');
+                    throw new \RuntimeException('Key ' . $key . ' is not handled in network devices conversion');
             }
         }
 
@@ -1452,9 +1541,9 @@ class Converter
     /**
      * Pre-handle network inventory XML format
      *
-     * @param array<string, mixed> $data Contents
+     * @param array $data Contents
      *
-     * @return array<string, mixed>
+     * @return array
      */
     public function convertNetworkDiscovery(array $data): array
     {
@@ -1469,7 +1558,7 @@ class Converter
         }
         $device_info = &$data['content']['device']['info'];
 
-        if (!empty($device['snmphostname'])) {
+        if (isset($device['snmphostname']) && !empty($device['snmphostname'])) {
             //SNMP hostname has precedence
             if (isset($device['dnshostname'])) {
                 unset($device['dnshostname']);
@@ -1479,7 +1568,7 @@ class Converter
             }
         }
 
-        if (!empty($device['netbiosname']) && isset($device['dnshostname'])) {
+        if (isset($device['netbiosname']) && !empty($device['netbiosname']) && isset($device['dnshostname'])) {
             //NETBIOS name has precedence
             unset($device['dnshostname']);
         }
@@ -1499,7 +1588,7 @@ class Converter
                 case 'dnshostname':
                 case 'snmphostname':
                 case 'netbiosname':
-                    $device_info['name'] = $device_data;
+                    $device_info['name'] = $device[$key];
                     unset($device[$key]);
                     break;
                 case 'entity':
@@ -1508,7 +1597,7 @@ class Converter
                     //not used
                     break;
                 case 'ips':
-                    $device_info['ips'] = $device_data;
+                    $device_info['ips'] = $device[$key];
                     unset($device[$key]);
                     break;
                 case 'mac':
@@ -1522,26 +1611,26 @@ class Converter
                 case 'description':
                 case 'serial':
                 case 'assettag':
-                    $device_info[$key] = $device_data;
+                    $device_info[$key] = $device[$key];
                     unset($device[$key]);
                     break;
                 case 'netportvendor':
                     //translate as manufacturer - if not present
                     if (!isset($device['manufacturer'])) {
-                        $device_info['manufacturer'] = $device_data;
+                        $device_info['manufacturer'] = $device[$key];
                     }
                     unset($device[$key]);
                     break;
                 case 'workgroup':
-                    $data['content']['hardware']['workgroup'] = $device_data;
+                    $data['content']['hardware']['workgroup'] = $device[$key];
                     unset($device[$key]);
                     break;
                 case 'authsnmp':
-                    $device_info['credentials'] = $device_data;
+                    $device_info['credentials'] = $device[$key];
                     unset($device[$key]);
                     break;
                 default:
-                    throw new RuntimeException('Key ' . $key . ' is not handled in network discovery conversion');
+                    throw new \RuntimeException('Key ' . $key . ' is not handled in network discovery conversion');
             }
         }
 
@@ -1551,7 +1640,7 @@ class Converter
     /**
      * Explode old pciid to vendorid:productid
      *
-     * @param array<string, mixed> $data Node data
+     * @param array $data Node data
      *
      * @return void
      */
@@ -1574,7 +1663,7 @@ class Converter
     /**
      * Is a network inventory?
      *
-     * @param array<string, mixed> $data Data
+     * @param array $data Data
      *
      * @return boolean
      */
@@ -1586,7 +1675,7 @@ class Converter
     /**
      * Is a network discovery?
      *
-     * @param array<string, mixed> $data Data
+     * @param array $data Data
      *
      * @return boolean
      */

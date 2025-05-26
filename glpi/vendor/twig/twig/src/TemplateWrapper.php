@@ -35,7 +35,9 @@ final class TemplateWrapper
 
     public function render(array $context = []): string
     {
-        return $this->template->render($context);
+        // using func_get_args() allows to not expose the blocks argument
+        // as it should only be used by internal code
+        return $this->template->render($context, \func_get_args()[1] ?? []);
     }
 
     public function display(array $context = [])
@@ -60,15 +62,29 @@ final class TemplateWrapper
 
     public function renderBlock(string $name, array $context = []): string
     {
-        return $this->template->renderBlock($name, $this->env->mergeGlobals($context));
+        $context = $this->env->mergeGlobals($context);
+        $level = ob_get_level();
+        if ($this->env->isDebug()) {
+            ob_start();
+        } else {
+            ob_start(function () { return ''; });
+        }
+        try {
+            $this->template->displayBlock($name, $context);
+        } catch (\Throwable $e) {
+            while (ob_get_level() > $level) {
+                ob_end_clean();
+            }
+
+            throw $e;
+        }
+
+        return ob_get_clean();
     }
 
     public function displayBlock(string $name, array $context = [])
     {
-        $context = $this->env->mergeGlobals($context);
-        foreach ($this->template->yieldBlock($name, $context) as $data) {
-            echo $data;
-        }
+        $this->template->displayBlock($name, $this->env->mergeGlobals($context));
     }
 
     public function getSourceContext(): Source

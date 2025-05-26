@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -76,14 +76,6 @@ class OperatingSystem extends InventoryAsset
             if (property_exists($this->extra_data['hardware'], 'winprodkey')) {
                 $val->license_number = $this->extra_data['hardware']->winprodkey;
             }
-
-            if (property_exists($this->extra_data['hardware'], 'wincompany')) {
-                $val->company = $this->extra_data['hardware']->wincompany;
-            }
-
-            if (property_exists($this->extra_data['hardware'], 'winowner')) {
-                $val->owner = $this->extra_data['hardware']->winowner;
-            }
         }
 
         if (property_exists($val, 'full_name')) {
@@ -144,7 +136,6 @@ class OperatingSystem extends InventoryAsset
 
     public function handle()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ios = new Item_OperatingSystem();

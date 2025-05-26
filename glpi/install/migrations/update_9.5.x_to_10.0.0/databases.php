@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34,8 +34,8 @@
  */
 
 /**
- * @var \DBmysql $DB
- * @var \Migration $migration
+ * @var DB $DB
+ * @var Migration $migration
  * @var array $ADDTODISPLAYPREF
  */
 
@@ -55,7 +55,7 @@ if (!$DB->tableExists('glpi_databaseinstancetypes')) {
          KEY `date_mod` (`date_mod`),
          KEY `date_creation` (`date_creation`)
       ) ENGINE = InnoDB ROW_FORMAT = DYNAMIC DEFAULT CHARSET = {$default_charset} COLLATE = {$default_collation};";
-    $DB->doQueryOrDie($query, "10.0 add table glpi_databaseinstancetypes");
+    $DB->queryOrDie($query, "10.0 add table glpi_databaseinstancetypes");
 }
 
 if (!$DB->tableExists('glpi_databaseinstancecategories')) {
@@ -70,7 +70,7 @@ if (!$DB->tableExists('glpi_databaseinstancecategories')) {
          KEY `date_mod` (`date_mod`),
          KEY `date_creation` (`date_creation`)
       ) ENGINE = InnoDB ROW_FORMAT = DYNAMIC DEFAULT CHARSET = {$default_charset} COLLATE = {$default_collation};";
-    $DB->doQueryOrDie($query, "10.0 add table glpi_databaseinstancecategoriess");
+    $DB->queryOrDie($query, "10.0 add table glpi_databaseinstancecategoriess");
 }
 
 if (!$DB->tableExists('glpi_databaseinstances')) {
@@ -121,7 +121,7 @@ if (!$DB->tableExists('glpi_databaseinstances')) {
          KEY `is_helpdesk_visible` (`is_helpdesk_visible`),
          KEY `is_dynamic` (`is_dynamic`)
       ) ENGINE = InnoDB ROW_FORMAT = DYNAMIC DEFAULT CHARSET = {$default_charset} COLLATE = {$default_collation};";
-    $DB->doQueryOrDie($query, "10.0 add table glpi_databaseinstances");
+    $DB->queryOrDie($query, "10.0 add table glpi_databaseinstances");
 }
 
 // Create glpi_databaseinstances itemtype/items_id if they are not existing (datamodel changed during v10.0 development)
@@ -168,7 +168,7 @@ if (!$DB->tableExists('glpi_databases')) {
          KEY `date_mod` (`date_mod`),
          KEY `databaseinstances_id` (`databaseinstances_id`)
       ) ENGINE = InnoDB ROW_FORMAT = DYNAMIC DEFAULT CHARSET = {$default_charset} COLLATE = {$default_collation};";
-    $DB->doQueryOrDie($query, "10.0 add table glpi_databases");
+    $DB->queryOrDie($query, "10.0 add table glpi_databases");
 }
 
 if ($DB->fieldExists('glpi_states', 'is_visible_database')) {

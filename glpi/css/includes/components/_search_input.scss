@@ -5,7 +5,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -72,7 +72,7 @@ div.search-input {
         left: 50% !important; // Fix for using non-standard placement
         &::before {// Fix for using non-standard placement
             top: 0;
-            border-width: 0 (1rem * 0.5) 0.5rem;
+            border-width: 0 (1rem * 0.5) 0.5rem (1rem * 0.5);
             border-bottom-color: $popover-arrow-outer-color;
         }
     }

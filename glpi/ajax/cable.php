@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35,15 +35,12 @@
 
 use Glpi\Socket;
 
-/** @var array $CFG_GLPI */
-global $CFG_GLPI;
-
 include('../inc/includes.php');
 
 // Send UTF8 Headers
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
-Session::checkCentralAccess();
+Session::checkLoginUser();
 
 $action = $_POST['action'] ?? $_GET["action"];
 
@@ -53,7 +50,7 @@ switch ($action) {
             $_POST['itemtype']::dropdown(['name'                => $_POST['dom_name'],
                 'rand'                => $_POST['dom_rand'],
                 'display_emptychoice' => true,
-                'display_dc_position' => in_array($_POST['itemtype'], $CFG_GLPI['rackable_types']),
+                'display_dc_position' => true,
                 'width'               => '100%',
             ]);
         }

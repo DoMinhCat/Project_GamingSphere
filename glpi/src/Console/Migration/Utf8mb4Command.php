@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -37,12 +37,11 @@ namespace Glpi\Console\Migration;
 
 use DBConnection;
 use Glpi\Console\AbstractCommand;
-use Glpi\Console\Command\ConfigurationCommandInterface;
 use Glpi\System\Requirement\DbConfiguration;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Utf8mb4Command extends AbstractCommand implements ConfigurationCommandInterface
+class Utf8mb4Command extends AbstractCommand
 {
     /**
      * Error code returned if migration failed on, at least, one table.
@@ -170,7 +169,7 @@ class Utf8mb4Command extends AbstractCommand implements ConfigurationCommandInte
             };
 
             foreach ($this->iterate($tables, $progress_message) as $table) {
-                $result = $this->db->doQuery(
+                $result = $this->db->query(
                     sprintf('ALTER TABLE %s CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci', $this->db->quoteName($table))
                 );
 
@@ -201,14 +200,5 @@ class Utf8mb4Command extends AbstractCommand implements ConfigurationCommandInte
         if (count($tables) > 0) {
             $this->output->writeln('<info>' . __('Migration done.') . '</info>');
         }
-    }
-
-    public function getConfigurationFilesToUpdate(InputInterface $input): array
-    {
-        $config_files_to_update = ['config_db.php'];
-        if (file_exists(GLPI_CONFIG_DIR . '/config_db_slave.php')) {
-            $config_files_to_update[] = 'config_db_slave.php';
-        }
-        return $config_files_to_update;
     }
 }

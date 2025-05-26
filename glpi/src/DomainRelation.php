@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -118,7 +118,7 @@ class DomainRelation extends CommonDropdown
 
     public function pre_deleteItem()
     {
-        if (in_array($this->fields['id'], [self::BELONGS, self::MANAGE])) {
+        if (in_array([self::BELONGS, self::MANAGE], $this->fields['id'])) {
            //keep defaults
             return false;
         }

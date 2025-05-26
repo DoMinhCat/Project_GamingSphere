@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -81,7 +81,6 @@ class OlaLevel extends LevelAgreementLevel
      **/
     public function showForOLA(OLA $ola)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $ola->getField('id');
@@ -284,15 +283,14 @@ class OlaLevel extends LevelAgreementLevel
     /**
      * Get first level for a OLA
      *
-     * @param integer $olas_id id of the OLA
+     * @param $olas_id   integer  id of the OLA
      *
      * @since 9.1 (before getFirst OlaLevel)
      *
-     * @return integer id of the ola level : 0 if not exists
+     * @return id of the ola level : 0 if not exists
      **/
     public static function getFirstOlaLevel($olas_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -317,14 +315,13 @@ class OlaLevel extends LevelAgreementLevel
     /**
      * Get next level for a OLA
      *
-     * @param integer $olas_id      id of the OLA
-     * @param integer $olalevels_id id of the current OLA level
+     * @param $olas_id         integer id of the OLA
+     * @param $olalevels_id    integer id of the current OLA level
      *
-     * @return integer id of the ola level : 0 if not exists
+     * @return id of the ola level : 0 if not exists
      **/
     public static function getNextOlaLevel($olas_id, $olalevels_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([

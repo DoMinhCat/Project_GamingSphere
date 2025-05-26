@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -111,11 +111,11 @@ class VirtualMachine extends InventoryAsset
                 if (strstr($vm_val->ram, 'MB')) {
                     $vm_val = str_replace('MB', '', $vm_val->ram);
                 } else if (strstr($vm_val->ram, 'KB')) {
-                    $vm_val = (float) str_replace('KB', '', $vm_val->ram) / 1000;
+                    $vm_val = str_replace('KB', '', $vm_val->ram) / 1000;
                 } else if (strstr($vm_val->ram, 'GB')) {
-                    $vm_val->ram = (float) str_replace('GB', '', $vm_val->ram) * 1000;
+                    $vm_val->ram = str_replace('GB', '', $vm_val->ram) * 1000;
                 } else if (strstr($vm_val->ram, 'B')) {
-                    $vm_val->ram = (float) str_replace('B', '', $vm_val->ram) / 1000000;
+                    $vm_val->ram = str_replace('B', '', $vm_val->ram) / 1000000;
                 }
             }
 
@@ -189,7 +189,6 @@ class VirtualMachine extends InventoryAsset
      */
     protected function getExisting(): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $db_existing = [];
@@ -243,7 +242,7 @@ class VirtualMachine extends InventoryAsset
                             'is_dynamic'   => 1
                         ];
 
-                        foreach (['vcpu', 'ram', 'virtualmachinetypes_id', 'virtualmachinestates_id', 'comment'] as $prop) {
+                        foreach (['vcpu', 'ram', 'virtualmachinetypes_id', 'virtualmachinestates_id'] as $prop) {
                             if (property_exists($val, $prop)) {
                                 $input[$prop] = $handled_input[$prop];
                             }
@@ -286,7 +285,6 @@ class VirtualMachine extends InventoryAsset
      */
     protected function createVmComputer()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $computervm = new Computer();
@@ -313,7 +311,6 @@ class VirtualMachine extends InventoryAsset
                     $rule->getCollectionPart();
                     $input = (array)$vm;
                     $input['itemtype'] = \Computer::class;
-                    $input['states_id'] = $this->conf->states_id_default > 0 ? $this->conf->states_id_default : 0;
                     $input['entities_id'] = $this->main_asset->getEntityID();
                     $input  = Sanitizer::sanitize($input);
                     $datarules = $rule->processAllRules($input);
@@ -324,16 +321,13 @@ class VirtualMachine extends InventoryAsset
                         $computers_vm_id = $computervm->add($input);
                     } else {
                         //refused by rules
-                        continue;
+                        return;
                     }
                 } else {
                     // Update computer
                     $computervm->getFromDB($computers_vm_id);
                     $input = (array)$vm;
                     $input['id'] = $computers_vm_id;
-                    if ($this->conf->states_id_default != '-1') {
-                        $input['states_id'] = $this->conf->states_id_default;
-                    }
                     $computervm->update(Sanitizer::sanitize($input));
                 }
 
@@ -381,7 +375,6 @@ class VirtualMachine extends InventoryAsset
 
     public function getExistingVMAsComputer(\stdClass $vm): int
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $computers_vm_id = 0;

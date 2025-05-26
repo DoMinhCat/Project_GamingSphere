@@ -1,13 +1,13 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 478:
+/***/ 479:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
     if (true) {
         // AMD. Register as an anonymous module.
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(476)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (chartist) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(477)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (chartist) {
             return (root.returnExportsGlobal = factory(chartist));
         }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -219,13 +219,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root,
 
 /***/ }),
 
-/***/ 480:
+/***/ 481:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
   if (true) {
     // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(476)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (Chartist) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(477)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (Chartist) {
       return (root.returnExportsGlobal = factory(Chartist));
     }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -319,14 +319,14 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root,
 
 /***/ }),
 
-/***/ 479:
+/***/ 480:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
   if (root === undefined && window !== undefined) root = window;
   if (true) {
     // AMD. Register as an anonymous module unless amdModuleId is set
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(476)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (a0) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(477)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (a0) {
       return (root['Chartist.plugins.tooltip'] = factory(a0));
     }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -617,7 +617,7 @@ return Chartist.plugins.tooltip;
 
 /***/ }),
 
-/***/ 476:
+/***/ 477:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (root, factory) {
@@ -5134,7 +5134,7 @@ return Chartist;
 
 /***/ }),
 
-/***/ 481:
+/***/ 482:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -5144,7 +5144,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 477:
+/***/ 478:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -5206,7 +5206,7 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 /**
  * ---------------------------------------------------------------------
@@ -5215,7 +5215,7 @@ var __webpack_exports__ = {};
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -5243,14 +5243,14 @@ var __webpack_exports__ = {};
 
 // Chartist base lib
 // 'Chartist' object has to be declared in global scope
-window.Chartist = __webpack_require__(476);
-__webpack_require__(477);
+window.Chartist = __webpack_require__(477);
+__webpack_require__(478);
 
 // Chartist plugins
-__webpack_require__(478);
 __webpack_require__(479);
 __webpack_require__(480);
 __webpack_require__(481);
+__webpack_require__(482);
 
 })();
 

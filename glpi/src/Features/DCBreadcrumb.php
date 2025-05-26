@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40,8 +40,6 @@ use DCRoom;
 use Enclosure;
 use Item_Enclosure;
 use Item_Rack;
-use PDU;
-use PDU_Rack;
 use Rack;
 
 /**
@@ -56,7 +54,6 @@ trait DCBreadcrumb
      */
     public function getDcBreadcrumb()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $item = $this;
@@ -66,39 +63,6 @@ trait DCBreadcrumb
         unset($enclosure_types[array_search('Enclosure', $enclosure_types)]);
 
         $breadcrumb = [];
-
-        if ($item instanceof PDU) {
-            $pdu_rack = new PDU_Rack();
-            $rack = new Rack();
-            if (
-                $pdu_rack->getFromDBByCrit(['pdus_id'  => $item->getID()])
-                && $rack->getFromDB($pdu_rack->fields['racks_id'])
-            ) {
-                $position = '';
-                switch ($pdu_rack->fields['side']) {
-                    case PDU_Rack::SIDE_LEFT:
-                        $position =  __('On left');
-                        break;
-                    case PDU_Rack::SIDE_RIGHT:
-                        $position =  __('On right');
-                        break;
-                    case PDU_Rack::SIDE_TOP:
-                        $position =  __('On top');
-                        break;
-                    case PDU_Rack::SIDE_BOTTOM:
-                        $position =  __('On bottom');
-                        break;
-                }
-                $position .= ' (' . $pdu_rack->fields['position'] . ')';
-                $options = [
-                    'linkoption' => $rack->isDeleted() ? 'class="target-deleted"' : '',
-                    'icon'       => true
-                ];
-                $breadcrumb[] = $rack->getLink($options) . '&nbsp;' . $position;
-                $item = $rack;
-            }
-        }
-
         if (in_array($item->getType(), $enclosure_types)) {
            //check if asset is part of an enclosure
             if ($enclosure = $this->isEnclosurePart($item->getType(), $item->getID(), true)) {

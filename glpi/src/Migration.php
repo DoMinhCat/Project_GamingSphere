@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -81,7 +81,7 @@ class Migration
     protected $output_handler;
 
     /**
-     * @param string $ver Version number
+     * @param integer $ver Version number
      **/
     public function __construct($ver)
     {
@@ -89,7 +89,6 @@ class Migration
         $this->deb = time();
         $this->version = $ver;
 
-        /** @var \Glpi\Console\Application $application */
         global $application;
         if ($application instanceof Application) {
            // $application global variable will be available if Migration is called from a CLI console command
@@ -102,7 +101,7 @@ class Migration
      *
      * @since 0.84
      *
-     * @param string $ver Version number
+     * @param integer $ver Version number
      *
      * @return void
      **/
@@ -198,7 +197,7 @@ class Migration
        // Do not log if more than 3 log error
         if (
             $this->log_errors < 3
-            && !Toolbox::logInFile($log_file_name, $message . "\n", true)
+            && !Toolbox::logInFile($log_file_name, $message . ' @ ', true)
         ) {
             $this->log_errors++;
         }
@@ -238,7 +237,7 @@ class Migration
     /**
      * Display an error
      *
-     * @param string  $message Message to display
+     * @param string  $msg Message to display
      *
      * @return void
      **/
@@ -274,7 +273,7 @@ class Migration
                     } else if (in_array($default_value, ['0', '1'])) {
                         $format .= " DEFAULT '$default_value'";
                     } else {
-                        throw new \LogicException('Default value must be 0 or 1.');
+                        trigger_error(__('default_value must be 0 or 1'), E_USER_ERROR);
                     }
                 }
                 break;
@@ -312,7 +311,7 @@ class Migration
                     } else if (is_numeric($default_value)) {
                         $format .= " DEFAULT '$default_value'";
                     } else {
-                        throw new \LogicException('Default value must be numeric.');
+                        trigger_error(__('default_value must be numeric'), E_USER_ERROR);
                     }
                 }
                 break;
@@ -406,7 +405,6 @@ class Migration
      **/
     public function addField($table, $field, $type, $options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $params['update']    = '';
@@ -450,7 +448,7 @@ class Migration
                     $query = "UPDATE `$table`
                         SET `$field` = " . $params['update'] . " " .
                         $params['condition'] . "";
-                    $DB->doQueryOrDie($query, $this->version . " set $field in $table");
+                    $DB->queryOrDie($query, $this->version . " set $field in $table");
                 }
                 return true;
             }
@@ -478,7 +476,6 @@ class Migration
      **/
     public function changeField($table, $oldfield, $newfield, $type, $options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $params['value']     = null;
@@ -517,7 +514,7 @@ class Migration
                 ($oldfield != $newfield)
                 && $DB->fieldExists($table, $newfield)
             ) {
-                $this->change[$table][] = $DB->buildDrop($newfield, 'FIELD');
+                $this->change[$table][] = "DROP `$newfield` ";
             }
 
             if ($format) {
@@ -541,17 +538,16 @@ class Migration
      **/
     public function dropField($table, $field)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($DB->fieldExists($table, $field, false)) {
-            $this->change[$table][] = $DB->buildDrop($field, 'FIELD');
+            $this->change[$table][] = "DROP `$field`";
         }
     }
 
 
     /**
-     * Drop immediately a table if it exists
+     * Drop immediatly a table if it exists
      *
      * @param string $table Table name
      *
@@ -559,11 +555,10 @@ class Migration
      **/
     public function dropTable($table)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($DB->tableExists($table)) {
-            $DB->dropTable($table);
+            $DB->query("DROP TABLE `$table`");
         }
     }
 
@@ -625,10 +620,9 @@ class Migration
      **/
     public function dropKey($table, $indexname)
     {
-        /** @var \DBmysql $DB */
-        global $DB;
+
         if (isIndex($table, $indexname)) {
-            $this->change[$table][] = $DB->buildDrop($indexname, 'INDEX');
+            $this->change[$table][] = "DROP INDEX `$indexname`";
         }
     }
 
@@ -643,10 +637,9 @@ class Migration
      **/
     public function dropForeignKeyContraint($table, $keyname)
     {
-        /** @var \DBmysql $DB */
-        global $DB;
+
         if (isForeignKeyContraint($table, $keyname)) {
-            $this->change[$table][] = $DB->buildDrop($keyname, 'FOREIGN KEY');
+            $this->change[$table][] = "DROP FOREIGN KEY `$keyname`";
         }
     }
 
@@ -661,12 +654,11 @@ class Migration
      **/
     public function renameTable($oldtable, $newtable)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!$DB->tableExists("$newtable") && $DB->tableExists("$oldtable")) {
             $query = "RENAME TABLE `$oldtable` TO `$newtable`";
-            $DB->doQueryOrDie($query, $this->version . " rename $oldtable");
+            $DB->queryOrDie($query, $this->version . " rename $oldtable");
 
            // Clear possibly forced value of table name.
            // Actually the only forced value in core is for config table.
@@ -725,7 +717,6 @@ class Migration
      **/
     public function copyTable($oldtable, $newtable, bool $insert = true)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (
@@ -737,12 +728,12 @@ class Migration
            // $DB->query($query);
 
             $query = "CREATE TABLE `$newtable` LIKE `$oldtable`";
-            $DB->doQueryOrDie($query, $this->version . " create $newtable");
+            $DB->queryOrDie($query, $this->version . " create $newtable");
 
             if ($insert) {
                //needs DB::insert to support subqueries to get migrated
                 $query = "INSERT INTO `$newtable` (SELECT * FROM `$oldtable`)";
-                $DB->doQueryOrDie($query, $this->version . " copy from $oldtable to $newtable");
+                $DB->queryOrDie($query, $this->version . " copy from $oldtable to $newtable");
             }
         }
     }
@@ -760,7 +751,6 @@ class Migration
      **/
     public function insertInTable($table, array $input)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (
@@ -792,13 +782,12 @@ class Migration
      **/
     public function migrationOneTable($table)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (isset($this->change[$table])) {
             $query = "ALTER TABLE `$table` " . implode(" ,\n", $this->change[$table]) . " ";
             $this->displayMessage(sprintf(__('Change of the database layout - %s'), $table));
-            $DB->doQueryOrDie($query, $this->version . " multiple alter in $table");
+            $DB->queryOrDie($query, $this->version . " multiple alter in $table");
             unset($this->change[$table]);
         }
 
@@ -806,7 +795,7 @@ class Migration
             $this->displayMessage(sprintf(__('Adding fulltext indices - %s'), $table));
             foreach ($this->fulltexts[$table] as $idx) {
                 $query = "ALTER TABLE `$table` " . $idx;
-                $DB->doQueryOrDie($query, $this->version . " $idx");
+                $DB->queryOrDie($query, $this->version . " $idx");
             }
             unset($this->fulltexts[$table]);
         }
@@ -815,7 +804,7 @@ class Migration
             $this->displayMessage(sprintf(__('Adding unicity indices - %s'), $table));
             foreach ($this->uniques[$table] as $idx) {
                 $query = "ALTER TABLE `$table` " . $idx;
-                $DB->doQueryOrDie($query, $this->version . " $idx");
+                $DB->queryOrDie($query, $this->version . " $idx");
             }
             unset($this->uniques[$table]);
         }
@@ -829,11 +818,10 @@ class Migration
      **/
     public function executeMigration()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         foreach ($this->queries[self::PRE_QUERY] as $query) {
-            $DB->doQueryOrDie($query['query'], $query['message']);
+            $DB->queryOrDie($query['query'], $query['message']);
         }
         $this->queries[self::PRE_QUERY] = [];
 
@@ -847,7 +835,7 @@ class Migration
         }
 
         foreach ($this->queries[self::POST_QUERY] as $query) {
-            $DB->doQueryOrDie($query['query'], $query['message']);
+            $DB->queryOrDie($query['query'], $query['message']);
         }
         $this->queries[self::POST_QUERY] = [];
 
@@ -872,7 +860,6 @@ class Migration
      **/
     public function createRule(array $rule, array $criteria, array $actions)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Avoid duplicate - Need to be improved using a rule uuid of other
@@ -932,7 +919,6 @@ class Migration
      **/
     public function updateDisplayPrefs($toadd = [], $todel = [], bool $only_default = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         //TRANS: %s is the table or item to migrate
@@ -1073,7 +1059,6 @@ class Migration
      */
     public function backupTables($tables)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $backup_tables = false;
@@ -1101,8 +1086,8 @@ class Migration
      *
      * @since 9.2
      *
-     * @param array  $values  Value(s) to add
-     * @param string $context Context to add on (optional)
+     * @param string|array $values  Value(s) to add
+     * @param string       $context Context to add on (optional)
      *
      * @return Migration
      */
@@ -1125,7 +1110,6 @@ class Migration
      */
     private function storeConfig()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         foreach ($this->configs as $context => $config) {
@@ -1169,7 +1153,6 @@ class Migration
      */
     public function addRight($name, $rights = ALLSTANDARDRIGHT, $requiredrights = ['config' => READ | UPDATE])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Get all profiles where new rights has not been added yet
@@ -1254,7 +1237,6 @@ class Migration
      */
     public function addRightByInterface($name, $right, $interface = 'central')
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $prof_iterator = $DB->request([
@@ -1322,7 +1304,6 @@ class Migration
      */
     public function updateRight($name, $rights, $requiredrights = ['config' => READ | UPDATE])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Get all profiles with required rights
@@ -1509,7 +1490,6 @@ class Migration
      */
     public function renameItemtype($old_itemtype, $new_itemtype, $update_structure = true)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($old_itemtype == $new_itemtype) {
@@ -1669,7 +1649,6 @@ class Migration
      */
     private function migrateSearchOptions()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (empty($this->search_opts)) {
@@ -1716,25 +1695,6 @@ class Migration
                     'itemtype' => $itemtype,
                     'num'      => $old_search_opt
                 ]);
-
-                // Update template fields
-                if (is_a($itemtype, 'CommonITILObject', true)) {
-                    $tables = [
-                        'glpi_' . strtolower($itemtype) . 'templatehiddenfields',
-                        'glpi_' . strtolower($itemtype) . 'templatemandatoryfields',
-                        'glpi_' . strtolower($itemtype) . 'templatepredefinedfields',
-                    ];
-                    foreach ($tables as $table) {
-                        if (!$DB->tableExists($table)) {
-                            continue;
-                        }
-                        $DB->updateOrDie($table, [
-                            'num' => $new_search_opt
-                        ], [
-                            'num' => $old_search_opt
-                        ]);
-                    }
-                }
             }
         }
 
@@ -1811,7 +1771,6 @@ class Migration
         string $class_1,
         string $class_2
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
         if ($DB->tableExists($table)) {
             return;
@@ -1824,7 +1783,7 @@ class Migration
         $default_collation = DBConnection::getDefaultCollation();
         $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
 
-        $DB->doQueryOrDie("
+        $DB->queryOrDie("
             CREATE TABLE `$table` (
                 `id` int {$default_key_sign} NOT NULL AUTO_INCREMENT,
                 `$fk_1` int {$default_key_sign} NOT NULL DEFAULT '0',

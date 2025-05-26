@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -395,8 +395,6 @@
             showInput: true,
             preferredFormat: "hex",
             type: "text",
-            cancelText: "{{ __('Cancel') }}",
-            chooseText: "{{ __('Validate') }}",
             change: function(color) {
                 if (color !== null && color.getAlpha() !== 1) {
                     let hex = color.toHexString();
@@ -847,17 +845,12 @@
       'align_label_right': true,
       'mb': 'mb-2',
       'field_class': 'col-12 col-sm-6',
+      'label_class': 'col-xxl-5',
+      'input_class': 'col-xxl-7',
       'add_field_class': '',
       'add_field_attribs': {},
       'center': false,
    }|merge(options) %}
-
-   {% if options.icon_label %}
-      {% set options = {
-         label_class: 'col-2',
-         input_class: 'col-10',
-      }|merge(options) %}
-   {% endif %}
 
    {% if options.full_width %}
       {% set options = options|merge({
@@ -865,17 +858,19 @@
       }) %}
 
       {% if options.full_width_adapt_column %}
-         {% set options = {
+         {% set options = options|merge({
             label_class: 'col-xxl-4',
             input_class: 'col-xxl-8',
-      }|merge(options) %}
+      }) %}
       {% endif %}
    {% endif %}
 
-   {% set options = {
-      label_class: 'col-xxl-5',
-      input_class: 'col-xxl-7',
-   }|merge(options) %}
+   {% if options.icon_label %}
+      {% set options = options|merge({
+         label_class: 'col-2',
+         input_class: 'col-10',
+      }) %}
+   {% endif %}
 
    {% if options.align_label_right %}
       {% set options = options|merge({

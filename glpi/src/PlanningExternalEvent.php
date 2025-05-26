@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -140,7 +140,6 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
 
     public function showForm($ID, array $options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $canedit    = $this->can($ID, UPDATE);
@@ -158,7 +157,7 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
         $this->showFormHeader($options);
 
         $is_ajax  = isset($options['from_planning_edit_ajax']) && $options['from_planning_edit_ajax'];
-        $is_rrule = strlen($this->fields['rrule'] ?? '') > 0;
+        $is_rrule = strlen($this->fields['rrule']) > 0;
 
        // set event for another user
         if (
@@ -203,7 +202,9 @@ class PlanningExternalEvent extends CommonDBTM implements CalDAVCompatibleItemIn
                   }
                   $("#dropdown_background{$rand}").trigger("setValue", data.background);
                   if (data.text.length > 0) {
-                     setRichTextEditorContent("text{$rand}", data.text);
+                     if (contenttinymce = tinymce.get("text{$rand}")) {
+                        contenttinymce.setContent(data.text);
+                     }
                   }
 
                   // set planification fields
@@ -415,7 +416,6 @@ JAVASCRIPT;
     private static function getItemsAsVCalendars(array $criteria)
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         $query = [

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40,10 +40,6 @@
  **/
 function update1002to1003()
 {
-    /**
-     * @var \DBmysql $DB
-     * @var \Migration $migration
-     */
     global $DB, $migration;
 
     $updateresult       = true;
@@ -83,7 +79,7 @@ function update1002to1003()
         }
     }
     foreach ($DELFROMDISPLAYPREF as $type => $tab) {
-        $DB->deleteOrDie(
+        $DB->delete(
             'glpi_displaypreferences',
             Toolbox::addslashes_deep(
                 [

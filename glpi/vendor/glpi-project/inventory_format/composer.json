@@ -16,25 +16,17 @@
     },
     "require": {
         "php": ">=7.4",
-        "seld/jsonlint": "^1.11",
-        "swaggest/json-schema": "^0.12.43",
-        "symfony/polyfill-php81": "^1.31",
-        "ext-json": "*",
-        "ext-libxml": "*",
-        "ext-simplexml": "*",
-        "ext-ctype": "*",
-        "ext-curl": "*"
+        "seld/jsonlint": "^1.9",
+        "swaggest/json-schema": "^0.12.41",
+        "symfony/polyfill-php81": "^1.26"
     },
     "autoload": {
-        "files": ["lib/php/Schema.php", "lib/php/Converter.php", "lib/php/FilesToJSON.php"]
+        "files": ["lib/php/Converter.php", "lib/php/FilesToJSON.php"]
     },
     "bin": ["bin/convert", "bin/build_hw_jsons", "bin/refresh_hw_sources","bin/validate"],
     "require-dev": {
-        "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan": "^1.12",
-        "phpstan/phpstan-deprecation-rules": "^1.2",
         "phpunit/phpunit": "^9.6",
-        "squizlabs/php_codesniffer": "^3.11"
+        "squizlabs/php_codesniffer": "^3.7"
     },
     "extra": {
         "branch-alias": {
@@ -46,9 +38,6 @@
         "platform": {
             "php": "7.4.99"
         },
-        "sort-packages": true,
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
+        "sort-packages": true
     }
 }

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -71,7 +71,6 @@ class CableStrand extends CommonDropdown
             $nb = 0;
             switch ($item->getType()) {
                 case __CLASS__:
-                    /** @var CableStrand $item */
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(
                             Cable::getTable(),
@@ -88,7 +87,6 @@ class CableStrand extends CommonDropdown
     {
 
         if ($item->getType() == __CLASS__) {
-            /** @var CableStrand $item */
             switch ($tabnum) {
                 case 1:
                     $item->showItems();
@@ -105,7 +103,6 @@ class CableStrand extends CommonDropdown
      */
     public function showItems()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $cablestrands_id = $this->fields['id'];

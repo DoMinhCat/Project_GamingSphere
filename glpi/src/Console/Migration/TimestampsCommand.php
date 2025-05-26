@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -37,12 +37,11 @@ namespace Glpi\Console\Migration;
 
 use DBConnection;
 use Glpi\Console\AbstractCommand;
-use Glpi\Console\Command\ConfigurationCommandInterface;
 use Glpi\System\Requirement\DbTimezones;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class TimestampsCommand extends AbstractCommand implements ConfigurationCommandInterface
+class TimestampsCommand extends AbstractCommand
 {
     /**
      * Error code returned when failed to migrate one table.
@@ -183,7 +182,7 @@ class TimestampsCommand extends AbstractCommand implements ConfigurationCommandI
                // apply alter to table
                 $query = "ALTER TABLE " . $this->db->quoteName($table) . " " . $tablealter . ";\n";
 
-                $result = $this->db->doQuery($query);
+                $result = $this->db->query($query);
                 if (false === $result) {
                     $message = sprintf(
                         __('Migration of table "%s" failed with message "(%s) %s".'),
@@ -238,14 +237,5 @@ class TimestampsCommand extends AbstractCommand implements ConfigurationCommandI
         }
 
         return 0; // Success
-    }
-
-    public function getConfigurationFilesToUpdate(InputInterface $input): array
-    {
-        $config_files_to_update = ['config_db.php'];
-        if (file_exists(GLPI_CONFIG_DIR . '/config_db_slave.php')) {
-            $config_files_to_update[] = 'config_db_slave.php';
-        }
-        return $config_files_to_update;
     }
 }

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -86,6 +86,19 @@ if (isset($_POST["add"])) {
         "inventory",
         //TRANS: %s is the user login
         sprintf(__('%s purges an item'), $_SESSION["glpiname"])
+    );
+    Html::back();
+} else if (isset($_POST["backToStock"])) {
+    $ri->check($_POST["id"], PURGE);
+    $ri->backToStock($_POST);
+
+    Event::log(
+        $_POST['id'],
+        "reservationitem",
+        4,
+        "inventory",
+        //TRANS: %s is the user login
+        sprintf(__('%s restores an item'), $_SESSION["glpiname"])
     );
     Html::back();
 } else if (isset($_POST["update"])) {

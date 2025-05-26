@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -162,8 +162,8 @@ class NetworkAlias extends FQDNLabel
     public static function getHTMLTableHeader(
         $itemtype,
         HTMLTableBase $base,
-        ?HTMLTableSuperHeader $super = null,
-        ?HTMLTableHeader $father = null,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -194,12 +194,11 @@ class NetworkAlias extends FQDNLabel
      * @param $options   array
      **/
     public static function getHTMLTableCellsForItem(
-        ?HTMLTableRow $row = null,
-        ?CommonDBTM $item = null,
-        ?HTMLTableCell $father = null,
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
         array $options = []
     ) {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (empty($item)) {
@@ -257,11 +256,7 @@ class NetworkAlias extends FQDNLabel
      **/
     public static function showForNetworkName(NetworkName $item, $withtemplate = 0)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $ID = $item->getID();
         if (!$item->can($ID, READ)) {
@@ -389,12 +384,11 @@ class NetworkAlias extends FQDNLabel
     /**
      * Show the aliases contained by the alias
      *
-     * @param FQDN       $item          the FQDN owning the aliases
+     * @param CommonGLPI $item          the FQDN owning the aliases
      * @param integer    $withtemplate  withtemplate param
      **/
     public static function showForFQDN(CommonGLPI $item, $withtemplate)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $alias   = new self();
@@ -489,12 +483,10 @@ class NetworkAlias extends FQDNLabel
 
         switch ($item->getType()) {
             case 'NetworkName':
-                /** @var NetworkName $item */
                 self::showForNetworkName($item, $withtemplate);
                 break;
 
             case 'FQDN':
-                /** @var FQDN $item */
                 self::showForFQDN($item, $withtemplate);
                 break;
         }
@@ -506,21 +498,20 @@ class NetworkAlias extends FQDNLabel
     {
 
         if (
-            ($item instanceof CommonDBTM)
-            && $item->getID()
+            $item->getID()
             && $item->can($item->getField('id'), READ)
         ) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
-                switch (get_class($item)) {
-                    case NetworkName::class:
+                switch ($item->getType()) {
+                    case 'NetworkName':
                         $nb = countElementsInTable(
                             $this->getTable(),
                             ['networknames_id' => $item->getID() ]
                         );
                         break;
 
-                    case FQDN::class:
+                    case 'FQDN':
                         $nb = countElementsInTable(
                             $this->getTable(),
                             ['fqdns_id' => $item->getID() ]

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -63,11 +63,11 @@ class RequirementsManager
     /**
      * Returns core requirement list.
      *
-     * @param \DBmysql|null $db  DB instance (if null BD requirements will not be returned).
+     * @param \DBmysql $db  DB instance (if null BD requirements will not be returned).
      *
      * @return RequirementsList
      */
-    public function getCoreRequirementList(?\DBmysql $db = null): RequirementsList
+    public function getCoreRequirementList(\DBmysql $db = null): RequirementsList
     {
         $requirements = [];
 
@@ -128,7 +128,6 @@ class RequirementsManager
 
         $requirements[] = new InstallationNotOverriden($db);
 
-        /** @var \Psr\Log\LoggerInterface $PHPLOGGER */
         global $PHPLOGGER;
         $requirements[] = new LogsWriteAccess($PHPLOGGER);
 

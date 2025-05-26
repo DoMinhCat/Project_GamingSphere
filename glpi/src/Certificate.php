@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -247,7 +247,7 @@ class Certificate extends CommonDBTM
             'table'              => 'glpi_users',
             'field'              => 'name',
             'linkfield'          => 'users_id_tech',
-            'name'               => __('Technician in charge'),
+            'name'               => __('Technician in charge of the hardware'),
             'datatype'           => 'dropdown',
             'right'              => 'own_ticket'
         ];
@@ -266,7 +266,7 @@ class Certificate extends CommonDBTM
             'table'              => 'glpi_groups',
             'field'              => 'completename',
             'linkfield'          => 'groups_id_tech',
-            'name'               => __('Group in charge'),
+            'name'               => __('Group in charge of the hardware'),
             'condition'          => ['is_assign' => 1],
             'datatype'           => 'dropdown'
         ];
@@ -666,7 +666,6 @@ class Certificate extends CommonDBTM
      **/
     public static function getTypes($all = false)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $types = $CFG_GLPI['certificate_types'];
@@ -703,11 +702,7 @@ class Certificate extends CommonDBTM
      **/
     public static function cronCertificate($task = null)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         if (!$CFG_GLPI['use_notifications']) {
             return 0; // Nothing to do
@@ -837,7 +832,7 @@ class Certificate extends CommonDBTM
     }
 
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
         $this->cleanAlerts([Alert::END]);
         parent::post_updateItem($history);

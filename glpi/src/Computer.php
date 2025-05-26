@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -151,13 +151,9 @@ class Computer extends CommonDBTM
     }
 
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $changes = [];
         $update_count = count($this->updates ?? []);
@@ -329,7 +325,6 @@ class Computer extends CommonDBTM
 
     public function getLinkedItems()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -545,7 +540,7 @@ class Computer extends CommonDBTM
             'table'              => 'glpi_users',
             'field'              => 'name',
             'linkfield'          => 'users_id_tech',
-            'name'               => __('Technician in charge'),
+            'name'               => __('Technician in charge of the hardware'),
             'datatype'           => 'dropdown',
             'right'              => 'own_ticket'
         ];
@@ -555,7 +550,7 @@ class Computer extends CommonDBTM
             'table'              => 'glpi_groups',
             'field'              => 'completename',
             'linkfield'          => 'groups_id_tech',
-            'name'               => __('Group in charge'),
+            'name'               => __('Group in charge of the hardware'),
             'condition'          => ['is_assign' => 1],
             'datatype'           => 'dropdown'
         ];
@@ -607,38 +602,6 @@ class Computer extends CommonDBTM
         $tab = array_merge($tab, Socket::rawSearchOptionsToAdd());
 
         $tab = array_merge($tab, Agent::rawSearchOptionsToAdd());
-
-        $tab = array_merge($tab, DCRoom::rawSearchOptionsToAdd());
-
-        return $tab;
-    }
-
-    public static function rawSearchOptionsToAdd($itemtype)
-    {
-        $tab = [];
-
-        $tab[] = [
-            'id'                 => 'Computer',
-            'name'               => __('Computers')
-        ];
-
-        $tab[] = [
-            'id'                 => '5',
-            'table'              => Computer::getTable(),
-            'field'              => 'uuid',
-            'name'               => __('Computer UUID'),
-            'datatype'           => 'string',
-            'massiveaction'      => false,
-            'forcegroupby'       => true,
-            'joinparams'         => [
-                'beforejoin'         => [
-                    'table'              => ComputerVirtualMachine::getTable(),
-                    'joinparams'         => [
-                        'jointype'           => 'child',
-                    ]
-                ]
-            ]
-        ];
 
         return $tab;
     }

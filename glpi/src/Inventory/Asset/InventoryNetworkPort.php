@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -136,7 +136,6 @@ trait InventoryNetworkPort
      */
     private function cleanUnmanageds()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $networkport = new NetworkPort();
@@ -189,7 +188,6 @@ trait InventoryNetworkPort
      */
     private function handleIpNetworks()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ipnetwork = new IPNetwork();
@@ -240,8 +238,7 @@ trait InventoryNetworkPort
                      'name'         => sprintf('%s/%s - %s', $port->subnet, $port->netmask, $port->gateway),
                      'network'      => sprintf('%s/%s', $port->subnet, $port->netmask),
                      'gateway'      => $port->gateway,
-                     'entities_id'  => $this->entities_id,
-                     '_no_message'  => true //to prevent 'Network already defined in visible entities' message on add
+                     'entities_id'  => $this->entities_id
                  ];
                  $ipnetwork->add(Sanitizer::sanitize($input));
             }
@@ -339,19 +336,19 @@ trait InventoryNetworkPort
      */
     private function handleUpdates()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $db_ports = [];
         $networkport = new NetworkPort();
 
-        $np_dyn_props = ['logical_number', 'ifstatus', 'ifinternalstatus', 'ifalias', 'is_dynamic'];
+        $np_dyn_props = ['logical_number', 'ifstatus', 'ifinternalstatus'];
         $iterator = $DB->request([
             'SELECT' => array_merge(['id', 'name', 'mac', 'instantiation_type'], $np_dyn_props),
             'FROM'   => 'glpi_networkports',
             'WHERE'  => [
                 'items_id'     => $this->items_id,
                 'itemtype'     => $this->itemtype,
+                'is_dynamic'   => 1
             ]
         ]);
         foreach ($iterator as $row) {
@@ -403,16 +400,10 @@ trait InventoryNetworkPort
                     }
                 }
 
-                // force dynamic for manually added NetworkPort
-                if (count($criteria) || !$dbdata_copy['is_dynamic']) {
+                if (count($criteria)) {
                     $criteria['id'] = $keydb;
                     $criteria['is_dynamic'] = 1;
                     $networkport->update(Sanitizer::sanitize($criteria));
-                }
-
-                // force NetworkPortEthernet type if no instantiation_type and mac is set
-                if (!property_exists($data, 'instantiation_type') && property_exists($data, 'mac') && !empty($data->mac)) {
-                    $data->instantiation_type = 'NetworkPortEthernet';
                 }
 
                 //check for instantiation_type switch for NetworkPort
@@ -427,6 +418,7 @@ trait InventoryNetworkPort
                //handle instantiation type
                 if (property_exists($data, 'instantiation_type')) {
                     $type = $data->instantiation_type;
+
                    //handle only ethernet and fiberchannel
                     $this->handleInstantiation($type, $data, $keydb, true);
                 }
@@ -498,7 +490,7 @@ trait InventoryNetworkPort
                         }
                     }
 
-                    if (count($db_addresses) && count($ips)) {
+                    if (!$this->isMainPartial() && count($db_addresses) && count($ips)) {
                         $ipaddress = new IPAddress();
                         //deleted IP addresses
                         foreach (array_keys($db_addresses) as $id_ipa) {
@@ -525,7 +517,7 @@ trait InventoryNetworkPort
         }
 
         //delete remaining network ports, if any
-        if (count($db_ports)) {
+        if (!$this->isMainPartial() && count($db_ports)) {
             foreach ($db_ports as $netpid => $netpdata) {
                 if ($netpdata['name'] != 'management') { //prevent removing internal management port
                     $networkport->delete(['id' => $netpid], true);
@@ -551,7 +543,6 @@ trait InventoryNetworkPort
      */
     private function handleInstantiation($type, $data, $ports_id, $load)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!in_array($type, ['NetworkPortEthernet', 'NetworkPortFiberchannel'])) {
@@ -627,11 +618,6 @@ trait InventoryNetworkPort
             $ports += $this->getManagementPorts();
         }
         foreach ($ports as $port) {
-            // force NetworkPortEthernet type if no instantiation_type and mac is set
-            if (!property_exists($port, 'instantiation_type') && property_exists($port, 'mac') && !empty($port->mac)) {
-                $port->instantiation_type = 'NetworkPortEthernet';
-            }
-
             $netports_id = $this->addNetworkPort($port);
             if (count(($port->ipaddress ?? []))) {
                 if (property_exists($port, 'name')) {

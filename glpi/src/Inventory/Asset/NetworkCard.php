@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -222,20 +222,7 @@ class NetworkCard extends Device
                     if (property_exists($val_port, 'instantiation_type')) {
                         switch ($val_port->instantiation_type) {
                             case 'Ethernet':
-                            case 'ethernet':
                                 $val_port->instantiation_type = 'NetworkPortEthernet';
-                                break;
-                            case 'aggregate':
-                                $val_port->instantiation_type = 'NetworkPortAggregate';
-                                break;
-                            case 'alias':
-                                $val_port->instantiation_type = 'NetworkPortAlias';
-                                break;
-                            case 'dialup':
-                                $val_port->instantiation_type = 'NetworkPortDialup';
-                                break;
-                            case 'loopback':
-                                $val_port->instantiation_type = 'NetworkPortLocal';
                                 break;
                             case 'wifi':
                                 $val_port->instantiation_type = 'NetworkPortWifi';
