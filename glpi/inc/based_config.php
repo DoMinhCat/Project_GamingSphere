@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -85,25 +85,8 @@ include_once(GLPI_ROOT . "/inc/autoload.function.php");
         'GLPI_SERVERSIDE_URL_ALLOWLIST'  => [
             // allowlist (regex format) of URL that can be fetched from server side (used for RSS feeds and external calendars, among others)
             // URL will be considered as safe as long as it matches at least one entry of the allowlist
-
-            // `http://` URLs
-            // - without presence of @ (username) and : (protocol) in host part of URL
-            // - with optional `:80` default port
-            // - with optional path
-            '#^http://[^@:]+(:80)?(/.*)?$#',
-
-            // `https://` URLs
-            // - without presence of @ (username) and : (protocol) in host part of URL
-            // - with optional `:443` default port
-            // - with optional path
-            '#^https://[^@:]+(:443)?(/.*)?$#',
-
-            // `feed://` URLs
-            // - without presence of @ (username) and : (protocol) in host part of URL
-            // - with optional path
-            '#^feed://[^@:]+(/.*)?$#',
+            '/^(https?|feed):\/\/[^@:]+(\/.*)?$/', // only accept http/https/feed protocols, and reject presence of @ (username) and : (protocol) in host part of URL
         ],
-        'GLPI_DISALLOWED_UPLOADS_PATTERN' => '/\.(php\d*|phar)$/i', // Prevent upload of any PHP file / PHP archive; can be set to an empty value to allow every files
 
       // Constants related to GLPI Project / GLPI Network external services
         'GLPI_TELEMETRY_URI'                => 'https://telemetry.glpi-project.org', // Telemetry project URL
@@ -124,7 +107,6 @@ include_once(GLPI_ROOT . "/inc/autoload.function.php");
         'GLPI_CALDAV_IMPORT_STATE'    => 0, // external events created from a caldav client will take this state by default (0 = Planning::INFO)
         'GLPI_DEMO_MODE'              => '0',
         'GLPI_CENTRAL_WARNINGS'       => '1', // display (1), or not (0), warnings on GLPI Central page
-        'GLPI_TEXT_MAXSIZE'           => '4000' // character threshold for displaying read more button
     ];
 
    // Define constants values based on server env variables (i.e. defined using apache SetEnv directive)
@@ -140,7 +122,7 @@ include_once(GLPI_ROOT . "/inc/autoload.function.php");
     }
 
    // Define constants values from downstream distribution file
-    if (!defined('TU_USER') && file_exists(GLPI_ROOT . '/inc/downstream.php')) {
+    if (file_exists(GLPI_ROOT . '/inc/downstream.php')) {
         include_once(GLPI_ROOT . '/inc/downstream.php');
     }
 

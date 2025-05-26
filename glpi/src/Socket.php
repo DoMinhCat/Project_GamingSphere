@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -83,10 +83,6 @@ class Socket extends CommonDBChild
         return false;
     }
 
-    public function maybeRecursive()
-    {
-        return false;
-    }
 
     public function defineTabs($options = [])
     {
@@ -107,7 +103,6 @@ class Socket extends CommonDBChild
     public static function showNetworkPortForm($itemtype, $items_id, $networkports_id = 0, $options = [])
     {
 
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         //if form is called from an item, retrieve itemtype and items
@@ -142,7 +137,7 @@ class Socket extends CommonDBChild
             $rand_items_id =  $itemtype::dropdown(['name'                  => 'items_id',
                 'value'                 => $items_id,
                 'display_emptychoice'   => true,
-                'display_dc_position'   => in_array($itemtype, $CFG_GLPI['rackable_types']),
+                'display_dc_position'   => true,
                 'rand' => $rand_items_id
             ]);
         }
@@ -187,7 +182,7 @@ class Socket extends CommonDBChild
      *     - itemtype type of the item for add process
      *     - items_id ID of the item for add process
      *
-     * @return boolean true if displayed  false if item not found or not right to display
+     * @return true if displayed  false if item not found or not right to display
      **/
     public function showForm($ID, array $options = [])
     {
@@ -219,8 +214,10 @@ class Socket extends CommonDBChild
 
     public function prepareInputForAdd($input)
     {
-        if (empty($input['items_id'])) {
-            unset($input['itemtype'], $input['items_id']);
+        // If no items_id is set, do not store itemtype or items_id
+        if (!isset($input['items_id']) || empty($input['items_id'])) {
+            unset($input['itemtype']);
+            unset($input['items_id']);
         }
         $input = $this->retrievedataFromNetworkPort($input);
         return $input;
@@ -229,8 +226,10 @@ class Socket extends CommonDBChild
 
     public function prepareInputForUpdate($input)
     {
-        if (isset($input['items_id']) && empty($input['items_id'])) {
-            unset($input['itemtype'], $input['items_id']);
+        // If no items_id is set, do not store itemtype or items_id
+        if (!isset($input['items_id']) || empty($input['items_id'])) {
+            unset($input['itemtype']);
+            unset($input['items_id']);
         }
         $input = $this->retrievedataFromNetworkPort($input);
         return $input;
@@ -262,7 +261,6 @@ class Socket extends CommonDBChild
      **/
     public static function getSocketLinkTypes()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
         $values = [];
         foreach ($CFG_GLPI["socket_types"] as $itemtype) {
@@ -279,7 +277,6 @@ class Socket extends CommonDBChild
      **/
     public static function getSocketAlreadyLinked(string $itemtype, int $items_id): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
         $already_use = [];
         $sub_query = [];
@@ -601,7 +598,6 @@ class Socket extends CommonDBChild
      **/
     public function findID(array &$input)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!empty($input["name"])) {
@@ -637,14 +633,13 @@ class Socket extends CommonDBChild
         $this->cleanIfStealNetworkPort();
     }
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
         $this->cleanIfStealNetworkPort();
     }
 
     public function cleanIfStealNetworkPort()
     {
-        /** @var \DBmysql $DB */
         global $DB;
        //find other socket with same networkport and reset it
         if ($this->fields['networkports_id'] > 0) {
@@ -678,12 +673,11 @@ class Socket extends CommonDBChild
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
         if (!$withtemplate) {
             $nb = 0;
-            switch (get_class($item)) {
-                case Location::class:
+            switch ($item->getType()) {
+                case 'Location':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb =  countElementsInTable(
                             $this->getTable(),
@@ -692,7 +686,6 @@ class Socket extends CommonDBChild
                     }
                     return self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $nb);
                 default:
-                    /** @var CommonDBTM $item */
                     if (in_array($item->getType(), $CFG_GLPI['socket_types'])) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
                               $nb =  countElementsInTable(
@@ -712,7 +705,6 @@ class Socket extends CommonDBChild
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
         if ($item->getType() == 'Location') {
             self::showForLocation($item);
@@ -733,7 +725,6 @@ class Socket extends CommonDBChild
     public static function showListForItem($item)
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         $canedit = self::canUpdate();
@@ -901,7 +892,6 @@ class Socket extends CommonDBChild
      **/
     public static function showForLocation($item)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID       = $item->getField('id');
@@ -1054,7 +1044,7 @@ class Socket extends CommonDBChild
                                         )
             );
 
-            foreach ($DB->request(self::getTable(), $crit) as $data) {
+            foreach ($DB->request('glpi_sockets', $crit) as $data) {
                 Session::addToNavigateListItems('Socket', $data["id"]);
                 echo "<tr class='tab_bg_1'>";
 
@@ -1130,9 +1120,9 @@ class Socket extends CommonDBChild
      * @param $options   array
      **/
     public static function getHTMLTableCellsForItem(
-        ?HTMLTableRow $row = null,
-        ?CommonDBTM $item = null,
-        ?HTMLTableCell $father = null,
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
         $options = []
     ) {
 

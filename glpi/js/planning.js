@@ -5,7 +5,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -103,6 +103,7 @@ var GLPIPlanning  = {
             nowIndicator: true,
             now: options.now,// as we set the calendar as UTC, we need to reprecise the current datetime
             listDayAltFormat: false,
+            agendaEventMinHeight: 13,
             header: options.header,
             hiddenDays: hidden_days,
             locale: loadedLocales.length === 1 ? loadedLocales[0] : undefined,
@@ -438,17 +439,7 @@ var GLPIPlanning  = {
                 }).done(function() {
                     // indicate to central page we're done rendering
                     if (!options.full_view) {
-                        // Observe changes in the DOM before triggering
-                        const observer = new MutationObserver((mutations, obs) => {
-                            if (document.readyState === 'complete') {
-                                obs.disconnect(); // Stop observation once the DOM is stable
-                                setTimeout(() => {
-                                    $(document).trigger('masonry_grid:layout');
-                                }, 100);
-                            }
-                        });
-
-                        observer.observe(document.body, { childList: true, subtree: true });
+                        $(document).trigger('masonry_grid:layout');
                     }
                 });
 
@@ -600,35 +591,23 @@ var GLPIPlanning  = {
                 var start = info.start;
                 var end = info.end;
 
-                if ($('div.modal.planning-modal').length === 0) {
-                    glpi_ajax_dialog({
-                        url: CFG_GLPI.root_doc + "/ajax/planning.php",
-                        params: {
-                            action: 'add_event_fromselect',
-                            begin: start.toISOString(),
-                            end: end.toISOString(),
-                            res_itemtype: itemtype,
-                            res_items_id: items_id,
-                        },
-                        dialogclass: 'modal-lg planning-modal',
-                        title: __('Add an event'),
-                        bs_focus: false
-                    });
-                    GLPIPlanning.calendar.setOption('selectable', false);
-                    window.setTimeout(function() {
-                        GLPIPlanning.calendar.setOption('selectable', true);
-                    }, 500);
-                }
+                glpi_ajax_dialog({
+                    url: CFG_GLPI.root_doc+"/ajax/planning.php",
+                    params: {
+                        action: 'add_event_fromselect',
+                        begin:  start.toISOString(),
+                        end:    end.toISOString(),
+                        res_itemtype: itemtype,
+                        res_items_id: items_id,
+                    },
+                    dialogclass: 'modal-lg',
+                    title: __('Add an event'),
+                    bs_focus: false
+                });
 
                 GLPIPlanning.calendar.unselect();
             }
         });
-
-        // Load the last known view only if it is valid (else load default view)
-        const view = this.calendar.isValidViewType(options.default_view) ?
-            options.default_view :
-            default_options.default_view;
-        this.calendar.changeView(view);
 
         $('.planning_on_central a')
             .mousedown(function() {
@@ -856,7 +835,6 @@ var GLPIPlanning  = {
         var event      = info.event;
         var revertFunc = info.revert;
         var extProps   = event.extendedProps;
-        var recurringDef = event._def.recurringDef;
 
         var old_itemtype = null;
         var old_items_id = null;
@@ -879,28 +857,6 @@ var GLPIPlanning  = {
 
         var start = event.start;
         var end   = event.end;
-
-        if (
-            !move_instance
-            && recurringDef
-            && recurringDef.typeData
-            && recurringDef.typeData.origOptions.dtstart !== start
-        ) {
-            let startDate = new Date(start);
-            let dtstart = recurringDef.typeData._dtstart || recurringDef.typeData.origOptions.dtstart;
-            let originDate = new Date(dtstart);
-
-            let hours = startDate.getHours();
-            let minutes = startDate.getMinutes();
-
-            originDate.setHours(hours, minutes);
-
-            start = originDate;
-
-            let duration = end - event.start;
-            end = new Date(start.getTime() + duration);
-        }
-
         if (typeof end === 'undefined' || end === null) {
             end = new Date(start.getTime());
             if (event.allDay) {

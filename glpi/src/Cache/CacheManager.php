@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -175,7 +175,7 @@ class CacheManager
      * @param string|string[] $dsn
      * @param array           $options
      *
-     * @return void
+     * @return array
      */
     public function testConnection($dsn, array $options = []): void
     {
@@ -219,9 +219,6 @@ class CacheManager
      */
     public function getCacheStorageAdapter(string $context): CacheItemPoolInterface
     {
-        /** @var \Psr\Log\LoggerInterface $PHPLOGGER */
-        global $PHPLOGGER;
-
         if (!$this->isContextValid($context)) {
             throw new \InvalidArgumentException(sprintf('Invalid context: "%s".', $context));
         }
@@ -234,48 +231,48 @@ class CacheManager
         }
 
         if ($context === self::CONTEXT_TRANSLATIONS || $context === self::CONTEXT_INSTALLER) {
-            // 'translations' and 'installer' contexts are not supposed to be configured
-            // and should always use a filesystem adapter.
-            // Append GLPI version to namespace to ensure that these caches are not containing data
-            // from a previous version.
+           // 'translations' and 'installer' contexts are not supposed to be configured
+           // and should always use a filesystem adapter.
+           // Append GLPI version to namespace to ensure that these caches are not containing data
+           // from a previous version.
             $namespace = $this->normalizeNamespace($namespace_prefix . $context . '-' . GLPI_VERSION);
-            $adapter = new FilesystemAdapter($namespace, 0, $this->cache_dir);
-        } elseif (!array_key_exists($context, $raw_config['contexts'])) {
-            // Default to filesystem, inside GLPI_CACHE_DIR/$context.
-            $adapter = new FilesystemAdapter($this->normalizeNamespace($namespace_prefix . $context), 0, $this->cache_dir);
-        } else {
-            $context_config = $raw_config['contexts'][$context];
-
-            $dsn       = $context_config['dsn'];
-            $options   = $context_config['options'] ?? [];
-            $scheme    = $this->extractScheme($dsn);
-            $namespace = $this->normalizeNamespace($namespace_prefix .  $context);
-
-            switch ($scheme) {
-                case self::SCHEME_MEMCACHED:
-                    $adapter = new MemcachedAdapter(
-                        MemcachedAdapter::createConnection($dsn, $options),
-                        $namespace
-                    );
-                    break;
-
-                case self::SCHEME_REDIS:
-                case self::SCHEME_REDISS:
-                    $adapter = new RedisAdapter(
-                        RedisAdapter::createConnection($dsn, $options),
-                        $namespace
-                    );
-                    break;
-
-                default:
-                    throw new \RuntimeException(sprintf('Invalid cache DSN %s.', var_export($dsn, true)));
-                    break;
-            }
+            return new FilesystemAdapter($namespace, 0, $this->cache_dir);
         }
 
-        $adapter->setLogger($PHPLOGGER);
+        if (!array_key_exists($context, $raw_config['contexts'])) {
+           // Default to filesystem, inside GLPI_CACHE_DIR/$context.
+            return new FilesystemAdapter($this->normalizeNamespace($namespace_prefix . $context), 0, $this->cache_dir);
+        }
 
-        return $adapter;
+        $context_config = $raw_config['contexts'][$context];
+
+        $dsn       = $context_config['dsn'];
+        $options   = $context_config['options'] ?? [];
+        $scheme    = $this->extractScheme($dsn);
+        $namespace = $this->normalizeNamespace($namespace_prefix .  $context);
+
+        switch ($scheme) {
+            case self::SCHEME_MEMCACHED:
+                $storage = new MemcachedAdapter(
+                    MemcachedAdapter::createConnection($dsn, $options),
+                    $namespace
+                );
+                break;
+
+            case self::SCHEME_REDIS:
+            case self::SCHEME_REDISS:
+                $storage = new RedisAdapter(
+                    RedisAdapter::createConnection($dsn, $options),
+                    $namespace
+                );
+                break;
+
+            default:
+                throw new \RuntimeException(sprintf('Invalid cache DSN %s.', var_export($dsn, true)));
+            break;
+        }
+
+        return $storage;
     }
 
     /**

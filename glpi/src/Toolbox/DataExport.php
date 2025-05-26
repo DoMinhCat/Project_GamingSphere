@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -80,13 +80,8 @@ class DataExport
             $value = RichText::getTextFromHtml($value, true, true);
 
             // Remove extra spacing
-            $spacing_chars = [
-                '\s', // any basic spacing char
-                '\x{C2A0}', // unicode value of decoded &nbsp;
-            ];
-            $spacing_chars_pattern = '(' . implode('|', $spacing_chars) . ')+';
-            $value = preg_replace('/^' . $spacing_chars_pattern . '/u', '', $value);
-            $value = preg_replace('/' . $spacing_chars_pattern . '$/u', '', $value);
+            $nbsp = chr(0xC2) . chr(0xA0); // unicode value of decoded &nbsp;
+            $value = trim($value, " \n\r\t" . $nbsp);
         }
 
         return $value;

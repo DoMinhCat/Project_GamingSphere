@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -106,7 +106,6 @@ class NotificationTemplate extends CommonDBTM
 
     public function showForm($ID, array $options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!Config::canUpdate()) {
@@ -238,7 +237,7 @@ class NotificationTemplate extends CommonDBTM
      * @param $event
      * @param $options      array
      *
-     * @return false|integer id of the template in templates_by_languages / false if computation failed
+     * @return id of the template in templates_by_languages / false if computation failed
      **/
     public function getTemplateByLanguage(
         NotificationTarget $target,
@@ -427,29 +426,6 @@ class NotificationTemplate extends CommonDBTM
         $string = self::processIf($string, $cleandata);
         $string = strtr($string, $cleandata);
 
-        $string = self::convertRelativeGlpiLinksToAbsolute($string);
-
-        return $string;
-    }
-
-    /**
-     * Convert relative links to GLPI nto absolute links.
-     *
-     * @param string $string
-     * @return string
-     */
-    private static function convertRelativeGlpiLinksToAbsolute(string $string): string
-    {
-        /** @var array $CFG_GLPI */
-        global $CFG_GLPI;
-
-        // Convert domain relative links to absolute links
-        $string = preg_replace(
-            '/((?:href)=[\'"])(\/(?:[^\/][^\'"]*)?)([\'"])/',
-            '$1' . $CFG_GLPI['url_base'] . '$2$3',
-            $string
-        );
-
         return $string;
     }
 
@@ -584,7 +560,6 @@ class NotificationTemplate extends CommonDBTM
      **/
     public function getByLanguage($language)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -638,7 +613,7 @@ class NotificationTemplate extends CommonDBTM
         $mailing_options['items_id']     = method_exists($target->obj, "getField")
          ? $target->obj->getField('id')
          : 0;
-        if (property_exists($target->obj, 'documents') && isset($target->obj->documents)) {
+        if (isset($target->obj->documents)) {
             $mailing_options['documents'] = $target->obj->documents;
         }
 

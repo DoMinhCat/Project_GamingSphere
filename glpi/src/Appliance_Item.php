@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -106,7 +106,6 @@ class Appliance_Item extends CommonDBRelation
      **/
     public static function showItems(Appliance $appliance)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $appliance->fields['id'];
@@ -240,7 +239,7 @@ class Appliance_Item extends CommonDBRelation
      * @since 9.5.2
      *
      * @param CommonDBTM $item         CommonDBTM object wanted
-     * @param integer    $withtemplate not used (to be deleted)
+     * @param boolean    $withtemplate not used (to be deleted)
      *
      * @return void
      **/
@@ -389,7 +388,7 @@ class Appliance_Item extends CommonDBRelation
      *
      * @param array $input Input data
      *
-     * @return false|array
+     * @return array
      */
     private function prepareInput($input)
     {
@@ -456,7 +455,6 @@ class Appliance_Item extends CommonDBRelation
 
     public static function getRelationMassiveActionsSpecificities()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $specificities              = parent::getRelationMassiveActionsSpecificities();

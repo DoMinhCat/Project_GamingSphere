@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -161,7 +161,6 @@ class Problem extends CommonITILObject
 
     public function pre_deleteItem()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!isset($this->input['_disablenotif']) && $CFG_GLPI['use_notifications']) {
@@ -192,7 +191,7 @@ class Problem extends CommonITILObject
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
-        switch (get_class($item)) {
+        switch ($item->getType()) {
             case __CLASS__:
                 switch ($tabnum) {
                     case 1:
@@ -250,9 +249,8 @@ class Problem extends CommonITILObject
     }
 
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         parent::post_updateItem($history);
@@ -333,7 +331,6 @@ class Problem extends CommonITILObject
 
     public function post_addItem()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         parent::post_addItem();
@@ -548,10 +545,6 @@ class Problem extends CommonITILObject
             ]
         ];
 
-        if (Session::haveRight('change', READ)) {
-            $tab = array_merge($tab, Change::rawSearchOptionsToAdd('Problem'));
-        }
-
         return $tab;
     }
 
@@ -757,11 +750,7 @@ class Problem extends CommonITILObject
      **/
     public static function showCentralList($start, $status = "process", $showgroupproblems = true)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         if (!static::canView()) {
             return false;
@@ -994,7 +983,7 @@ class Problem extends CommonITILObject
                         'values' => []
                     ];
 
-                    if ($problem->getFromDBwithData($data['id'])) {
+                    if ($problem->getFromDBwithData($data['id'], 0)) {
                         $bgcolor = $_SESSION["glpipriority_" . $problem->fields["priority"]];
                         $name = sprintf(__('%1$s: %2$s'), __('ID'), $problem->fields["id"]);
                         $row['values'][] = [
@@ -1082,11 +1071,7 @@ class Problem extends CommonITILObject
      **/
     public static function showCentralCount(bool $foruser = false, bool $display = true)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
        // show a tab with count of jobs in the central and give link
         if (!static::canView()) {
@@ -1307,13 +1292,12 @@ class Problem extends CommonITILObject
      * Will also display problems of linked items
      *
      * @param CommonDBTM $item
-     * @param integer    $withtemplate
+     * @param boolean    $withtemplate
      *
      * @return void
      **/
     public static function showListForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!Session::haveRight(self::$rightname, self::READALL)) {
@@ -1330,8 +1314,8 @@ class Problem extends CommonITILObject
             'reset'    => 'reset',
         ];
 
-        switch (get_class($item)) {
-            case User::class:
+        switch ($item->getType()) {
+            case 'User':
                 $restrict['glpi_problems_users.users_id'] = $item->getID();
 
                 $options['criteria'][0]['field']      = 4; // status
@@ -1351,7 +1335,7 @@ class Problem extends CommonITILObject
 
                 break;
 
-            case Supplier::class:
+            case 'Supplier':
                 $restrict['glpi_problems_suppliers.suppliers_id'] = $item->getID();
 
                 $options['criteria'][0]['field']      = 6;
@@ -1360,7 +1344,7 @@ class Problem extends CommonITILObject
                 $options['criteria'][0]['link']       = 'AND';
                 break;
 
-            case Group::class:
+            case 'Group':
                // Mini search engine
                 if ($item->haveChildren()) {
                     $tree = Session::getSavedOption(__CLASS__, 'tree', 0);
@@ -1555,19 +1539,11 @@ class Problem extends CommonITILObject
             'entities_id'                => $_SESSION['glpiactive_entity'],
             'itilcategories_id'          => 0,
             'actiontime'                 => 0,
-            'date'                       => 'NULL',
             '_add_validation'            => 0,
             'users_id_validate'          => [],
             '_tasktemplates_id'          => [],
             'items_id'                   => 0,
-            '_actors'                    => [],
-            'status'                     => self::INCOMING,
-            'time_to_resolve'            => 'NULL',
-            'itemtype'                   => '',
-            'locations_id'               => 0,
-            'impactcontent'              => '',
-            'causecontent'               => '',
-            'symptomcontent'             => '',
+            '_actors'                     => [],
         ];
     }
 
@@ -1583,7 +1559,6 @@ class Problem extends CommonITILObject
      */
     public function getActiveProblemsForItem($itemtype, $items_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         return $DB->request([

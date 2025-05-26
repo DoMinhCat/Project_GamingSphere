@@ -5,7 +5,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -45,7 +45,6 @@ body.mce-content-body {
 
 #page .tox .tox-statusbar {
     border-top: transparent;
-    justify-content: flex-end;
 }
 
 .tox.tox-tinymce {
@@ -55,9 +54,6 @@ body.mce-content-body {
 }
 
 .rich_text_container {
-    white-space: initial;
-    max-width: 100%;
-
     thead,
     tbody,
     tfoot,
@@ -72,8 +68,6 @@ body.mce-content-body {
     }
 
     table {
-        overflow: auto;
-        max-width: 100%;
         word-break: normal;
     }
 
@@ -89,11 +83,7 @@ body.mce-content-body {
         overflow: hidden;
 
         .read_more {
-            @if not $is_dark {
-                background: linear-gradient(to bottom, rgba(255, 255, 255, 0%) 0%, #f1f4e3 100%);
-            } @else {
-                background: linear-gradient(to bottom, rgba(255, 255, 255, 0%) 0%, $dark 100%);
-            }
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0%) 0%, #f1f4e3 100%);
         }
     }
 }

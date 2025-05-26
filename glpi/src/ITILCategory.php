@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -55,14 +55,14 @@ class ITILCategory extends CommonTreeDropdown
             ],
             [
                 'name'      => 'users_id',
-                'label'     => __('Technician in charge'),
+                'label'     => __('Technician in charge of the hardware'),
                 'type'      => 'UserDropdown',
                 'right'     => 'own_ticket',
                 'list'      => true,
             ],
             [
                 'name'      => 'groups_id',
-                'label'     => __('Group in charge'),
+                'label'     => __('Group in charge of the hardware'),
                 'type'      => 'dropdownValue',
                 'condition' => ['is_assign' => 1],
                 'list'      => true,
@@ -157,7 +157,7 @@ class ITILCategory extends CommonTreeDropdown
             'id'                 => '70',
             'table'              => 'glpi_users',
             'field'              => 'name',
-            'name'               => __('Technician in charge'),
+            'name'               => __('Technician in charge of the hardware'),
             'datatype'           => 'dropdown',
             'right'              => 'own_ticket'
         ];
@@ -253,7 +253,6 @@ class ITILCategory extends CommonTreeDropdown
             'name'               => _x('quantity', 'Number of tickets'),
             'datatype'           => 'count',
             'forcegroupby'       => true,
-            'usehaving'          => true,
             'massiveaction'      => false,
             'joinparams'         => [
                 'jointype'           => 'child'
@@ -267,7 +266,6 @@ class ITILCategory extends CommonTreeDropdown
             'name'               => _x('quantity', 'Number of problems'),
             'datatype'           => 'count',
             'forcegroupby'       => true,
-            'usehaving'          => true,
             'massiveaction'      => false,
             'joinparams'         => [
                 'jointype'           => 'child'
@@ -275,13 +273,12 @@ class ITILCategory extends CommonTreeDropdown
         ];
 
         $tab[] = [
-            'id'                 => '151',
+            'id'                 => '98',
             'table'              => 'glpi_changes',
             'field'              => 'id',
             'name'               => _x('quantity', 'Number of changes'),
             'datatype'           => 'count',
             'forcegroupby'       => true,
-            'usehaving'          => true,
             'massiveaction'      => false,
             'joinparams'         => [
                 'jointype'           => 'child'
@@ -349,7 +346,6 @@ class ITILCategory extends CommonTreeDropdown
      **/
     private static function getITILCategoryIDByField($field, $value)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -441,11 +437,7 @@ class ITILCategory extends CommonTreeDropdown
      **/
     public static function showForITILTemplate(ITILTemplate $tt, $withtemplate = 0)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $itilcategory = new self();
         $ID           = $tt->fields['id'];

@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -120,7 +120,7 @@
                   ) }}
                </div>
                {% if get_current_interface() == 'central' %}
-                  <div class="col-12 col-xl-5 col-xxl-4 order-first order-md-last pe-0 pe-xxl-auto">
+                  <div class="col-12 col-xl-5 col-xxl-4 order-first order-md-last pe-o pe-xxl-auto">
                      <div class="row">
 
                         {% set fup_template_lbl %}
@@ -136,7 +136,6 @@
                               'full_width': true,
                               'icon_label': true,
                               'on_change': 'itilfollowuptemplate_update' ~ rand ~ '(this.value)',
-                              'entity': item.fields['entities_id'],
                               'rand': rand,
                            }
                         ) }}
@@ -217,8 +216,8 @@
             {# Fixed min-height ensure no height increase when toggling the pending reason button, as select 2 dropdown are a bit higher than the default footer height #}
             <div class="d-flex card-footer mx-n3 mb-n3 flex-wrap" style="row-gap: 10px; min-height: 79px">
                {% set pending_reasons %}
-                  {% set show_pending_reasons_actions = item.fields['status'] == constant('CommonITILObject::WAITING') and not add_reopen %}
-                  {% if get_current_interface() == 'central' and item.isAllowedStatus(item.fields['status'], constant('CommonITILObject::WAITING')) and call('PendingReason_Item::canDisplayPendingReasonForItem', [subitem]) %}
+                  {% set show_pending_reasons_actions = item.fields['status'] == constant('CommonITILObject::WAITING') and not has_pending_reason and not add_reopen %}
+                  {% if get_current_interface() == 'central' and item.isAllowedStatus(item.fields['status'], constant('CommonITILObject::WAITING')) %}
                      <span
                         class="input-group-text bg-yellow-lt py-0 pe-0 {{ show_pending_reasons_actions ? 'flex-fill' : '' }}"
                         id="pending-reasons-control-{{ rand }}"
@@ -236,13 +235,15 @@
                            </label>
                         </span>
 
-                        <div
-                           class="collapse ps-2 py-1 flex-fill {{ show_pending_reasons_actions ? 'show' : '' }}"
-                           aria-expanded="{{ show_pending_reasons_actions ? 'true' : 'false' }}"
-                           id="pending-reasons-setup-{{ rand }}"
-                        >
-                           {{ include('components/itilobject/timeline/pending_reasons.html.twig') }}
-                        </div>
+                        {% if not has_pending_reason %}
+                           <div
+                              class="collapse ps-2 py-1 flex-fill {{ show_pending_reasons_actions ? 'show' : '' }}"
+                              aria-expanded="{{ show_pending_reasons_actions ? 'true' : 'false' }}"
+                              id="pending-reasons-setup-{{ rand }}"
+                           >
+                              {{ include('components/itilobject/timeline/pending_reasons.html.twig') }}
+                           </div>
+                        {% endif %}
                      </span>
                   {% endif %}
                {% endset %}
@@ -294,20 +295,20 @@
                   : parseInt(data.requesttypes_id);
 
                // set textarea content
-               setRichTextEditorContent("content_{{ rand }}", data.content);
+               if (tasktinymce = tinymce.get("content_{{ rand }}")) {
+                  tasktinymce.setContent(data.content);
+               }
                // set category
                //need to create new DOM option, because SELECT is remotely-sourced (AJAX)
                //see : https://select2.org/programmatic-control/add-select-clear-items#preselecting-options-in-an-remotely-sourced-ajax-select2
                var newOption = new Option(data.requesttypes_name, requesttypes_id, true, true);
                $("#dropdown_requesttypes_id{{ rand }}").append(newOption).trigger('change');
 
-               if (data.is_private !== undefined) {
-                  // set is_private
-                  $("#is_private_{{ rand }}")
-                     .prop("checked", data.is_private == "0"
-                           ? false
-                           : true);
-               }
+               // set is_private
+               $("#is_private_{{ rand }}")
+                  .prop("checked", data.is_private == "0"
+                     ? false
+                     : true);
             });
          }
       </script>

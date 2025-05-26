@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -43,6 +43,6 @@ class RuleDictionnaryNetworkEquipmentModelCollection extends RuleDictionnaryDrop
      **/
     public function getTitle()
     {
-        return __('Dictionary of networking equipment models');
+        return __('Dictionnary of networking equipment models');
     }
 }

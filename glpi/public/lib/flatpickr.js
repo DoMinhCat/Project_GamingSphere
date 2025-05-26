@@ -4,7 +4,7 @@
 /***/ 133:
 /***/ (function(module) {
 
-/* flatpickr v4.6.13, @license MIT */
+/* flatpickr v4.6.11, @license MIT */
 (function (global, factory) {
      true ? module.exports = factory() :
     0;
@@ -672,8 +672,7 @@
         }
         function getClosestActiveElement() {
             var _a;
-            return (((_a = self.calendarContainer) === null || _a === void 0 ? void 0 : _a.getRootNode())
-                .activeElement || document.activeElement);
+            return ((_a = self.calendarContainer) === null || _a === void 0 ? void 0 : _a.getRootNode()).activeElement || document.activeElement;
         }
         function bindToInstance(fn) {
             return fn.bind(self);
@@ -1048,7 +1047,7 @@
                     ? self.config.appendTo
                     : window.document.body).appendChild(self.calendarContainer);
         }
-        function createDay(className, date, _dayNumber, i) {
+        function createDay(className, date, dayNumber, i) {
             var dateIsEnabled = isEnabled(date, true), dayElement = createElement("span", className, date.getDate().toString());
             dayElement.dateObj = date;
             dayElement.$i = i;
@@ -1084,7 +1083,7 @@
             if (self.weekNumbers &&
                 self.config.showMonths === 1 &&
                 className !== "prevMonthDay" &&
-                i % 7 === 6) {
+                dayNumber % 7 === 1) {
                 self.weekNumbers.insertAdjacentHTML("beforeend", "<span class='flatpickr-day'>" + self.config.getWeek(date) + "</span>");
             }
             triggerEvent("onDayCreate", dayElement);
@@ -1663,9 +1662,8 @@
         }
         function onBlur(e) {
             var isInput = e.target === self._input;
-            var valueChanged = self._input.value.trimEnd() !== getDateStr();
             if (isInput &&
-                valueChanged &&
+                (self.selectedDates.length > 0 || self._input.value.length > 0) &&
                 !(e.relatedTarget && isCalendarElem(e.relatedTarget))) {
                 self.setDate(self._input.value, true, e.target === self.altInput
                     ? self.config.altFormat
@@ -2513,8 +2511,7 @@
         function isDateSelected(date) {
             for (var i = 0; i < self.selectedDates.length; i++) {
                 var selectedDate = self.selectedDates[i];
-                if (selectedDate instanceof Date &&
-                    compareDates(selectedDate, date) === 0)
+                if (selectedDate instanceof Date && compareDates(selectedDate, date) === 0)
                     return "" + i;
             }
             return false;
@@ -2552,9 +2549,7 @@
                         ? self.currentMonth + 1 > self.config.maxDate.getMonth()
                         : self.currentYear > self.config.maxDate.getFullYear());
         }
-        function getDateStr(specificFormat) {
-            var format = specificFormat ||
-                (self.config.altInput ? self.config.altFormat : self.config.dateFormat);
+        function getDateStr(format) {
             return self.selectedDates
                 .map(function (dObj) { return self.formatDate(dObj, format); })
                 .filter(function (d, i, arr) {
@@ -2776,7 +2771,7 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 /**
  * ---------------------------------------------------------------------
@@ -2785,7 +2780,7 @@ var __webpack_exports__ = {};
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *

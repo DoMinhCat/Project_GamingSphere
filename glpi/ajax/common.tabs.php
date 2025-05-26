@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34,14 +34,6 @@
  */
 
 use Glpi\Toolbox\Sanitizer;
-
-/**
- * @var array $CFG_GLPI
- * @var array $_UGET
- */
-global $CFG_GLPI, $_UGET;
-
-$SECURITY_STRATEGY = 'no_check'; // specific checks done later to allow anonymous access to public FAQ tabs
 
 include('../inc/includes.php');
 $AJAX_INCLUDE = 1;
@@ -82,6 +74,8 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     $_GET['id'] = (int)$_GET['id'];
 }
 
+/** @global array $_UGET */
+
 if ($item = getItemForItemtype($_UGET['_itemtype'])) {
     if ($item->get_item_to_display_tab) {
        // No id if ruleCollection but check right
@@ -103,7 +97,10 @@ if (isset($_GET['_target'])) {
     $_GET['_target'] = Toolbox::cleanTarget($_GET['_target']);
 }
 
-Session::setActiveTab($_GET['_itemtype'], $_GET['_glpi_tab']);
+$tabs = Toolbox::getAvailablesTabs($_GET['_itemtype'], $_GET['id'] ?? null);
+if (isset($tabs[$_GET['_glpi_tab']])) {
+    Session::setActiveTab($_GET['_itemtype'], $_GET['_glpi_tab']);
+}
 
 $notvalidoptions = ['_glpi_tab', '_itemtype', 'sort', 'order', 'withtemplate', 'formoptions'];
 $options         = $_GET;
@@ -117,7 +114,7 @@ if (isset($options['locked'])) {
 }
 
 \Glpi\Debug\Profiler::getInstance()->start('CommonGLPI::displayStandardTab');
-CommonGLPI::displayStandardTab($item, $_GET['_glpi_tab'], (int)$_GET["withtemplate"], $options);
+CommonGLPI::displayStandardTab($item, $_GET['_glpi_tab'], $_GET["withtemplate"], $options);
 \Glpi\Debug\Profiler::getInstance()->stop('CommonGLPI::displayStandardTab');
 
 

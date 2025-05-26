@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -72,7 +72,6 @@ class Domain extends CommonDBTM
 
     public function cleanDBonPurge()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ditem = new Domain_Item();
@@ -202,7 +201,7 @@ class Domain extends CommonDBTM
         ];
 
         $tab[] = [
-            'id'                 => '1400',
+            'id'                 => '30',
             'table'              => $this->getTable(),
             'field'              => 'id',
             'name'               => __('ID'),
@@ -229,7 +228,7 @@ class Domain extends CommonDBTM
             'id'                 => '81',
             'table'              => self::getTable(),
             'field'              => 'entities_id',
-            'name'               => sprintf('%s-%s', Entity::getTypeName(1), __('ID'))
+            'name'               => __('Entity-ID')
         ];
 
         return $tab;
@@ -348,7 +347,6 @@ class Domain extends CommonDBTM
      * */
     public static function dropdownDomains($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $p = [
@@ -549,7 +547,6 @@ class Domain extends CommonDBTM
      */
     public static function expiredDomainsCriteria($entities_id): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $delay = Entity::getUsedConfig('send_domains_alert_expired_delay', $entities_id);
@@ -574,7 +571,6 @@ class Domain extends CommonDBTM
      */
     public static function closeExpiriesDomainsCriteria($entities_id): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $delay = Entity::getUsedConfig('send_domains_alert_close_expiries_delay', $entities_id);
@@ -600,11 +596,7 @@ class Domain extends CommonDBTM
      */
     public static function cronDomainsAlert($task = null)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         if (!$CFG_GLPI["use_notifications"]) {
             return 0; // Nothing to do
@@ -714,7 +706,6 @@ class Domain extends CommonDBTM
      * */
     public static function getTypes($all = false)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $types = $CFG_GLPI['domain_types'];
@@ -736,7 +727,10 @@ class Domain extends CommonDBTM
         return $types;
     }
 
-    public static function generateLinkContents($link, CommonDBTM $item)
+    /**
+     * @FIXME Uncomment $safe_url parameter declaration in GLPI 10.1.
+     */
+    public static function generateLinkContents($link, CommonDBTM $item/*, bool $safe_url = true*/)
     {
         $safe_url = func_num_args() === 3 ? func_get_arg(2) : true;
 
@@ -753,7 +747,6 @@ class Domain extends CommonDBTM
 
     public static function getUsed(array $used, $domaintype)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -826,7 +819,7 @@ class Domain extends CommonDBTM
         return "fas fa-globe-americas";
     }
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
         $this->cleanAlerts([Alert::END, Alert::NOTICE]);
         parent::post_updateItem($history);

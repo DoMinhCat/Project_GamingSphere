@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33,11 +33,7 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\Http\Firewall;
 use Glpi\Toolbox\Sanitizer;
-
-/** @var array $CFG_GLPI */
-global $CFG_GLPI;
 
 if (!defined('GLPI_ROOT')) {
     define('GLPI_ROOT', dirname(__DIR__));
@@ -59,11 +55,6 @@ include_once(GLPI_ROOT . "/inc/config.php");
 
 // Security of PHP_SELF
 $_SERVER['PHP_SELF'] = Html::cleanParametersURL($_SERVER['PHP_SELF']);
-
-if (!isCommandLine()) {
-    $firewall = new Firewall($CFG_GLPI['root_doc']);
-    $firewall->applyStrategy($_SERVER['PHP_SELF'], $SECURITY_STRATEGY ?? null);
-}
 
 // Load Language file
 Session::loadLanguage();
@@ -99,22 +90,22 @@ if (!isset($PLUGINS_INCLUDED)) {
 }
 
 // Security system
-if (count($_POST) > 0) {
+if (isset($_POST)) {
     $_UPOST = $_POST; //keep raw, as a workaround
     if (isset($_POST['_glpi_simple_form'])) {
         $_POST = array_map('urldecode', $_POST);
     }
     $_POST = Sanitizer::sanitize($_POST);
 }
-if (count($_GET) > 0) {
+if (isset($_GET)) {
     $_UGET = $_GET; //keep raw, as a workaround
     $_GET  = Sanitizer::sanitize($_GET);
 }
-if (count($_REQUEST) > 0) {
+if (isset($_REQUEST)) {
     $_UREQUEST = $_REQUEST; //keep raw, as a workaround
     $_REQUEST  = Sanitizer::sanitize($_REQUEST);
 }
-if (count($_FILES) > 0) {
+if (isset($_FILES)) {
     $_UFILES = $_FILES; //keep raw, as a workaround
     foreach ($_FILES as &$file) {
         $file['name'] = Sanitizer::sanitize($file['name']);
@@ -155,7 +146,7 @@ if (isset($_REQUEST['glpilist_limit'])) {
 if (
     GLPI_USE_CSRF_CHECK
     && !isAPI()
-    && count($_POST) > 0
+    && isset($_POST) && is_array($_POST) && count($_POST)
 ) {
     if (preg_match(':' . $CFG_GLPI['root_doc'] . '(/(plugins|marketplace)/[^/]*|)/ajax/:', $_SERVER['REQUEST_URI']) === 1) {
        // Keep CSRF token as many AJAX requests may be made at the same time.
@@ -181,9 +172,4 @@ if (isset($_REQUEST["force_profile"]) && ($_SESSION['glpiactiveprofile']['id'] ?
 // Manage entity change
 if (isset($_REQUEST["force_entity"]) && ($_SESSION["glpiactive_entity"] ?? -1) != $_REQUEST["force_entity"]) {
     Session::changeActiveEntities($_REQUEST["force_entity"], true);
-} elseif (Session::shouldReloadActiveEntities()) {
-    Session::changeActiveEntities(
-        $_SESSION["glpiactive_entity"],
-        $_SESSION["glpiactive_entity_recursive"]
-    );
 }

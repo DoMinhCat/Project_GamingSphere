@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -44,10 +44,6 @@
  **/
 function update931to932()
 {
-    /**
-     * @var \DBmysql $DB
-     * @var \Migration $migration
-     */
     global $DB, $migration;
 
     $current_config   = Config::getConfigurationValues('core');
@@ -65,8 +61,8 @@ function update931to932()
             'items_id' => 0,
         ],
     ];
-    $DB->deleteOrDie(Item_Rack::getTable(), $corrupted_criteria);
-    $DB->deleteOrDie(Item_Enclosure::getTable(), $corrupted_criteria);
+    $DB->delete(Item_Rack::getTable(), $corrupted_criteria);
+    $DB->delete(Item_Enclosure::getTable(), $corrupted_criteria);
     /** /Clean rack/enclosure items corrupted relations */
 
    // limit state visibility for enclosures and pdus

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -246,7 +246,6 @@ class Fieldblacklist extends CommonDropdown
      **/
     public function showItemtype()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if ($this->fields['id'] > 0) {
@@ -288,7 +287,6 @@ class Fieldblacklist extends CommonDropdown
 
     public function selectCriterias()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         echo "<span id='span_fields' name='span_fields'>";
@@ -332,7 +330,6 @@ class Fieldblacklist extends CommonDropdown
      **/
     public static function dropdownField($itemtype, $options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $p['name']    = 'field';
@@ -372,7 +369,7 @@ class Fieldblacklist extends CommonDropdown
 
 
     /**
-     * @param string $field  (default '')
+     * @param $field  (default '')
      **/
     public function selectValues($field = '')
     {
@@ -398,16 +395,15 @@ class Fieldblacklist extends CommonDropdown
     /**
      * Check if a field & value are blacklisted or not
      *
-     * @param string $itemtype      itemtype of the blacklisted field
-     * @param int $entities_id   the entity in which the field must be saved
-     * @param string $field         the field to check
-     * @param string $value         the field's value
+     * @param itemtype      itemtype of the blacklisted field
+     * @param entities_id   the entity in which the field must be saved
+     * @param field         the field to check
+     * @param value         the field's value
      *
      * @return true is value if blacklisted, false otherwise
      **/
     public static function isFieldBlacklisted($itemtype, $entities_id, $field, $value)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request([

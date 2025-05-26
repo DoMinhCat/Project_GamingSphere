@@ -6,7 +6,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -41,7 +41,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -73,7 +73,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -603,15 +603,15 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 /*!
- * Tabler Icons 2.34.0 by tabler - https://tabler.io
+ * Tabler Icons 2.21.0 by tabler - https://tabler.io
  * License - https://github.com/tabler/tabler-icons/blob/master/LICENSE
  */
 @font-face {
   font-family: "tabler-icons";
   font-style: normal;
   font-weight: 400;
-  src: url("../css/lib/tabler/icons-webfont/fonts/tabler-icons.eot?v2.34.0");
-  src: url("../css/lib/tabler/icons-webfont/fonts/tabler-icons.eot?#iefix-v2.34.0") format("embedded-opentype"), url("../css/lib/tabler/icons-webfont/fonts/tabler-icons.woff2?v2.34.0") format("woff2"), url("../css/lib/tabler/icons-webfont/fonts/tabler-icons.woff?") format("woff"), url("../css/lib/tabler/icons-webfont/fonts/tabler-icons.ttf?v2.34.0") format("truetype");
+  src: url("../css/lib/tabler/icons-webfont/fonts/tabler-icons.eot?v2.21.0");
+  src: url("../css/lib/tabler/icons-webfont/fonts/tabler-icons.eot?#iefix-v2.21.0") format("embedded-opentype"), url("../css/lib/tabler/icons-webfont/fonts/tabler-icons.woff2?v2.21.0") format("woff2"), url("../css/lib/tabler/icons-webfont/fonts/tabler-icons.woff?") format("woff"), url("../css/lib/tabler/icons-webfont/fonts/tabler-icons.ttf?v2.21.0") format("truetype");
 }
 .ti {
   font-family: "tabler-icons" !important;
@@ -624,9 +624,6 @@
   /* Better Font Rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-.ti-12-hours:before {
-  content: "\fc53";
 }
 .ti-123:before {
   content: "\f554";
@@ -808,9 +805,6 @@
 .ti-air-conditioning-disabled:before {
   content: "\f542";
 }
-.ti-air-traffic-control:before {
-  content: "\fb01";
-}
 .ti-alarm:before {
   content: "\ea04";
 }
@@ -850,17 +844,11 @@
 .ti-alert-circle-filled:before {
   content: "\f6ee";
 }
-.ti-alert-circle-off:before {
-  content: "\fc65";
-}
 .ti-alert-hexagon:before {
   content: "\f80e";
 }
 .ti-alert-hexagon-filled:before {
   content: "\fa34";
-}
-.ti-alert-hexagon-off:before {
-  content: "\fc66";
 }
 .ti-alert-octagon:before {
   content: "\ecc6";
@@ -870,9 +858,6 @@
 }
 .ti-alert-small:before {
   content: "\f80f";
-}
-.ti-alert-small-off:before {
-  content: "\fc67";
 }
 .ti-alert-square:before {
   content: "\f811";
@@ -886,17 +871,11 @@
 .ti-alert-square-rounded-filled:before {
   content: "\fa36";
 }
-.ti-alert-square-rounded-off:before {
-  content: "\fc68";
-}
 .ti-alert-triangle:before {
   content: "\ea06";
 }
 .ti-alert-triangle-filled:before {
   content: "\f6f0";
-}
-.ti-alert-triangle-off:before {
-  content: "\fc69";
 }
 .ti-alien:before {
   content: "\ebde";
@@ -922,20 +901,11 @@
 .ti-align-box-bottom-right-filled:before {
   content: "\f710";
 }
-.ti-align-box-center-bottom:before {
-  content: "\facb";
-}
 .ti-align-box-center-middle:before {
   content: "\f79f";
 }
 .ti-align-box-center-middle-filled:before {
   content: "\f7d4";
-}
-.ti-align-box-center-stretch:before {
-  content: "\facc";
-}
-.ti-align-box-center-top:before {
-  content: "\facd";
 }
 .ti-align-box-left-bottom:before {
   content: "\f533";
@@ -948,9 +918,6 @@
 }
 .ti-align-box-left-middle-filled:before {
   content: "\f712";
-}
-.ti-align-box-left-stretch:before {
-  content: "\face";
 }
 .ti-align-box-left-top:before {
   content: "\f535";
@@ -969,9 +936,6 @@
 }
 .ti-align-box-right-middle-filled:before {
   content: "\f7d5";
-}
-.ti-align-box-right-stretch:before {
-  content: "\facf";
 }
 .ti-align-box-right-top:before {
   content: "\f538";
@@ -1020,9 +984,6 @@
 }
 .ti-alphabet-latin:before {
   content: "\f1e1";
-}
-.ti-alt:before {
-  content: "\fc54";
 }
 .ti-ambulance:before {
   content: "\ebf5";
@@ -1111,9 +1072,6 @@
 .ti-apps-off:before {
   content: "\f0ac";
 }
-.ti-archery-arrow:before {
-  content: "\fc55";
-}
 .ti-archive:before {
   content: "\ea0b";
 }
@@ -1191,9 +1149,6 @@
 }
 .ti-arrow-badge-up-filled:before {
   content: "\f7d9";
-}
-.ti-arrow-bar-both:before {
-  content: "\fadd";
 }
 .ti-arrow-bar-down:before {
   content: "\ea0d";
@@ -1305,9 +1260,6 @@
 }
 .ti-arrow-bounce:before {
   content: "\f3a4";
-}
-.ti-arrow-capsule:before {
-  content: "\fade";
 }
 .ti-arrow-curve-left:before {
   content: "\f048";
@@ -1939,71 +1891,11 @@
 .ti-basket:before {
   content: "\ebe1";
 }
-.ti-basket-bolt:before {
-  content: "\fb43";
-}
-.ti-basket-cancel:before {
-  content: "\fb44";
-}
-.ti-basket-check:before {
-  content: "\fb45";
-}
-.ti-basket-code:before {
-  content: "\fb46";
-}
-.ti-basket-cog:before {
-  content: "\fb47";
-}
-.ti-basket-discount:before {
-  content: "\fb48";
-}
-.ti-basket-dollar:before {
-  content: "\fb49";
-}
-.ti-basket-down:before {
-  content: "\fb4a";
-}
-.ti-basket-exclamation:before {
-  content: "\fb4b";
-}
 .ti-basket-filled:before {
   content: "\f7df";
 }
-.ti-basket-heart:before {
-  content: "\fb4c";
-}
-.ti-basket-minus:before {
-  content: "\fb4d";
-}
 .ti-basket-off:before {
   content: "\f0b6";
-}
-.ti-basket-pause:before {
-  content: "\fb4e";
-}
-.ti-basket-pin:before {
-  content: "\fb4f";
-}
-.ti-basket-plus:before {
-  content: "\fb50";
-}
-.ti-basket-question:before {
-  content: "\fb51";
-}
-.ti-basket-search:before {
-  content: "\fb52";
-}
-.ti-basket-share:before {
-  content: "\fb53";
-}
-.ti-basket-star:before {
-  content: "\fb54";
-}
-.ti-basket-up:before {
-  content: "\fb55";
-}
-.ti-basket-x:before {
-  content: "\fb56";
 }
 .ti-bat:before {
   content: "\f284";
@@ -2326,9 +2218,6 @@
 .ti-bookmarks:before {
   content: "\ed08";
 }
-.ti-bookmarks-filled:before {
-  content: "\fb1f";
-}
 .ti-bookmarks-off:before {
   content: "\f0bd";
 }
@@ -2395,23 +2284,14 @@
 .ti-bounce-left:before {
   content: "\f59d";
 }
-.ti-bounce-left-filled:before {
-  content: "\fb20";
-}
 .ti-bounce-right:before {
   content: "\f59e";
-}
-.ti-bounce-right-filled:before {
-  content: "\fb21";
 }
 .ti-bow:before {
   content: "\f096";
 }
 .ti-bowl:before {
   content: "\f4fa";
-}
-.ti-bowl-filled:before {
-  content: "\fb22";
 }
 .ti-box:before {
   content: "\ea45";
@@ -2764,9 +2644,6 @@
 .ti-brand-d3:before {
   content: "\f24e";
 }
-.ti-brand-databricks:before {
-  content: "\fc41";
-}
 .ti-brand-days-counter:before {
   content: "\f4d2";
 }
@@ -3019,9 +2896,6 @@
 .ti-brand-juejin:before {
   content: "\f7b0";
 }
-.ti-brand-kbin:before {
-  content: "\fad0";
-}
 .ti-brand-kick:before {
   content: "\fa23";
 }
@@ -3079,9 +2953,6 @@
 .ti-brand-medium:before {
   content: "\ec70";
 }
-.ti-brand-meetup:before {
-  content: "\fc6a";
-}
 .ti-brand-mercedes:before {
   content: "\f072";
 }
@@ -3090,9 +2961,6 @@
 }
 .ti-brand-meta:before {
   content: "\efb0";
-}
-.ti-brand-minecraft:before {
-  content: "\faef";
 }
 .ti-brand-miniprogram:before {
   content: "\f602";
@@ -3135,9 +3003,6 @@
 }
 .ti-brand-nextjs:before {
   content: "\f0dd";
-}
-.ti-brand-nodejs:before {
-  content: "\fae0";
 }
 .ti-brand-nord-vpn:before {
   content: "\f37f";
@@ -3183,9 +3048,6 @@
 }
 .ti-brand-pagekit:before {
   content: "\edd1";
-}
-.ti-brand-parsinta:before {
-  content: "\fc42";
 }
 .ti-brand-patreon:before {
   content: "\edd2";
@@ -3267,9 +3129,6 @@
 }
 .ti-brand-revolut:before {
   content: "\f4da";
-}
-.ti-brand-rumble:before {
-  content: "\fad1";
 }
 .ti-brand-rust:before {
   content: "\fa53";
@@ -3391,9 +3250,6 @@
 .ti-brand-taobao:before {
   content: "\f5ef";
 }
-.ti-brand-teams:before {
-  content: "\fadf";
-}
 .ti-brand-ted:before {
   content: "\f658";
 }
@@ -3406,20 +3262,17 @@
 .ti-brand-tether:before {
   content: "\f5a3";
 }
-.ti-brand-threads:before {
-  content: "\fb02";
-}
 .ti-brand-threejs:before {
   content: "\f5f0";
 }
 .ti-brand-tidal:before {
   content: "\ed70";
 }
+.ti-brand-tikto-filled:before {
+  content: "\f7ea";
+}
 .ti-brand-tiktok:before {
   content: "\ec73";
-}
-.ti-brand-tiktok-filled:before {
-  content: "\f7ea";
 }
 .ti-brand-tinder:before {
   content: "\ed71";
@@ -3550,29 +3403,17 @@
 .ti-brand-wordpress:before {
   content: "\f2d3";
 }
-.ti-brand-x:before {
-  content: "\fc0f";
-}
-.ti-brand-x-filled:before {
-  content: "\fc21";
-}
 .ti-brand-xamarin:before {
   content: "\fa7a";
 }
 .ti-brand-xbox:before {
   content: "\f298";
 }
-.ti-brand-xdeep:before {
-  content: "\fc10";
-}
 .ti-brand-xing:before {
   content: "\f21a";
 }
 .ti-brand-yahoo:before {
   content: "\ed73";
-}
-.ti-brand-yandex:before {
-  content: "\fae1";
 }
 .ti-brand-yatse:before {
   content: "\f213";
@@ -3582,9 +3423,6 @@
 }
 .ti-brand-youtube:before {
   content: "\ec90";
-}
-.ti-brand-youtube-filled:before {
-  content: "\fc22";
 }
 .ti-brand-youtube-kids:before {
   content: "\f214";
@@ -3619,9 +3457,6 @@
 .ti-briefcase:before {
   content: "\ea46";
 }
-.ti-briefcase-2:before {
-  content: "\fb03";
-}
 .ti-briefcase-off:before {
   content: "\f3cc";
 }
@@ -3634,9 +3469,6 @@
 .ti-brightness-down:before {
   content: "\eb7d";
 }
-.ti-brightness-down-filled:before {
-  content: "\fb23";
-}
 .ti-brightness-half:before {
   content: "\ee1a";
 }
@@ -3645,9 +3477,6 @@
 }
 .ti-brightness-up:before {
   content: "\eb7e";
-}
-.ti-brightness-up-filled:before {
-  content: "\fb24";
 }
 .ti-broadcast:before {
   content: "\f1e9";
@@ -3802,9 +3631,6 @@
 .ti-cactus:before {
   content: "\f21b";
 }
-.ti-cactus-filled:before {
-  content: "\fb25";
-}
 .ti-cactus-off:before {
   content: "\f3cf";
 }
@@ -3816,9 +3642,6 @@
 }
 .ti-calculator:before {
   content: "\eb80";
-}
-.ti-calculator-filled:before {
-  content: "\fb26";
 }
 .ti-calculator-off:before {
   content: "\f0c4";
@@ -3856,9 +3679,6 @@
 .ti-calendar-exclamation:before {
   content: "\f829";
 }
-.ti-calendar-filled:before {
-  content: "\fb27";
-}
 .ti-calendar-heart:before {
   content: "\f82a";
 }
@@ -3879,9 +3699,6 @@
 }
 .ti-calendar-question:before {
   content: "\f82d";
-}
-.ti-calendar-repeat:before {
-  content: "\fad2";
 }
 .ti-calendar-search:before {
   content: "\f82e";
@@ -3982,14 +3799,8 @@
 .ti-campfire:before {
   content: "\f5a7";
 }
-.ti-campfire-filled:before {
-  content: "\fb28";
-}
 .ti-candle:before {
   content: "\efc6";
-}
-.ti-candle-filled:before {
-  content: "\fc23";
 }
 .ti-candy:before {
   content: "\ef0d";
@@ -4003,23 +3814,8 @@
 .ti-cannabis:before {
   content: "\f4c1";
 }
-.ti-capsule:before {
-  content: "\fae3";
-}
-.ti-capsule-filled:before {
-  content: "\fc24";
-}
-.ti-capsule-horizontal:before {
-  content: "\fae2";
-}
-.ti-capsule-horizontal-filled:before {
-  content: "\fc25";
-}
 .ti-capture:before {
   content: "\ec3c";
-}
-.ti-capture-filled:before {
-  content: "\fb29";
 }
 .ti-capture-off:before {
   content: "\f0c6";
@@ -4032,9 +3828,6 @@
 }
 .ti-car-crash:before {
   content: "\efa4";
-}
-.ti-car-garage:before {
-  content: "\fc77";
 }
 .ti-car-off:before {
   content: "\f0c7";
@@ -4054,38 +3847,17 @@
 .ti-cards:before {
   content: "\f510";
 }
-.ti-cards-filled:before {
-  content: "\fc26";
-}
 .ti-caret-down:before {
   content: "\eb5d";
-}
-.ti-caret-down-filled:before {
-  content: "\fb2a";
 }
 .ti-caret-left:before {
   content: "\eb5e";
 }
-.ti-caret-left-filled:before {
-  content: "\fb2b";
-}
-.ti-caret-left-right:before {
-  content: "\fc43";
-}
 .ti-caret-right:before {
   content: "\eb5f";
 }
-.ti-caret-right-filled:before {
-  content: "\fb2c";
-}
 .ti-caret-up:before {
   content: "\eb60";
-}
-.ti-caret-up-down:before {
-  content: "\fc44";
-}
-.ti-caret-up-filled:before {
-  content: "\fb2d";
 }
 .ti-carousel-horizontal:before {
   content: "\f659";
@@ -4131,9 +3903,6 @@
 }
 .ti-category-2:before {
   content: "\f1f5";
-}
-.ti-category-filled:before {
-  content: "\fb2e";
 }
 .ti-ce:before {
   content: "\ed75";
@@ -4363,18 +4132,6 @@
 .ti-chess-rook-filled:before {
   content: "\f72e";
 }
-.ti-chevron-compact-down:before {
-  content: "\faf0";
-}
-.ti-chevron-compact-left:before {
-  content: "\faf1";
-}
-.ti-chevron-compact-right:before {
-  content: "\faf2";
-}
-.ti-chevron-compact-up:before {
-  content: "\faf3";
-}
 .ti-chevron-down:before {
   content: "\ea5f";
 }
@@ -4387,14 +4144,8 @@
 .ti-chevron-left:before {
   content: "\ea60";
 }
-.ti-chevron-left-pipe:before {
-  content: "\fae4";
-}
 .ti-chevron-right:before {
   content: "\ea61";
-}
-.ti-chevron-right-pipe:before {
-  content: "\fae5";
 }
 .ti-chevron-up:before {
   content: "\ea62";
@@ -4563,39 +4314,6 @@
 }
 .ti-circle-dashed:before {
   content: "\ed27";
-}
-.ti-circle-dashed-number-0:before {
-  content: "\fc6b";
-}
-.ti-circle-dashed-number-1:before {
-  content: "\fc6c";
-}
-.ti-circle-dashed-number-2:before {
-  content: "\fc6d";
-}
-.ti-circle-dashed-number-3:before {
-  content: "\fc6e";
-}
-.ti-circle-dashed-number-4:before {
-  content: "\fc6f";
-}
-.ti-circle-dashed-number-5:before {
-  content: "\fc70";
-}
-.ti-circle-dashed-number-6:before {
-  content: "\fc71";
-}
-.ti-circle-dashed-number-7:before {
-  content: "\fc72";
-}
-.ti-circle-dashed-number-8:before {
-  content: "\fc73";
-}
-.ti-circle-dashed-number-9:before {
-  content: "\fc74";
-}
-.ti-circle-dashed-x:before {
-  content: "\fc75";
 }
 .ti-circle-dot:before {
   content: "\efb1";
@@ -4870,14 +4588,8 @@
 .ti-clock:before {
   content: "\ea70";
 }
-.ti-clock-12:before {
-  content: "\fc56";
-}
 .ti-clock-2:before {
   content: "\f099";
-}
-.ti-clock-24:before {
-  content: "\fc57";
 }
 .ti-clock-bolt:before {
   content: "\f844";
@@ -5053,9 +4765,6 @@
 .ti-cloud-minus:before {
   content: "\f854";
 }
-.ti-cloud-network:before {
-  content: "\fc78";
-}
 .ti-cloud-off:before {
   content: "\ed3e";
 }
@@ -5193,9 +4902,6 @@
 }
 .ti-column-insert-right:before {
   content: "\ee45";
-}
-.ti-column-remove:before {
-  content: "\faf4";
 }
 .ti-columns:before {
   content: "\eb83";
@@ -5527,9 +5233,6 @@
 .ti-currency-euro-off:before {
   content: "\f3dd";
 }
-.ti-currency-florin:before {
-  content: "\faf5";
-}
 .ti-currency-forint:before {
   content: "\ee5a";
 }
@@ -5770,9 +5473,6 @@
 .ti-device-airpods-case:before {
   content: "\f646";
 }
-.ti-device-airtag:before {
-  content: "\fae6";
-}
 .ti-device-analytics:before {
   content: "\ee72";
 }
@@ -5862,9 +5562,6 @@
 }
 .ti-device-floppy:before {
   content: "\eb62";
-}
-.ti-device-game-pad:before {
-  content: "\fc58";
 }
 .ti-device-gamepad:before {
   content: "\eb63";
@@ -6160,9 +5857,6 @@
 .ti-device-nintendo-off:before {
   content: "\f111";
 }
-.ti-device-projector:before {
-  content: "\fc11";
-}
 .ti-device-remote:before {
   content: "\f792";
 }
@@ -6261,12 +5955,6 @@
 }
 .ti-device-tv-old:before {
   content: "\f1d3";
-}
-.ti-device-usb:before {
-  content: "\fc59";
-}
-.ti-device-vision-pro:before {
-  content: "\fae7";
 }
 .ti-device-watch:before {
   content: "\ebf9";
@@ -6643,14 +6331,14 @@
 .ti-droplet-filled:before {
   content: "\ee80";
 }
+.ti-droplet-filled-2:before {
+  content: "\ee7f";
+}
 .ti-droplet-half:before {
   content: "\ee82";
 }
 .ti-droplet-half-2:before {
   content: "\ee81";
-}
-.ti-droplet-half-2-filled:before {
-  content: "\fb6c";
 }
 .ti-droplet-half-filled:before {
   content: "\f6c5";
@@ -6690,9 +6378,6 @@
 }
 .ti-droplet-x:before {
   content: "\f90b";
-}
-.ti-droplets:before {
-  content: "\fc12";
 }
 .ti-dual-screen:before {
   content: "\fa59";
@@ -6799,15 +6484,6 @@
 .ti-error-404-off:before {
   content: "\f122";
 }
-.ti-escalator:before {
-  content: "\fb06";
-}
-.ti-escalator-down:before {
-  content: "\fb04";
-}
-.ti-escalator-up:before {
-  content: "\fb05";
-}
 .ti-exchange:before {
   content: "\ebe7";
 }
@@ -6859,32 +6535,14 @@
 .ti-eye:before {
   content: "\ea9a";
 }
-.ti-eye-bolt:before {
-  content: "\fb6d";
-}
-.ti-eye-cancel:before {
-  content: "\fb6e";
-}
 .ti-eye-check:before {
   content: "\ee88";
 }
 .ti-eye-closed:before {
   content: "\f7ec";
 }
-.ti-eye-code:before {
-  content: "\fb6f";
-}
 .ti-eye-cog:before {
   content: "\f7ed";
-}
-.ti-eye-discount:before {
-  content: "\fb70";
-}
-.ti-eye-dollar:before {
-  content: "\fb71";
-}
-.ti-eye-down:before {
-  content: "\fb72";
 }
 .ti-eye-edit:before {
   content: "\f7ee";
@@ -6898,38 +6556,11 @@
 .ti-eye-heart:before {
   content: "\f7f0";
 }
-.ti-eye-minus:before {
-  content: "\fb73";
-}
 .ti-eye-off:before {
   content: "\ecf0";
 }
-.ti-eye-pause:before {
-  content: "\fb74";
-}
-.ti-eye-pin:before {
-  content: "\fb75";
-}
-.ti-eye-plus:before {
-  content: "\fb76";
-}
-.ti-eye-question:before {
-  content: "\fb77";
-}
-.ti-eye-search:before {
-  content: "\fb78";
-}
-.ti-eye-share:before {
-  content: "\fb79";
-}
-.ti-eye-star:before {
-  content: "\fb7a";
-}
 .ti-eye-table:before {
   content: "\ef5e";
-}
-.ti-eye-up:before {
-  content: "\fb7b";
 }
 .ti-eye-x:before {
   content: "\f7f1";
@@ -7144,75 +6775,6 @@
 .ti-file-time:before {
   content: "\f040";
 }
-.ti-file-type-bmp:before {
-  content: "\fb07";
-}
-.ti-file-type-css:before {
-  content: "\fb08";
-}
-.ti-file-type-csv:before {
-  content: "\fb09";
-}
-.ti-file-type-doc:before {
-  content: "\fb0a";
-}
-.ti-file-type-docx:before {
-  content: "\fb0b";
-}
-.ti-file-type-html:before {
-  content: "\fb0c";
-}
-.ti-file-type-jpg:before {
-  content: "\fb0d";
-}
-.ti-file-type-js:before {
-  content: "\fb0e";
-}
-.ti-file-type-jsx:before {
-  content: "\fb0f";
-}
-.ti-file-type-pdf:before {
-  content: "\fb10";
-}
-.ti-file-type-php:before {
-  content: "\fb11";
-}
-.ti-file-type-png:before {
-  content: "\fb12";
-}
-.ti-file-type-ppt:before {
-  content: "\fb13";
-}
-.ti-file-type-rs:before {
-  content: "\fb14";
-}
-.ti-file-type-sql:before {
-  content: "\fb15";
-}
-.ti-file-type-svg:before {
-  content: "\fb16";
-}
-.ti-file-type-ts:before {
-  content: "\fb17";
-}
-.ti-file-type-tsx:before {
-  content: "\fb18";
-}
-.ti-file-type-txt:before {
-  content: "\fb19";
-}
-.ti-file-type-vue:before {
-  content: "\fb1a";
-}
-.ti-file-type-xls:before {
-  content: "\fb1b";
-}
-.ti-file-type-xml:before {
-  content: "\fb1c";
-}
-.ti-file-type-zip:before {
-  content: "\fb1d";
-}
 .ti-file-typography:before {
   content: "\f041";
 }
@@ -7243,41 +6805,14 @@
 .ti-filter:before {
   content: "\eaa5";
 }
-.ti-filter-bolt:before {
-  content: "\fb7c";
-}
-.ti-filter-cancel:before {
-  content: "\fb7d";
-}
-.ti-filter-check:before {
-  content: "\fb7e";
-}
-.ti-filter-code:before {
-  content: "\fb7f";
-}
 .ti-filter-cog:before {
   content: "\f9fe";
-}
-.ti-filter-discount:before {
-  content: "\fb80";
 }
 .ti-filter-dollar:before {
   content: "\f9ff";
 }
-.ti-filter-down:before {
-  content: "\fb81";
-}
 .ti-filter-edit:before {
   content: "\fa00";
-}
-.ti-filter-exclamation:before {
-  content: "\fb82";
-}
-.ti-filter-filled:before {
-  content: "\fc27";
-}
-.ti-filter-heart:before {
-  content: "\fb83";
 }
 .ti-filter-minus:before {
   content: "\fa01";
@@ -7285,29 +6820,11 @@
 .ti-filter-off:before {
   content: "\ed2c";
 }
-.ti-filter-pause:before {
-  content: "\fb84";
-}
-.ti-filter-pin:before {
-  content: "\fb85";
-}
 .ti-filter-plus:before {
   content: "\fa02";
 }
-.ti-filter-question:before {
-  content: "\fb86";
-}
-.ti-filter-search:before {
-  content: "\fb87";
-}
-.ti-filter-share:before {
-  content: "\fb88";
-}
 .ti-filter-star:before {
   content: "\fa03";
-}
-.ti-filter-up:before {
-  content: "\fb89";
 }
 .ti-filter-x:before {
   content: "\fa04";
@@ -7320,9 +6837,6 @@
 }
 .ti-fingerprint-off:before {
   content: "\f12a";
-}
-.ti-fire-extinguisher:before {
-  content: "\faf6";
 }
 .ti-fire-hydrant:before {
   content: "\f3a9";
@@ -7375,71 +6889,11 @@
 .ti-flag-3-filled:before {
   content: "\f708";
 }
-.ti-flag-bolt:before {
-  content: "\fb8a";
-}
-.ti-flag-cancel:before {
-  content: "\fb8b";
-}
-.ti-flag-check:before {
-  content: "\fb8c";
-}
-.ti-flag-code:before {
-  content: "\fb8d";
-}
-.ti-flag-cog:before {
-  content: "\fb8e";
-}
-.ti-flag-discount:before {
-  content: "\fb8f";
-}
-.ti-flag-dollar:before {
-  content: "\fb90";
-}
-.ti-flag-down:before {
-  content: "\fb91";
-}
-.ti-flag-exclamation:before {
-  content: "\fb92";
-}
 .ti-flag-filled:before {
   content: "\f67a";
 }
-.ti-flag-heart:before {
-  content: "\fb93";
-}
-.ti-flag-minus:before {
-  content: "\fb94";
-}
 .ti-flag-off:before {
   content: "\f12d";
-}
-.ti-flag-pause:before {
-  content: "\fb95";
-}
-.ti-flag-pin:before {
-  content: "\fb96";
-}
-.ti-flag-plus:before {
-  content: "\fb97";
-}
-.ti-flag-question:before {
-  content: "\fb98";
-}
-.ti-flag-search:before {
-  content: "\fb99";
-}
-.ti-flag-share:before {
-  content: "\fb9a";
-}
-.ti-flag-star:before {
-  content: "\fb9b";
-}
-.ti-flag-up:before {
-  content: "\fb9c";
-}
-.ti-flag-x:before {
-  content: "\fb9d";
 }
 .ti-flame:before {
   content: "\ec2c";
@@ -7549,9 +7003,6 @@
 .ti-folder-off:before {
   content: "\ed14";
 }
-.ti-folder-open:before {
-  content: "\faf7";
-}
 .ti-folder-pause:before {
   content: "\f915";
 }
@@ -7594,12 +7045,6 @@
 .ti-forbid-2:before {
   content: "\ebd4";
 }
-.ti-forbid-2-filled:before {
-  content: "\fc28";
-}
-.ti-forbid-filled:before {
-  content: "\fc29";
-}
 .ti-forklift:before {
   content: "\ebe9";
 }
@@ -7608,9 +7053,6 @@
 }
 .ti-fountain:before {
   content: "\f09b";
-}
-.ti-fountain-filled:before {
-  content: "\fc2a";
 }
 .ti-fountain-off:before {
   content: "\f134";
@@ -7657,9 +7099,6 @@
 .ti-function:before {
   content: "\f225";
 }
-.ti-function-filled:before {
-  content: "\fc2b";
-}
 .ti-function-off:before {
   content: "\f3f0";
 }
@@ -7677,9 +7116,6 @@
 }
 .ti-gauge:before {
   content: "\eab1";
-}
-.ti-gauge-filled:before {
-  content: "\fc2c";
 }
 .ti-gauge-off:before {
   content: "\f138";
@@ -7753,9 +7189,6 @@
 .ti-ghost-2-filled:before {
   content: "\f74a";
 }
-.ti-ghost-3:before {
-  content: "\fc13";
-}
 .ti-ghost-filled:before {
   content: "\f74b";
 }
@@ -7770,9 +7203,6 @@
 }
 .ti-gift-card:before {
   content: "\f3aa";
-}
-.ti-gift-card-filled:before {
-  content: "\fc2d";
 }
 .ti-gift-off:before {
   content: "\f3f3";
@@ -7816,17 +7246,11 @@
 .ti-glass-full:before {
   content: "\eab7";
 }
-.ti-glass-full-filled:before {
-  content: "\fc2e";
-}
 .ti-glass-off:before {
   content: "\ee91";
 }
 .ti-globe:before {
   content: "\eab9";
-}
-.ti-globe-filled:before {
-  content: "\fc2f";
 }
 .ti-globe-off:before {
   content: "\f139";
@@ -7975,9 +7399,6 @@
 .ti-haze:before {
   content: "\efaa";
 }
-.ti-haze-moon:before {
-  content: "\faf8";
-}
 .ti-hdr:before {
   content: "\fa7b";
 }
@@ -8008,35 +7429,8 @@
 .ti-heart:before {
   content: "\eabe";
 }
-.ti-heart-bolt:before {
-  content: "\fb9e";
-}
 .ti-heart-broken:before {
   content: "\ecba";
-}
-.ti-heart-cancel:before {
-  content: "\fb9f";
-}
-.ti-heart-check:before {
-  content: "\fba0";
-}
-.ti-heart-code:before {
-  content: "\fba1";
-}
-.ti-heart-cog:before {
-  content: "\fba2";
-}
-.ti-heart-discount:before {
-  content: "\fba3";
-}
-.ti-heart-dollar:before {
-  content: "\fba4";
-}
-.ti-heart-down:before {
-  content: "\fba5";
-}
-.ti-heart-exclamation:before {
-  content: "\fba6";
 }
 .ti-heart-filled:before {
   content: "\f67c";
@@ -8050,35 +7444,11 @@
 .ti-heart-off:before {
   content: "\f141";
 }
-.ti-heart-pause:before {
-  content: "\fba7";
-}
-.ti-heart-pin:before {
-  content: "\fba8";
-}
 .ti-heart-plus:before {
   content: "\f142";
 }
-.ti-heart-question:before {
-  content: "\fba9";
-}
 .ti-heart-rate-monitor:before {
   content: "\ef61";
-}
-.ti-heart-search:before {
-  content: "\fbaa";
-}
-.ti-heart-share:before {
-  content: "\fbab";
-}
-.ti-heart-star:before {
-  content: "\fbac";
-}
-.ti-heart-up:before {
-  content: "\fbad";
-}
-.ti-heart-x:before {
-  content: "\fbae";
 }
 .ti-heartbeat:before {
   content: "\ef92";
@@ -8305,9 +7675,6 @@
 .ti-hexagon-off:before {
   content: "\ee9c";
 }
-.ti-hexagon-plus:before {
-  content: "\fc45";
-}
 .ti-hexagonal-prism:before {
   content: "\faa5";
 }
@@ -8448,9 +7815,6 @@
 }
 .ti-home-x:before {
   content: "\f347";
-}
-.ti-horse:before {
-  content: "\fc46";
 }
 .ti-horse-toy:before {
   content: "\f28a";
@@ -8647,17 +8011,8 @@
 .ti-inner-shadow-top-right-filled:before {
   content: "\f75e";
 }
-.ti-input-ai:before {
-  content: "\fc5a";
-}
-.ti-input-check:before {
-  content: "\fc5b";
-}
 .ti-input-search:before {
   content: "\f2a2";
-}
-.ti-input-x:before {
-  content: "\fc5c";
 }
 .ti-ironing:before {
   content: "\fa7c";
@@ -8746,38 +8101,20 @@
 .ti-keyframe-align-center:before {
   content: "\f582";
 }
-.ti-keyframe-align-center-filled:before {
-  content: "\fc30";
-}
 .ti-keyframe-align-horizontal:before {
   content: "\f583";
-}
-.ti-keyframe-align-horizontal-filled:before {
-  content: "\fc31";
 }
 .ti-keyframe-align-vertical:before {
   content: "\f584";
 }
-.ti-keyframe-align-vertical-filled:before {
-  content: "\fc32";
-}
-.ti-keyframe-filled:before {
-  content: "\fc33";
-}
 .ti-keyframes:before {
   content: "\f585";
-}
-.ti-keyframes-filled:before {
-  content: "\fc34";
 }
 .ti-ladder:before {
   content: "\efe2";
 }
 .ti-ladder-off:before {
   content: "\f14c";
-}
-.ti-ladle:before {
-  content: "\fc14";
 }
 .ti-lambda:before {
   content: "\f541";
@@ -8790,9 +8127,6 @@
 }
 .ti-lamp-off:before {
   content: "\f14d";
-}
-.ti-lane:before {
-  content: "\faf9";
 }
 .ti-language:before {
   content: "\ebbe";
@@ -8872,17 +8206,8 @@
 .ti-layout-bottombar-collapse:before {
   content: "\f28b";
 }
-.ti-layout-bottombar-collapse-filled:before {
-  content: "\fc35";
-}
 .ti-layout-bottombar-expand:before {
   content: "\f28c";
-}
-.ti-layout-bottombar-expand-filled:before {
-  content: "\fc36";
-}
-.ti-layout-bottombar-filled:before {
-  content: "\fc37";
 }
 .ti-layout-cards:before {
   content: "\ec13";
@@ -8923,17 +8248,8 @@
 .ti-layout-navbar-collapse:before {
   content: "\f28d";
 }
-.ti-layout-navbar-collapse-filled:before {
-  content: "\fc38";
-}
 .ti-layout-navbar-expand:before {
   content: "\f28e";
-}
-.ti-layout-navbar-expand-filled:before {
-  content: "\fc39";
-}
-.ti-layout-navbar-filled:before {
-  content: "\fc3a";
 }
 .ti-layout-off:before {
   content: "\f151";
@@ -8947,14 +8263,8 @@
 .ti-layout-sidebar-left-collapse:before {
   content: "\f004";
 }
-.ti-layout-sidebar-left-collapse-filled:before {
-  content: "\fc3b";
-}
 .ti-layout-sidebar-left-expand:before {
   content: "\f005";
-}
-.ti-layout-sidebar-left-expand-filled:before {
-  content: "\fc3c";
 }
 .ti-layout-sidebar-right:before {
   content: "\ead9";
@@ -8962,14 +8272,8 @@
 .ti-layout-sidebar-right-collapse:before {
   content: "\f006";
 }
-.ti-layout-sidebar-right-collapse-filled:before {
-  content: "\fc3d";
-}
 .ti-layout-sidebar-right-expand:before {
   content: "\f007";
-}
-.ti-layout-sidebar-right-expand-filled:before {
-  content: "\fc3e";
 }
 .ti-leaf:before {
   content: "\ed4f";
@@ -9124,17 +8428,11 @@
 .ti-list-details:before {
   content: "\ef40";
 }
-.ti-list-letters:before {
-  content: "\fc47";
-}
 .ti-list-numbers:before {
   content: "\ef11";
 }
 .ti-list-search:before {
   content: "\eea9";
-}
-.ti-list-tree:before {
-  content: "\fafa";
 }
 .ti-live-photo:before {
   content: "\eadf";
@@ -9163,74 +8461,14 @@
 .ti-location:before {
   content: "\eae0";
 }
-.ti-location-bolt:before {
-  content: "\fbaf";
-}
 .ti-location-broken:before {
   content: "\f2c4";
-}
-.ti-location-cancel:before {
-  content: "\fbb0";
-}
-.ti-location-check:before {
-  content: "\fbb1";
-}
-.ti-location-code:before {
-  content: "\fbb2";
-}
-.ti-location-cog:before {
-  content: "\fbb3";
-}
-.ti-location-discount:before {
-  content: "\fbb4";
-}
-.ti-location-dollar:before {
-  content: "\fbb5";
-}
-.ti-location-down:before {
-  content: "\fbb6";
-}
-.ti-location-exclamation:before {
-  content: "\fbb7";
 }
 .ti-location-filled:before {
   content: "\f67f";
 }
-.ti-location-heart:before {
-  content: "\fbb8";
-}
-.ti-location-minus:before {
-  content: "\fbb9";
-}
 .ti-location-off:before {
   content: "\f155";
-}
-.ti-location-pause:before {
-  content: "\fbba";
-}
-.ti-location-pin:before {
-  content: "\fbbb";
-}
-.ti-location-plus:before {
-  content: "\fbbc";
-}
-.ti-location-question:before {
-  content: "\fbbd";
-}
-.ti-location-search:before {
-  content: "\fbbe";
-}
-.ti-location-share:before {
-  content: "\fbbf";
-}
-.ti-location-star:before {
-  content: "\fbc0";
-}
-.ti-location-up:before {
-  content: "\fbc1";
-}
-.ti-location-x:before {
-  content: "\fbc2";
 }
 .ti-lock:before {
   content: "\eae2";
@@ -9342,9 +8580,6 @@
 }
 .ti-login:before {
   content: "\eba7";
-}
-.ti-login-2:before {
-  content: "\fc76";
 }
 .ti-logout:before {
   content: "\eba8";
@@ -9481,56 +8716,11 @@
 .ti-map-2:before {
   content: "\eae7";
 }
-.ti-map-bolt:before {
-  content: "\fbc3";
-}
-.ti-map-cancel:before {
-  content: "\fbc4";
-}
-.ti-map-check:before {
-  content: "\fbc5";
-}
-.ti-map-code:before {
-  content: "\fbc6";
-}
-.ti-map-cog:before {
-  content: "\fbc7";
-}
-.ti-map-discount:before {
-  content: "\fbc8";
-}
-.ti-map-dollar:before {
-  content: "\fbc9";
-}
-.ti-map-down:before {
-  content: "\fbca";
-}
-.ti-map-east:before {
-  content: "\fc5d";
-}
-.ti-map-exclamation:before {
-  content: "\fbcb";
-}
-.ti-map-heart:before {
-  content: "\fbcc";
-}
-.ti-map-minus:before {
-  content: "\fbcd";
-}
-.ti-map-north:before {
-  content: "\fc5e";
-}
 .ti-map-off:before {
   content: "\f15c";
 }
-.ti-map-pause:before {
-  content: "\fbce";
-}
 .ti-map-pin:before {
   content: "\eae8";
-}
-.ti-map-pin-2:before {
-  content: "\fc48";
 }
 .ti-map-pin-bolt:before {
   content: "\f94a";
@@ -9598,35 +8788,8 @@
 .ti-map-pins:before {
   content: "\ed5e";
 }
-.ti-map-plus:before {
-  content: "\fbcf";
-}
-.ti-map-question:before {
-  content: "\fbd0";
-}
-.ti-map-route:before {
-  content: "\fc79";
-}
 .ti-map-search:before {
   content: "\ef82";
-}
-.ti-map-share:before {
-  content: "\fbd1";
-}
-.ti-map-south:before {
-  content: "\fc5f";
-}
-.ti-map-star:before {
-  content: "\fbd2";
-}
-.ti-map-up:before {
-  content: "\fbd3";
-}
-.ti-map-west:before {
-  content: "\fc60";
-}
-.ti-map-x:before {
-  content: "\fbd4";
 }
 .ti-markdown:before {
   content: "\ec41";
@@ -9778,9 +8941,6 @@
 .ti-medical-cross:before {
   content: "\ec2f";
 }
-.ti-medical-cross-circle:before {
-  content: "\fae8";
-}
 .ti-medical-cross-filled:before {
   content: "\f681";
 }
@@ -9793,9 +8953,6 @@
 .ti-meeple:before {
   content: "\f514";
 }
-.ti-melon:before {
-  content: "\fc7a";
-}
 .ti-menorah:before {
   content: "\f58c";
 }
@@ -9804,9 +8961,6 @@
 }
 .ti-menu-2:before {
   content: "\ec42";
-}
-.ti-menu-deep:before {
-  content: "\fafb";
 }
 .ti-menu-order:before {
   content: "\f5f5";
@@ -10032,15 +9186,6 @@
 }
 .ti-meteor-off:before {
   content: "\f40c";
-}
-.ti-michelin-bib-gourmand:before {
-  content: "\fae9";
-}
-.ti-michelin-star:before {
-  content: "\faeb";
-}
-.ti-michelin-star-green:before {
-  content: "\faea";
 }
 .ti-mickey:before {
   content: "\f2a3";
@@ -10306,9 +9451,6 @@
 .ti-mouse-2:before {
   content: "\f1d7";
 }
-.ti-mouse-filled:before {
-  content: "\fb2f";
-}
 .ti-mouse-off:before {
   content: "\f163";
 }
@@ -10351,140 +9493,17 @@
 .ti-music:before {
   content: "\eafc";
 }
-.ti-music-bolt:before {
-  content: "\fbd5";
-}
-.ti-music-cancel:before {
-  content: "\fbd6";
-}
-.ti-music-check:before {
-  content: "\fbd7";
-}
-.ti-music-code:before {
-  content: "\fbd8";
-}
-.ti-music-cog:before {
-  content: "\fbd9";
-}
-.ti-music-discount:before {
-  content: "\fbda";
-}
-.ti-music-dollar:before {
-  content: "\fbdb";
-}
-.ti-music-down:before {
-  content: "\fbdc";
-}
-.ti-music-exclamation:before {
-  content: "\fbdd";
-}
-.ti-music-heart:before {
-  content: "\fbde";
-}
-.ti-music-minus:before {
-  content: "\fbdf";
-}
 .ti-music-off:before {
   content: "\f166";
-}
-.ti-music-pause:before {
-  content: "\fbe0";
-}
-.ti-music-pin:before {
-  content: "\fbe1";
-}
-.ti-music-plus:before {
-  content: "\fbe2";
-}
-.ti-music-question:before {
-  content: "\fbe3";
-}
-.ti-music-search:before {
-  content: "\fbe4";
-}
-.ti-music-share:before {
-  content: "\fbe5";
-}
-.ti-music-star:before {
-  content: "\fbe6";
-}
-.ti-music-up:before {
-  content: "\fbe7";
-}
-.ti-music-x:before {
-  content: "\fbe8";
 }
 .ti-navigation:before {
   content: "\f2c8";
 }
-.ti-navigation-bolt:before {
-  content: "\fbe9";
-}
-.ti-navigation-cancel:before {
-  content: "\fbea";
-}
-.ti-navigation-check:before {
-  content: "\fbeb";
-}
-.ti-navigation-code:before {
-  content: "\fbec";
-}
-.ti-navigation-cog:before {
-  content: "\fbed";
-}
-.ti-navigation-discount:before {
-  content: "\fbee";
-}
-.ti-navigation-dollar:before {
-  content: "\fbef";
-}
-.ti-navigation-down:before {
-  content: "\fbf0";
-}
-.ti-navigation-exclamation:before {
-  content: "\fbf1";
-}
 .ti-navigation-filled:before {
   content: "\f685";
 }
-.ti-navigation-heart:before {
-  content: "\fbf2";
-}
-.ti-navigation-minus:before {
-  content: "\fbf3";
-}
-.ti-navigation-north:before {
-  content: "\faec";
-}
 .ti-navigation-off:before {
   content: "\f413";
-}
-.ti-navigation-pause:before {
-  content: "\fbf4";
-}
-.ti-navigation-pin:before {
-  content: "\fbf5";
-}
-.ti-navigation-plus:before {
-  content: "\fbf6";
-}
-.ti-navigation-question:before {
-  content: "\fbf7";
-}
-.ti-navigation-search:before {
-  content: "\fbf8";
-}
-.ti-navigation-share:before {
-  content: "\fbf9";
-}
-.ti-navigation-star:before {
-  content: "\fbfa";
-}
-.ti-navigation-up:before {
-  content: "\fbfb";
-}
-.ti-navigation-x:before {
-  content: "\fbfc";
 }
 .ti-needle:before {
   content: "\f508";
@@ -10587,9 +9606,6 @@
 }
 .ti-nurse:before {
   content: "\ef65";
-}
-.ti-nut:before {
-  content: "\fc61";
 }
 .ti-octagon:before {
   content: "\ecbd";
@@ -10723,15 +9739,6 @@
 .ti-password:before {
   content: "\f4ca";
 }
-.ti-password-fingerprint:before {
-  content: "\fc7b";
-}
-.ti-password-mobile-phone:before {
-  content: "\fc7c";
-}
-.ti-password-user:before {
-  content: "\fc7d";
-}
 .ti-paw:before {
   content: "\eff9";
 }
@@ -10750,68 +9757,14 @@
 .ti-pencil:before {
   content: "\eb04";
 }
-.ti-pencil-bolt:before {
-  content: "\fbfd";
-}
-.ti-pencil-cancel:before {
-  content: "\fbfe";
-}
-.ti-pencil-check:before {
-  content: "\fbff";
-}
-.ti-pencil-code:before {
-  content: "\fc00";
-}
-.ti-pencil-cog:before {
-  content: "\fc01";
-}
-.ti-pencil-discount:before {
-  content: "\fc02";
-}
-.ti-pencil-dollar:before {
-  content: "\fc03";
-}
-.ti-pencil-down:before {
-  content: "\fc04";
-}
-.ti-pencil-exclamation:before {
-  content: "\fc05";
-}
-.ti-pencil-heart:before {
-  content: "\fc06";
-}
 .ti-pencil-minus:before {
   content: "\f1eb";
 }
 .ti-pencil-off:before {
   content: "\f173";
 }
-.ti-pencil-pause:before {
-  content: "\fc07";
-}
-.ti-pencil-pin:before {
-  content: "\fc08";
-}
 .ti-pencil-plus:before {
   content: "\f1ec";
-}
-.ti-pencil-question:before {
-  content: "\fc09";
-}
-.ti-pencil-search:before {
-  content: "\fc0a";
-}
-.ti-pencil-share:before {
-  content: "\fc0b";
-}
-.ti-pencil-star:before {
-  content: "\fc0c";
-}
-.ti-pencil-up:before {
-  content: "\fc0d";
-}
-.ti-pencil-x:before {
-  content: "\fc0e";
 }
 .ti-pennant:before {
   content: "\ed7d";
@@ -10834,44 +9787,8 @@
 .ti-pentagon-filled:before {
   content: "\f68c";
 }
-.ti-pentagon-number-0:before {
-  content: "\fc7e";
-}
-.ti-pentagon-number-1:before {
-  content: "\fc7f";
-}
-.ti-pentagon-number-2:before {
-  content: "\fc80";
-}
-.ti-pentagon-number-3:before {
-  content: "\fc81";
-}
-.ti-pentagon-number-4:before {
-  content: "\fc82";
-}
-.ti-pentagon-number-5:before {
-  content: "\fc83";
-}
-.ti-pentagon-number-6:before {
-  content: "\fc84";
-}
-.ti-pentagon-number-7:before {
-  content: "\fc85";
-}
-.ti-pentagon-number-8:before {
-  content: "\fc86";
-}
-.ti-pentagon-number-9:before {
-  content: "\fc87";
-}
 .ti-pentagon-off:before {
   content: "\f41a";
-}
-.ti-pentagon-plus:before {
-  content: "\fc49";
-}
-.ti-pentagon-x:before {
-  content: "\fc88";
 }
 .ti-pentagram:before {
   content: "\f586";
@@ -10942,15 +9859,6 @@
 .ti-photo-check:before {
   content: "\f35e";
 }
-.ti-photo-circle:before {
-  content: "\fc4a";
-}
-.ti-photo-circle-minus:before {
-  content: "\fc62";
-}
-.ti-photo-circle-plus:before {
-  content: "\fc63";
-}
 .ti-photo-code:before {
   content: "\f991";
 }
@@ -10975,9 +9883,6 @@
 .ti-photo-heart:before {
   content: "\f361";
 }
-.ti-photo-hexagon:before {
-  content: "\fc4b";
-}
 .ti-photo-minus:before {
   content: "\f362";
 }
@@ -10986,9 +9891,6 @@
 }
 .ti-photo-pause:before {
   content: "\f995";
-}
-.ti-photo-pentagon:before {
-  content: "\fc4c";
 }
 .ti-photo-pin:before {
   content: "\f996";
@@ -11017,9 +9919,6 @@
 .ti-photo-shield:before {
   content: "\f365";
 }
-.ti-photo-square-rounded:before {
-  content: "\fc4d";
-}
 .ti-photo-star:before {
   content: "\f366";
 }
@@ -11031,12 +9930,6 @@
 }
 .ti-physotherapist:before {
   content: "\eebe";
-}
-.ti-piano:before {
-  content: "\fad3";
-}
-.ti-pick:before {
-  content: "\fafc";
 }
 .ti-picture-in-picture:before {
   content: "\ed35";
@@ -11299,9 +10192,6 @@
 .ti-pointer-exclamation:before {
   content: "\f9a0";
 }
-.ti-pointer-filled:before {
-  content: "\fb30";
-}
 .ti-pointer-heart:before {
   content: "\f9a1";
 }
@@ -11476,9 +10366,6 @@
 .ti-quote-off:before {
   content: "\f188";
 }
-.ti-quotes:before {
-  content: "\fb1e";
-}
 .ti-radar:before {
   content: "\f017";
 }
@@ -11572,12 +10459,6 @@
 .ti-rectangle-filled:before {
   content: "\f69a";
 }
-.ti-rectangle-rounded-bottom:before {
-  content: "\faed";
-}
-.ti-rectangle-rounded-top:before {
-  content: "\faee";
-}
 .ti-rectangle-vertical:before {
   content: "\ed36";
 }
@@ -11632,9 +10513,6 @@
 .ti-reload:before {
   content: "\f3ae";
 }
-.ti-reorder:before {
-  content: "\fc15";
-}
 .ti-repeat:before {
   content: "\eb72";
 }
@@ -11676,9 +10554,6 @@
 }
 .ti-resize:before {
   content: "\eecf";
-}
-.ti-restore:before {
-  content: "\fafd";
 }
 .ti-rewind-backward-10:before {
   content: "\faba";
@@ -11847,9 +10722,6 @@
 }
 .ti-row-insert-top:before {
   content: "\eed1";
-}
-.ti-row-remove:before {
-  content: "\fafe";
 }
 .ti-rss:before {
   content: "\eb19";
@@ -12286,101 +11158,20 @@
 .ti-shopping-bag:before {
   content: "\f5f8";
 }
-.ti-shopping-bag-check:before {
-  content: "\fc16";
-}
-.ti-shopping-bag-discount:before {
-  content: "\fc17";
-}
-.ti-shopping-bag-edit:before {
-  content: "\fc18";
-}
-.ti-shopping-bag-exclamation:before {
-  content: "\fc19";
-}
-.ti-shopping-bag-minus:before {
-  content: "\fc1a";
-}
-.ti-shopping-bag-plus:before {
-  content: "\fc1b";
-}
-.ti-shopping-bag-search:before {
-  content: "\fc1c";
-}
-.ti-shopping-bag-x:before {
-  content: "\fc1d";
-}
 .ti-shopping-cart:before {
   content: "\eb25";
 }
-.ti-shopping-cart-bolt:before {
-  content: "\fb57";
-}
-.ti-shopping-cart-cancel:before {
-  content: "\fb58";
-}
-.ti-shopping-cart-check:before {
-  content: "\fb59";
-}
-.ti-shopping-cart-code:before {
-  content: "\fb5a";
-}
-.ti-shopping-cart-cog:before {
-  content: "\fb5b";
-}
-.ti-shopping-cart-copy:before {
-  content: "\fb5c";
-}
 .ti-shopping-cart-discount:before {
-  content: "\fb5d";
-}
-.ti-shopping-cart-dollar:before {
-  content: "\fb5e";
-}
-.ti-shopping-cart-down:before {
-  content: "\fb5f";
-}
-.ti-shopping-cart-exclamation:before {
-  content: "\fb60";
-}
-.ti-shopping-cart-filled:before {
-  content: "\fc3f";
-}
-.ti-shopping-cart-heart:before {
-  content: "\fb61";
-}
-.ti-shopping-cart-minus:before {
-  content: "\fb62";
+  content: "\eedb";
 }
 .ti-shopping-cart-off:before {
   content: "\eedc";
 }
-.ti-shopping-cart-pause:before {
-  content: "\fb63";
-}
-.ti-shopping-cart-pin:before {
-  content: "\fb64";
-}
 .ti-shopping-cart-plus:before {
-  content: "\fb65";
-}
-.ti-shopping-cart-question:before {
-  content: "\fb66";
-}
-.ti-shopping-cart-search:before {
-  content: "\fb67";
-}
-.ti-shopping-cart-share:before {
-  content: "\fb68";
-}
-.ti-shopping-cart-star:before {
-  content: "\fb69";
-}
-.ti-shopping-cart-up:before {
-  content: "\fb6a";
+  content: "\eedd";
 }
 .ti-shopping-cart-x:before {
-  content: "\fb6b";
+  content: "\eede";
 }
 .ti-shovel:before {
   content: "\f1d9";
@@ -12661,32 +11452,17 @@
 .ti-square-arrow-down:before {
   content: "\f4b7";
 }
-.ti-square-arrow-down-filled:before {
-  content: "\fb31";
-}
 .ti-square-arrow-left:before {
   content: "\f4b8";
-}
-.ti-square-arrow-left-filled:before {
-  content: "\fb32";
 }
 .ti-square-arrow-right:before {
   content: "\f4b9";
 }
-.ti-square-arrow-right-filled:before {
-  content: "\fb33";
-}
 .ti-square-arrow-up:before {
   content: "\f4ba";
 }
-.ti-square-arrow-up-filled:before {
-  content: "\fb34";
-}
 .ti-square-asterisk:before {
   content: "\f01a";
-}
-.ti-square-asterisk-filled:before {
-  content: "\fb35";
 }
 .ti-square-check:before {
   content: "\eb28";
@@ -12697,56 +11473,29 @@
 .ti-square-chevron-down:before {
   content: "\f627";
 }
-.ti-square-chevron-down-filled:before {
-  content: "\fb36";
-}
 .ti-square-chevron-left:before {
   content: "\f628";
-}
-.ti-square-chevron-left-filled:before {
-  content: "\fb37";
 }
 .ti-square-chevron-right:before {
   content: "\f629";
 }
-.ti-square-chevron-right-filled:before {
-  content: "\fb38";
-}
 .ti-square-chevron-up:before {
   content: "\f62a";
-}
-.ti-square-chevron-up-filled:before {
-  content: "\fb39";
 }
 .ti-square-chevrons-down:before {
   content: "\f64b";
 }
-.ti-square-chevrons-down-filled:before {
-  content: "\fb3a";
-}
 .ti-square-chevrons-left:before {
   content: "\f64c";
-}
-.ti-square-chevrons-left-filled:before {
-  content: "\fb3b";
 }
 .ti-square-chevrons-right:before {
   content: "\f64d";
 }
-.ti-square-chevrons-right-filled:before {
-  content: "\fb3c";
-}
 .ti-square-chevrons-up:before {
   content: "\f64e";
 }
-.ti-square-chevrons-up-filled:before {
-  content: "\fb3d";
-}
 .ti-square-dot:before {
   content: "\ed59";
-}
-.ti-square-dot-filled:before {
-  content: "\fb3e";
 }
 .ti-square-f0:before {
   content: "\f526";
@@ -12807,9 +11556,6 @@
 }
 .ti-square-f9-filled:before {
   content: "\f777";
-}
-.ti-square-filled:before {
-  content: "\fc40";
 }
 .ti-square-forbid:before {
   content: "\ed5b";
@@ -12903,9 +11649,6 @@
 }
 .ti-square-minus:before {
   content: "\eb29";
-}
-.ti-square-minus-filled:before {
-  content: "\fb3f";
 }
 .ti-square-number-0:before {
   content: "\eee5";
@@ -13129,9 +11872,6 @@
 .ti-square-rounded-minus:before {
   content: "\f63e";
 }
-.ti-square-rounded-minus-filled:before {
-  content: "\fb40";
-}
 .ti-square-rounded-number-0:before {
   content: "\f5c8";
 }
@@ -13212,9 +11952,6 @@
 }
 .ti-square-x:before {
   content: "\eb2b";
-}
-.ti-square-x-filled:before {
-  content: "\fb41";
 }
 .ti-squares-diagonal:before {
   content: "\eef5";
@@ -13405,9 +12142,6 @@
 .ti-table-alias:before {
   content: "\f25b";
 }
-.ti-table-column:before {
-  content: "\faff";
-}
 .ti-table-down:before {
   content: "\fa1c";
 }
@@ -13434,9 +12168,6 @@
 }
 .ti-table-plus:before {
   content: "\fa1f";
-}
-.ti-table-row:before {
-  content: "\fb00";
 }
 .ti-table-share:before {
   content: "\fa20";
@@ -13630,33 +12361,6 @@
 .ti-tilt-shift-off:before {
   content: "\f1b3";
 }
-.ti-time-duration-0:before {
-  content: "\fad4";
-}
-.ti-time-duration-10:before {
-  content: "\fad5";
-}
-.ti-time-duration-15:before {
-  content: "\fad6";
-}
-.ti-time-duration-30:before {
-  content: "\fad7";
-}
-.ti-time-duration-45:before {
-  content: "\fad8";
-}
-.ti-time-duration-5:before {
-  content: "\fad9";
-}
-.ti-time-duration-60:before {
-  content: "\fada";
-}
-.ti-time-duration-90:before {
-  content: "\fadb";
-}
-.ti-time-duration-off:before {
-  content: "\fadc";
-}
 .ti-timeline:before {
   content: "\f031";
 }
@@ -13798,17 +12502,11 @@
 .ti-train:before {
   content: "\ed96";
 }
-.ti-transfer:before {
-  content: "\fc1f";
-}
 .ti-transfer-in:before {
   content: "\ef2f";
 }
 .ti-transfer-out:before {
   content: "\ef30";
-}
-.ti-transfer-vertical:before {
-  content: "\fc1e";
 }
 .ti-transform:before {
   content: "\f38e";
@@ -13890,9 +12588,6 @@
 }
 .ti-triangle-square-circle:before {
   content: "\ece8";
-}
-.ti-triangle-square-circle-filled:before {
-  content: "\fb42";
 }
 .ti-triangles:before {
   content: "\f0a5";
@@ -14005,9 +12700,6 @@
 .ti-user-heart:before {
   content: "\f7cd";
 }
-.ti-user-hexagon:before {
-  content: "\fc4e";
-}
 .ti-user-minus:before {
   content: "\eb4a";
 }
@@ -14016,9 +12708,6 @@
 }
 .ti-user-pause:before {
   content: "\f9d7";
-}
-.ti-user-pentagon:before {
-  content: "\fc4f";
 }
 .ti-user-pin:before {
   content: "\f7ce";
@@ -14037,12 +12726,6 @@
 }
 .ti-user-shield:before {
   content: "\f7d0";
-}
-.ti-user-square:before {
-  content: "\fc51";
-}
-.ti-user-square-rounded:before {
-  content: "\fc50";
 }
 .ti-user-star:before {
   content: "\f7d1";
@@ -14206,9 +12889,6 @@
 .ti-volume-off:before {
   content: "\f1c3";
 }
-.ti-vs:before {
-  content: "\fc52";
-}
 .ti-walk:before {
   content: "\ec87";
 }
@@ -14346,9 +13026,6 @@
 }
 .ti-weight:before {
   content: "\f589";
-}
-.ti-wheel:before {
-  content: "\fc64";
 }
 .ti-wheelchair:before {
   content: "\f1db";
@@ -14526,9 +13203,6 @@
 }
 .ti-xd:before {
   content: "\fa33";
-}
-.ti-xxx:before {
-  content: "\fc20";
 }
 .ti-yin-yang:before {
   content: "\ec35";
@@ -14810,11 +13484,11 @@ sup {
   top: -0.5em;
 }
 a {
-  color: #9c9c9c;
+  color: #888;
   text-decoration: none;
 }
 a:hover {
-  color: #7d7d7d;
+  color: #6d6d6d;
   text-decoration: none;
 }
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
@@ -14841,7 +13515,7 @@ pre code {
 }
 code {
   font-size: 85.71428571%;
-  color: #b4b4b4;
+  color: #504f4f;
   word-wrap: break-word;
 }
 a > code {
@@ -16968,11 +15642,11 @@ textarea.form-control-lg {
 }
 .btn-link {
   font-weight: 400;
-  color: #9c9c9c;
+  color: #888;
   text-decoration: none;
 }
 .btn-link:hover {
-  color: #7d7d7d;
+  color: #6d6d6d;
   text-decoration: none;
 }
 .btn-link:focus {
@@ -17383,7 +16057,7 @@ textarea.form-control-lg {
   }
 }
 .nav-link:hover, .nav-link:focus {
-  color: #7d7d7d;
+  color: #6d6d6d;
 }
 .nav-link.disabled {
   color: #747474;
@@ -18180,13 +16854,13 @@ textarea.form-control-lg {
 }
 .page-link:hover {
   z-index: 2;
-  color: #7d7d7d;
+  color: #6d6d6d;
   background-color: #a7a7a7;
   border-color: #a2a2a2;
 }
 .page-link:focus {
   z-index: 3;
-  color: #7d7d7d;
+  color: #6d6d6d;
   background-color: #a7a7a7;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(88, 89, 87, 0.25);
@@ -26649,7 +25323,7 @@ a.badge {
   border-color: var(--tblr-btn-color);
 }
 .btn-link {
-  color: #9c9c9c;
+  color: #888;
   background-color: transparent;
   border-color: transparent;
 }
@@ -26657,7 +25331,7 @@ a.badge {
   color: inherit;
 }
 .btn-link:hover {
-  color: #7d7d7d;
+  color: #6d6d6d;
   border-color: transparent;
 }
 .btn-lg svg.icon, .btn-group-lg > .btn svg.icon {
@@ -28978,7 +27652,7 @@ Dimmer
   color: #242323;
 }
 .page-link:hover .page-item-title {
-  color: #9c9c9c;
+  color: #888;
 }
 .page-item.disabled .page-item-title {
   color: rgba(117, 125, 145, 0.5);
@@ -30262,8 +28936,8 @@ dl dd:last-child {
 }
 code {
   padding: 2px 4px;
-  background: rgba(180, 180, 180, 0.03);
-  border: 1px solid rgba(180, 180, 180, 0.064);
+  background: rgba(80, 79, 79, 0.03);
+  border: 1px solid rgba(80, 79, 79, 0.064);
   border-radius: 4px;
   font-weight: 400;
 }
@@ -30975,7 +29649,7 @@ Antialiasing
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -32746,9 +31420,6 @@ body .modal-content, body .modal-header {
 .toast {
   background-color: #313030;
 }
-.avatar {
-  color: #242323;
-}
 /*!
  * ---------------------------------------------------------------------
  *
@@ -32756,7 +31427,7 @@ body .modal-content, body .modal-header {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -32788,7 +31459,7 @@ body .modal-content, body .modal-header {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -32916,8 +31587,8 @@ table.deleted-results > :not(caption) > * > * {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  background: rgba(156, 156, 156, 0.05);
-  color: #9c9c9c !important;
+  background: rgba(136, 136, 136, 0.05);
+  color: #888 !important;
   padding: calc(0.25rem - 1px) 0.25rem;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -32973,9 +31644,6 @@ body, body input {
 .bs-invisible {
   visibility: hidden !important;
 }
-:-webkit-autofill {
-  -webkit-text-fill-color: var(--tblr-body-color);
-}
 /*!
  * ---------------------------------------------------------------------
  *
@@ -32983,7 +31651,7 @@ body, body input {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33015,7 +31683,7 @@ body, body input {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33074,7 +31742,7 @@ body, body input {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33729,7 +32397,7 @@ body, body input {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33781,6 +32449,9 @@ body, body input {
   left: 0.5rem;
 }
 @media (max-width: 575.98px) {
+  .asset .card-header .card-title, .navigationheader .card-header .card-title, #page div.objectlockmessage .card-header .card-title, .qtip div.objectlockmessage .card-header .card-title, .modal .modal-body div.objectlockmessage .card-header .card-title {
+    padding-left: 0 !important;
+  }
   .asset .card-header .badge, .navigationheader .card-header .badge, #page div.objectlockmessage .card-header .badge, .qtip div.objectlockmessage .card-header .badge, .modal .modal-body div.objectlockmessage .card-header .badge {
     margin-left: 0 !important;
   }
@@ -33820,7 +32491,7 @@ body, body input {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33946,7 +32617,7 @@ which broke styles of btn-group > .btn-check
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34064,7 +32735,7 @@ which broke styles of btn-group > .btn-check
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34176,7 +32847,7 @@ body.debug-active:not(.debug-folded) .search-footer, body.debug-active:not(.debu
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34233,7 +32904,7 @@ body.debug-active:not(.debug-folded) .search-footer, body.debug-active:not(.debu
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34296,7 +32967,7 @@ body .flatpickr-months .flatpickr-prev-month:hover, body .flatpickr-months .flat
   color: #aaa;
 }
 body .flatpickr-months .flatpickr-prev-month:hover svg, body .flatpickr-months .flatpickr-next-month:hover svg {
-  fill: rgba(156, 156, 156, 0.5);
+  fill: rgba(136, 136, 136, 0.5);
 }
 body .numInputWrapper:hover {
   background: transparent;
@@ -34331,8 +33002,8 @@ body .flatpickr-day {
   color: #aaa;
 }
 body .flatpickr-day.inRange, body .flatpickr-day.prevMonthDay.inRange, body .flatpickr-day.nextMonthDay.inRange, body .flatpickr-day.today.inRange, body .flatpickr-day.prevMonthDay.today.inRange, body .flatpickr-day.nextMonthDay.today.inRange, body .flatpickr-day:hover, body .flatpickr-day.prevMonthDay:hover, body .flatpickr-day.nextMonthDay:hover, body .flatpickr-day:focus, body .flatpickr-day.prevMonthDay:focus, body .flatpickr-day.nextMonthDay:focus {
-  background: rgba(156, 156, 156, 0.4);
-  border-color: rgba(156, 156, 156, 0.4);
+  background: rgba(136, 136, 136, 0.4);
+  border-color: rgba(136, 136, 136, 0.4);
 }
 body .flatpickr-day.today {
   border-color: #aaa;
@@ -34343,31 +33014,28 @@ body .flatpickr-day.today:hover, body .flatpickr-day.today:focus {
   color: #1f1e1e;
 }
 body .flatpickr-day.selected, body .flatpickr-day.startRange, body .flatpickr-day.endRange, body .flatpickr-day.selected.inRange, body .flatpickr-day.startRange.inRange, body .flatpickr-day.endRange.inRange, body .flatpickr-day.selected:focus, body .flatpickr-day.startRange:focus, body .flatpickr-day.endRange:focus, body .flatpickr-day.selected:hover, body .flatpickr-day.startRange:hover, body .flatpickr-day.endRange:hover, body .flatpickr-day.selected.prevMonthDay, body .flatpickr-day.startRange.prevMonthDay, body .flatpickr-day.endRange.prevMonthDay, body .flatpickr-day.selected.nextMonthDay, body .flatpickr-day.startRange.nextMonthDay, body .flatpickr-day.endRange.nextMonthDay {
-  background: rgba(156, 156, 156, 0.3);
+  background: rgba(136, 136, 136, 0.3);
   color: #aaa;
-  border-color: rgba(156, 156, 156, 0.3);
+  border-color: rgba(136, 136, 136, 0.3);
 }
 body .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)), body .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)), body .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
-  -webkit-box-shadow: -10px 0 0 rgba(156, 156, 156, 0.3);
-  box-shadow: -10px 0 0 rgba(156, 156, 156, 0.3);
+  -webkit-box-shadow: -10px 0 0 rgba(136, 136, 136, 0.3);
+  box-shadow: -10px 0 0 rgba(136, 136, 136, 0.3);
 }
 body .flatpickr-day.flatpickr-disabled, body .flatpickr-day.flatpickr-disabled:hover, body .flatpickr-day.prevMonthDay, body .flatpickr-day.nextMonthDay, body .flatpickr-day.notAllowed, body .flatpickr-day.notAllowed.prevMonthDay, body .flatpickr-day.notAllowed.nextMonthDay {
   color: rgba(170, 170, 170, 0.3);
 }
 body .flatpickr-day.inRange {
-  -webkit-box-shadow: -5px 0 0 rgba(156, 156, 156, 0.4), 5px 0 0 rgba(156, 156, 156, 0.4);
-  box-shadow: -5px 0 0 rgba(156, 156, 156, 0.4), 5px 0 0 rgba(156, 156, 156, 0.4);
+  -webkit-box-shadow: -5px 0 0 rgba(136, 136, 136, 0.4), 5px 0 0 rgba(136, 136, 136, 0.4);
+  box-shadow: -5px 0 0 rgba(136, 136, 136, 0.4), 5px 0 0 rgba(136, 136, 136, 0.4);
 }
 body .flatpickr-day.week.selected {
-  -webkit-box-shadow: -5px 0 0 rgba(156, 156, 156, 0.3), 5px 0 0 rgba(156, 156, 156, 0.3);
-  box-shadow: -5px 0 0 rgba(156, 156, 156, 0.3), 5px 0 0 rgba(156, 156, 156, 0.3);
+  -webkit-box-shadow: -5px 0 0 rgba(136, 136, 136, 0.3), 5px 0 0 rgba(136, 136, 136, 0.3);
+  box-shadow: -5px 0 0 rgba(136, 136, 136, 0.3), 5px 0 0 rgba(136, 136, 136, 0.3);
 }
 body .flatpickr-weekwrapper .flatpickr-weeks {
   -webkit-box-shadow: 1px 0 0 rgba(170, 170, 170, 0.04);
   box-shadow: 1px 0 0 rgba(170, 170, 170, 0.04);
-}
-body .flatpickr-weekwrapper span.flatpickr-day, body .flatpickr-weekwrapper span.flatpickr-day:hover {
-  color: rgba(170, 170, 170, 0.3);
 }
 body .flatpickr-time .numInputWrapper span.arrowUp::after {
   border-bottom-color: #aaa;
@@ -34392,7 +33060,7 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34447,7 +33115,7 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34483,7 +33151,7 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34700,7 +33368,7 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -34849,18 +33517,12 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
 .kanban .kanban-container .kanban-columns .kanban-column.collapsed .kanban-column-header .kanban-column-header-content {
   flex-direction: column;
 }
-.kanban .kanban-container .kanban-columns .kanban-column.collapsed .kanban-column-header .kanban-column-header-content .kanban-collapse-column {
+.kanban .kanban-container .kanban-columns .kanban-column.collapsed .kanban-column-header .kanban-column-header-content .kanban-collapse-column, .kanban .kanban-container .kanban-columns .kanban-column.collapsed .kanban-column-header .kanban-column-header-content .kanban-column-title, .kanban .kanban-container .kanban-columns .kanban-column.collapsed .kanban-column-header .kanban-column-header-content .kanban_nb {
   transform: rotate(90deg);
   transform-origin: center;
   display: inline-block;
   margin: calc(50% - 8px) 0;
   white-space: nowrap;
-}
-.kanban .kanban-container .kanban-columns .kanban-column.collapsed .kanban-column-header .kanban-column-header-content .kanban-column-title, .kanban .kanban-container .kanban-columns .kanban-column.collapsed .kanban-column-header .kanban-column-header-content .kanban_nb {
-  writing-mode: vertical-lr;
-  margin-top: 10px;
-  margin-left: 0;
-  padding: 12px 3px;
 }
 .kanban .kanban-container .kanban-columns .kanban-column.collapsed .kanban-column-header .kanban-column-header-content .kanban-collapse-column {
   margin: 0 0 8px;
@@ -35097,7 +33759,7 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35164,7 +33826,7 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35251,7 +33913,7 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35294,25 +33956,13 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
   color: white;
 }
 .netport.trunk {
-  background-color: #386e5c;
-  color: white;
-}
-.netport.trunk a {
-  color: white;
+  background-color: mediumaquamarine;
 }
 .netport.hub {
-  background-color: #b97058;
-  color: white;
-}
-.netport.hub a {
-  color: white;
+  background-color: lightsalmon;
 }
 .netport.cotrunk {
-  background-color: #4d4d4d;
-  color: white;
-}
-.netport.cotrunk a {
-  color: white;
+  background-color: silver;
 }
 .netport.aggregated, .netport .aggregated {
   background-color: teal;
@@ -35335,7 +33985,6 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
 }
 .netport-legend {
   width: 100%;
-  color: white;
 }
 .netport-legend td.netport {
   text-align: center;
@@ -35348,7 +33997,7 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35402,7 +34051,7 @@ body .flatpickr-time input:hover, body .flatpickr-time .flatpickr-am-pm:hover, b
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35886,7 +34535,7 @@ div#viewgraph .rack_side_block .pdu_list td {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35919,15 +34568,10 @@ body.mce-content-body [data-user-mention="true"] {
 }
 #page .tox .tox-statusbar {
   border-top: transparent;
-  justify-content: flex-end;
 }
 .tox.tox-tinymce {
   border: 1px solid #dee0e5;
   border-radius: 4px;
-}
-.rich_text_container {
-  white-space: initial;
-  max-width: 100%;
 }
 .rich_text_container thead, .rich_text_container tbody, .rich_text_container tfoot, .rich_text_container tr, .rich_text_container td, .rich_text_container th {
   border-width: inherit;
@@ -35936,8 +34580,6 @@ body.mce-content-body [data-user-mention="true"] {
   max-width: 100%;
 }
 .rich_text_container table {
-  overflow: auto;
-  max-width: 100%;
   word-break: normal;
 }
 .rich_text_container a[target="_blank"]::before {
@@ -35951,7 +34593,7 @@ body.mce-content-body [data-user-mention="true"] {
   overflow: hidden;
 }
 .rich_text_container .long_text .read_more {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #242323 100%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #f1f4e3 100%);
 }
 .user-mention, [data-user-mention="true"] {
   background: rgba(0, 0, 0, 0.2);
@@ -35965,7 +34607,7 @@ body.mce-content-body [data-user-mention="true"] {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -36013,7 +34655,7 @@ body.mce-content-body [data-user-mention="true"] {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -36177,7 +34819,7 @@ body.horizontal-layout .secondary-bar {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -36224,7 +34866,7 @@ body.horizontal-layout .secondary-bar {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -36284,7 +34926,7 @@ div.search-input span.search-input-tag-input:last-of-type {
 }
 .search-input-popover .popover-arrow::before {
   top: 0;
-  border-width: 0 0.5rem 0.5rem;
+  border-width: 0 0.5rem 0.5rem 0.5rem;
   border-bottom-color: rgba(101, 109, 119, 0.21);
 }
 .search-input-popover .popover-body {
@@ -36310,7 +34952,7 @@ div.search-input span.search-input-tag-input:last-of-type {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -36885,9 +35527,6 @@ div.search-input span.search-input-tag-input:last-of-type {
     border-color: #333;
   }
 }
-.select2-container .select2-selection .select2-selection__rendered input[type="search"] {
-  color: #aaa;
-}
 .select2-container .select2-selection.select2-selection--single {
   font-size: 0.875rem;
   height: calc(1.4285714286em + 0.875rem + 2px);
@@ -37086,7 +35725,7 @@ div.search-input span.search-input-tag-input:last-of-type {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -37111,21 +35750,12 @@ div.search-input span.search-input-tag-input:last-of-type {
  *
  * ---------------------------------------------------------------------
  */
-.tab-content {
-  border-top-left-radius: 0;
-}
-.card-tabs #tabspanel {
-  border-right: 1px solid rgba(101, 109, 119, 0.16);
-}
 .card-tabs #tabspanel.nav-tabs .nav-link {
   background: #222121;
   color: #aaa;
   border-color: transparent;
-  border-right-width: 0;
 }
 .card-tabs #tabspanel.nav-tabs .nav-link.active {
-  border-right: 1px solid transparent !important;
-  margin-right: -1px;
   background: #3a3938;
   color: #aaa;
   border-color: transparent;
@@ -37141,7 +35771,6 @@ div.search-input span.search-input-tag-input:last-of-type {
 }
 .card-tabs.vertical .nav-link {
   border-bottom: 1px solid rgba(117, 125, 145, 0.16);
-  border-top-right-radius: 0;
 }
 .card-tabs.vertical .nav-link.active {
   border-left-width: 5px;
@@ -37161,7 +35790,7 @@ div.search-input span.search-input-tag-input:last-of-type {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -37242,7 +35871,7 @@ div.search-input span.search-input-tag-input:last-of-type {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -37377,7 +36006,7 @@ div.search-input span.search-input-tag-input:last-of-type {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -37820,7 +36449,7 @@ ul.legacy-timeline-actions li i {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -37861,7 +36490,7 @@ ul.legacy-timeline-actions li i {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -37989,7 +36618,7 @@ ul.legacy-timeline-actions li i {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -38045,7 +36674,7 @@ ul.legacy-timeline-actions li i {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -38080,7 +36709,7 @@ ul.legacy-timeline-actions li i {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -38117,7 +36746,7 @@ ul.legacy-timeline-actions li i {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -38316,7 +36945,7 @@ table.search-results thead th[data-searchopt-id]:not([data-searchopt-id=""]):not
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -38342,7 +36971,7 @@ table.search-results thead th[data-searchopt-id]:not([data-searchopt-id=""]):not
  * ---------------------------------------------------------------------
  */
 textarea:not(.form-control), input:not(.submit):not(.form-control):not([type=submit]):not([type=color]):not([type=reset]):not([type=checkbox]):not([type=radio]):not(.select2-search__field):not(.numInput):not(.tox-textfield) {
-  color: #aaa;
+  color: #242323;
   background-color: #1f1e1e;
   background-clip: padding-box;
   border: 1px solid #dee0e5;
@@ -38428,7 +37057,7 @@ input.submit:focus:not([disabled]):not(.disabled), .vsubmit:focus:not([disabled]
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -38732,11 +37361,9 @@ input.submit:focus:not([disabled]):not(.disabled), .vsubmit:focus:not([disabled]
 }
 #page .tab_bg_1_2, .qtip .tab_bg_1_2, .modal .modal-body .tab_bg_1_2 {
   background-color: #cf9b9b;
-  color: #242323;
 }
 #page .tab_bg_2_2, .qtip .tab_bg_2_2, .modal .modal-body .tab_bg_2_2 {
   background-color: #cf9b9b;
-  color: #242323;
 }
 #page .tab_date, .qtip .tab_date, .modal .modal-body .tab_date {
   white-space: nowrap;
@@ -39002,6 +37629,9 @@ input.submit:focus:not([disabled]):not(.disabled), .vsubmit:focus:not([disabled]
   width: 100%;
   padding: 5px;
 }
+#page .faqadd_entries tr, .qtip .faqadd_entries tr, .modal .modal-body .faqadd_entries tr {
+  display: block;
+}
 #page .boxnote, .qtip .boxnote, .modal .modal-body .boxnote {
   margin: 0 auto;
   width: 950px;
@@ -39046,7 +37676,6 @@ input.submit:focus:not([disabled]):not(.disabled), .vsubmit:focus:not([disabled]
 }
 #page .boxnotetext, .qtip .boxnotetext, .modal .modal-body .boxnotetext {
   padding: 5px;
-  margin-top: 1rem;
 }
 #page .error, .qtip .error, .modal .modal-body .error {
   color: red;
@@ -39319,18 +37948,6 @@ input.submit:focus:not([disabled]):not(.disabled), .vsubmit:focus:not([disabled]
   color: red;
   font-weight: 900;
 }
-#page .input-group.copy_to_clipboard_wrapper:after, .qtip .input-group.copy_to_clipboard_wrapper:after, .modal .modal-body .input-group.copy_to_clipboard_wrapper:after {
-  content: none;
-}
-#page .input-group.copy_to_clipboard_wrapper i.copy_to_clipboard_wrapper, .qtip .input-group.copy_to_clipboard_wrapper i.copy_to_clipboard_wrapper, .modal .modal-body .input-group.copy_to_clipboard_wrapper i.copy_to_clipboard_wrapper {
-  font-style: normal;
-}
-#page .input-group.copy_to_clipboard_wrapper i.copy_to_clipboard_wrapper:after, .qtip .input-group.copy_to_clipboard_wrapper i.copy_to_clipboard_wrapper:after, .modal .modal-body .input-group.copy_to_clipboard_wrapper i.copy_to_clipboard_wrapper:after {
-  left: 0;
-}
-#page .input-group.copy_to_clipboard_wrapper i.copy_to_clipboard_wrapper:before, .qtip .input-group.copy_to_clipboard_wrapper i.copy_to_clipboard_wrapper:before, .modal .modal-body .input-group.copy_to_clipboard_wrapper i.copy_to_clipboard_wrapper:before {
-  content: none;
-}
 #page tr.log_history_filter_row > th, .qtip tr.log_history_filter_row > th, .modal .modal-body tr.log_history_filter_row > th {
   vertical-align: top;
 }
@@ -39530,6 +38147,12 @@ input.submit:focus:not([disabled]):not(.disabled), .vsubmit:focus:not([disabled]
   font-size: 12px;
   margin-right: 3px;
 }
+#page .tab_check td i.fa-check, .qtip .tab_check td i.fa-check, .modal .modal-body .tab_check td i.fa-check {
+  color: #008e2c;
+}
+#page .tab_check td i.fa-exclamation-triangle, .qtip .tab_check td i.fa-exclamation-triangle, .modal .modal-body .tab_check td i.fa-exclamation-triangle {
+  color: #ffa500;
+}
 #page .lockedfield i.ti-lock, .qtip .lockedfield i.ti-lock, .modal .modal-body .lockedfield i.ti-lock {
   float: right;
 }
@@ -39635,7 +38258,7 @@ div.banner-need-update {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -39667,7 +38290,7 @@ div.banner-need-update {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -39877,7 +38500,6 @@ div.banner-need-update {
 #planning_container #planning .fc-event {
   font-weight: normal;
   display: block;
-  min-height: 13px;
 }
 #planning_container #planning .fc-event .fc-content {
   margin-right: 8px;
@@ -40017,7 +38639,7 @@ div.banner-need-update {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40523,7 +39145,7 @@ i.fa-impact-manipulation {
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *

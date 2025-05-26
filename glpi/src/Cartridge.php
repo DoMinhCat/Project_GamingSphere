@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -133,7 +133,7 @@ class Cartridge extends CommonDBRelation
     }
 
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
 
         if (in_array('pages', $this->updates)) {
@@ -168,7 +168,7 @@ class Cartridge extends CommonDBRelation
         CommonDBTM $item,
         array $ids
     ) {
-        /** @var Cartridge $item */
+
         switch ($ma->getAction()) {
             case 'uninstall':
                 foreach ($ids as $key) {
@@ -236,12 +236,11 @@ class Cartridge extends CommonDBRelation
      *
      * @since 0.85 (before name was restore)
      * @param array   $input
-     * @param boolean $history
+     * @param integer $history
      * @return bool
      */
-    public function backToStock(array $input, $history = true)
+    public function backToStock(array $input, $history = 1)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->update(
@@ -276,7 +275,6 @@ class Cartridge extends CommonDBRelation
      **/
     public function install($pID, $tID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Get first unused cartridge
@@ -330,7 +328,6 @@ class Cartridge extends CommonDBRelation
      **/
     public function uninstall($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($this->getFromDB($ID)) {
@@ -489,7 +486,6 @@ class Cartridge extends CommonDBRelation
      **/
     public static function getTotalNumber($tID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $row = $DB->request([
@@ -512,7 +508,6 @@ class Cartridge extends CommonDBRelation
      **/
     public static function getTotalNumberForPrinter($pID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $row = $DB->request([
@@ -533,7 +528,6 @@ class Cartridge extends CommonDBRelation
      **/
     public static function getUsedNumber($tID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $row = $DB->request([
@@ -563,7 +557,6 @@ class Cartridge extends CommonDBRelation
      **/
     public static function getUsedNumberForPrinter($pID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request([
@@ -588,7 +581,6 @@ class Cartridge extends CommonDBRelation
      **/
     public static function getOldNumber($tID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request([
@@ -614,7 +606,6 @@ class Cartridge extends CommonDBRelation
      **/
     public static function getOldNumberForPrinter($pID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request([
@@ -638,7 +629,6 @@ class Cartridge extends CommonDBRelation
      **/
     public static function getUnusedNumber($tID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request([
@@ -661,7 +651,6 @@ class Cartridge extends CommonDBRelation
      */
     public static function getStockTarget(int $tID): int
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $it = $DB->request([
@@ -685,7 +674,6 @@ class Cartridge extends CommonDBRelation
      */
     public static function getAlarmThreshold(int $tID): int
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $it = $DB->request([
@@ -732,7 +720,6 @@ class Cartridge extends CommonDBRelation
      **/
     public static function showForCartridgeItem(CartridgeItem $cartitem, $show_old = 0)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $tID = $cartitem->getField('id');
@@ -987,11 +974,7 @@ class Cartridge extends CommonDBRelation
      **/
     public static function showForPrinter(Printer $printer, $old = 0)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $instID = $printer->getField('id');
         if (!self::canView()) {
@@ -1319,11 +1302,7 @@ class Cartridge extends CommonDBRelation
      */
     public static function getNotificationParameters($entity = 0)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
        //Look for parameters for this entity
         $iterator = $DB->request([
@@ -1423,6 +1402,6 @@ class Cartridge extends CommonDBRelation
 
     public static function getIcon()
     {
-        return "ti ti-droplet-half-2-filled";
+        return "ti ti-droplet-filled-2";
     }
 }

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35,20 +35,7 @@
 
 use Glpi\Event;
 
-/** @var array $CFG_GLPI */
-global $CFG_GLPI;
-
 include('../inc/includes.php');
-
-
-if (isset($_POST['language']) && !Session::getLoginUserID()) {
-    // Offline lang change, keep it before session validity check
-    $_SESSION["glpilanguage"] = $_POST['language'];
-    Session::addMessageAfterRedirect(__('Lang has been changed!'));
-    Html::back();
-}
-
-Session::checkLoginUser();
 
 if (empty($_GET["id"])) {
     $_GET["id"] = "";
@@ -58,12 +45,8 @@ $user      = new User();
 $groupuser = new Group_User();
 
 if (empty($_GET["id"]) && isset($_GET["name"])) {
-    Session::checkRight(User::$rightname, READ);
-    if ($user->getFromDBbyName($_GET["name"])) {
-        $user->check($user->fields['id'], READ);
-        Html::redirect($user->getFormURLWithID($user->fields['id']));
-    }
-    Html::displayNotFoundError();
+    $user->getFromDBbyName($_GET["name"]);
+    Html::redirect($user->getFormURLWithID($user->fields['id']));
 }
 
 if (empty($_GET["name"])) {
@@ -189,12 +172,16 @@ if (isset($_GET['getvcard'])) {
     }
     Html::back();
 } else if (isset($_POST['language']) && !GLPI_DEMO_MODE) {
-    $user->update(
-        [
-            'id'        => Session::getLoginUserID(),
-            'language'  => $_POST['language']
-        ]
-    );
+    if (Session::getLoginUserID()) {
+        $user->update(
+            [
+                'id'        => Session::getLoginUserID(),
+                'language'  => $_POST['language']
+            ]
+        );
+    } else {
+        $_SESSION["glpilanguage"] = $_POST['language'];
+    }
     Session::addMessageAfterRedirect(__('Lang has been changed!'));
     Html::back();
 } else if (isset($_POST['impersonate']) && $_POST['impersonate']) {

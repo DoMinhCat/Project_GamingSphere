@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -117,7 +117,6 @@ class ProjectTask_Ticket extends CommonDBRelation
      **/
     public static function getTicketsTotalActionTime($projecttasks_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -248,11 +247,7 @@ class ProjectTask_Ticket extends CommonDBRelation
      **/
     public static function showForTicket(Ticket $ticket)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $ID = $ticket->getField('id');
         if (!$ticket->can($ID, READ)) {

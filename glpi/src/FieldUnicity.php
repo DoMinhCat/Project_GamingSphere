@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -158,7 +158,6 @@ class FieldUnicity extends CommonDropdown
      **/
     public function showItemtype($ID, $value = 0)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        //Criteria already added : only display the selected itemtype
@@ -196,15 +195,14 @@ class FieldUnicity extends CommonDropdown
     /**
      * Return criteria unicity for an itemtype, in an entity
      *
-     * @param string  $itemtype       the itemtype for which unicity must be checked
-     * @param integer $entities_id    the entity for which configuration must be retrivied
+     * @param string  itemtype       the itemtype for which unicity must be checked
+     * @param integer entities_id    the entity for which configuration must be retrivied
      * @param boolean $check_active
      *
      * @return array an array of fields to check, or an empty array if no
      **/
     public static function getUnicityFieldsConfig($itemtype, $entities_id = 0, $check_active = true)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        //Get the first active configuration for this itemtype
@@ -279,7 +277,6 @@ class FieldUnicity extends CommonDropdown
      **/
     public static function dropdownFields($itemtype, $options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $p = [
@@ -532,13 +529,12 @@ class FieldUnicity extends CommonDropdown
     /**
      * Delete all criterias for an itemtype
      *
-     * @param string $itemtype
+     * @param itemtype
      *
      * @return void
      **/
     public static function deleteForItemtype($itemtype)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $DB->delete(
@@ -557,7 +553,6 @@ class FieldUnicity extends CommonDropdown
      **/
     public static function showDoubles(FieldUnicity $unicity)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $fields       = [];

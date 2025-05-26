@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -40,8 +40,7 @@
 {% endif %}
 
 {% if not no_onchange %}
-   {% set href_separator = '?' in href ? '&' : '?' %}
-   {% set href = "location.href='" ~ href ~ href_separator ~ "glpilist_limit='+this.value+'" ~ additional_params ~ "'" %}
+   {% set href = "location.href='" ~ href ~ "glpilist_limit='+this.value+'" ~ additional_params ~ "'" %}
    {% if is_tab is defined and is_tab == true %}
       {% set href = "javascript:reloadTab('glpilist_limit='+this.value+'" ~ additional_params ~ "');" %}
    {% endif %}
@@ -70,9 +69,6 @@
 {% set max = php_config('max_input_vars') %}
 {% if max > 10 %}
    {% set options = options|merge([max - 10]) %}
-{% endif %}
-{% if user_pref('list_limit') not in options %}
-   {% set options = options|merge([user_pref('list_limit')]) %}
 {% endif %}
 <select class="form-select form-select-sm mx-1 d-inline-block w-auto {{ select_class|default('') }}"
         {% if not no_onchange %}onChange="{{ href }}"{% endif %}>

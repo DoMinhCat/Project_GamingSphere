@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -205,7 +205,6 @@ class Notification extends CommonDBTM
 
     public function showForm($ID, array $options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $this->initForm($ID, $options);
@@ -319,7 +318,6 @@ class Notification extends CommonDBTM
     public static function getSpecificValueToSelect($field, $name = '', $values = '', array $options = [])
     {
 
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!is_array($values)) {
@@ -506,7 +504,7 @@ class Notification extends CommonDBTM
         switch ($ma->getAction()) {
             case 'add_template':
                 $notification_notificationtemplate = new Notification_NotificationTemplate();
-                $notification_notificationtemplate->showFormMassiveAction();
+                $notification_notificationtemplate->showFormMassiveAction($ma);
                 return true;
             case 'remove_all_template':
                 echo Html::submit(__('Delete'), ['name' => 'massiveaction']);
@@ -634,7 +632,6 @@ class Notification extends CommonDBTM
      **/
     public static function getMailingSignature($entity)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $signature = trim(Entity::getUsedConfig('mailing_signature', $entity, '', ''));
@@ -651,15 +648,11 @@ class Notification extends CommonDBTM
      * @param string $itemtype Item type
      * @param int    $entity   Restrict to entity
      *
-     * @return DBmysqlIterator
+     * @return ResultSet
      **/
     public static function getNotificationsByEventAndType($event, $itemtype, $entity)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $criteria = [
             'SELECT'    => [

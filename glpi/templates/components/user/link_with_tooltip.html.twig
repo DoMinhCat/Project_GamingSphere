@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -39,7 +39,7 @@
 </span>
 
 {% if not enable_anonymization %}
-    {% set user = user_object ?? get_item('User', users_id) %}
+    {% set user = get_item('User', users_id) %}
     {% if user is not null and user.canView() %}
         {% set user_fields = user.fields %}
         {% set user_fields = user_fields|merge({user_name: user.getFriendlyName()|verbatim_value}) %}
@@ -49,10 +49,7 @@
             [
                 include(
                     'components/user/info_card.html.twig',
-                    {
-                        'user': user_fields,
-                        'user_object': user,
-                    },
+                    {'user': user_fields},
                     with_context = false
                 ),
                 {

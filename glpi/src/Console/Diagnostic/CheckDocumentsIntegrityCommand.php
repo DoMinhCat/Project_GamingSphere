@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -97,7 +97,6 @@ final class CheckDocumentsIntegrityCommand extends AbstractCommand
      */
     protected function getDocuments(): iterable
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $i = 0;
@@ -152,8 +151,8 @@ final class CheckDocumentsIntegrityCommand extends AbstractCommand
     /**
      * Get detailed error message
      *
-     * @param int   $type         Error type
-     * @param array $document_row Invalid document's data
+     * @param int   $type     Error type
+     * @param array $document Invalid document's data
      *
      * @return string
      */
@@ -161,14 +160,14 @@ final class CheckDocumentsIntegrityCommand extends AbstractCommand
     {
         switch ($type) {
             case self::ERROR_MISSING_FILE:
-                $message = __("File not found");
+                $message = __("file not found");
                 break;
             case self::ERROR_UNEXPECTED_CONTENT:
-                $message = __("Invalid checksum");
+                $message = __("invalid checksum");
                 break;
             default:
                 // Should not happen
-                $message = __("Unknown error");
+                $message = __("unknown error");
                 break;
         }
 

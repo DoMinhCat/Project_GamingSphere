@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -63,7 +63,6 @@ class Widget
      */
     public static function getAllTypes(): array
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $types = [
@@ -543,7 +542,7 @@ HTML;
         $dark_bg_color = Toolbox::getFgColor($p['color'], 80);
         $dark_fg_color = Toolbox::getFgColor($p['color'], 40);
 
-        $chart_id = Toolbox::slugify("chart-{$p['cache_key']}");
+        $chart_id = "chart-{$p['cache_key']}";
 
         $class = "pie";
         $class .= $p['half'] ? " half" : "";
@@ -1038,7 +1037,7 @@ JAVASCRIPT;
 
         $animation_duration = self::$animation_duration;
 
-        $chart_id = Toolbox::slugify('chart_' . $p['cache_key']);
+        $chart_id = 'chart_' . $p['cache_key'];
 
         $class = "bar";
         $class .= $p['horizontal'] ? " horizontal" : "";
@@ -1484,7 +1483,7 @@ JAVASCRIPT;
         $json_labels = json_encode($labels);
         $json_series = json_encode($series);
 
-        $chart_id = Toolbox::slugify('chart_' . $p['cache_key']);
+        $chart_id = 'chart_' . $p['cache_key'];
 
         $fg_color        = Toolbox::getFgColor($p['color']);
         $line_color      = Toolbox::getFgColor($p['color'], 10);
@@ -1741,14 +1740,12 @@ JAVASCRIPT;
             return $code;
         };
 
-        $content = RichText::getSafeHtml($md->transform($p['markdown_content']));
-
         $html = <<<HTML
       <div
          class="card markdown"
          style="background-color: {$p['color']}; color: {$fg_color}; border-color: {$border_color}">
 
-         <div class="html_content">{$content}</div>
+         <div class="html_content">{$md->transform($p['markdown_content'])}</div>
          <textarea
             class="markdown_content"
             placeholder="{$ph}">{$p['markdown_content']}</textarea>
@@ -1815,7 +1812,7 @@ HTML;
         ];
 
         ob_start();
-        $params = Search::manageParams($p['itemtype'], $params, false);
+        $params = Search::manageParams($p['itemtype'], $params);
        // remove parts of search list
         $params = array_merge($params, [
             'showmassiveactions' => false,
@@ -2062,7 +2059,6 @@ JAVASCRIPT;
         string $css_dom_parent = "",
         bool $revert = true
     ) {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         $palette = self::getGradientPalette($bgcolor, $nb_series, $revert);

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -61,11 +61,7 @@ class ManualLink extends CommonDBChild
     {
 
         $count = 0;
-        if (
-            $_SESSION['glpishow_count_on_tabs']
-            && ($item instanceof CommonDBTM)
-            && !$item->isNewItem()
-        ) {
+        if ($_SESSION['glpishow_count_on_tabs'] && !$item->isNewItem()) {
             $count += countElementsInTable(
                 'glpi_manuallinks',
                 [
@@ -224,7 +220,6 @@ JAVASCRIPT
      */
     private static function showForItem(CommonDBTM $item): void
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!self::canView() || $item->isNewItem()) {
@@ -362,10 +357,6 @@ JAVASCRIPT
      */
     private static function getLinkHtml(array $fields): string
     {
-
-        if (empty($fields['url'])) {
-            return '';
-        }
 
         $html = '';
 

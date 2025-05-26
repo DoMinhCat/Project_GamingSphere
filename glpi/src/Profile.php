@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -32,9 +32,6 @@
  *
  * ---------------------------------------------------------------------
  */
-
-use Glpi\Event;
-use Glpi\Toolbox\ArrayNormalizer;
 
 /**
  * Profile class
@@ -150,7 +147,7 @@ class Profile extends CommonDBTM
     {
 
         if (!$withtemplate) {
-            switch (get_class($item)) {
+            switch ($item->getType()) {
                 case __CLASS__:
                     if ($item->fields['interface'] == 'helpdesk') {
                         $ong[3] = __('Assistance'); // Helpdesk
@@ -176,7 +173,7 @@ class Profile extends CommonDBTM
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
-        if (get_class($item) == __CLASS__) {
+        if ($item->getType() == __CLASS__) {
             $item->cleanProfile();
             switch ($tabnum) {
                 case 2:
@@ -228,9 +225,8 @@ class Profile extends CommonDBTM
     }
 
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (count($this->profileRight) > 0) {
@@ -270,7 +266,6 @@ class Profile extends CommonDBTM
 
     public function post_addItem()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $rights = ProfileRight::getAllPossibleRights();
@@ -313,16 +308,13 @@ class Profile extends CommonDBTM
 
     public function prepareInputForUpdate($input)
     {
-        /** @var array $CFG_GLPI */
-        global $CFG_GLPI;
 
         if (isset($input["_helpdesk_item_types"])) {
             if ((!isset($input["helpdesk_item_type"])) || (!is_array($input["helpdesk_item_type"]))) {
                 $input["helpdesk_item_type"] = [];
             }
-            $input["helpdesk_item_type"] = exportArrayToDB(
-                ArrayNormalizer::normalizeValues($input["helpdesk_item_type"], 'strval')
-            );
+           // Linear_HIT: $input["helpdesk_item_type"] = array_keys($input["helpdesk_item_type"]
+            $input["helpdesk_item_type"] = exportArrayToDB($input["helpdesk_item_type"]);
         }
 
         if (isset($input["_managed_domainrecordtypes"])) {
@@ -333,9 +325,7 @@ class Profile extends CommonDBTM
                //when all selected, keep only all
                 $input['managed_domainrecordtypes'] = [-1];
             }
-            $input["managed_domainrecordtypes"] = exportArrayToDB(
-                ArrayNormalizer::normalizeValues($input["managed_domainrecordtypes"], 'intval')
-            );
+            $input["managed_domainrecordtypes"] = exportArrayToDB($input["managed_domainrecordtypes"]);
         }
 
         if (isset($input['helpdesk_hardware']) && is_array($input['helpdesk_hardware'])) {
@@ -427,30 +417,6 @@ class Profile extends CommonDBTM
             unset($input['_profile']);
         }
 
-        if (isset($input['interface']) && $input['interface'] == 'helpdesk' && $this->isLastSuperAdminProfile()) {
-            Session::addMessageAfterRedirect(
-                __("Can't change the interface on this profile as it is the only remaining profile with rights to modify profiles with this interface."),
-                false,
-                ERROR
-            );
-            unset($input['interface']);
-        }
-
-        // If the profile is used as the "Profile to be used when locking items",
-        // it can't be set to the "helpdesk" interface.
-        if (
-            isset($input['interface'])
-            && $input['interface'] === "helpdesk"
-            && $this->fields['id'] === (int) $CFG_GLPI['lock_lockprofile_id']
-        ) {
-            Session::addMessageAfterRedirect(
-                __("This profile can't be moved to the simplified interface as it is used for locking items."),
-                false,
-                ERROR
-            );
-            unset($input['interface']);
-        }
-
         // KEEP AT THE END
         $this->profileRight = [];
         foreach (array_keys(ProfileRight::getAllPossibleRights()) as $right) {
@@ -510,15 +476,11 @@ class Profile extends CommonDBTM
     {
 
         if (isset($input["helpdesk_item_type"])) {
-            $input["helpdesk_item_type"] = exportArrayToDB(
-                ArrayNormalizer::normalizeValues($input["helpdesk_item_type"], 'strval')
-            );
+            $input["helpdesk_item_type"] = exportArrayToDB($input["helpdesk_item_type"]);
         }
 
         if (isset($input["managed_domainrecordtypes"])) {
-            $input["managed_domainrecordtypes"] = exportArrayToDB(
-                ArrayNormalizer::normalizeValues($input["managed_domainrecordtypes"], 'intval')
-            );
+            $input["managed_domainrecordtypes"] = exportArrayToDB($input["managed_domainrecordtypes"]);
         }
 
         $this->profileRight = [];
@@ -684,7 +646,6 @@ class Profile extends CommonDBTM
      **/
     public static function currentUserHaveMoreRightThan($IDs = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (Session::isCron()) {
@@ -796,10 +757,7 @@ class Profile extends CommonDBTM
         Dropdown::showFromArray(
             'interface',
             self::getInterfaces(),
-            [
-                'value' => $this->fields["interface"],
-                'readonly' => $this->isLastSuperAdminProfile() && $this->fields['interface'] == 'central'
-            ]
+            ['value' => $this->fields["interface"]]
         );
         echo "</td></tr>\n";
 
@@ -828,7 +786,7 @@ class Profile extends CommonDBTM
      * @param string $form The tab/form name
      * @phpstan-param non-empty-string $form
      * @param string $interface The interface name
-     * @phpstan-param 'all'|'central'|'helpdesk' $interface
+     * @phpstan-param 'central'|'helpdesk' $interface
      * @return array
      * @phpstan-type RightDefinition = array{rights: array{}, label: string, field: string, scope: string}
      * @phpstan-return $interface == 'all' ? array<string, array<string, array<string, RightDefinition[]>>> : ($form == 'all' ? array<string, array<string, RightDefinition[]>> : ($group == 'all' ? array<string, RightDefinition[]> : RightDefinition[]))
@@ -972,10 +930,6 @@ class Profile extends CommonDBTM
                             $fn_get_rights(__CLASS__, 'central', ['scope' => 'global']),
                             $fn_get_rights(QueuedNotification::class, 'central', ['scope' => 'global']),
                             $fn_get_rights(Log::class, 'central', ['scope' => 'global']),
-                            $fn_get_rights(Event::class, 'central', [
-                                'scope' => 'global',
-                                'label' => __('System logs')
-                            ]),
                         ],
                         'inventory' => [
                             $fn_get_rights(\Glpi\Inventory\Conf::class, 'central', [
@@ -1006,10 +960,7 @@ class Profile extends CommonDBTM
                                 'rights' => [
                                     READ  => __('Read'),
                                     UPDATE  => __('Update'),
-                                    DELETE => [
-                                        'short' => __('Delete'),
-                                        'long'  => _x('button', 'Put in trashbin')
-                                    ],
+                                    DELETE => __('Delete'),
                                     PURGE   => [
                                         'short' => __('Purge'),
                                         'long'  => _x('button', 'Delete permanently')
@@ -1071,7 +1022,7 @@ class Profile extends CommonDBTM
                                 'scope'     => 'global'
                             ]),
                             $fn_get_rights(RuleDictionnaryPrinter::class, 'central', [
-                                'label'     => __('Printers dictionary'),
+                                'label'     => __('Printers dictionnary'),
                                 'scope'     => 'global'
                             ]),
                         ]
@@ -1218,7 +1169,7 @@ class Profile extends CommonDBTM
         echo "</tr>";
 
         echo "<tr>";
-        echo "<td>" . __('Associable items to tickets, changes and problems') . "</td>";
+        echo "<td>" . __('Associable items to a ticket') . "</td>";
         echo "<td><input type='hidden' name='_helpdesk_item_types' value='1'>";
         self::dropdownHelpdeskItemtypes(['values' => $this->fields["helpdesk_item_type"]]);
 
@@ -1599,7 +1550,7 @@ class Profile extends CommonDBTM
         echo "</td></tr>";
 
         echo "<tr>";
-        echo "<td>" . __('Associable items to tickets, changes and problems') . "</td>";
+        echo "<td>" . __('Associable items to a ticket') . "</td>";
         echo "<td><input type='hidden' name='_helpdesk_item_types' value='1'>";
         self::dropdownHelpdeskItemtypes(['values' => $this->fields["helpdesk_item_type"]]);
         echo "</td>";
@@ -3047,26 +2998,11 @@ class Profile extends CommonDBTM
             'name'               => _n('Log', 'Logs', Session::getPluralNumber()),
             'datatype'           => 'right',
             'rightclass'         => 'Log',
-            'rightname'          => Log::$rightname,
+            'rightname'          => 'logs',
             'nowrite'            => true,
             'joinparams'         => [
                 'jointype'           => 'child',
-                'condition'          => ['NEWTABLE.name' => Log::$rightname]
-            ]
-        ];
-
-        $tab[] = [
-            'id'                 => '62',
-            'table'              => 'glpi_profilerights',
-            'field'              => 'rights',
-            'name'               => __('System logs'),
-            'datatype'           => 'right',
-            'rightclass'         => 'Log',
-            'rightname'          => Event::$rightname,
-            'nowrite'            => true,
-            'joinparams'         => [
-                'jointype'           => 'child',
-                'condition'          => ['NEWTABLE.name' => Event::$rightname]
+                'condition'          => ['NEWTABLE.name' => 'logs']
             ]
         ];
 
@@ -3270,7 +3206,7 @@ class Profile extends CommonDBTM
             'id'                 => '87',
             'table'              => $this->getTable(),
             'field'              => 'helpdesk_item_type',
-            'name'               => __('Associable items to tickets, changes and problems'),
+            'name'               => __('Associable items to a ticket'),
             'massiveaction'      => false,
             'datatype'           => 'specific'
         ];
@@ -3722,7 +3658,6 @@ class Profile extends CommonDBTM
      **/
     public static function dropdownUnder($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $p['name']  = 'profiles_id';
@@ -3764,10 +3699,9 @@ class Profile extends CommonDBTM
      **/
     public static function getDefault()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
-        foreach ($DB->request(self::getTable(), ['is_default' => 1]) as $data) {
+        foreach ($DB->request('glpi_profiles', ['is_default' => 1]) as $data) {
             return $data['id'];
         }
         return 0;
@@ -3844,7 +3778,6 @@ class Profile extends CommonDBTM
      **/
     public static function getHelpdeskItemtypes()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $values = [];
@@ -3866,7 +3799,6 @@ class Profile extends CommonDBTM
      */
     public function getDomainRecordTypes()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -3923,7 +3855,6 @@ class Profile extends CommonDBTM
      */
     public static function haveUserRight($user_id, $rightname, $rightvalue, $entity_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request(
@@ -4000,7 +3931,7 @@ class Profile extends CommonDBTM
      *             'canedit'
      *             'default_class' the default CSS class used for the row
      *
-     * @return integer random value used to generate the ids
+     * @return random value used to generate the ids
      **/
     public function displayRightsChoiceMatrix(array $rights, array $options = [])
     {
@@ -4253,8 +4184,7 @@ class Profile extends CommonDBTM
                     'name'   => static::$rightname,
                     'rights' => ["&", UPDATE],
                 ]
-            ]),
-            'interface' => 'central',
+            ])
         ]);
 
         return array_column($super_admin_profiles, 'id');

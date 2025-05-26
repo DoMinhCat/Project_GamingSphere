@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -59,7 +59,7 @@ class NetworkPortMetrics extends CommonDBChild
     /**
      * Get the tab name used for item
      *
-     * @param CommonGLPI $item the item object
+     * @param object $item the item object
      * @param integer $withtemplate 1 if is a template form
      * @return string|array name of the tab
      */
@@ -68,7 +68,7 @@ class NetworkPortMetrics extends CommonDBChild
 
         $array_ret = [];
 
-        if (get_class($item) == NetworkPort::class) {
+        if ($item->getType() == 'NetworkPort') {
             $cnt = countElementsInTable([static::getTable()], [static::$items_id => $item->getField('id')]);
             $array_ret[] = self::createTabEntry(self::getTypeName(Session::getPluralNumber()), $cnt);
         }
@@ -79,14 +79,14 @@ class NetworkPortMetrics extends CommonDBChild
     /**
      * Display the content of the tab
      *
-     * @param CommonGLPI $item
+     * @param object $item
      * @param integer $tabnum number of the tab to display
      * @param integer $withtemplate 1 if is a template form
      * @return boolean
      */
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
-        if (get_class($item) == NetworkPort::class && $item->getID() > 0) {
+        if ($item->getType() == NetworkPort::getType() && $item->getID() > 0) {
             $metrics = new self();
             $metrics->showMetrics($item);
             return true;
@@ -104,7 +104,6 @@ class NetworkPortMetrics extends CommonDBChild
      */
     public function getMetrics(NetworkPort $netport, $user_filters = []): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $bdate = new DateTime();
@@ -175,7 +174,7 @@ class NetworkPortMetrics extends CommonDBChild
         ];
 
        //display bytes graph
-        echo "<div class='dashboard netports_metrics bytes'>";
+        echo "<div class='netports_metrics bytes'>";
         echo Widget::multipleLines($bytes_bar_conf);
         echo "</div>";
 
@@ -193,7 +192,7 @@ class NetworkPortMetrics extends CommonDBChild
         echo "</br>";
 
        //display error graph
-        echo "<div class='dashboard netports_metrics'>";
+        echo "<div class='netports_metrics'>";
         echo Widget::multipleLines($errors_bar_conf);
         echo "</div>";
     }

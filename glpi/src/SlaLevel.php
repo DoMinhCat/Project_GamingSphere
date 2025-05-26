@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -68,14 +68,6 @@ class SlaLevel extends LevelAgreementLevel
     }
 
 
-    public function getForbiddenStandardMassiveAction()
-    {
-        $forbidden   = parent::getForbiddenStandardMassiveAction();
-        $forbidden[] = 'clone';
-        return $forbidden;
-    }
-
-
     /**
      * @param $sla SLA object
      *
@@ -83,7 +75,6 @@ class SlaLevel extends LevelAgreementLevel
      **/
     public function showForSLA(SLA $sla)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $sla->getField('id');
@@ -293,15 +284,14 @@ class SlaLevel extends LevelAgreementLevel
     /**
      * Get first level for a SLA
      *
-     * @param integer $slas_id id of the SLA
+     * @param $slas_id   integer  id of the SLA
      *
      * @since 9.1 (before getFirst SlaLevel)
      *
-     * @return integer id of the sla level : 0 if not exists
+     * @return id of the sla level : 0 if not exists
      **/
     public static function getFirstSlaLevel($slas_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -325,14 +315,13 @@ class SlaLevel extends LevelAgreementLevel
     /**
      * Get next level for a SLA
      *
-     * @param integer $slas_id      id of the SLA
-     * @param integer $slalevels_id id of the current SLA level
+     * @param $slas_id         integer id of the SLA
+     * @param $slalevels_id    integer id of the current SLA level
      *
-     * @return integer id of the sla level : 0 if not exists
+     * @return id of the sla level : 0 if not exists
      **/
     public static function getNextSlaLevel($slas_id, $slalevels_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([

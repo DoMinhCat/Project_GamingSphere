@@ -29,7 +29,7 @@ final class TwigFunction
     private $arguments = [];
 
     /**
-     * @param callable|array{class-string, string}|null $callable A callable implementing the function. If null, you need to overwrite the "node_class" option to customize compilation.
+     * @param callable|null $callable A callable implementing the function. If null, you need to overwrite the "node_class" option to customize compilation.
      */
     public function __construct(string $name, $callable = null, array $options = [])
     {
@@ -38,13 +38,11 @@ final class TwigFunction
         $this->options = array_merge([
             'needs_environment' => false,
             'needs_context' => false,
-            'needs_charset' => false,
             'is_variadic' => false,
             'is_safe' => null,
             'is_safe_callback' => null,
             'node_class' => FunctionExpression::class,
             'deprecated' => false,
-            'deprecating_package' => '',
             'alternative' => null,
         ], $options);
     }
@@ -57,7 +55,7 @@ final class TwigFunction
     /**
      * Returns the callable to execute for this function.
      *
-     * @return callable|array{class-string, string}|null
+     * @return callable|null
      */
     public function getCallable()
     {
@@ -77,11 +75,6 @@ final class TwigFunction
     public function getArguments(): array
     {
         return $this->arguments;
-    }
-
-    public function needsCharset(): bool
-    {
-        return $this->options['needs_charset'];
     }
 
     public function needsEnvironment(): bool
@@ -115,11 +108,6 @@ final class TwigFunction
     public function isDeprecated(): bool
     {
         return (bool) $this->options['deprecated'];
-    }
-
-    public function getDeprecatingPackage(): string
-    {
-        return $this->options['deprecating_package'];
     }
 
     public function getDeprecatedVersion(): string

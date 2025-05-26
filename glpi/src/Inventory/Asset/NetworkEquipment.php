@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @copyright 2010-2022 by the FusionInventory Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
@@ -138,9 +138,6 @@ class NetworkEquipment extends MainAsset
                 $stack->$model_field = $switch->model;
                 $stack->description = $stack->name . ' - ' . ($switch->name ?? $switch->description);
                 $stack->name = $stack->name . ' - ' . ($switch->name ?? $switch->description);
-                if (($switch->name ?? $switch->description) != $switch->stack_number ?? '') {
-                    $stack->name .= ' - ' . $switch->stack_number;
-                }
                 $stack->stack_number = $switch->stack_number ?? null;
                 $this->data[] = $stack;
             }
@@ -235,7 +232,7 @@ class NetworkEquipment extends MainAsset
         }
     }
 
-    public function handleLinks(?array $data = null)
+    public function handleLinks(array $data = null)
     {
         if ($this->current_key !== null) {
             $data = [$this->data[$this->current_key]];

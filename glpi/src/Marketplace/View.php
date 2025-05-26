@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -85,7 +85,6 @@ class View extends CommonGLPI
 
     public static function getSearchURL($full = true)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $dir = ($full ? $CFG_GLPI['root_doc'] : '');
@@ -141,7 +140,6 @@ class View extends CommonGLPI
      */
     public static function checkRegistrationStatus()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $messages   = [];
@@ -201,6 +199,7 @@ class View extends CommonGLPI
      *
      * @param bool   $force_refresh do not rely on cache to get plugins list
      * @param bool   $only_lis display only the li tags in return html (used by ajax queries)
+     * @param string $tag_filter filter the plugin list by given tag
      * @param string $string_filter filter the plugin by given string
      *
      * @return void display things
@@ -234,18 +233,17 @@ class View extends CommonGLPI
             }
 
             $clean_plugin = [
-                'key'           => $key,
-                'name'          => $plugin['name'],
-                'logo_url'      => $apidata['logo_url'] ?? "",
-                'description'   => $apidata['descriptions'][0]['short_description'] ?? "",
-                'authors'       => $apidata['authors'] ?? [['id' => 'all', 'name' => $plugin['author'] ?? ""]],
-                'license'       => $apidata['license'] ?? $plugin['license'] ?? "",
-                'note'          => $apidata['note'] ?? -1,
-                'homepage_url'  => $apidata['homepage_url'] ?? "",
-                'issues_url'    => $apidata['issues_url'] ?? "",
-                'readme_url'    => $apidata['readme_url'] ?? "",
-                'version'       => $plugin['version'] ?? "",
-                'changelog_url' => $apidata['changelog_url'] ?? "",
+                'key'          => $key,
+                'name'         => $plugin['name'],
+                'logo_url'     => $apidata['logo_url'] ?? "",
+                'description'  => $apidata['descriptions'][0]['short_description'] ?? "",
+                'authors'      => $apidata['authors'] ?? [['id' => 'all', 'name' => $plugin['author'] ?? ""]],
+                'license'      => $apidata['license'] ?? $plugin['license'] ?? "",
+                'note'         => $apidata['note'] ?? -1,
+                'homepage_url' => $apidata['homepage_url'] ?? "",
+                'issues_url'   => $apidata['issues_url'] ?? "",
+                'readme_url'   => $apidata['readme_url'] ?? "",
+                'version'      => $plugin['version'] ?? "",
             ];
 
             $plugins[] = $clean_plugin;
@@ -257,7 +255,7 @@ class View extends CommonGLPI
     /**
      * Display discover tab (all availble plugins)
      *
-     * @param bool   $force do not rely on cache to get plugins list
+     * @param bool   $force_refresh do not rely on cache to get plugins list
      * @param bool   $only_lis display only the li tags in return html (used by ajax queries)
      * @param string $tag_filter filter the plugin list by given tag
      * @param string $string_filter filter the plugin by given string
@@ -609,7 +607,7 @@ HTML;
     /**
      * Return HTML part for plugin stars
      *
-     * @param float $value current stars note on 5
+     * @param float|int $value current stars note on 5
      *
      * @return string plugins stars html
      */
@@ -641,10 +639,6 @@ HTML;
      */
     public static function getButtons(string $plugin_key = ""): string
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var array $PLUGIN_HOOKS
-         */
         global $CFG_GLPI, $PLUGIN_HOOKS;
 
         $plugin_inst        = new Plugin();
@@ -931,7 +925,6 @@ HTML;
      */
     public static function getLocalizedDescription(array $plugin = [], string $version = 'short_description'): string
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $userlang = $CFG_GLPI['languages'][$_SESSION['glpilanguage']][3] ?? "en";
@@ -1031,7 +1024,6 @@ HTML;
      */
     public static function showFeatureSwitchDialog()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (isset($_POST['marketplace_replace'])) {

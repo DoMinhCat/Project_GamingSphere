@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -60,7 +60,6 @@ class NetworkPortMigration extends CommonDBChild
 
     private function cleanDatabase()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $networkport = new NetworkPort();
@@ -77,7 +76,8 @@ class NetworkPortMigration extends CommonDBChild
         }
 
         if (countElementsInTable($this->getTable()) == 0) {
-            $DB->dropTable($this->getTable());
+            $query = "DROP TABLE " . $DB->quoteName($this->getTable());
+            $DB->query($query);
         }
     }
 
@@ -123,7 +123,6 @@ class NetworkPortMigration extends CommonDBChild
 
     public function showForm($ID, array $options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!self::canView()) {
@@ -491,8 +490,8 @@ class NetworkPortMigration extends CommonDBChild
     public static function getMigrationInstantiationHTMLTableHeaders(
         HTMLTableGroup $group,
         HTMLTableSuperHeader $super,
-        ?HTMLTableSuperHeader $internet_super = null,
-        ?HTMLTableHeader $father = null,
+        HTMLTableSuperHeader $internet_super = null,
+        HTMLTableHeader $father = null,
         array $options = []
     ) {
        // TODO : study to display the correct information for this undefined NetworkPort

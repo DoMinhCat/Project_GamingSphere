@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -54,14 +54,12 @@ class WifiNetwork extends CommonDropdown
         return [
             ''          => '',
             'a'         => 'a',
-            'b'         => 'b',
             'a/b'       => 'a/b',
             'a/b/g'     => 'a/b/g',
             'a/b/g/n'   => 'a/b/g/n',
             'a/b/g/n/y' => 'a/b/g/n/y',
-            'ac'        => 'ac', // Wifi 5
-            'ax'        => 'ax', // Wifi 6/6E
-            'be'        => 'be', // Wifi 7
+            'ac'        => 'ac',
+            'ax'        => 'ax',
         ];
     }
 

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -38,7 +38,6 @@ namespace Glpi\Console\Database;
 use DBConnection;
 use DBmysql;
 use Glpi\Cache\CacheManager;
-use Glpi\Console\Command\ConfigurationCommandInterface;
 use Glpi\Console\Traits\TelemetryActivationTrait;
 use Glpi\System\Requirement\DbConfiguration;
 use GLPIKey;
@@ -48,7 +47,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Toolbox;
 
-class InstallCommand extends AbstractConfigureCommand implements ConfigurationCommandInterface
+class InstallCommand extends AbstractConfigureCommand
 {
     use TelemetryActivationTrait;
 
@@ -117,7 +116,6 @@ class InstallCommand extends AbstractConfigureCommand implements ConfigurationCo
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
 
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
         $GLPI_CACHE = (new CacheManager())->getInstallerCacheInstance(); // Use dedicated "installer" cache
 
@@ -177,7 +175,6 @@ class InstallCommand extends AbstractConfigureCommand implements ConfigurationCo
             $this->configureDatabase($input, $output, false);
 
             // Ensure global $DB is updated (used by GLPIKey)
-            /** @var \DBmysql $DB */
             global $DB;
             $DB = $this->db;
 
@@ -189,7 +186,6 @@ class InstallCommand extends AbstractConfigureCommand implements ConfigurationCo
             $db_pass     = $input->getOption('db-password');
         } else {
            // Ask to confirm installation based on existing configuration.
-            /** @var \DBmysql $DB */
             global $DB;
 
            // $DB->dbhost can be array when using round robin feature
@@ -272,7 +268,7 @@ class InstallCommand extends AbstractConfigureCommand implements ConfigurationCo
             OutputInterface::VERBOSITY_VERBOSE
         );
         if (
-            !$mysqli->query('CREATE DATABASE IF NOT EXISTS `' . $mysqli->real_escape_string($db_name) . '`')
+            !$mysqli->query('CREATE DATABASE IF NOT EXISTS `' . $db_name . '`')
             || !$mysqli->select_db($db_name)
         ) {
             $message = sprintf(
@@ -288,7 +284,7 @@ class InstallCommand extends AbstractConfigureCommand implements ConfigurationCo
         $tables_result = $mysqli->query(
             "SELECT COUNT(table_name)
           FROM information_schema.tables
-          WHERE table_schema = '" . $mysqli->real_escape_string($db_name) . "'
+          WHERE table_schema = '{$db_name}'
              AND table_type = 'BASE TABLE'
              AND table_name LIKE 'glpi\_%'"
         );
@@ -323,17 +319,6 @@ class InstallCommand extends AbstractConfigureCommand implements ConfigurationCo
         $this->handTelemetryActivation($input, $output);
 
         return 0; // Success
-    }
-
-    public function getConfigurationFilesToUpdate(InputInterface $input): array
-    {
-        $config_files_to_update = [
-            'glpicrypt.key', // key is regenerated everytime
-        ];
-        if (!$this->isDbAlreadyConfigured() || $input->hasParameterOption('--reconfigure', true)) {
-            $config_files_to_update[] = 'config_db.php';
-        }
-        return $config_files_to_update;
     }
 
     /**

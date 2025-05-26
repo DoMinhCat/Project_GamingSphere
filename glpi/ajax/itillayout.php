@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33,8 +33,6 @@
  * ---------------------------------------------------------------------
  */
 
-use Glpi\Toolbox\Sanitizer;
-
 include('../inc/includes.php');
 
 header('Content-Type: application/json; charset=UTF-8');
@@ -42,10 +40,8 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 
-$raw_itillayout  = Sanitizer::unsanitize($_POST['itil_layout']);
-
-$json_itillayout = json_encode($raw_itillayout);
-if ($json_itillayout === false) {
+$itillayout = json_encode($_POST['itil_layout']);
+if ($itillayout === false) {
     exit;
 }
 
@@ -53,7 +49,7 @@ $user = new User();
 $success = $user->update(
     [
         'id' => Session::getLoginUserID(),
-        'itil_layout' => Sanitizer::dbEscape($json_itillayout),
+        'itil_layout' => $itillayout,
     ]
 );
 echo json_encode(['success' => $success]);

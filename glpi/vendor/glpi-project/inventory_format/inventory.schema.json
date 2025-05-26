@@ -3,7 +3,7 @@
   "$id": "https://glpi-project.org/inventory.json",
   "type": "object",
   "title": "GLPI Inventory Schema",
-  "version": 1.0,
+  "version": "0.1",
   "definitions": {
     "datetime": {
       "type": "string",
@@ -54,7 +54,8 @@
             "userid": {
               "type": "string"
             }
-          }
+          },
+          "additionalProperties": false
         },
         "antivirus": {
           "type": "array",
@@ -96,27 +97,15 @@
                 "$ref": "#/definitions/date"
               },
               "base_creation": {
-                "title": "Signatures base creation date",
-                "$ref": "#/definitions/date"
+                "$comment": "What type is it? A date?",
+                "type": "string"
               },
               "base_version": {
                 "type": "string",
                 "title": "Signatures base version"
               }
-            }
-          }
-        },
-        "error": {
-          "properties": {
-            "id": {
-              "type": "integer"
             },
-            "message": {
-              "type": "string"
-            },
-            "type": {
-              "type": "string"
-            }
+            "additionalProperties": false
           }
         },
         "batteries": {
@@ -160,7 +149,8 @@
                 "type": "integer",
                 "title": "Battery voltage, in mV"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "bios": {
@@ -243,7 +233,8 @@
               "type": "string",
               "pattern": "^(enabled|disabled|unsupported)$"
             }
-          }
+          },
+          "additionalProperties": false
         },
         "controllers": {
           "type": "array",
@@ -325,7 +316,8 @@
               "serial": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "cpus": {
@@ -436,7 +428,8 @@
                 "$comment": "Never seen",
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "drives": {
@@ -544,7 +537,8 @@
                   "software"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "envs": {
@@ -568,7 +562,8 @@
                   "xterm"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "firewalls": {
@@ -606,7 +601,8 @@
                   "on"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "hardware": {
@@ -706,7 +702,8 @@
             "winlang": {
               "type": "string"
             }
-          }
+          },
+          "additionalProperties": false
         },
         "inputs": {
           "type": "array",
@@ -746,7 +743,8 @@
               "pointingtype": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "local_groups": {
@@ -781,7 +779,8 @@
                   "wheel"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "local_users": {
@@ -819,7 +818,8 @@
                   "/bin/zsh"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "physical_volumes": {
@@ -893,7 +893,8 @@
                   "tZSsF8-wsLg-ZoAt-jjFY-GwGn-y2q3-QOP60c"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "volume_groups": {
@@ -962,7 +963,8 @@
                   "tZSsF8-wsLg-ZoAt-jjFY-GwGn-y2q3-QOP60c"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "logical_volumes": {
@@ -1016,7 +1018,8 @@
               "vg_name": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "memories": {
@@ -1096,7 +1099,8 @@
               "removable": {
                 "type": "boolean"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "monitors": {
@@ -1150,7 +1154,8 @@
               "type": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "networks": {
@@ -1306,7 +1311,8 @@
               "wifi_version": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "operatingsystem": {
@@ -1432,7 +1438,8 @@
                 "11.04"
               ]
             }
-          }
+          },
+          "additionalProperties": false
         },
         "ports": {
           "type": "array",
@@ -1467,7 +1474,8 @@
                   "USB"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "printers": {
@@ -1500,10 +1508,10 @@
                 "type": "boolean"
               },
               "port": {
+                "$comment": "Should be an integer?",
                 "type": "string",
                 "examples": [
-                  "hp:/net/Deskjet_2540_series?ip=192.168.1.3",
-                  "usb://EPSON/L3150%20Series?serial=5837...3390&amp;interface=1"
+                  "Deskjet-2540"
                 ]
               },
               "printprocessor": {
@@ -1542,7 +1550,8 @@
               "serial": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "processes": {
@@ -1604,7 +1613,8 @@
                   "215324"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "remote_mgmt": {
@@ -1632,7 +1642,8 @@
                 "type": "string",
                 "title": "Remote management software or firmware version"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "slots": {
@@ -1641,6 +1652,7 @@
             "type": "object",
             "title": "A physical connection points including ports, motherboard slots and peripherals, and proprietary connection points",
             "required": [
+              "description",
               "name"
             ],
             "properties": {
@@ -1667,7 +1679,8 @@
                 ],
                 "pattern": "^(free|used)$"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "softwares": {
@@ -1774,7 +1787,8 @@
               "userid": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "sounds": {
@@ -1806,7 +1820,8 @@
                   "Audio device"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "storages": {
@@ -1902,7 +1917,8 @@
                 "type": "string",
                 "title": "Encryption type"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "usbdevices": {
@@ -1952,7 +1968,8 @@
               "serial": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "users": {
@@ -1972,7 +1989,8 @@
                   "john"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "videos": {
@@ -2002,7 +2020,8 @@
               "pcislot": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "virtualmachines": {
@@ -2015,22 +2034,9 @@
             "properties": {
               "image": {
                 "type": "string",
-                "title": "Image used for creation (Docker image for instance)",
+                "ttile": "Image used for creation (Docker image for instance)",
                 "examples": [
                   "redash/redash"
-                ]
-              },
-              "ipaddress": {
-                "title": "Virtualmachine ip",
-                "anyOf": [
-                  {
-                    "type": "string",
-                    "format": "ipv4"
-                  },
-                  {
-                    "type": "string",
-                    "format": "ipv6"
-                  }
                 ]
               },
               "memory": {
@@ -2045,9 +2051,6 @@
                 "examples": [
                   "centos7.0"
                 ]
-              },
-              "operatingsystem": {
-                "$ref": "#/properties/content/properties/operatingsystem"
               },
               "status": {
                 "type": "string",
@@ -2093,7 +2096,8 @@
               "serial": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "licenseinfos": {
@@ -2126,7 +2130,8 @@
               "productid": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "modems": {
@@ -2165,7 +2170,8 @@
                   }
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "firmwares": {
@@ -2191,7 +2197,8 @@
               "manufacturer": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "simcards": {
@@ -2199,7 +2206,7 @@
           "items": {
             "type": "object",
             "properties": {
-              "serial": {
+              "imsi": {
                 "type": "string"
               },
               "phone_number": {
@@ -2219,11 +2226,9 @@
               },
               "operator_name": {
                 "type": "string"
-              },
-              "subscriber_id": {
-                "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "sensors": {
@@ -2243,7 +2248,8 @@
               "version": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "powersupplies": {
@@ -2282,7 +2288,8 @@
               "location": {
                 "type": "string"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "cameras": {
@@ -2338,7 +2345,8 @@
                   "type": "string"
                 }
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "network_ports": {
@@ -2503,7 +2511,8 @@
                   }
                 }
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "network_components": {
@@ -2567,7 +2576,8 @@
                   }
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "pagecounters": {
@@ -2618,7 +2628,8 @@
             "duplex": {
               "type": "integer"
             }
-          }
+          },
+          "additionalProperties": false
         },
         "cartridges": {
           "type": "array",
@@ -2654,7 +2665,8 @@
               "max": {
                 "type": "integer"
               }
-            }
+            },
+            "additionalProperties": false
           }
         },
         "versionclient": {
@@ -2755,7 +2767,8 @@
                 "2.3.20"
               ]
             }
-          }
+          },
+          "additionalProperties": false
         },
         "network_device": {
           "type": "object",
@@ -2853,7 +2866,8 @@
             "credentials": {
               "type": "integer"
             }
-          }
+          },
+          "additionalProperties": false
         },
         "databases_services": {
           "type": "array",
@@ -2947,10 +2961,12 @@
                   }
                 }
               }
-            }
+            },
+            "additionalProperties": false
           }
         }
-      }
+      },
+      "additionalProperties": false
     },
     "deviceid": {
       "type": "string",

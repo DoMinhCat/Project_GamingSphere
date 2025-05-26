@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -40,10 +40,6 @@
  **/
 function update0843to0844()
 {
-    /**
-     * @var \DBmysql $DB
-     * @var \Migration $migration
-     */
     global $DB, $migration;
 
     $updateresult     = true;
@@ -63,7 +59,7 @@ function update0843to0844()
             $migration->displayWarning("$new_table table already exists. " .
                                     "A backup have been done to backup_$new_table.");
             $backup_tables = true;
-            $migration->renameTable("$new_table", "backup_$new_table");
+            $query         = $migration->renameTable("$new_table", "backup_$new_table");
         }
     }
     if ($backup_tables) {
@@ -98,7 +94,7 @@ function update0843to0844()
                      OR `glpi_notificationtemplatetranslations`.`content_html` LIKE '%validation.storestatus=%'
                      OR `glpi_notificationtemplatetranslations`.`subject` LIKE '%validation.storestatus=%'";
 
-    if ($result = $DB->doQuery($query)) {
+    if ($result = $DB->query($query)) {
         if ($DB->numrows($result)) {
             while ($data = $DB->fetchAssoc($result)) {
                 $subject = $data['subject'];
@@ -114,7 +110,7 @@ function update0843to0844()
                            `content_text` = '" . addslashes($text) . "',
                            `content_html` = '" . addslashes($html) . "'
                         WHERE `id` = " . $data['id'] . "";
-                $DB->doQueryOrDie($query, "0.84.4 fix tags usage for storestatus");
+                $DB->queryOrDie($query, "0.84.4 fix tags usage for storestatus");
             }
         }
     }
@@ -128,14 +124,14 @@ function update0843to0844()
                 FROM `glpi_displaypreferences`
                 WHERE `itemtype` = '$type'";
 
-        if ($result = $DB->doQuery($query)) {
+        if ($result = $DB->query($query)) {
             if ($DB->numrows($result) > 0) {
                 while ($data = $DB->fetchAssoc($result)) {
                     $query = "SELECT MAX(`rank`)
                          FROM `glpi_displaypreferences`
                          WHERE `users_id` = '" . $data['users_id'] . "'
                                AND `itemtype` = '$type'";
-                    $result = $DB->doQuery($query);
+                    $result = $DB->query($query);
                     $rank   = $DB->result($result, 0, 0);
                     $rank++;
 
@@ -145,13 +141,13 @@ function update0843to0844()
                             WHERE `users_id` = '" . $data['users_id'] . "'
                                   AND `num` = '$newval'
                                   AND `itemtype` = '$type'";
-                        if ($result2 = $DB->doQuery($query)) {
+                        if ($result2 = $DB->query($query)) {
                             if ($DB->numrows($result2) == 0) {
                                  $query = "INSERT INTO `glpi_displaypreferences`
                                          (`itemtype` ,`num` ,`rank` ,`users_id`)
                                   VALUES ('$type', '$newval', '" . $rank++ . "',
                                           '" . $data['users_id'] . "')";
-                                 $DB->doQuery($query);
+                                 $DB->query($query);
                             }
                         }
                     }
@@ -162,7 +158,7 @@ function update0843to0844()
                     $query = "INSERT INTO `glpi_displaypreferences`
                                 (`itemtype` ,`num` ,`rank` ,`users_id`)
                          VALUES ('$type', '$newval', '" . $rank++ . "', '0')";
-                    $DB->doQuery($query);
+                    $DB->query($query);
                 }
             }
         }

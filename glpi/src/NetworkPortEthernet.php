@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -136,8 +136,8 @@ class NetworkPortEthernet extends NetworkPortInstantiation
     public function getInstantiationHTMLTableHeaders(
         HTMLTableGroup $group,
         HTMLTableSuperHeader $super,
-        ?HTMLTableSuperHeader $internet_super = null,
-        ?HTMLTableHeader $father = null,
+        HTMLTableSuperHeader $internet_super = null,
+        HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -165,7 +165,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
     protected function getPeerInstantiationHTMLTable(
         NetworkPort $netport,
         HTMLTableRow $row,
-        ?HTMLTableCell $father = null,
+        HTMLTableCell $father = null,
         array $options = []
     ) {
 
@@ -189,14 +189,13 @@ class NetworkPortEthernet extends NetworkPortInstantiation
 
         parent::getInstantiationHTMLTable($netport, $row, $father, $options);
         Socket::getHTMLTableCellsForItem($row, $this, $father, $options);
-        return null;
     }
 
 
     public function getInstantiationHTMLTable(
         NetworkPort $netport,
         HTMLTableRow $row,
-        ?HTMLTableCell $father = null,
+        HTMLTableCell $father = null,
         array $options = []
     ) {
 
@@ -278,7 +277,7 @@ class NetworkPortEthernet extends NetworkPortInstantiation
      * @param integer|string $val        port speed
      * @param boolean        $to_string  true if we must transform the speed to string
      *
-     * @return false|integer|string (regarding what is requested)
+     * @return integer|string (regarding what is requested)
      **/
     public static function transformPortSpeed($val, $to_string)
     {

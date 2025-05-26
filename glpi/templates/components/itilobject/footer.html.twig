@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -128,7 +128,7 @@
             </button>
          {% else %}
 
-            <div class="btn-group" role="group" id="right-actions">
+            <div class="btn-group" role="group">
                {% if item.canDeleteItem() %}
                   {% if item.isDeleted() %}
                      <button class="btn btn-outline-secondary" type="submit" name="restore" form="itil-form"
@@ -201,18 +201,19 @@
 
    $(document).on("click", "#itil-footer .answer-action", function() {
       scrollToTimelineStart();
-      // hide answer button after clicking on it only for merge btn
-      $("#itil-footer .main-actions").hide();
-      // hide also itil object action to prevent confusion
-      $("#right-actions").hide();
+      {% if timeline_btn_layout == constant('Config::TIMELINE_ACTION_BTN_MERGED') %}
+         // hide answer button after clicking on it only for merge btn
+         $(this).closest(".main-actions").hide();
+      {% endif %}
    });
 
    $(function() {
-      // when close button of new answer block is clicked, show again the new answer button (and the itil object actions)
-      $(document).on("click", "#new-itilobject-form .close-itil-answer", function() {
-         $("#itil-footer .main-actions").show();
-         $("#right-actions").show();
-      });
+      // when close button of new answer block is clicked, show again the new answer button
+      {% if timeline_btn_layout == constant('Config::TIMELINE_ACTION_BTN_MERGED') %}
+         $(document).on("click", "#new-itilobject-form .close-itil-answer", function() {
+            $("#itil-footer .main-actions").show();
+         });
+      {% endif %}
 
       {% if openfollowup %}
          // trigger for reopen, show followup form in timeline

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -305,7 +305,7 @@ class DBConnection extends CommonDBTM
     /**
      * Indicates is the DB replicate is active or not
      *
-     * @return boolean true if active / false if not active
+     * @return true if active / false if not active
      **/
     public static function isDBSlaveActive()
     {
@@ -318,7 +318,7 @@ class DBConnection extends CommonDBTM
      *
      * @param integer $choice  Host number (default NULL)
      *
-     * @return DBmysql|void object
+     * @return DBmysql object
      **/
     public static function getDBSlaveConf($choice = null)
     {
@@ -335,7 +335,6 @@ class DBConnection extends CommonDBTM
      **/
     public static function createDBSlaveConfig()
     {
-        /** @var \DBmysql $DB */
         global $DB;
         self::createSlaveConnectionFile(
             "localhost",
@@ -362,7 +361,6 @@ class DBConnection extends CommonDBTM
      **/
     public static function saveDBSlaveConf($host, $user, $password, $DBname)
     {
-        /** @var \DBmysql $DB */
         global $DB;
         self::createSlaveConnectionFile(
             $host,
@@ -393,7 +391,6 @@ class DBConnection extends CommonDBTM
      **/
     public static function switchToSlave()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (self::isDBSlaveActive()) {
@@ -410,7 +407,6 @@ class DBConnection extends CommonDBTM
      **/
     public static function switchToMaster()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $DB = new DB();
@@ -426,11 +422,7 @@ class DBConnection extends CommonDBTM
      **/
     public static function getReadConnection()
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         if (
             $CFG_GLPI['use_slave_for_search']
@@ -499,7 +491,6 @@ class DBConnection extends CommonDBTM
      **/
     public static function establishDBConnection($use_slave, $required, $display = true)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $DB  = null;
@@ -567,7 +558,7 @@ class DBConnection extends CommonDBTM
     /**
      *  Get history max date of a GLPI DB
      *
-     * @param DBmysql $DBconnection DB connection used
+     * @param DBMysql $DBconnection DB connection used
      *
      * @return int|mixed|null
      */
@@ -575,7 +566,7 @@ class DBConnection extends CommonDBTM
     {
 
         if ($DBconnection->connected) {
-            $result = $DBconnection->doQuery("SELECT UNIX_TIMESTAMP(MAX(`date_mod`)) AS max_date
+            $result = $DBconnection->query("SELECT UNIX_TIMESTAMP(MAX(`date_mod`)) AS max_date
                                          FROM `glpi_logs`");
             if ($DBconnection->numrows($result) > 0) {
                  return $DBconnection->result($result, 0, "max_date");
@@ -590,7 +581,6 @@ class DBConnection extends CommonDBTM
      **/
     public static function displayMySQLError()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $error = $DB instanceof DBmysql ? $DB->error : 1;
@@ -639,7 +629,6 @@ class DBConnection extends CommonDBTM
      **/
     public static function cronCheckDBreplicate(CronTask $task)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        //Lauch cron only is :
@@ -799,7 +788,6 @@ class DBConnection extends CommonDBTM
      */
     public static function getDefaultCharset(): string
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($DB instanceof DBmysql && !$DB->use_utf8mb4) {
@@ -818,7 +806,6 @@ class DBConnection extends CommonDBTM
      */
     public static function getDefaultCollation(): string
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($DB instanceof DBmysql && !$DB->use_utf8mb4) {
@@ -837,7 +824,6 @@ class DBConnection extends CommonDBTM
      */
     public static function getDefaultPrimaryKeySignOption(): string
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($DB instanceof DBmysql && $DB->allow_signed_keys) {

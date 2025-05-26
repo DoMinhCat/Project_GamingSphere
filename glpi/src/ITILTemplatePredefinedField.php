@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -74,24 +74,12 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
             }
         }
 
-        if ((int) $input['num'] === 13) { // 13 - Search option ID for Associated Items for CommonITILObject types
-            if ((string) $input['value'] === '0') {
-                Session::addMessageAfterRedirect(
-                    __('You must select an associated item'),
-                    true,
-                    ERROR
-                );
-                return false;
-            }
-        }
-
         return parent::prepareInputForAdd($input);
     }
 
 
     public function post_purgeItem()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         parent::post_purgeItem();
@@ -162,7 +150,6 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
      **/
     public function getPredefinedFields($ID, $withtypeandcategory = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -181,10 +168,6 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
                 if (in_array($rule['num'], $multiple)) {
                     if ($allowed_fields[$rule['num']] == 'items_id') {
                         $item_itemtype = explode("_", $rule['value']);
-                        if (count($item_itemtype) != 2) {
-                            // Invalid value. Just ignore.
-                            continue;
-                        }
                         $fields[$allowed_fields[$rule['num']]][$item_itemtype[0]][$item_itemtype[1]] = $item_itemtype[1];
                     } else {
                         $fields[$allowed_fields[$rule['num']]][] = $rule['value'];
@@ -254,17 +237,13 @@ abstract class ITILTemplatePredefinedField extends ITILTemplateField
      * @since 0.83
      *
      * @param ITILTemplate $tt            ITIL Template
-     * @param integer      $withtemplate  Template or basic item (default 0)
+     * @param boolean      $withtemplate  Template or basic item (default 0)
      *
      * @return void
      **/
     public static function showForITILTemplate(ITILTemplate $tt, $withtemplate = 0)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $ID = $tt->fields['id'];
 

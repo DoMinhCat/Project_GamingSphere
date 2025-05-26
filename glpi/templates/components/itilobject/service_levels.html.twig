@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -163,7 +163,7 @@
                {% endif %}
 
                {% if la_displayed %}
-                  <div class="{{ item.isNewItem() ? '' : 'collapsed' }} w-100 mt-1 d-none" id="dropdown_{{ assign_la_id }}">
+                  <div class="{{ item.isNewItem ? '' : 'collapsed' }} w-100 mt-1 d-none" id="dropdown_{{ assign_la_id }}">
                      {{ fields.dropdownField(
                         la_field.la.getType(),
                         la_field.lafieldname,
@@ -215,14 +215,6 @@
                            myCollapse.show();
                         }
                      </script>
-
-                     {% if item.fields[la_field.lafieldname] != 0 %}
-                        <script type="text/javascript">
-                           $(document).ready(function() {
-                              toggleAssignLA_{{ rand }}();
-                           });
-                        </script>
-                     {% endif %}
                   {% endif %}
                {% endif %}
             </div>
@@ -239,7 +231,6 @@
             full_width: true,
             is_horizontal: false,
             add_field_class: (is_expanded ? 'col-sm-6' : ''),
-            required: field_options.fields_template.isMandatoryField(la_field.lafieldname)
          }
       ) }}
    {% endif %}

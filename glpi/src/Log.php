@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -87,15 +87,9 @@ class Log extends CommonDBTM
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        if (!self::canView()) {
-            return '';
-        }
 
         $nb = 0;
-        if (
-            $_SESSION['glpishow_count_on_tabs']
-            && ($item instanceof CommonDBTM)
-        ) {
+        if ($_SESSION['glpishow_count_on_tabs']) {
             $nb = countElementsInTable(
                 'glpi_logs',
                 ['itemtype' => $item->getType(),
@@ -160,7 +154,7 @@ class Log extends CommonDBTM
                         && ($val2['rightname'] == $item->fields['name'])
                     ) {
                         $id_search_option = $key2;
-                        $changes          =  [$id_search_option, addslashes($oldval ?? ''), $values[$key] ?? ''];
+                        $changes          =  [$id_search_option, addslashes($oldval ?? ''), $values[$key]];
                     }
                 } else if (
                     ($val2['linkfield'] == $key && $real_type === $item->getType())
@@ -175,7 +169,7 @@ class Log extends CommonDBTM
                             $oldval = CommonTreeDropdown::sanitizeSeparatorInCompletename($oldval);
                             $values[$key] = CommonTreeDropdown::sanitizeSeparatorInCompletename($values[$key]);
                         }
-                        $changes = [$id_search_option, addslashes($oldval ?? ''), $values[$key] ?? ''];
+                        $changes = [$id_search_option, addslashes($oldval ?? ''), $values[$key]];
                     } else {
                        // other cases; link field -> get data from dropdown
                         if ($val2["table"] != 'glpi_auth_tables') {
@@ -223,7 +217,6 @@ class Log extends CommonDBTM
      **/
     public static function history($items_id, $itemtype, $changes, $itemtype_link = '', $linked_action = '0')
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $date_mod = $_SESSION["glpi_currenttime"];
@@ -286,7 +279,7 @@ class Log extends CommonDBTM
 
         $result = $DB->insert(self::getTable(), $params);
 
-        if ($result && $DB->affectedRows() > 0) {
+        if ($result && $DB->affectedRows($result) > 0) {
             return $_SESSION['glpi_maxhistory'] = $DB->insertId();
         }
         return false;
@@ -302,12 +295,7 @@ class Log extends CommonDBTM
      **/
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
-
-        if (!self::canView()) {
-            return;
-        }
 
         $itemtype = $item->getType();
         $items_id = $item->getField('id');
@@ -791,7 +779,6 @@ class Log extends CommonDBTM
      **/
     public static function getDistinctUserNamesValuesInItemLog(CommonDBTM $item)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $itemtype = $item->getType();
@@ -833,7 +820,6 @@ class Log extends CommonDBTM
      **/
     public static function getDistinctAffectedFieldValuesInItemLog(CommonDBTM $item)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $itemtype = $item->getType();
@@ -1007,7 +993,6 @@ class Log extends CommonDBTM
      **/
     public static function getDistinctLinkedActionValuesInItemLog(CommonDBTM $item)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $itemtype = $item->getType();
@@ -1197,7 +1182,6 @@ class Log extends CommonDBTM
      **/
     public static function convertFiltersValuesToSqlCriteria(array $filters)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $sql_filters = [];
@@ -1294,7 +1278,6 @@ class Log extends CommonDBTM
 
     public static function handleQueue(): void
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $queue = static::$queue;

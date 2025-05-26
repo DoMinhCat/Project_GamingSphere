@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -38,19 +38,12 @@
  **/
 class Group extends CommonTreeDropdown
 {
-    use Glpi\Features\Clonable;
-
     public $dohistory       = true;
 
     public static $rightname       = 'group';
 
     protected $usenotepad  = true;
 
-
-    public function getCloneRelations(): array
-    {
-        return [];
-    }
 
     public static function getTypeName($nb = 0)
     {
@@ -119,106 +112,49 @@ class Group extends CommonTreeDropdown
         Rule::cleanForItemCriteria($this, '_groups_id%');
     }
 
+
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        /**  @var \DBmysql $DB
-         * @var array $CFG_GLPI
-         */
-        global $DB, $CFG_GLPI;
 
-        if ($withtemplate || !self::canView()) {
-            return '';
-        }
-
-        $ong = [];
-        switch (get_class($item)) {
-            case Group::class:
-                $nb = 0;
-                if ($_SESSION['glpishow_count_on_tabs']) {
-                    $nb = countElementsInTable(
-                        $this->getTable(),
-                        ['groups_id' => $item->getID()]
-                    );
-                }
-                $ong[4] = self::createTabEntry(__('Child groups'), $nb);
-
-                if ($_SESSION['glpishow_count_on_tabs']) {
-                    if ($item->getField('is_itemgroup')) {
-                        $total_linkgroups = 0;
-                        $subqueries = [];
-
-                        foreach ($CFG_GLPI['linkgroup_types'] as $itemtype_linked) {
-                            if ($DB->fieldExists($itemtype_linked::getTable(), 'groups_id')) {
-                                $subqueries[] = new \QuerySubQuery([
-                                    'SELECT' => ['id'],
-                                    'FROM'   => $itemtype_linked::getTable(),
-                                    'WHERE'  => ['groups_id' => $item->getID()]
-                                ]);
-                            }
-                        }
-
-                        if (!empty($subqueries)) {
-                            $union = new \QueryUnion($subqueries, false, 'combined_results');
-                            $iterator = $DB->request([
-                                'SELECT'   => ['id'],
-                                'FROM'     => $union
-                            ]);
-                            $total_linkgroups = count($iterator);
-                        }
-                        $ong[1] = self::createTabEntry(__('Used items'), $total_linkgroups);
+        if (!$withtemplate && self::canView()) {
+            $nb = 0;
+            switch ($item->getType()) {
+                case 'Group':
+                    $ong = [];
+                    if ($_SESSION['glpishow_count_on_tabs']) {
+                        $nb = countElementsInTable(
+                            $this->getTable(),
+                            ['groups_id' => $item->getID()]
+                        );
                     }
-                    if ($item->getField('is_assign')) {
-                        $total_tech_linkgroups = 0;
-                        $subqueries = [];
+                    $ong[4] = self::createTabEntry(__('Child groups'), $nb);
 
-                        foreach ($CFG_GLPI['linkgroup_tech_types'] as $itemtype_linked) {
-                            if ($DB->fieldExists($itemtype_linked::getTable(), 'groups_id_tech')) {
-                                $subqueries[] = new \QuerySubQuery([
-                                    'SELECT' => ['id'],
-                                    'FROM'   => $itemtype_linked::getTable(),
-                                    'WHERE'  => ['groups_id_tech' => $item->getID()]
-                                ]);
-                            }
-                        }
-
-                        if (!empty($subqueries)) {
-                            $union = new \QueryUnion($subqueries, false, 'combined_results');
-                            $iterator = $DB->request([
-                                'SELECT'   => ['id'],
-                                'FROM'     => $union
-                            ]);
-                            $total_tech_linkgroups = count($iterator);
-                        }
-                        $ong[2] = self::createTabEntry(__('Managed items'), $total_tech_linkgroups);
-                    }
-                } else {
                     if ($item->getField('is_itemgroup')) {
                         $ong[1] = __('Used items');
                     }
                     if ($item->getField('is_assign')) {
                         $ong[2] = __('Managed items');
                     }
-                }
-
-                if (
-                    $item->getField('is_usergroup')
-                    && Group::canUpdate()
-                    && Session::haveRight("user", User::UPDATEAUTHENT)
-                    && AuthLDAP::useAuthLdap()
-                ) {
-                    $ong[3] = __('LDAP directory link');
-                }
+                    if (
+                        $item->getField('is_usergroup')
+                        && Group::canUpdate()
+                        && Session::haveRight("user", User::UPDATEAUTHENT)
+                        && AuthLDAP::useAuthLdap()
+                    ) {
+                        $ong[3] = __('LDAP directory link');
+                    }
+                    return $ong;
+            }
         }
-
-        return $ong;
+        return '';
     }
 
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
+
         switch ($item->getType()) {
             case 'Group':
-                /** @var Group $item */
                 switch ($tabnum) {
                     case 1:
                         $item->showItems(false);
@@ -703,7 +639,6 @@ class Group extends CommonTreeDropdown
      **/
     public function getDataItems(array $types, $field, $tree, $user, $start, array &$res)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // include item of child groups ?
@@ -805,13 +740,10 @@ class Group extends CommonTreeDropdown
                     'SELECT' => 'id',
                     'FROM'   => $item->getTable(),
                     'WHERE'  => $restrict[$itemtype],
+                    'ORDER'  => 'name',
                     'LIMIT'  => $max,
                     'START'  => $start
                 ];
-
-                if ($item->isField('name')) {
-                    $request['ORDER'] = 'name';
-                };
 
                 if ($itemtype == 'Consumable') {
                     $request['SELECT'] = 'glpi_consumableitems.id';
@@ -850,7 +782,6 @@ class Group extends CommonTreeDropdown
      **/
     public function showItems($tech)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $rand = mt_rand();
@@ -927,7 +858,7 @@ class Group extends CommonTreeDropdown
                     if (!($item = getItemForItemtype($data['itemtype']))) {
                         continue;
                     }
-                    if ($item->canUpdate() || $item->canView()) {
+                    if ($item->canUpdate($data['items_id']) || $item->canView($data['items_id'])) {
                         // Show massive actions if there is at least one viewable/updatable item.
                         $show_massive_actions = true;
                         break;
@@ -983,8 +914,8 @@ class Group extends CommonTreeDropdown
                 $item->getFromDB($data['items_id']);
                 echo "<tr class='tab_bg_1'><td>";
                 if (
-                    $item->canUpdate()
-                    || ($item->canView()
+                    $item->canUpdate($data['items_id'])
+                    || ($item->canView($data['items_id'])
                     && self::canUpdate())
                 ) {
                     Html::showMassiveActionCheckBox($data['itemtype'], $data['items_id']);
@@ -1031,7 +962,6 @@ class Group extends CommonTreeDropdown
     public function cleanRelationData()
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         parent::cleanRelationData();
@@ -1092,7 +1022,7 @@ class Group extends CommonTreeDropdown
     {
         if (
             Session::getCurrentInterface() == 'helpdesk'
-            && ($anon = self::getAnonymizedName()) !== null
+            && ($anon = self::getAnonymizedName()) !== ""
         ) {
             return $anon;
         }
@@ -1105,7 +1035,7 @@ class Group extends CommonTreeDropdown
     {
         if (
             Session::getCurrentInterface() == 'helpdesk'
-            && ($anon = $this->getAnonymizedName()) !== null
+            && ($anon = $this->getAnonymizedName()) !== ""
         ) {
             return $anon;
         }
@@ -1114,12 +1044,12 @@ class Group extends CommonTreeDropdown
     }
 
 
-    public static function getAnonymizedName(?int $entities_id = null): ?string
+    public static function getAnonymizedName(?int $entities_id = null): string
     {
         switch (Entity::getAnonymizeConfig($entities_id)) {
             default:
             case Entity::ANONYMIZE_DISABLED:
-                return null;
+                return "";
 
             case Entity::ANONYMIZE_USE_GENERIC:
             case Entity::ANONYMIZE_USE_NICKNAME:

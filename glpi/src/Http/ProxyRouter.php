@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -58,40 +58,21 @@ final class ProxyRouter
      */
     private ?string $pathinfo;
 
-    public function __construct(string $root_dir, string $uri)
+    public function __construct(string $root_dir, string $path)
     {
         $this->root_dir = $root_dir;
 
-        $uri = preg_replace('/\/{2,}/', '/', $uri); // remove duplicates `/`
+        $path = preg_replace('/\/{2,}/', '/', $path); // remove duplicates `/`
 
-        $path     = null;
-        $pathinfo = null;
-
-        // Parse URI to find requested script and PathInfo
-        $slash_pos = 0;
-        while ($slash_pos !== false && ($dot_pos = strpos($uri, '.', $slash_pos)) !== false) {
-            $slash_pos = strpos($uri, '/', $dot_pos);
-            $filepath = substr($uri, 0, $slash_pos !== false ? $slash_pos : strlen($uri));
-            if (is_file($this->root_dir . $filepath)) {
-                $path = $filepath;
-
-                $pathinfo = substr($uri, strlen($filepath));
-                if ($pathinfo !== '') {
-                    // On any regular PHP script that is directly served by Apache, `$_SERVER['PATH_INFO']`
-                    // contains decoded URL.
-                    // We have to reproduce this decoding operation to prevent issues with endoded chars.
-                    $pathinfo = urldecode($pathinfo);
-                } else {
-                    $pathinfo = null;
-                }
-                break;
-            }
-        }
-
-        if ($path === null) {
-            // Fallback to requested URI
-            $path = $uri;
-
+        $path_matches = [];
+        if (
+            preg_match('/^(?<path>.+\.[^\/]+)(?<pathinfo>\/.*)$/', $path, $path_matches) === 1
+            && is_file($this->root_dir . $path_matches['path'])
+        ) {
+            // Separate path and pathinfo.
+            $path     = $path_matches['path'];
+            $pathinfo = $path_matches['pathinfo'];
+        } else {
             // Clean trailing `/`.
             $path = rtrim($path, '/');
 
@@ -99,6 +80,8 @@ final class ProxyRouter
             if (is_dir($this->root_dir . $path) && is_file($this->root_dir . $path . '/index.php')) {
                 $path .= '/index.php';
             }
+
+            $pathinfo = null;
         }
 
         $this->path     = $path;
@@ -139,6 +122,7 @@ final class ProxyRouter
     /**
      * Determine whether the requested path is allowed.
      *
+     * @param string $file_relative_path
      * @return bool
      */
     public function isPathAllowed(): bool
@@ -246,7 +230,16 @@ final class ProxyRouter
             return true;
         }
 
-        return false;
+        // Check mime type of target file
+        $target_file = $this->getTargetFile();
+
+        if ($target_file === null) {
+            return false;
+        }
+
+        $mime = mime_content_type($target_file);
+
+        return preg_match('/^(application|text)\/(x-)?php$/', $mime) === 1;
     }
 
     /**

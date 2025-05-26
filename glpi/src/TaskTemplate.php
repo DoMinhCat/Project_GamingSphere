@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -59,10 +59,7 @@ class TaskTemplate extends AbstractITILChildTemplate
         return [['name'  => 'content',
             'label' => __('Content'),
             'type'  => 'tinymce',
-            // Images should remains in base64 in templates.
-            // When an element will be created from a template, tinymce will catch the base64 image and trigger the
-            // document upload process.
-            'convert_images_to_documents' => false,
+            'rows' => 10
         ],
             ['name'  => 'taskcategories_id',
                 'label' => TaskCategory::getTypeName(1),
@@ -147,7 +144,7 @@ class TaskTemplate extends AbstractITILChildTemplate
             'table'              => $this->getTable(),
             'field'              => 'actiontime',
             'name'               => __('Total duration'),
-            'datatype'           => 'timestamp',
+            'datatype'           => 'actiontime',
             'massiveaction'      => false
         ];
 

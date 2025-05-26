@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -65,7 +65,6 @@ class KnowbaseItem_KnowbaseItemCategory extends CommonDBRelation
 
     public static function getItems(CommonDBTM $item, $start = 0, $limit = 0, $used = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $kbi_cat_table = self::getTable();
@@ -125,10 +124,7 @@ class KnowbaseItem_KnowbaseItemCategory extends CommonDBRelation
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
 
-        if (
-            ($item instanceof CommonDBTM)
-            && static::canView()
-        ) {
+        if (static::canView()) {
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                 $nb = countElementsInTable(
@@ -282,8 +278,8 @@ class KnowbaseItem_KnowbaseItemCategory extends CommonDBRelation
     public static function getMassiveActionsForItemtype(
         array &$actions,
         $itemtype,
-        $is_deleted = false,
-        ?CommonDBTM $checkitem = null
+        $is_deleted = 0,
+        CommonDBTM $checkitem = null
     ) {
 
         $kb_item = new KnowbaseItem();

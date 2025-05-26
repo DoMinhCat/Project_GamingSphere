@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -36,7 +36,6 @@
 use Glpi\Application\ErrorHandler;
 use Glpi\Plugin\Hooks;
 use Glpi\Socket;
-use Glpi\Toolbox\URL;
 
 /**
  * Transfer engine.
@@ -165,7 +164,6 @@ class Transfer extends CommonDBTM
      **/
     public function moveItems($items, $to, $options)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // unset notifications
@@ -216,8 +214,7 @@ class Transfer extends CommonDBTM
             'keep_certificate'    => 0,
             'clean_certificate'   => 0,
 
-            'lock_updated_fields' => 0,
-            'keep_location'       => 1
+            'lock_updated_fields' => 0
         ];
 
         if ($to >= 0) {
@@ -355,11 +352,7 @@ class Transfer extends CommonDBTM
      **/
     public function simulateTransfer($items)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
        // Init types :
         $types = ['Computer', 'CartridgeItem', 'Change', 'ConsumableItem', 'Certificate', 'Contact',
@@ -1214,7 +1207,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferItem($itemtype, $ID, $newID)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!($item = getItemForItemtype($itemtype))) {
@@ -1279,8 +1271,7 @@ class Transfer extends CommonDBTM
                     $this->transferDocuments($itemtype, $ID, $newID);
 
                     if (is_a($itemtype, CommonITILObject::class, true)) {
-                        // Transfer ITIL childs documents too
-                        /** @var CommonITILObject $itil_item */
+                       // Transfer ITIL childs documents too
                         $itil_item = getItemForItemtype($itemtype);
                         $itil_item->getFromDB($ID);
                         $document_item_obj = new Document_Item();
@@ -1316,10 +1307,8 @@ class Transfer extends CommonDBTM
                 ];
 
                // Manage Location dropdown
-                if (isset($item->fields['locations_id']) && $this->options['keep_location']) {
+                if (isset($item->fields['locations_id'])) {
                     $input['locations_id'] = $this->transferDropdownLocation($item->fields['locations_id']);
-                } else {
-                    $input['locations_id'] = 0;
                 }
 
                 if (in_array($itemtype, ['Ticket', 'Problem', 'Change'])) {
@@ -1424,7 +1413,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferDropdownSocket($sockets_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($sockets_id > 0) {
@@ -1483,7 +1471,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferPrinterCartridges($ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Get cartrdiges linked
@@ -1630,7 +1617,6 @@ class Transfer extends CommonDBTM
      **/
     public function copySingleSoftware($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (isset($this->already_transfer['Software'][$ID])) {
@@ -1695,7 +1681,6 @@ class Transfer extends CommonDBTM
      **/
     public function copySingleVersion($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (isset($this->already_transfer['SoftwareVersion'][$ID])) {
@@ -1769,7 +1754,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferItemSoftwares($itemtype, $ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Get Installed version
@@ -1844,7 +1828,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferAffectedLicense($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $item_softwarelicense = new Item_SoftwareLicense();
@@ -1933,7 +1916,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferSoftwareLicensesAndVersions($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -2022,7 +2004,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferCertificates($itemtype, $ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $need_clean_process = false;
@@ -2212,7 +2193,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferContracts($itemtype, $ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $need_clean_process = false;
@@ -2402,7 +2382,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferDocuments($itemtype, $ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $need_clean_process = false;
@@ -2601,7 +2580,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferDirectConnection($itemtype, $ID, $link_type)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Only same Item case : no duplication of computers
@@ -2809,7 +2787,6 @@ class Transfer extends CommonDBTM
      **/
     public function manageConnectionComputer($itemtype, $ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Get connections
@@ -2856,7 +2833,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferTickets($itemtype, $ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $job   = new Ticket();
@@ -2942,7 +2918,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferLinkedSuppliers($itemtype, $ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!is_a($itemtype, CommonITILObject::class, true)) {
@@ -3020,7 +2995,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferTaskCategory($itemtype, $ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!is_a($itemtype, CommonITILObject::class, true)) {
@@ -3114,7 +3088,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferHistory($itemtype, $ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         switch ($this->options['keep_history']) {
@@ -3171,7 +3144,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferCompatiblePrinters($ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($ID != $newID) {
@@ -3203,7 +3175,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferInfocoms($itemtype, $ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ic = new Infocom();
@@ -3269,7 +3240,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferSingleSupplier($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // TODO clean system : needed ?
@@ -3380,7 +3350,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferSupplierContacts($ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $need_clean_process = false;
@@ -3594,7 +3563,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferDevices($itemtype, $ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Only same case because no duplication of computers
@@ -3767,7 +3735,6 @@ class Transfer extends CommonDBTM
      **/
     public function transferNetworkLink($itemtype, $ID, $newID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
        /// TODO manage with new network system
         $np = new NetworkPort();
@@ -3896,8 +3863,7 @@ class Transfer extends CommonDBTM
         if ($edit_form) {
             $this->showFormHeader($options);
         } else {
-            $target = URL::sanitizeURL($options['target']);
-            echo "<form method='post' name=form action='" . $target . "'>";
+            echo "<form method='post' name=form action='" . $options['target'] . "'>";
             echo "<div class='center' id='tabsbody' >";
             echo "<table class='tab_cadre_fixe'>";
 
@@ -3939,20 +3905,6 @@ class Transfer extends CommonDBTM
         echo "<td>" . __('Historical') . "</td><td>";
         $params['value'] = $this->fields['keep_history'];
         Dropdown::showFromArray('keep_history', $keep, $params);
-        echo "</td>";
-        if (!$edit_form) {
-            echo "<td colspan='2'>&nbsp;</td>";
-        }
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . _n('Location', 'Locations', 1) . "</td><td>";
-        $location_option  = [
-            0 => __("Empty the location"),
-            1 => __('Preserve')
-        ];
-        $params['value'] = $this->fields['keep_location'];
-        Dropdown::showFromArray('keep_location', $location_option, $params);
         echo "</td>";
         if (!$edit_form) {
             echo "<td colspan='2'>&nbsp;</td>";
@@ -4149,11 +4101,7 @@ class Transfer extends CommonDBTM
      */
     public function showTransferList()
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         if (isset($_SESSION['glpitransfer_list']) && count($_SESSION['glpitransfer_list'])) {
             echo "<div class='center b'>" .
@@ -4181,12 +4129,11 @@ class Transfer extends CommonDBTM
                         continue;
                     }
                     $table = $itemtype::getTable();
-                    $name_field = $item->getNameField();
-                    $table_name_field = sprintf('%1$s.%2$s', $table, $name_field);
+
                     $iterator = $DB->request([
                         'SELECT'    => [
                             "$table.id",
-                            $table_name_field,
+                            "$table.name",
                             'entities.completename AS locname',
                             'entities.id AS entID'
                         ],
@@ -4200,7 +4147,7 @@ class Transfer extends CommonDBTM
                             ]
                         ],
                         'WHERE'     => ["$table.id" => $tab],
-                        'ORDERBY'   => ['locname', $table_name_field]
+                        'ORDERBY'   => ['locname', "$table.name"]
                     ]);
                     $entID = -1;
 
@@ -4214,7 +4161,7 @@ class Transfer extends CommonDBTM
                                 $entID = $data['entID'];
                                 echo "<span class='b spaced'>" . $data['locname'] . "</span><br>";
                             }
-                                echo ($data[$name_field] ? $data[$name_field] : "(" . $data['id'] . ")") . "<br>";
+                                echo ($data['name'] ? $data['name'] : "(" . $data['id'] . ")") . "<br>";
                         }
                     }
                 }

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -61,30 +61,7 @@ class APIRest extends API
         foreach (array_keys($_FILES) as $filename) {
            // Randomize files names
             $rand_name = uniqid('', true);
-            if (is_array($_FILES[$filename]['name'])) {
-                // Input name was suffixed by `[]`. This results in each `$_FILES[$filename]` property being an array.
-                // e.g.
-                // [
-                //     'name' => [
-                //         0 => 'image.jpg',
-                //         1 => 'document.pdf',
-                //     ],
-                //     'type' => [
-                //         0 => 'image/jpeg',
-                //         1 => 'application/pdf',
-                //     ]
-                // ]
-                foreach ($_FILES[$filename]['name'] as &$name) {
-                    $name = $rand_name . $name;
-                }
-            } else {
-                // Input name was NOT suffixed by `[]`. This results in each `$_FILES[$filename]` property being a single entry.
-                // e.g.
-                // [
-                //     'name' => 'image.jpg',
-                //     'type' => 'image/jpeg',
-                // ]
-                $name = &$_FILES[$filename]['name'];
+            foreach ($_FILES[$filename]['name'] as &$name) {
                 $name = $rand_name . $name;
             }
 
@@ -538,8 +515,8 @@ class APIRest extends API
             $parameters['input']->_filename = [];
             $parameters['input']->_prefix_filename = [];
         } else if (strpos($content_type, "application/x-www-form-urlencoded") !== false) {
-            parse_str($body, $postvars);
             /** @var array $postvars */
+            parse_str($body, $postvars);
             foreach ($postvars as $field => $value) {
                 // $parameters['input'] needs to be an object when process API Request
                 if ($field === 'input') {

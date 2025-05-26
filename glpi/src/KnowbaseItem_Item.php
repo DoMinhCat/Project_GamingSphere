@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -267,7 +267,6 @@ class KnowbaseItem_Item extends CommonDBRelation
      */
     public static function dropdownAllTypes(CommonDBTM $item, $name)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $onlyglobal = 0;
@@ -297,7 +296,6 @@ class KnowbaseItem_Item extends CommonDBRelation
      **/
     public static function getItems(CommonDBTM $item, $start = 0, $limit = 0, $used = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $criteria = [
@@ -354,8 +352,8 @@ class KnowbaseItem_Item extends CommonDBRelation
     public static function getMassiveActionsForItemtype(
         array &$actions,
         $itemtype,
-        $is_deleted = false,
-        ?CommonDBTM $checkitem = null
+        $is_deleted = 0,
+        CommonDBTM $checkitem = null
     ) {
 
         $kb_item = new KnowbaseItem();

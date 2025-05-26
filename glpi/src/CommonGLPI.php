@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -144,7 +144,7 @@ class CommonGLPI implements CommonGLPIInterface
      *
      * @return boolean
      **/
-    public function can($ID, $right, ?array &$input = null)
+    public function can($ID, $right, array &$input = null)
     {
         switch ($right) {
             case READ:
@@ -322,7 +322,6 @@ class CommonGLPI implements CommonGLPIInterface
      **/
     final public function defineAllTabs($options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $onglets = [];
@@ -406,7 +405,6 @@ class CommonGLPI implements CommonGLPIInterface
      **/
     public function addImpactTab(array &$ong, array $options)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Check if impact analysis is enabled for this item type
@@ -439,7 +437,7 @@ class CommonGLPI implements CommonGLPIInterface
      *
      * @since 0.85
      *
-     * @return false|array array for menu
+     * @return array array for menu
      **/
     public static function getMenuContent()
     {
@@ -522,7 +520,7 @@ class CommonGLPI implements CommonGLPIInterface
      *
      * @since 0.85
      *
-     * @return false|array array for menu
+     * @return array array for menu
      **/
     public static function getAdditionalMenuContent()
     {
@@ -561,7 +559,7 @@ class CommonGLPI implements CommonGLPIInterface
      *
      * @since 0.85
      *
-     * @return false|array
+     * @return array array of additional options
      **/
     public static function getAdditionalMenuLinks()
     {
@@ -604,9 +602,9 @@ class CommonGLPI implements CommonGLPIInterface
      * @since 0.83
      *
      * @param CommonGLPI $item         Item on which the tab need to be displayed
-     * @param integer    $withtemplate is a template object ? (default 0)
+     * @param boolean    $withtemplate is a template object ? (default 0)
      *
-     *  @return string|array tab name
+     *  @return string tab name
      **/
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
@@ -621,7 +619,7 @@ class CommonGLPI implements CommonGLPIInterface
      *
      * @param CommonGLPI $item         Item on which the tab need to be displayed
      * @param integer    $tabnum       tab number (default 1)
-     * @param integer    $withtemplate is a template object ? (default 0)
+     * @param boolean    $withtemplate is a template object ? (default 0)
      *
      * @return boolean
      **/
@@ -636,7 +634,7 @@ class CommonGLPI implements CommonGLPIInterface
      *
      * @param CommonGLPI $item         Item on which the tab need to be displayed
      * @param string     $tab          tab name
-     * @param integer    $withtemplate is a template object ? (default 0)
+     * @param boolean    $withtemplate is a template object ? (default 0)
      * @param array      $options      additional options to pass
      *
      * @return boolean true
@@ -675,7 +673,6 @@ class CommonGLPI implements CommonGLPIInterface
                 $options['withtemplate'] = $withtemplate;
 
                 if ($tabnum == 'main') {
-                    /** @var CommonDBTM $item */
                     Plugin::doHook(Hooks::PRE_SHOW_ITEM, ['item' => $item, 'options' => &$options]);
                     $ret = $item->showForm($item->getID(), $options);
 
@@ -709,7 +706,7 @@ class CommonGLPI implements CommonGLPIInterface
      * @param string  $text text to display
      * @param integer $nb   number of items (default 0)
      *
-     *  @return string
+     *  @return array array containing the onglets
      **/
     public static function createTabEntry($text, $nb = 0)
     {
@@ -730,7 +727,6 @@ class CommonGLPI implements CommonGLPIInterface
      **/
     public function redirectToList()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (
@@ -865,6 +861,7 @@ class CommonGLPI implements CommonGLPIInterface
         unset($cleaned_options['id'], $cleaned_options['stock_image']);
 
         $target         = $_SERVER['PHP_SELF'];
+        $extraparamhtml = "";
         $withtemplate   = "";
 
         // TODO - There should be a better option than checking whether or not
@@ -888,6 +885,8 @@ class CommonGLPI implements CommonGLPIInterface
 
             // prevent double sanitize, because the includes.php sanitize all data
             $cleaned_options = Sanitizer::unsanitize($cleaned_options);
+
+            $extraparamhtml = "&amp;" . Toolbox::append_params($cleaned_options, '&amp;');
         }
 
         $onglets     = $this->defineAllTabs($options);
@@ -898,30 +897,14 @@ class CommonGLPI implements CommonGLPIInterface
         }
 
         if (count($onglets)) {
-            $tabs_url   = $this->getTabsURL();
-            $parsed_url = parse_url($tabs_url);
-            $tab_path   = $parsed_url['path'];
-            $tab_params = [];
-            if (array_key_exists('query', $parsed_url)) {
-                parse_str($parsed_url['query'], $tab_params);
-            }
+            $tabpage = $this->getTabsURL();
+            $tabs    = [];
 
-            $tab_params = array_merge($cleaned_options, $tab_params);
-
-            $tab_params = array_merge(
-                $tab_params,
-                [
-                    '_target' => $target,
-                    '_itemtype' => $this->getType(),
-                    'id' => $ID,
-                ]
-            );
-
-            $tabs = [];
             foreach ($onglets as $key => $val) {
                 $tabs[$key] = ['title'  => $val,
-                    'url'    => $tab_path,
-                    'params' => Toolbox::append_params(['_glpi_tab' => $key] + $tab_params, '&amp;'),
+                    'url'    => $tabpage,
+                    'params' => "_target=$target&amp;_itemtype=" . $this->getType() .
+                                            "&amp;_glpi_tab=$key&amp;id=$ID$extraparamhtml"
                 ];
             }
 
@@ -932,8 +915,9 @@ class CommonGLPI implements CommonGLPIInterface
                 && (count($tabs) > 1)
             ) {
                 $tabs[-1] = ['title'  => __('All'),
-                    'url'    => $tab_path,
-                    'params' => Toolbox::append_params(['_glpi_tab' => '-1'] + $tab_params, '&amp;'),
+                    'url'    => $tabpage,
+                    'params' => "_target=$target&amp;_itemtype=" . $this->getType() .
+                                          "&amp;_glpi_tab=-1&amp;id=$ID$extraparamhtml"
                 ];
             }
 
@@ -960,7 +944,6 @@ class CommonGLPI implements CommonGLPIInterface
      **/
     public function showNavigationHeader($options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // for objects not in table like central
@@ -1240,7 +1223,6 @@ class CommonGLPI implements CommonGLPIInterface
      **/
     public function showDebugInfo()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (method_exists($this, 'showDebug')) {
@@ -1299,7 +1281,7 @@ class CommonGLPI implements CommonGLPIInterface
             } else {
                 foreach ($options as $option_group) {
                     foreach ($option_group as $option_name => $attributs) {
-                        if (isset($input[$option_name]) && ($input[$option_name] == 'on')) {
+                        if (isset($input[$option_name]) && ($_GET[$option_name] == 'on')) {
                             $display_options[$option_name] = true;
                         } else {
                             $display_options[$option_name] = false;
@@ -1311,9 +1293,9 @@ class CommonGLPI implements CommonGLPIInterface
             if ($uid = Session::getLoginUserID()) {
                 $user = new User();
                 if ($user->getFromDB($uid)) {
-                    $user->update([
-                        'id' => $uid,
-                        'display_options' => Sanitizer::sanitize(exportArrayToDB($_SESSION['glpi_display_options']))
+                    $user->update(['id' => $uid,
+                        'display_options'
+                                        => exportArrayToDB($_SESSION['glpi_display_options'])
                     ]);
                 }
             }
@@ -1383,7 +1365,6 @@ class CommonGLPI implements CommonGLPIInterface
      **/
     public static function showDislayOptions($sub_itemtype = '')
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $options      = static::getAvailableDisplayOptions();
@@ -1454,7 +1435,6 @@ class CommonGLPI implements CommonGLPIInterface
      **/
     public static function getDisplayOptionsLink($sub_itemtype = '')
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $rand = mt_rand();
@@ -1520,10 +1500,6 @@ class CommonGLPI implements CommonGLPIInterface
      **/
     public function getKBLinks()
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
         global $CFG_GLPI, $DB;
 
         if (!($this instanceof CommonDBTM)) {

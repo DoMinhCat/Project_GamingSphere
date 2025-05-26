@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -65,7 +65,6 @@ class SynchronizeUsersCommand extends AbstractCommand
     protected function configure()
     {
 
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         parent::configure();
@@ -172,7 +171,6 @@ class SynchronizeUsersCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $this->validateInput($input);
@@ -272,9 +270,8 @@ class SynchronizeUsersCommand extends AbstractCommand
                 continue;
             }
 
-            $name = $server->fields['name'] ?? $server_id;
             $output->writeln(
-                '<info>' . sprintf(__('Processing LDAP server "%s"...'), $name) . '</info>',
+                '<info>' . sprintf(__('Processing LDAP server "%s"...'), $server_id) . '</info>',
                 OutputInterface::VERBOSITY_NORMAL
             );
 
@@ -306,12 +303,12 @@ class SynchronizeUsersCommand extends AbstractCommand
                     if ($limitexceeded) {
                         $message = sprintf(
                             __('LDAP server "%s" size limit exceeded.'),
-                            $name
+                            $server_id
                         );
                     } else {
                         $message = sprintf(
                             __('Error while contacting the LDAP server "%s".'),
-                            $name
+                            $server_id
                         );
                     }
                     $output->writeln(
@@ -335,7 +332,7 @@ class SynchronizeUsersCommand extends AbstractCommand
                 }
 
                  $output->writeln(
-                     '<info>' . sprintf($action_message, $name) . '</info>',
+                     '<info>' . sprintf($action_message, $server_id) . '</info>',
                      OutputInterface::VERBOSITY_NORMAL
                  );
 
@@ -422,7 +419,7 @@ class SynchronizeUsersCommand extends AbstractCommand
                 );
                 $result_output->addRow(
                     [
-                        $name,
+                        $server_id,
                         $results[AuthLDAP::USER_IMPORTED],
                         $results[AuthLDAP::USER_SYNCHRONIZED],
                         $results[AuthLDAP::USER_DELETED_LDAP],

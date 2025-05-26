@@ -5,7 +5,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -31,7 +31,6 @@
  * ---------------------------------------------------------------------
  */
 .ct-series.ct-series-p {
-  fill: #c2f040;
   stroke: #c2f040;
 }
 .ct-legend .ct-series-15::before {
@@ -39,7 +38,6 @@
   border-color: #c2f040;
 }
 .ct-series.ct-series-q {
-  fill: #ca12d3;
   stroke: #ca12d3;
 }
 .ct-legend .ct-series-16::before {
@@ -47,7 +45,6 @@
   border-color: #ca12d3;
 }
 .ct-series.ct-series-r {
-  fill: #f75037;
   stroke: #f75037;
 }
 .ct-legend .ct-series-17::before {
@@ -55,7 +52,6 @@
   border-color: #f75037;
 }
 .ct-series.ct-series-s {
-  fill: #6224af;
   stroke: #6224af;
 }
 .ct-legend .ct-series-18::before {
@@ -63,7 +59,6 @@
   border-color: #6224af;
 }
 .ct-series.ct-series-t {
-  fill: #854f95;
   stroke: #854f95;
 }
 .ct-legend .ct-series-19::before {
@@ -71,7 +66,6 @@
   border-color: #854f95;
 }
 .ct-series.ct-series-u {
-  fill: #fcfefd;
   stroke: #fcfefd;
 }
 .ct-legend .ct-series-20::before {
@@ -79,7 +73,6 @@
   border-color: #fcfefd;
 }
 .ct-series.ct-series-v {
-  fill: #1739c0;
   stroke: #1739c0;
 }
 .ct-legend .ct-series-21::before {
@@ -87,7 +80,6 @@
   border-color: #1739c0;
 }
 .ct-series.ct-series-w {
-  fill: #f83db1;
   stroke: #f83db1;
 }
 .ct-legend .ct-series-22::before {
@@ -95,7 +87,6 @@
   border-color: #f83db1;
 }
 .ct-series.ct-series-x {
-  fill: #a52ab5;
   stroke: #a52ab5;
 }
 .ct-legend .ct-series-23::before {
@@ -103,7 +94,6 @@
   border-color: #a52ab5;
 }
 .ct-series.ct-series-y {
-  fill: #1f8870;
   stroke: #1f8870;
 }
 .ct-legend .ct-series-24::before {
@@ -111,7 +101,6 @@
   border-color: #1f8870;
 }
 .ct-series.ct-series-z {
-  fill: #d7192e;
   stroke: #d7192e;
 }
 .ct-legend .ct-series-25::before {

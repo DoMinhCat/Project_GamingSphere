@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -151,7 +151,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
 
         if (static::canView() && !$withtemplate) {
             $nb = 0;
-            switch (get_class($item)) {
+            switch ($item->getType()) {
                 case __CLASS__:
                     $ong    = [];
                     if ($_SESSION['glpishow_count_on_tabs']) {
@@ -176,7 +176,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
-        switch (get_class($item)) {
+        switch ($item->getType()) {
             case __CLASS__:
                 switch ($tabnum) {
                     case 1:
@@ -252,7 +252,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
      **/
     public static function getAdditionalMenuLinks()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $links = [];
@@ -278,9 +277,8 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
     }
 
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (in_array('auto_percent_done', $this->updates) && $this->input['auto_percent_done'] == 1) {
@@ -308,7 +306,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
 
     public function post_addItem()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Update parent percent_done
@@ -365,7 +362,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
 
     public function pre_deleteItem()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!isset($this->input['_disablenotif']) && $CFG_GLPI['use_notifications']) {
@@ -521,7 +517,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
 
     public function rawSearchOptions()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $tab = [];
@@ -936,7 +931,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
             'massiveaction'      => false,
             'forcegroupby'       => true,
             'splititems'         => true,
-            'additionalfields'   => ['color'],
             'joinparams'         => [
                 'jointype'          => 'item_revert',
                 'specific_itemtype' => 'ProjectState',
@@ -1031,7 +1025,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
         ];
 
         $tab[] = [
-            'id'                 => '1400',
+            'id'                 => '119',
             'table'              => ProjectTask::getTable(),
             'field'              => 'plan_end_date',
             'name'               => __('Planned end date'),
@@ -1065,8 +1059,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
             'name'               => __('Real end date'),
             'datatype'           => 'datetime',
             'massiveaction'      => false,
-            'forcegroupby'       => true,
-            'splititems'         => true,
             'joinparams'         => [
                 'jointype'  => 'child'
             ]
@@ -1200,7 +1192,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
      */
     public static function showShort($id, $options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $p['output_type']            = Search::HTML_OUTPUT;
@@ -1474,7 +1465,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
      **/
     public function showChildren()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID   = $this->getID();
@@ -1900,7 +1890,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
 
     public static function getAllForKanban($active = true, $current_id = -1)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $items = [
@@ -1966,74 +1955,30 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
 
     public static function getAllKanbanColumns($column_field = null, $column_ids = [], $get_default = false)
     {
-        $result = [];
-
         if ($column_field === null || $column_field == 'projectstates_id') {
-            /** @var \DBmysql $DB */
-            global $DB;
-
+            $columns = ['projectstates_id' => []];
             $projectstate = new ProjectState();
             $restrict = [];
             if (!empty($column_ids) && !$get_default) {
                 $restrict = ['id' => $column_ids];
             }
-
-            $addselect = [];
-            $ljoin = [];
-            if (Session::haveTranslations(ProjectState::getType(), 'name')) {
-                $addselect[] = "namet2.value AS transname";
-                $ljoin['glpi_dropdowntranslations AS namet2'] = [
-                    'ON' => [
-                        'namet2' => 'items_id',
-                        ProjectState::getTable()   => 'id', [
-                            'AND' => [
-                                'namet2.itemtype' => ProjectState::getType(),
-                                'namet2.language' => $_SESSION['glpilanguage'],
-                                'namet2.field'    => 'name'
-                            ]
-                        ]
-                    ]
+            $allstates = $projectstate->find($restrict, ['is_finished ASC', 'id']);
+            foreach ($allstates as $state) {
+                $columns['projectstates_id'][$state['id']] = [
+                    'name'            => $state['name'],
+                    'header_color'    => $state['color'],
+                    'header_fg_color' => Toolbox::getFgColor($state['color'], 50),
                 ];
             }
-
-            $criteria = [
-                'SELECT'   => array_merge([ProjectState::getTable() . ".*"], $addselect),
-                'DISTINCT' => true,
-                'FROM'     => ProjectState::getTable(),
-                'WHERE'    => $restrict
-            ];
-            if (count($ljoin)) {
-                $criteria['LEFT JOIN'] = $ljoin;
-            }
-            $iterator = $DB->request($criteria);
-
-            if (count($iterator)) {
-                foreach ($iterator as $projectstate) {
-                    $result[$projectstate['id']] = [
-                        'name'            => $projectstate['transname'] ?? $projectstate['name'],
-                        'id'              => $projectstate['id'],
-                        'header_color'    => $projectstate['color'],
-                        'header_fg_color' => Toolbox::getFgColor($projectstate['color'], 50),
-                    ];
-                }
-            }
-
-            // sort by name ASC
-            uasort($result, function ($a, $b) {
-                return strnatcasecmp($a['name'], $b['name']);
-            });
+            return $columns['projectstates_id'];
+        } else {
+            return [];
         }
-
-        return $result;
     }
 
     public static function getDataToDisplayOnKanban($ID, $criteria = [])
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $items      = [];
 
@@ -2380,7 +2325,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
 
     /**
      * Show Kanban view.
-     * @param int $ID ID of the parent Project or 0 for a global view.
+     * @param int $ID ID of the parent Project or -1 for a global view.
      * @return bool|void False if the Kanban cannot be shown.
      */
     public static function showKanban($ID)
@@ -2428,7 +2373,7 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                 ],
                 'is_recursive' => [
                     'type'   => 'hidden',
-                    'value'  => $ID > 0 ? $project->fields["is_recursive"] : 0
+                    'value'  => 0
                 ]
             ],
             'team_itemtypes'  => Project::getTeamItemtypes(),
@@ -2474,13 +2419,12 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
                 ],
                 'is_recursive' => [
                     'type'   => 'hidden',
-                    'value'  => $ID > 0 ? $project->fields["is_recursive"] : 0
+                    'value'  => 0
                 ]
             ],
             'team_itemtypes'  => ProjectTask::getTeamItemtypes(),
             'team_roles'      => $team_roles,
-            'allow_create'    => ProjectTask::canCreate(),
-            'allow_bulk_add'  => $ID > 0
+            'allow_create'    => ProjectTask::canCreate()
         ];
         if ($ID <= 0) {
             $supported_itemtypes['ProjectTask']['fields']['projects_id'] = [
@@ -2645,7 +2589,6 @@ class Project extends CommonDBTM implements ExtraVisibilityCriteria
      */
     public static function recalculatePercentDone($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $project = new self();

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33,9 +33,6 @@
  * ---------------------------------------------------------------------
  */
 
-/** @var array $CFG_GLPI */
-global $CFG_GLPI;
-
 // Direct access to file
 if (strpos($_SERVER['PHP_SELF'], "ruleaction.php")) {
     include('../inc/includes.php');
@@ -47,6 +44,8 @@ if (strpos($_SERVER['PHP_SELF'], "ruleaction.php")) {
 
 Session::checkLoginUser();
 
+/** @global array $CFG_GLPI */
+
 // Non define case
 if (isset($_POST["sub_type"]) && class_exists($_POST["sub_type"])) {
     if (!isset($_POST["field"])) {
@@ -55,7 +54,6 @@ if (isset($_POST["sub_type"]) && class_exists($_POST["sub_type"])) {
     if (!($item = getItemForItemtype($_POST["sub_type"]))) {
         exit();
     }
-    /** @var Rule $item */
     if (!isset($_POST[$item->getRuleIdField()])) {
         exit();
     }

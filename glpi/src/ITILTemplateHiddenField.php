@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -71,7 +71,6 @@ abstract class ITILTemplateHiddenField extends ITILTemplateField
 
     public function post_purgeItem()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         parent::post_purgeItem();
@@ -112,7 +111,6 @@ abstract class ITILTemplateHiddenField extends ITILTemplateField
      **/
     public function getHiddenFields($ID, $withtypeandcategory = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -156,13 +154,12 @@ abstract class ITILTemplateHiddenField extends ITILTemplateField
      * @since 0.83
      *
      * @param ITILTemplate $tt            ITIL Template
-     * @param integer      $withtemplate  Template or basic item (default 0)
+     * @param boolean      $withtemplate  Template or basic item (default 0)
      *
      * @return void
      **/
     public static function showForITILTemplate(ITILTemplate $tt, $withtemplate = 0)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $tt->fields['id'];

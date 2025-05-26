@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -69,7 +69,6 @@ class PlanningRecall extends CommonDBChild
 
     public static function isAvailable()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Cache in session
@@ -102,11 +101,11 @@ class PlanningRecall extends CommonDBChild
     /**
      * Retrieve an item from the database
      *
-     * @param string $itemtype     string   itemtype to get
-     * @param integer $items_id     integer  id of the item
-     * @param integer $users_id     integer  id of the user
+     * @param $itemtype     string   itemtype to get
+     * @param $items_id     integer  id of the item
+     * @param $users_id     integer  id of the user
      *
-     * @return boolean true if succeed else false
+     * @return true if succeed else false
      **/
     public function getFromDBForItemAndUser($itemtype, $items_id, $users_id)
     {
@@ -122,7 +121,7 @@ class PlanningRecall extends CommonDBChild
     /**
      * @see CommonDBTM::post_updateItem()
      **/
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
 
         $alert = new Alert();
@@ -214,15 +213,14 @@ class PlanningRecall extends CommonDBChild
     /**
      * Update planning recal date when changing begin of planning
      *
-     * @param string $itemtype  string   itemtype to get
-     * @param integer $items_id  integer  id of the item
-     * @param string $begin     datetime new begin date
+     * @param $itemtype  string   itemtype to get
+     * @param $items_id  integer  id of the item
+     * @param $begin     datetime new begin date
      *
-     * @return boolean true if succeed else false
+     * @return true if succeed else false
      **/
     public static function managePlanningUpdates($itemtype, $items_id, $begin)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (isset($_SESSION['glpiplanningreminder_isavailable'])) {
@@ -390,11 +388,7 @@ class PlanningRecall extends CommonDBChild
      **/
     public static function cronPlanningRecall($task = null)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         if (!$CFG_GLPI["use_notifications"]) {
             return 0;
@@ -435,7 +429,6 @@ class PlanningRecall extends CommonDBChild
                 //               -> ProblemTask -> Problem which have entity notion
                 $itemToNotify = $pr->getItem();
                 if ($itemToNotify instanceof \CommonITILTask) {
-                    /** @var CommonITILObject $linkedItem */
                     $linkedItem = $itemToNotify->getItem();
                     // No recall, if the parent item is in a closed status
                     if (in_array($linkedItem->fields['status'], array_merge($linkedItem->getSolvedStatusArray(), $linkedItem->getClosedStatusArray()))) {

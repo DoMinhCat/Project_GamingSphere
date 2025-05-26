@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -51,7 +51,7 @@ class RuleAction extends CommonDBChild
         $forbidden[] = 'update';
 
         if (isset($_POST['rule_class_name']) && is_subclass_of(\Rule::class, $_POST['rule_class_name'])) {
-            $rule = getItemForItemtype($_POST['rule_class_name']);
+            $rule = new $_POST['rule_class_name']();
             if ($rule->maxActionsCount() == 1) {
                 $forbidden[] = 'clone';
             }
@@ -62,7 +62,7 @@ class RuleAction extends CommonDBChild
 
 
     /**
-     * @param string $rule_type
+     * @param $rule_type
      **/
     public function __construct($rule_type = 'Rule')
     {
@@ -91,9 +91,9 @@ class RuleAction extends CommonDBChild
     /**
      * Get title used in rule
      *
-     * @param integer $nb (default 0)
+     * @param $nb  integer  (default 0)
      *
-     * @return string Title of the rule
+     * @return Title of the rule
      **/
     public static function getTypeName($nb = 0)
     {
@@ -328,11 +328,10 @@ class RuleAction extends CommonDBChild
      *
      * @param $ID the rule_description ID
      *
-     * @return array of RuleAction objects
+     * @return an array of RuleAction objects
      **/
     public function getRuleActions($ID)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -440,7 +439,6 @@ class RuleAction extends CommonDBChild
             'affectbyfqdn'        => __('Assign: equipment by name + domain'),
             'affectbymac'         => __('Assign: equipment by MAC address'),
             'compute'             => __('Recalculate'),
-            'delete'              => __('Delete'),
             'do_not_compute'      => __('Do not calculate'),
             'send'                => __('Send'),
             'add_validation'      => __('Send'),
@@ -496,7 +494,6 @@ class RuleAction extends CommonDBChild
      **/
     public function getAlreadyUsedForRuleID($rules_id, $sub_type)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if ($rule = getItemForItemtype($sub_type)) {
@@ -720,7 +717,6 @@ class RuleAction extends CommonDBChild
      **/
     public function showForm($ID, array $options = [])
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // Yllen: you always have parent for action

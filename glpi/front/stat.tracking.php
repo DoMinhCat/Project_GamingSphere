@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -39,9 +39,6 @@ use Glpi\Stat\Data\Location\StatDataOpened;
 use Glpi\Stat\Data\Location\StatDataOpenSatisfaction;
 use Glpi\Stat\Data\Location\StatDataSolved;
 
-/** @var array $CFG_GLPI */
-global $CFG_GLPI;
-
 include('../inc/includes.php');
 
 Html::header(__('Statistics'), '', "helpdesk", "stat");
@@ -54,28 +51,18 @@ if (!$item = getItemForItemtype($_GET['itemtype'])) {
 
 if (empty($_GET["type"])) {
     $_GET["type"] = "user";
-} else {
-    $_GET["type"] = (string)$_GET["type"];
 }
 
 if (empty($_GET["showgraph"])) {
     $_GET["showgraph"] = 0;
-} else {
-    $_GET["showgraph"] = (int)$_GET["showgraph"];
 }
 
 if (empty($_GET["value2"])) {
     $_GET["value2"] = 0;
 }
 
-//sanitize dates
-foreach (['date1', 'date2'] as $key) {
-    if (array_key_exists($key, $_GET) && preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)$_GET[$key]) !== 1) {
-        unset($_GET[$key]);
-    }
-}
 if (empty($_GET["date1"]) && empty($_GET["date2"])) {
-    $year          = date("Y") - 1;
+    $year              = date("Y") - 1;
     $_GET["date1"] = date("Y-m-d", mktime(1, 0, 0, date("m"), date("d"), $year));
     $_GET["date2"] = date("Y-m-d");
 }
@@ -92,8 +79,6 @@ if (
 
 if (!isset($_GET["start"])) {
     $_GET["start"] = 0;
-} else {
-    $_GET["start"] = (int)$_GET["start"];
 }
 
 $stat = new Stat();
@@ -147,7 +132,7 @@ foreach ($items as $label => $tab) {
 
 echo "<div class='center'><form method='get' name='form' action='stat.tracking.php'>";
 // Keep it first param
-echo "<input type='hidden' name='itemtype' value=\"" . htmlspecialchars($_GET["itemtype"]) . "\">";
+echo "<input type='hidden' name='itemtype' value=\"" . $_GET["itemtype"] . "\">";
 
 echo "<table class='tab_cadre_fixe'>";
 echo "<tr class='tab_bg_2'><td rowspan='2' class='center' width='30%'>";
@@ -164,7 +149,7 @@ echo "<input type='submit' class='btn btn-primary' name='submit' value=\"" . __s
 echo "<tr class='tab_bg_2'><td class='right'>" . __('End date') . "</td><td>";
 Html::showDateField("date2", ['value' => $_GET["date2"]]);
 echo "</td><td class='center'>";
-echo "<input type='hidden' name='value2' value='" . Html::cleanInputText($_GET["value2"]) . "'>";
+echo "<input type='hidden' name='value2' value='" . $_GET["value2"] . "'>";
 Dropdown::showYesNo('showgraph', $_GET['showgraph']);
 echo "</td></tr>";
 echo "</table>";
@@ -190,17 +175,9 @@ Html::printPager(
     $_GET['start'],
     count($val),
     $CFG_GLPI['root_doc'] . '/front/stat.tracking.php',
-    Toolbox::append_params(
-        [
-            'date1'     => $_GET['date1'],
-            'date2'     => $_GET['date2'],
-            'type'      => $_GET['type'],
-            'showgraph' => $_GET['showgraph'],
-            'itemtype'  => $_GET['itemtype'],
-            'value2'    => $_GET['value2'],
-        ],
-        '&amp;'
-    ),
+    "date1=" . $_GET["date1"] . "&amp;date2=" . $_GET["date2"] . "&amp;type=" . $_GET["type"] .
+                    "&amp;showgraph=" . $_GET["showgraph"] . "&amp;itemtype=" . $_GET["itemtype"] .
+                    "&amp;value2=" . $_GET['value2'],
     'Stat',
     $params
 );

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -42,7 +42,6 @@ use Glpi\Toolbox\Sanitizer;
 class Document extends CommonDBTM
 {
     use Glpi\Features\TreeBrowse;
-    use Glpi\Features\ParentStatus;
 
    // From CommonDBTM
     public $dohistory                   = true;
@@ -71,7 +70,6 @@ class Document extends CommonDBTM
      **/
     public static function canApplyOn($item)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // All devices can have documents!
@@ -104,7 +102,6 @@ class Document extends CommonDBTM
      **/
     public static function getItemtypesThatCanHave()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         return array_merge(
@@ -139,13 +136,10 @@ class Document extends CommonDBTM
     {
 
         if (isset($this->input['itemtype']) && isset($this->input['items_id'])) {
-            if (
-                ($item = getItemForItemtype($this->input['itemtype']))
-                && $item->getFromDB($this->input['items_id'])
-            ) {
-                return $item->canAddItem('Document');
-            } else {
-                unset($this->input['itemtype'], $this->input['items_id']);
+            if ($item = getItemForItemtype($this->input['itemtype'])) {
+                if ($item->canAddItem('Document')) {
+                    return true;
+                }
             }
         }
 
@@ -228,7 +222,6 @@ class Document extends CommonDBTM
 
     public function prepareInputForAdd($input)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        // security (don't accept filename from $_REQUEST)
@@ -361,12 +354,6 @@ class Document extends CommonDBTM
                 'itemtype'     => $this->input["itemtype"],
                 'items_id'     => $this->input["items_id"]
             ]);
-
-            if (is_a($this->input["itemtype"], CommonITILObject::class, true)) {
-                $itilobject = new $this->input["itemtype"]();
-                $itilobject->getFromDB($this->input["items_id"]);
-                $this->updateParentStatus($itilobject, $this->input);
-            }
 
             Event::log(
                 $this->fields['id'],
@@ -537,7 +524,6 @@ class Document extends CommonDBTM
      **/
     public static function getMaxUploadSize()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
        //TRANS: %s is a size
@@ -569,16 +555,13 @@ class Document extends CommonDBTM
      **/
     public function getDownloadLink($linked_item = null, $len = 20)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $link_params = '';
         if (is_string($linked_item)) {
             // Old behaviour.
-            Toolbox::deprecated('Passing additionnal URL parameters in Document::getDownloadLink() is deprecated.', true, '11.0');
+            // TODO: Deprecate it in GLPI 10.1.
+            // Toolbox::deprecated('Passing additionnal URL parameters in Document::getDownloadLink() is deprecated.');
             $linked_item = null;
             $link_params = $linked_item;
         } elseif ($linked_item !== null && !($linked_item instanceof CommonDBTM)) {
@@ -657,7 +640,6 @@ class Document extends CommonDBTM
     public function getFromDBbyContent($entity, $path)
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (empty($path)) {
@@ -704,7 +686,7 @@ class Document extends CommonDBTM
     public function canViewFile(array $options = [])
     {
 
-        // Check if it is my doc
+       // Check if it is my doc
         if (
             Session::getLoginUserID()
             && ($this->can($this->fields["id"], READ)
@@ -794,7 +776,6 @@ class Document extends CommonDBTM
     private function canViewFileFromReminder()
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!Session::getLoginUserID()) {
@@ -838,10 +819,6 @@ class Document extends CommonDBTM
     private function canViewFileFromKnowbaseItem()
     {
 
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
         global $CFG_GLPI, $DB;
 
        // Knowbase items can be viewed by non connected user in case of public FAQ
@@ -899,7 +876,6 @@ class Document extends CommonDBTM
     private function canViewFileFromItilObject($itemtype, $items_id)
     {
 
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!Session::getLoginUserID()) {
@@ -939,7 +915,6 @@ class Document extends CommonDBTM
      */
     private function canViewFileFromItem($itemtype, $items_id): bool
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $item = new $itemtype();
@@ -1176,12 +1151,6 @@ class Document extends CommonDBTM
      **/
     public function moveUploadedDocument(array &$input, $filename)
     {
-        if (str_contains($filename, '/') || str_contains($filename, '\\')) {
-            // Filename is not supposed to contains directory separators.
-            trigger_error(sprintf('Moving file `%s` is forbidden for security reasons.', $filename), E_USER_WARNING);
-            return false;
-        }
-
         $prefix = '';
         if (isset($input['_prefix_filename'])) {
             $prefix = array_shift($input['_prefix_filename']);
@@ -1294,12 +1263,6 @@ class Document extends CommonDBTM
      **/
     public static function moveDocument(array &$input, $filename)
     {
-        if (str_contains($filename, '/') || str_contains($filename, '\\')) {
-            // Filename is not supposed to contains directory separators.
-            trigger_error(sprintf('Moving file `%s` is forbidden for security reasons.', $filename), E_USER_WARNING);
-            return false;
-        }
-
         $prefix = '';
         if (isset($input['_prefix_filename'])) {
             $prefix = array_shift($input['_prefix_filename']);
@@ -1374,13 +1337,24 @@ class Document extends CommonDBTM
        // Local file : try to detect mime type
         $input['mime'] = Toolbox::getMime($fullpath);
 
-        // Copy (will overwrite dest file if present)
-        if (copy($fullpath, GLPI_DOC_DIR . "/" . $new_path)) {
-            Session::addMessageAfterRedirect(__('Document copy succeeded.'));
-        } else {
-            Session::addMessageAfterRedirect(__('File move failed'), false, ERROR);
-            @unlink($fullpath);
-            return false;
+        if (
+            is_writable(GLPI_TMP_DIR)
+            && is_writable($fullpath)
+        ) { // Move if allowed
+            if (self::renameForce($fullpath, GLPI_DOC_DIR . "/" . $new_path)) {
+                Session::addMessageAfterRedirect(__('Document move succeeded.'));
+            } else {
+                Session::addMessageAfterRedirect(__('File move failed.'), false, ERROR);
+                return false;
+            }
+        } else { // Copy (will overwrite dest file is present)
+            if (copy($fullpath, GLPI_DOC_DIR . "/" . $new_path)) {
+                Session::addMessageAfterRedirect(__('Document copy succeeded.'));
+            } else {
+                Session::addMessageAfterRedirect(__('File move failed'), false, ERROR);
+                @unlink($fullpath);
+                return false;
+            }
         }
 
        // For display
@@ -1399,7 +1373,7 @@ class Document extends CommonDBTM
      * @param &$input    array of datas need for add/update (will be completed)
      * @param $FILEDESC        FILE descriptor
      *
-     * @return boolean
+     * @return true on success
      **/
     public static function uploadDocument(array &$input, $FILEDESC)
     {
@@ -1605,7 +1579,6 @@ class Document extends CommonDBTM
      **/
     public static function isValidDoc($filename)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $splitter = explode(".", $filename);
@@ -1659,29 +1632,18 @@ class Document extends CommonDBTM
      **/
     public static function dropdown($options = [])
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $p['name']    = 'documents_id';
         $p['entity']  = '';
         $p['used']    = [];
         $p['display'] = true;
         $p['hide_if_no_elements'] = false;
-        $p['readonly'] = false;
 
         if (is_array($options) && count($options)) {
             foreach ($options as $key => $val) {
                 $p[$key] = $val;
             }
-        }
-
-        if (isset($p['value']) && ($p['value'] > 0)) {
-            $document = new Document();
-            $document->getFromDB($p['value']);
-            $p['rubdoc'] = $document->fields['documentcategories_id'];
         }
 
         $subwhere = [
@@ -1715,21 +1677,10 @@ class Document extends CommonDBTM
             $values[$data['id']] = $data['name'];
         }
         $rand = mt_rand();
-        $readonly = $p['readonly'];
-        $out = '';
-        $width = '30%';
-        if ($readonly) {
-            $width = '100%';
-            $out .= '<div class="row">';
-            $out .= '<div class="col-xxl-5 p-0">';
-        }
-        $out  .= Dropdown::showFromArray('_rubdoc', $values, [
-            'width'               => $width,
+        $out  = Dropdown::showFromArray('_rubdoc', $values, ['width'               => '30%',
             'rand'                => $rand,
             'display'             => false,
-            'display_emptychoice' => true,
-            'value'               => $p['rubdoc'] ?? 0,
-            'readonly'            => $readonly
+            'display_emptychoice' => true
         ]);
         $field_id = Html::cleanId("dropdown__rubdoc$rand");
 
@@ -1740,10 +1691,6 @@ class Document extends CommonDBTM
             'used'   => $p['used']
         ];
 
-        if ($readonly) {
-            $out .= '</div>';
-            $out .= '<div class="col-xxl-7 p-0">';
-        }
         $out .= Ajax::updateItemOnSelectEvent(
             $field_id,
             "show_" . $p['name'] . $rand,
@@ -1754,33 +1701,13 @@ class Document extends CommonDBTM
         $out .= "<span id='show_" . $p['name'] . "$rand'>";
         $out .= "</span>\n";
 
-        $params['rubdoc'] = $p['rubdoc'] ?? 0;
-        $params['value'] = $p['value'] ?? 0;
-        if ($readonly) {
-            $document = new Document();
-            $doclist = $document->find([]);
-            foreach ($doclist as $doc) {
-                $docvalue[$doc['id']] = $doc['name'];
-            }
-
-            $out .= Dropdown::showFromArray('document', $docvalue ?? [], [
-                'width'               => $width,
-                'rand'                => $rand,
-                'display'             => false,
-                'display_emptychoice' => true,
-                'value'               => $p['value'] ?? 0,
-                'readonly'            => $readonly
-            ]);
-            $out .= '</div>';
-            $out .= '</div>';
-        } else {
-            $out .= Ajax::updateItem(
-                "show_" . $p['name'] . $rand,
-                $CFG_GLPI["root_doc"] . "/ajax/dropdownRubDocument.php",
-                $params,
-                false
-            );
-        }
+        $params['rubdoc'] = 0;
+        $out .= Ajax::updateItem(
+            "show_" . $p['name'] . $rand,
+            $CFG_GLPI["root_doc"] . "/ajax/dropdownRubDocument.php",
+            $params,
+            false
+        );
         if ($p['display']) {
             echo $out;
             return $rand;
@@ -1792,8 +1719,8 @@ class Document extends CommonDBTM
     public static function getMassiveActionsForItemtype(
         array &$actions,
         $itemtype,
-        $is_deleted = false,
-        ?CommonDBTM $checkitem = null
+        $is_deleted = 0,
+        CommonDBTM $checkitem = null
     ) {
         $action_prefix = 'Document_Item' . MassiveAction::CLASS_ACTION_SEPARATOR;
 
@@ -1937,7 +1864,7 @@ class Document extends CommonDBTM
 
         switch ($name) {
             case 'cleanorphans':
-                return ['description' => __('Clean orphaned documents: deletes all documents that are not associated with any items.')];
+                return ['description' => __('Clean orphaned documents')];
         }
         return [];
     }
@@ -1951,7 +1878,6 @@ class Document extends CommonDBTM
      **/
     public static function cronCleanOrphans(CronTask $task)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $dtable = static::getTable();
@@ -2000,8 +1926,8 @@ class Document extends CommonDBTM
     /**
      * find and load a document which is a duplicate of a file, with respect of blacklisting
      *
-     * @param integer $entities_id  entity of the document
-     * @param string  $filename     filename of the searched file
+     * @param integer $entity    entity of the document
+     * @param string  $path      path of the searched file
      *
      * @return boolean
      */
@@ -2022,7 +1948,7 @@ class Document extends CommonDBTM
     /**
      * It checks if a file exists and is readable
      *
-     * @param string $filename The name of the file to check.
+     * @param string filename The name of the file to check.
      *
      * @return boolean
      */

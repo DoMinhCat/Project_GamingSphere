@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -44,11 +44,6 @@ use Twig\TwigFilter;
  */
 class DocumentExtension extends AbstractExtension
 {
-    /**
-     * Static cache for user defined files extensions icons.
-     */
-    private static $extensionIcon = null;
-
     public function getFilters(): array
     {
         return [
@@ -66,36 +61,11 @@ class DocumentExtension extends AbstractExtension
      */
     public function getDocumentIcon(string $filename): string
     {
-        /** @var array $CFG_GLPI */
-        /** @var \DBmysql $DB */
-        global $CFG_GLPI, $DB;
+        global $CFG_GLPI;
 
-        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        $icon = sprintf('/pics/icones/%s-dist.png', strtolower(pathinfo($filename, PATHINFO_EXTENSION)));
 
-        if (self::$extensionIcon === null) {
-            $iterator = $DB->request([
-                'SELECT' => [
-                    'ext',
-                    'icon'
-                ],
-                'FROM' => 'glpi_documenttypes',
-                'WHERE' => [
-                    'icon' => ['<>', '']
-                ]
-            ]);
-            foreach ($iterator as $result) {
-                self::$extensionIcon[$result['ext']] = $result['icon'];
-            }
-        }
-
-        $defaultIcon = '/pics/timeline/file.png';
-        $icon = $defaultIcon;
-
-        if (isset(self::$extensionIcon[$extension])) {
-            $icon = '/pics/icones/' . self::$extensionIcon[$extension];
-        }
-
-        return $CFG_GLPI['root_doc'] . (file_exists(GLPI_ROOT . $icon) ? $icon : $defaultIcon);
+        return $CFG_GLPI['root_doc'] . (file_exists(GLPI_ROOT . $icon) ? $icon : '/pics/timeline/file.png');
     }
 
     /**

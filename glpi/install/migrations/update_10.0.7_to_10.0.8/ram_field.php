@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33,12 +33,12 @@
  * ---------------------------------------------------------------------
  */
 
-foreach (['glpi_computervirtualmachines', 'glpi_networkequipments'] as $table) {
-    /**
-     * @var \DBmysql $DB
-     * @var \Migration $migration
-     */
+/**
+ * @var DB $DB
+ * @var Migration $migration
+ */
 
+foreach (['glpi_computervirtualmachines', 'glpi_networkequipments'] as $table) {
     // field has to be nullable to be able to set empty values to null
     $migration->changeField(
         $table,
@@ -48,6 +48,11 @@ foreach (['glpi_computervirtualmachines', 'glpi_networkequipments'] as $table) {
     );
     $migration->migrationOneTable($table);
 
+    $DB->updateOrDie(
+        $table,
+        ['ram' => null],
+        ['ram' => '']
+    );
     $iterator = $DB->request([
         'FROM'  => $table,
         'WHERE' => [
@@ -61,19 +66,6 @@ foreach (['glpi_computervirtualmachines', 'glpi_networkequipments'] as $table) {
             ['id'  => $row['id']]
         );
     }
-    $DB->updateOrDie(
-        $table,
-        ['ram' => null],
-        [
-            'OR' => [
-                'ram' => '',
-                // We expect the `ram` value to be expressed in MiB, so if the value exceeds the maximum value of the field,
-                // it is probably invalid, since it corresponds to more than 4096 TiB of RAM.
-                // Setting value to null will prevent a `Out of range value for column 'ram'` SQL error.
-                new QueryExpression(sprintf('CAST(%s AS UNSIGNED) >= POW(2, 32)', 'ram')),
-            ],
-        ]
-    );
     $migration->changeField(
         $table,
         'ram',

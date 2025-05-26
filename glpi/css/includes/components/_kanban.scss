@@ -5,7 +5,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -181,20 +181,14 @@
                         .kanban-column-header-content {
                             flex-direction: column;
 
-                            .kanban-collapse-column {
+                            .kanban-collapse-column,
+                            .kanban-column-title,
+                            .kanban_nb {
                                 transform: rotate(90deg);
                                 transform-origin: center;
                                 display: inline-block;
                                 margin: calc(50% - 8px) 0;
                                 white-space: nowrap;
-                            }
-
-                            .kanban-column-title,
-                            .kanban_nb {
-                                writing-mode: vertical-lr;
-                                margin-top: 10px;
-                                margin-left: 0;
-                                padding: 12px 3px;
                             }
 
                             .kanban-collapse-column {

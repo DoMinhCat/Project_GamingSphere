@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -99,13 +99,14 @@ class Profile_User extends CommonDBRelation
 
     public function prepareInputForAdd($input)
     {
+
        // TODO: check if the entities should not be inherited from the profile or the user
-        $valid_entity = isset($input['entities_id']) && $input['entities_id'] >= 0;
-        $valid_profile = isset($input['profiles_id']) && $input['profiles_id'] > 0;
-        $valid_user = isset($input['users_id']) && $input['users_id'] > 0;
-        if (!$valid_entity || !$valid_user || !$valid_profile) {
+        if (
+            !isset($input['entities_id'])
+            || ($input['entities_id'] < 0)
+        ) {
             Session::addMessageAfterRedirect(
-                __('One or more required fields are missing'),
+                __('No selected element or badly defined operation'),
                 false,
                 ERROR
             );
@@ -272,7 +273,6 @@ class Profile_User extends CommonDBRelation
      **/
     public static function showForEntity(Entity $entity)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $entity->getField('id');
@@ -464,7 +464,6 @@ class Profile_User extends CommonDBRelation
      **/
     public static function showForProfile(Profile $prof)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID      = $prof->fields['id'];
@@ -656,7 +655,6 @@ class Profile_User extends CommonDBRelation
      **/
     public static function getUserEntities($user_ID, $is_recursive = true, $default_first = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -666,7 +664,7 @@ class Profile_User extends CommonDBRelation
             ],
             'DISTINCT'        => true,
             'FROM'            => 'glpi_profiles_users',
-            'WHERE'           => ['users_id' => (int)$user_ID]
+            'WHERE'           => ['users_id' => $user_ID]
         ]);
         $entities = [];
 
@@ -679,10 +677,10 @@ class Profile_User extends CommonDBRelation
             }
         }
 
-       // Set default user entity at the beginning
+       // Set default user entity at the begin
         if ($default_first) {
             $user = new User();
-            if ($user->getFromDB((int)$user_ID)) {
+            if ($user->getFromDB($user_ID)) {
                 $ent = $user->getField('entities_id');
                 if (in_array($ent, $entities)) {
                     array_unshift($entities, $ent);
@@ -710,7 +708,6 @@ class Profile_User extends CommonDBRelation
      **/
     public static function getUserEntitiesForRight($user_ID, $rightname, $rights, $is_recursive = true)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $putable = Profile_User::getTable();
@@ -738,7 +735,7 @@ class Profile_User extends CommonDBRelation
                 ]
             ],
             'WHERE'           => [
-                "$putable.users_id"  => (int)$user_ID,
+                "$putable.users_id"  => $user_ID,
                 "$prtable.name"      => $rightname,
                 "$prtable.rights"    => ['&', $rights]
             ]
@@ -775,12 +772,11 @@ class Profile_User extends CommonDBRelation
      **/
     public static function getUserProfiles($user_ID, $sqlfilter = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $profiles = [];
 
-        $where = ['users_id' => (int)$user_ID];
+        $where = ['users_id' => $user_ID];
         if (count($sqlfilter) > 0) {
             $where = $where + $sqlfilter;
         }
@@ -812,15 +808,14 @@ class Profile_User extends CommonDBRelation
      **/
     public static function getEntitiesForProfileByUser($users_id, $profiles_id, $child = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
             'SELECT' => ['entities_id', 'is_recursive'],
             'FROM'   => self::getTable(),
             'WHERE'  => [
-                'users_id'     => (int)$users_id,
-                'profiles_id'  => (int)$profiles_id
+                'users_id'     => $users_id,
+                'profiles_id'  => $profiles_id
             ]
         ]);
 
@@ -854,13 +849,12 @@ class Profile_User extends CommonDBRelation
      **/
     public static function getEntitiesForUser($users_id, $child = false)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
             'SELECT' => ['entities_id', 'is_recursive'],
             'FROM'   => 'glpi_profiles_users',
-            'WHERE'  => ['users_id' => (int)$users_id]
+            'WHERE'  => ['users_id' => $users_id]
         ]);
 
         $entities = [];
@@ -883,14 +877,14 @@ class Profile_User extends CommonDBRelation
     /**
      * Get entities for which a user have a right
      *
-     * @param int  $user_ID      user ID
-     * @param bool $only_dynamic get only recursive rights (false by default)
+     * @param $user_ID         user ID
+     * @param $only_dynamic    get only recursive rights (false by default)
      *
      * @return array of entities ID
      **/
     public static function getForUser($user_ID, $only_dynamic = false)
     {
-        $condition = ['users_id' => (int)$user_ID];
+        $condition = ['users_id' => $user_ID];
 
         if ($only_dynamic) {
             $condition['is_dynamic'] = 1;
@@ -906,15 +900,14 @@ class Profile_User extends CommonDBRelation
      **/
     public static function haveUniqueRight($user_ID, $profile_id)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request([
             'COUNT'  => 'cpt',
             'FROM'   => self::getTable(),
             'WHERE'  => [
-                'users_id'     => (int)$user_ID,
-                'profiles_id'  => (int)$profile_id
+                'users_id'     => $user_ID,
+                'profiles_id'  => $profile_id
             ]
         ])->current();
         return $result['cpt'];
@@ -929,7 +922,7 @@ class Profile_User extends CommonDBRelation
     {
 
         $crit = [
-            'users_id' => (int)$user_ID,
+            'users_id' => $user_ID,
         ];
 
         if ($only_dynamic) {
@@ -1038,13 +1031,12 @@ class Profile_User extends CommonDBRelation
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (!$withtemplate) {
             $nb = 0;
-            switch (get_class($item)) {
-                case Entity::class:
+            switch ($item->getType()) {
+                case 'Entity':
                     if (Session::haveRight('user', READ)) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
                             $count = $DB->request([
@@ -1069,7 +1061,7 @@ class Profile_User extends CommonDBRelation
                     }
                     break;
 
-                case Profile::class:
+                case 'Profile':
                     if (Session::haveRight('user', READ)) {
                         if ($_SESSION['glpishow_count_on_tabs']) {
                               $nb = self::countForItem($item);
@@ -1078,7 +1070,7 @@ class Profile_User extends CommonDBRelation
                     }
                     break;
 
-                case User::class:
+                case 'User':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = self::countForItem($item);
                     }
@@ -1096,16 +1088,16 @@ class Profile_User extends CommonDBRelation
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
 
-        switch (get_class($item)) {
-            case Entity::class:
+        switch ($item->getType()) {
+            case 'Entity':
                 self::showForEntity($item);
                 break;
 
-            case Profile::class:
+            case 'Profile':
                 self::showForProfile($item);
                 break;
 
-            case User::class:
+            case 'User':
                 self::showForUser($item);
                 break;
         }

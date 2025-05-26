@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -155,10 +155,6 @@ class NetworkPortType extends CommonDropdown
      */
     public static function getInstantiationType($type)
     {
-        /**
-         * @var \DBmysql $DB
-         * @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE
-         */
         global $DB, $GLPI_CACHE;
 
         if (null === $type || empty($type)) {
@@ -185,7 +181,7 @@ class NetworkPortType extends CommonDropdown
             $othername = "$name ($num)";
 
             if ($type === $num || $type == $name || $type == $othername) {
-                return $entry['instantiation_type'] ?? self::DEFAULT_TYPE;
+                return $row['instantiation_type'] ?? self::DEFAULT_TYPE;
             }
         }
 
@@ -198,7 +194,7 @@ class NetworkPortType extends CommonDropdown
         parent::post_addItem();
     }
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
         $this->invalidateCache();
         parent::post_updateItem($history);
@@ -212,7 +208,6 @@ class NetworkPortType extends CommonDropdown
 
     protected function invalidateCache()
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
         $GLPI_CACHE->delete('glpi_inventory_ports_types');
     }

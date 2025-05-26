@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -91,7 +91,6 @@ class PCIVendor extends CommonDropdown implements CacheableListInterface
      */
     public static function getList(): array
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         $vendors = new PCIVendor();
@@ -115,7 +114,6 @@ class PCIVendor extends CommonDropdown implements CacheableListInterface
      */
     private function getDbList(): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $list = [];
@@ -143,7 +141,6 @@ class PCIVendor extends CommonDropdown implements CacheableListInterface
      */
     public function invalidateListCache(): void
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         $GLPI_CACHE->delete($this->cache_key);

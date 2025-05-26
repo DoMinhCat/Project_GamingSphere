@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -145,7 +145,7 @@ class GLPINetwork extends CommonGLPI
         $comments = sprintf('installation-mode:%s', GLPI_INSTALL_MODE);
         if (!empty(GLPI_USER_AGENT_EXTRA_COMMENTS)) {
            // append extra comments (remove '(' and ')' chars to not break UA string)
-            $comments .= '; ' . (string)preg_replace('/\(\)/', ' ', GLPI_USER_AGENT_EXTRA_COMMENTS);
+            $comments .= '; ' . preg_replace('/\(\)/', ' ', GLPI_USER_AGENT_EXTRA_COMMENTS);
         }
         return sprintf('GLPI/%s (%s)', $version, $comments);
     }
@@ -170,7 +170,6 @@ class GLPINetwork extends CommonGLPI
      */
     public static function getRegistrationKey(): string
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
         return (new GLPIKey())->decrypt($CFG_GLPI['glpinetwork_registration_key'] ?? '');
     }
@@ -188,7 +187,6 @@ class GLPINetwork extends CommonGLPI
      */
     public static function getRegistrationInformations(bool $force_refresh = false)
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         $registration_key = self::getRegistrationKey();
@@ -325,7 +323,6 @@ class GLPINetwork extends CommonGLPI
 
     public static function getOffers(bool $force_refresh = false): array
     {
-        /** @var \Psr\SimpleCache\CacheInterface $GLPI_CACHE */
         global $GLPI_CACHE;
 
         $lang = preg_replace('/^([a-z]+)_.+$/', '$1', $_SESSION["glpilanguage"]);

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -55,7 +55,7 @@ class Item_Cluster extends CommonDBRelation
         if ($_SESSION['glpishow_count_on_tabs']) {
             $nb = self::countForMainItem($item);
         }
-        return self::createTabEntry(_n('Item', 'Items', $nb), $nb);
+        return self::createTabEntry(_n('Item', 'Items', $nb));
     }
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
@@ -81,7 +81,6 @@ class Item_Cluster extends CommonDBRelation
      **/
     public static function showItems(Cluster $cluster)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $cluster->fields['id'];
@@ -180,11 +179,7 @@ class Item_Cluster extends CommonDBRelation
 
     public function showForm($ID, array $options = [])
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         echo "<div class='center'>";
 
@@ -288,7 +283,7 @@ class Item_Cluster extends CommonDBRelation
      *
      * @param array $input Input data
      *
-     * @return false|array
+     * @return array
      */
     private function prepareInput($input)
     {

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -86,7 +86,6 @@ class Filter extends \CommonDBChild
      */
     public static function getRegisteredFilterClasses(): array
     {
-        /** @var array $PLUGIN_HOOKS */
         global $PLUGIN_HOOKS;
 
         $filters = [
@@ -309,7 +308,6 @@ JAVASCRIPT;
      */
     public static function getForDashboard(int $dashboards_id = 0): string
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $dr_iterator = $DB->request([
@@ -329,13 +327,12 @@ JAVASCRIPT;
      * Save filter in DB for the provided dashboard
      *
      * @param int $dashboards_id id (not key) of the dashboard
-     * @param string $settings contains a JSON representation of the filter data
+     * @param array $settings contains a JSON representation of the filter data
      *
      * @return void
      */
     public static function addForDashboard(int $dashboards_id = 0, string $settings = '')
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $DB->updateOrInsert(

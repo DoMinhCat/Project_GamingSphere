@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -88,7 +88,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
     /**
      * Constructor
      *
-     * @param ?DBmysql $dbconnexion Database Connection (must be a CommonDBTM object)
+     * @param DBmysql $dbconnexion Database Connnexion (must be a CommonDBTM object)
      *
      * @return void
      */
@@ -109,7 +109,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
     public function execute($table, $crit = "", $debug = false)
     {
         $this->buildQuery($table, $crit, $debug);
-        $this->res = ($this->conn ? $this->conn->doQuery($this->sql) : false);
+        $this->res = ($this->conn ? $this->conn->query($this->sql) : false);
         $this->count = $this->res instanceof \mysqli_result ? $this->conn->numrows($this->res) : 0;
         $this->setPosition(0);
         return $this;
@@ -131,7 +131,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
 
         $is_legacy = false;
 
-        if (is_string($table) && strpos($table, " ") !== false) {
+        if (is_string($table) && strpos($table, " ")) {
             $names = preg_split('/\s+AS\s+/i', $table);
             if (isset($names[1]) && strpos($names[1], ' ') || !isset($names[1]) || strpos($names[0], ' ')) {
                 $is_legacy = true;
@@ -139,10 +139,9 @@ class DBmysqlIterator implements SeekableIterator, Countable
         }
 
         if ($is_legacy) {
-            Toolbox::deprecated(
-                'Direct query usage is strongly discouraged!',
-                false
-            );
+           //if ($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE) {
+           //   trigger_error("Deprecated usage of SQL in DB/request (full query)", E_USER_DEPRECATED);
+           //}
             $this->sql = $table;
         } else {
            // Modern way
@@ -243,7 +242,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
                     $this->sql .= "" . DBmysql::quoteName($field);
                 } else {
                     if ($distinct) {
-                        throw new \LogicException("With COUNT and DISTINCT, you must specify exactly one field, or use 'COUNT DISTINCT'.");
+                        trigger_error("With COUNT and DISTINCT, you must specify exactly one field, or use 'COUNT DISTINCT'", E_USER_ERROR);
                     }
                     $this->sql .= "*";
                 }
@@ -278,7 +277,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
                     $table = array_map([DBmysql::class, 'quoteName'], $table);
                     $this->sql .= ' FROM ' . implode(", ", $table);
                 } else {
-                    throw new \LogicException("Missing table name.");
+                    trigger_error("Missing table name", E_USER_ERROR);
                 }
             } else if ($table) {
                 if ($table instanceof \AbstractQuery) {
@@ -294,7 +293,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
                 * TODO filter with if ($where || !empty($crit)) {
                 * but not usefull for now, as we CANNOT write something like "SELECT NOW()"
                 */
-                throw new \LogicException("Missing table name.");
+                trigger_error("Missing table name", E_USER_ERROR);
             }
 
            // JOIN
@@ -321,7 +320,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
                     $groupby = array_map([DBmysql::class, 'quoteName'], $groupby);
                     $this->sql .= ' GROUP BY ' . implode(", ", $groupby);
                 } else {
-                    throw new \LogicException("Missing group by field.");
+                    trigger_error("Missing group by field", E_USER_ERROR);
                 }
             } else if ($groupby) {
                 $groupby = DBmysql::quoteName($groupby);
@@ -377,7 +376,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
             } else if ($o instanceof QueryExpression) {
                 $cleanorderby[] = $o->getValue();
             } else {
-                throw new \LogicException("Invalid order clause.");
+                trigger_error("Invalid order clause", E_USER_ERROR);
             }
         }
 
@@ -657,7 +656,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
         $query = '';
         foreach ($joinarray as $jointype => $jointables) {
             if (!in_array($jointype, ['JOIN', 'LEFT JOIN', 'INNER JOIN', 'RIGHT JOIN'])) {
-                throw new \LogicException(sprintf('Invalid JOIN type `%s`.', $jointype));
+                throw new \RuntimeException('BAD JOIN');
             }
 
             if ($jointype == 'JOIN') {
@@ -665,7 +664,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
             }
 
             if (!is_array($jointables)) {
-                throw new \LogicException("BAD JOIN, value must be [ table => criteria ].");
+                trigger_error("BAD JOIN, value must be [ table => criteria ]", E_USER_ERROR);
                 continue;
             }
 
@@ -681,7 +680,7 @@ class DBmysqlIterator implements SeekableIterator, Countable
                     $jointablekey = $jointablecrit['TABLE'];
                     unset($jointablecrit['TABLE']);
                 } else if (is_numeric($jointablekey) || $jointablekey == 'FKEY' || $jointablekey == 'ON') {
-                    throw new \LogicException('BAD JOIN');
+                    throw new \RuntimeException('BAD JOIN');
                 }
 
                 if ($jointablekey instanceof \QuerySubQuery) {
@@ -724,10 +723,8 @@ class DBmysqlIterator implements SeekableIterator, Countable
                 $fkey = $this->analyseFkey($values);
                 return $fkey . ' ' . key($condition) . ' ' . $this->analyseCrit(current($condition));
             }
-        } else if ($values instanceof QueryExpression) {
-            return $values->getValue();
         }
-        throw new \LogicException('BAD FOREIGN KEY, should be [ table1 => key1, table2 => key2 ] or [ table1 => key1, table2 => key2, [criteria]].');
+        trigger_error("BAD FOREIGN KEY, should be [ table1 => key1, table2 => key2 ] or [ table1 => key1, table2 => key2, [criteria]]", E_USER_ERROR);
     }
 
     /**

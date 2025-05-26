@@ -34,7 +34,7 @@ final class VarExporter
      *
      * @param mixed $value          The value to export
      * @param bool  &$isStaticValue Set to true after execution if the provided value is static, false otherwise
-     * @param array &$foundClasses  Classes found in the value are added to this list as both keys and values
+     * @param bool  &$classes       Classes found in the value are added to this list as both keys and values
      *
      * @throws ExceptionInterface When the provided value cannot be serialized
      */

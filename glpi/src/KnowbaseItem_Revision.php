@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -46,17 +46,14 @@ class KnowbaseItem_Revision extends CommonDBTM
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        if (
-            !($item instanceof CommonDBTM)
-            || !$item->canUpdateItem()
-        ) {
+        if (!$item->canUpdateItem()) {
             return '';
         }
 
         $nb = 0;
         if ($_SESSION['glpishow_count_on_tabs']) {
             $where = [];
-            if ($item instanceof KnowbaseItem) {
+            if ($item->getType() == KnowbaseItem::getType()) {
                 $where = [
                     'knowbaseitems_id' => $item->getID(),
                     'language'         => ''
@@ -90,11 +87,7 @@ class KnowbaseItem_Revision extends CommonDBTM
      **/
     public static function showForItem(CommonDBTM $item, $withtemplate = 0)
     {
-        /**
-         * @var array $CFG_GLPI
-         * @var \DBmysql $DB
-         */
-        global $CFG_GLPI, $DB;
+        global $DB, $CFG_GLPI;
 
         $item_id = $item->getID();
         $item_type = $item::getType();
@@ -224,9 +217,9 @@ class KnowbaseItem_Revision extends CommonDBTM
                      title: __('Show revision %rev').replace(/%rev/, _this.data('rev')),
                      body: `<div>
                         <h2>\${__('Subject')}</h2>
-                        <div class='text-wrap text-break'>\${data.name}</div>
+                        <div>\${data.name}</div>
                         <h2>\${__('Content')}</h2>
-                        <div class='text-wrap text-break'>\${data.answer}</div>
+                        <div>\${data.answer}</div>
                      </div>`,
                   });
                })
@@ -271,19 +264,18 @@ class KnowbaseItem_Revision extends CommonDBTM
                            </tr>
                            <tr>
                               <th>\${__('Subject')}</th>
-                              <td class='original text-wrap text-break'>\${data['old']['name']}</td>
-                              <td class='changed text-wrap text-break'>\${data['diff']['name']}</td>
-                              <td class='diff text-wrap text-break'></td>
+                              <td class='original'>\${data['old']['name']}</td>
+                              <td class='changed'>\${data['diff']['name']}</td>
+                              <td class='diff'></td>
                            </tr>
                            <tr>
                               <th>\${__('Content')}</th>
-                              <td class='original text-wrap text-break'>\${data['old']['answer']}</td>
-                              <td class='changed text-wrap text-break'>\${data['diff']['answer']}</td>
-                              <td class='diff text-wrap text-break'></td>
+                              <td class='original'>\${data['old']['answer']}</td>
+                              <td class='changed'>\${data['diff']['answer']}</td>
+                              <td class='diff'></td>
                            </tr>
                         </table>
                      </div>`,
-                     dialogclass: 'modal-xl'
                   });
 
                   $('#compare_view tr').prettyTextDiff();
@@ -365,7 +357,6 @@ class KnowbaseItem_Revision extends CommonDBTM
      */
     private function getNewRevision()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $result = $DB->request([

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -43,7 +43,6 @@ class RemoteManagement extends InventoryAsset
 {
     public function prepare(): array
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (!in_array($this->item->getType(), $CFG_GLPI['remote_management_types'])) {
@@ -78,7 +77,6 @@ class RemoteManagement extends InventoryAsset
      */
     protected function getExisting(): array
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $db_existing = [];

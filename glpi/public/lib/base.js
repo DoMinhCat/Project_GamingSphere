@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 505:
+/***/ 501:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -8162,7 +8162,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ }),
 
-/***/ 503:
+/***/ 497:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8915,7 +8915,7 @@ function PlainScrollbar(customConfiguration) {
 
 /***/ }),
 
-/***/ 488:
+/***/ 489:
 /***/ (() => {
 
 /*global jQuery */
@@ -8965,7 +8965,7 @@ function PlainScrollbar(customConfiguration) {
 
 /***/ }),
 
-/***/ 512:
+/***/ 508:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8976,7 +8976,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! gettext.js - Guillaume Potier - MIT Licensed */
 var i18n = function (options) {
  options = options || {};
- this && (this.__version = '2.0.0');
+ this && (this.__version = '1.1.1');
 
  // default values that could be overriden in i18n() construct
  var defaults = {
@@ -9067,9 +9067,7 @@ var i18n = function (options) {
      // plural forms list available here http://localization-guide.readthedocs.org/en/latest/l10n/pluralforms.html
      var pf_re = new RegExp('^\\s*nplurals\\s*=\\s*[0-9]+\\s*;\\s*plural\\s*=\\s*(?:\\s|[-\\?\\|&=!<>+*/%:;n0-9_\(\)])+');
 
-     var match = plural_form.match(pf_re);
-
-     if (!match || match[0] !== plural_form)
+     if (!pf_re.test(plural_form))
        throw new Error(strfmt('The plural form "%1" is not valid', plural_form));
 
      // Careful here, this is a hidden eval() equivalent..
@@ -9106,7 +9104,7 @@ var i18n = function (options) {
      if ('undefined' === typeof plural.plural || plural.plural > plural.nplurals || messages.length <= plural.plural)
        plural.plural = 0;
 
-     return strfmt.apply(this, [removeContext(messages[plural.plural])].concat(Array.prototype.slice.call(arguments, 3)));
+     return strfmt.apply(this, [removeContext(messages[plural.plural]), n].concat(Array.prototype.slice.call(arguments, 3)));
    };
 
  return {
@@ -9226,786 +9224,7 @@ var i18n = function (options) {
 
 /***/ }),
 
-/***/ 492:
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery UI Support for jQuery core 1.8.x and newer 1.13.2
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- */
-
-//>>label: jQuery 1.8+ Support
-//>>group: Core
-//>>description: Support version 1.8.x and newer of jQuery core
-
-( function( factory ) {
-"use strict";
-
-	if ( true ) {
-
-		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(485), __webpack_require__(490) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {}
-} )( function( $ ) {
-"use strict";
-
-// Support: jQuery 1.9.x or older
-// $.expr[ ":" ] is deprecated.
-if ( !$.expr.pseudos ) {
-	$.expr.pseudos = $.expr[ ":" ];
-}
-
-// Support: jQuery 1.11.x or older
-// $.unique has been renamed to $.uniqueSort
-if ( !$.uniqueSort ) {
-	$.uniqueSort = $.unique;
-}
-
-// Support: jQuery 2.2.x or older.
-// This method has been defined in jQuery 3.0.0.
-// Code from https://github.com/jquery/jquery/blob/e539bac79e666bba95bba86d690b4e609dca2286/src/selector/escapeSelector.js
-if ( !$.escapeSelector ) {
-
-	// CSS string/identifier serialization
-	// https://drafts.csswg.org/cssom/#common-serializing-idioms
-	var rcssescape = /([\0-\x1f\x7f]|^-?\d)|^-$|[^\x80-\uFFFF\w-]/g;
-
-	var fcssescape = function( ch, asCodePoint ) {
-		if ( asCodePoint ) {
-
-			// U+0000 NULL becomes U+FFFD REPLACEMENT CHARACTER
-			if ( ch === "\0" ) {
-				return "\uFFFD";
-			}
-
-			// Control characters and (dependent upon position) numbers get escaped as code points
-			return ch.slice( 0, -1 ) + "\\" + ch.charCodeAt( ch.length - 1 ).toString( 16 ) + " ";
-		}
-
-		// Other potentially-special ASCII characters get backslash-escaped
-		return "\\" + ch;
-	};
-
-	$.escapeSelector = function( sel ) {
-		return ( sel + "" ).replace( rcssescape, fcssescape );
-	};
-}
-
-// Support: jQuery 3.4.x or older
-// These methods have been defined in jQuery 3.5.0.
-if ( !$.fn.even || !$.fn.odd ) {
-	$.fn.extend( {
-		even: function() {
-			return this.filter( function( i ) {
-				return i % 2 === 0;
-			} );
-		},
-		odd: function() {
-			return this.filter( function( i ) {
-				return i % 2 === 1;
-			} );
-		}
-	} );
-}
-
-} );
-
-
-/***/ }),
-
-/***/ 493:
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery UI Keycode 1.13.2
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Keycode
-//>>group: Core
-//>>description: Provide keycodes as keynames
-//>>docs: http://api.jqueryui.com/jQuery.ui.keyCode/
-
-( function( factory ) {
-	"use strict";
-
-	if ( true ) {
-
-		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(485), __webpack_require__(490) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {}
-} )( function( $ ) {
-"use strict";
-
-return $.ui.keyCode = {
-	BACKSPACE: 8,
-	COMMA: 188,
-	DELETE: 46,
-	DOWN: 40,
-	END: 35,
-	ENTER: 13,
-	ESCAPE: 27,
-	HOME: 36,
-	LEFT: 37,
-	PAGE_DOWN: 34,
-	PAGE_UP: 33,
-	PERIOD: 190,
-	RIGHT: 39,
-	SPACE: 32,
-	TAB: 9,
-	UP: 38
-};
-
-} );
-
-
-/***/ }),
-
-/***/ 491:
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery UI Position 1.13.2
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/position/
- */
-
-//>>label: Position
-//>>group: Core
-//>>description: Positions elements relative to other elements.
-//>>docs: http://api.jqueryui.com/position/
-//>>demos: http://jqueryui.com/position/
-
-( function( factory ) {
-	"use strict";
-
-	if ( true ) {
-
-		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(485), __webpack_require__(490) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {}
-} )( function( $ ) {
-"use strict";
-
-( function() {
-var cachedScrollbarWidth,
-	max = Math.max,
-	abs = Math.abs,
-	rhorizontal = /left|center|right/,
-	rvertical = /top|center|bottom/,
-	roffset = /[\+\-]\d+(\.[\d]+)?%?/,
-	rposition = /^\w+/,
-	rpercent = /%$/,
-	_position = $.fn.position;
-
-function getOffsets( offsets, width, height ) {
-	return [
-		parseFloat( offsets[ 0 ] ) * ( rpercent.test( offsets[ 0 ] ) ? width / 100 : 1 ),
-		parseFloat( offsets[ 1 ] ) * ( rpercent.test( offsets[ 1 ] ) ? height / 100 : 1 )
-	];
-}
-
-function parseCss( element, property ) {
-	return parseInt( $.css( element, property ), 10 ) || 0;
-}
-
-function isWindow( obj ) {
-	return obj != null && obj === obj.window;
-}
-
-function getDimensions( elem ) {
-	var raw = elem[ 0 ];
-	if ( raw.nodeType === 9 ) {
-		return {
-			width: elem.width(),
-			height: elem.height(),
-			offset: { top: 0, left: 0 }
-		};
-	}
-	if ( isWindow( raw ) ) {
-		return {
-			width: elem.width(),
-			height: elem.height(),
-			offset: { top: elem.scrollTop(), left: elem.scrollLeft() }
-		};
-	}
-	if ( raw.preventDefault ) {
-		return {
-			width: 0,
-			height: 0,
-			offset: { top: raw.pageY, left: raw.pageX }
-		};
-	}
-	return {
-		width: elem.outerWidth(),
-		height: elem.outerHeight(),
-		offset: elem.offset()
-	};
-}
-
-$.position = {
-	scrollbarWidth: function() {
-		if ( cachedScrollbarWidth !== undefined ) {
-			return cachedScrollbarWidth;
-		}
-		var w1, w2,
-			div = $( "<div style=" +
-				"'display:block;position:absolute;width:200px;height:200px;overflow:hidden;'>" +
-				"<div style='height:300px;width:auto;'></div></div>" ),
-			innerDiv = div.children()[ 0 ];
-
-		$( "body" ).append( div );
-		w1 = innerDiv.offsetWidth;
-		div.css( "overflow", "scroll" );
-
-		w2 = innerDiv.offsetWidth;
-
-		if ( w1 === w2 ) {
-			w2 = div[ 0 ].clientWidth;
-		}
-
-		div.remove();
-
-		return ( cachedScrollbarWidth = w1 - w2 );
-	},
-	getScrollInfo: function( within ) {
-		var overflowX = within.isWindow || within.isDocument ? "" :
-				within.element.css( "overflow-x" ),
-			overflowY = within.isWindow || within.isDocument ? "" :
-				within.element.css( "overflow-y" ),
-			hasOverflowX = overflowX === "scroll" ||
-				( overflowX === "auto" && within.width < within.element[ 0 ].scrollWidth ),
-			hasOverflowY = overflowY === "scroll" ||
-				( overflowY === "auto" && within.height < within.element[ 0 ].scrollHeight );
-		return {
-			width: hasOverflowY ? $.position.scrollbarWidth() : 0,
-			height: hasOverflowX ? $.position.scrollbarWidth() : 0
-		};
-	},
-	getWithinInfo: function( element ) {
-		var withinElement = $( element || window ),
-			isElemWindow = isWindow( withinElement[ 0 ] ),
-			isDocument = !!withinElement[ 0 ] && withinElement[ 0 ].nodeType === 9,
-			hasOffset = !isElemWindow && !isDocument;
-		return {
-			element: withinElement,
-			isWindow: isElemWindow,
-			isDocument: isDocument,
-			offset: hasOffset ? $( element ).offset() : { left: 0, top: 0 },
-			scrollLeft: withinElement.scrollLeft(),
-			scrollTop: withinElement.scrollTop(),
-			width: withinElement.outerWidth(),
-			height: withinElement.outerHeight()
-		};
-	}
-};
-
-$.fn.position = function( options ) {
-	if ( !options || !options.of ) {
-		return _position.apply( this, arguments );
-	}
-
-	// Make a copy, we don't want to modify arguments
-	options = $.extend( {}, options );
-
-	var atOffset, targetWidth, targetHeight, targetOffset, basePosition, dimensions,
-
-		// Make sure string options are treated as CSS selectors
-		target = typeof options.of === "string" ?
-			$( document ).find( options.of ) :
-			$( options.of ),
-
-		within = $.position.getWithinInfo( options.within ),
-		scrollInfo = $.position.getScrollInfo( within ),
-		collision = ( options.collision || "flip" ).split( " " ),
-		offsets = {};
-
-	dimensions = getDimensions( target );
-	if ( target[ 0 ].preventDefault ) {
-
-		// Force left top to allow flipping
-		options.at = "left top";
-	}
-	targetWidth = dimensions.width;
-	targetHeight = dimensions.height;
-	targetOffset = dimensions.offset;
-
-	// Clone to reuse original targetOffset later
-	basePosition = $.extend( {}, targetOffset );
-
-	// Force my and at to have valid horizontal and vertical positions
-	// if a value is missing or invalid, it will be converted to center
-	$.each( [ "my", "at" ], function() {
-		var pos = ( options[ this ] || "" ).split( " " ),
-			horizontalOffset,
-			verticalOffset;
-
-		if ( pos.length === 1 ) {
-			pos = rhorizontal.test( pos[ 0 ] ) ?
-				pos.concat( [ "center" ] ) :
-				rvertical.test( pos[ 0 ] ) ?
-					[ "center" ].concat( pos ) :
-					[ "center", "center" ];
-		}
-		pos[ 0 ] = rhorizontal.test( pos[ 0 ] ) ? pos[ 0 ] : "center";
-		pos[ 1 ] = rvertical.test( pos[ 1 ] ) ? pos[ 1 ] : "center";
-
-		// Calculate offsets
-		horizontalOffset = roffset.exec( pos[ 0 ] );
-		verticalOffset = roffset.exec( pos[ 1 ] );
-		offsets[ this ] = [
-			horizontalOffset ? horizontalOffset[ 0 ] : 0,
-			verticalOffset ? verticalOffset[ 0 ] : 0
-		];
-
-		// Reduce to just the positions without the offsets
-		options[ this ] = [
-			rposition.exec( pos[ 0 ] )[ 0 ],
-			rposition.exec( pos[ 1 ] )[ 0 ]
-		];
-	} );
-
-	// Normalize collision option
-	if ( collision.length === 1 ) {
-		collision[ 1 ] = collision[ 0 ];
-	}
-
-	if ( options.at[ 0 ] === "right" ) {
-		basePosition.left += targetWidth;
-	} else if ( options.at[ 0 ] === "center" ) {
-		basePosition.left += targetWidth / 2;
-	}
-
-	if ( options.at[ 1 ] === "bottom" ) {
-		basePosition.top += targetHeight;
-	} else if ( options.at[ 1 ] === "center" ) {
-		basePosition.top += targetHeight / 2;
-	}
-
-	atOffset = getOffsets( offsets.at, targetWidth, targetHeight );
-	basePosition.left += atOffset[ 0 ];
-	basePosition.top += atOffset[ 1 ];
-
-	return this.each( function() {
-		var collisionPosition, using,
-			elem = $( this ),
-			elemWidth = elem.outerWidth(),
-			elemHeight = elem.outerHeight(),
-			marginLeft = parseCss( this, "marginLeft" ),
-			marginTop = parseCss( this, "marginTop" ),
-			collisionWidth = elemWidth + marginLeft + parseCss( this, "marginRight" ) +
-				scrollInfo.width,
-			collisionHeight = elemHeight + marginTop + parseCss( this, "marginBottom" ) +
-				scrollInfo.height,
-			position = $.extend( {}, basePosition ),
-			myOffset = getOffsets( offsets.my, elem.outerWidth(), elem.outerHeight() );
-
-		if ( options.my[ 0 ] === "right" ) {
-			position.left -= elemWidth;
-		} else if ( options.my[ 0 ] === "center" ) {
-			position.left -= elemWidth / 2;
-		}
-
-		if ( options.my[ 1 ] === "bottom" ) {
-			position.top -= elemHeight;
-		} else if ( options.my[ 1 ] === "center" ) {
-			position.top -= elemHeight / 2;
-		}
-
-		position.left += myOffset[ 0 ];
-		position.top += myOffset[ 1 ];
-
-		collisionPosition = {
-			marginLeft: marginLeft,
-			marginTop: marginTop
-		};
-
-		$.each( [ "left", "top" ], function( i, dir ) {
-			if ( $.ui.position[ collision[ i ] ] ) {
-				$.ui.position[ collision[ i ] ][ dir ]( position, {
-					targetWidth: targetWidth,
-					targetHeight: targetHeight,
-					elemWidth: elemWidth,
-					elemHeight: elemHeight,
-					collisionPosition: collisionPosition,
-					collisionWidth: collisionWidth,
-					collisionHeight: collisionHeight,
-					offset: [ atOffset[ 0 ] + myOffset[ 0 ], atOffset [ 1 ] + myOffset[ 1 ] ],
-					my: options.my,
-					at: options.at,
-					within: within,
-					elem: elem
-				} );
-			}
-		} );
-
-		if ( options.using ) {
-
-			// Adds feedback as second argument to using callback, if present
-			using = function( props ) {
-				var left = targetOffset.left - position.left,
-					right = left + targetWidth - elemWidth,
-					top = targetOffset.top - position.top,
-					bottom = top + targetHeight - elemHeight,
-					feedback = {
-						target: {
-							element: target,
-							left: targetOffset.left,
-							top: targetOffset.top,
-							width: targetWidth,
-							height: targetHeight
-						},
-						element: {
-							element: elem,
-							left: position.left,
-							top: position.top,
-							width: elemWidth,
-							height: elemHeight
-						},
-						horizontal: right < 0 ? "left" : left > 0 ? "right" : "center",
-						vertical: bottom < 0 ? "top" : top > 0 ? "bottom" : "middle"
-					};
-				if ( targetWidth < elemWidth && abs( left + right ) < targetWidth ) {
-					feedback.horizontal = "center";
-				}
-				if ( targetHeight < elemHeight && abs( top + bottom ) < targetHeight ) {
-					feedback.vertical = "middle";
-				}
-				if ( max( abs( left ), abs( right ) ) > max( abs( top ), abs( bottom ) ) ) {
-					feedback.important = "horizontal";
-				} else {
-					feedback.important = "vertical";
-				}
-				options.using.call( this, props, feedback );
-			};
-		}
-
-		elem.offset( $.extend( position, { using: using } ) );
-	} );
-};
-
-$.ui.position = {
-	fit: {
-		left: function( position, data ) {
-			var within = data.within,
-				withinOffset = within.isWindow ? within.scrollLeft : within.offset.left,
-				outerWidth = within.width,
-				collisionPosLeft = position.left - data.collisionPosition.marginLeft,
-				overLeft = withinOffset - collisionPosLeft,
-				overRight = collisionPosLeft + data.collisionWidth - outerWidth - withinOffset,
-				newOverRight;
-
-			// Element is wider than within
-			if ( data.collisionWidth > outerWidth ) {
-
-				// Element is initially over the left side of within
-				if ( overLeft > 0 && overRight <= 0 ) {
-					newOverRight = position.left + overLeft + data.collisionWidth - outerWidth -
-						withinOffset;
-					position.left += overLeft - newOverRight;
-
-				// Element is initially over right side of within
-				} else if ( overRight > 0 && overLeft <= 0 ) {
-					position.left = withinOffset;
-
-				// Element is initially over both left and right sides of within
-				} else {
-					if ( overLeft > overRight ) {
-						position.left = withinOffset + outerWidth - data.collisionWidth;
-					} else {
-						position.left = withinOffset;
-					}
-				}
-
-			// Too far left -> align with left edge
-			} else if ( overLeft > 0 ) {
-				position.left += overLeft;
-
-			// Too far right -> align with right edge
-			} else if ( overRight > 0 ) {
-				position.left -= overRight;
-
-			// Adjust based on position and margin
-			} else {
-				position.left = max( position.left - collisionPosLeft, position.left );
-			}
-		},
-		top: function( position, data ) {
-			var within = data.within,
-				withinOffset = within.isWindow ? within.scrollTop : within.offset.top,
-				outerHeight = data.within.height,
-				collisionPosTop = position.top - data.collisionPosition.marginTop,
-				overTop = withinOffset - collisionPosTop,
-				overBottom = collisionPosTop + data.collisionHeight - outerHeight - withinOffset,
-				newOverBottom;
-
-			// Element is taller than within
-			if ( data.collisionHeight > outerHeight ) {
-
-				// Element is initially over the top of within
-				if ( overTop > 0 && overBottom <= 0 ) {
-					newOverBottom = position.top + overTop + data.collisionHeight - outerHeight -
-						withinOffset;
-					position.top += overTop - newOverBottom;
-
-				// Element is initially over bottom of within
-				} else if ( overBottom > 0 && overTop <= 0 ) {
-					position.top = withinOffset;
-
-				// Element is initially over both top and bottom of within
-				} else {
-					if ( overTop > overBottom ) {
-						position.top = withinOffset + outerHeight - data.collisionHeight;
-					} else {
-						position.top = withinOffset;
-					}
-				}
-
-			// Too far up -> align with top
-			} else if ( overTop > 0 ) {
-				position.top += overTop;
-
-			// Too far down -> align with bottom edge
-			} else if ( overBottom > 0 ) {
-				position.top -= overBottom;
-
-			// Adjust based on position and margin
-			} else {
-				position.top = max( position.top - collisionPosTop, position.top );
-			}
-		}
-	},
-	flip: {
-		left: function( position, data ) {
-			var within = data.within,
-				withinOffset = within.offset.left + within.scrollLeft,
-				outerWidth = within.width,
-				offsetLeft = within.isWindow ? within.scrollLeft : within.offset.left,
-				collisionPosLeft = position.left - data.collisionPosition.marginLeft,
-				overLeft = collisionPosLeft - offsetLeft,
-				overRight = collisionPosLeft + data.collisionWidth - outerWidth - offsetLeft,
-				myOffset = data.my[ 0 ] === "left" ?
-					-data.elemWidth :
-					data.my[ 0 ] === "right" ?
-						data.elemWidth :
-						0,
-				atOffset = data.at[ 0 ] === "left" ?
-					data.targetWidth :
-					data.at[ 0 ] === "right" ?
-						-data.targetWidth :
-						0,
-				offset = -2 * data.offset[ 0 ],
-				newOverRight,
-				newOverLeft;
-
-			if ( overLeft < 0 ) {
-				newOverRight = position.left + myOffset + atOffset + offset + data.collisionWidth -
-					outerWidth - withinOffset;
-				if ( newOverRight < 0 || newOverRight < abs( overLeft ) ) {
-					position.left += myOffset + atOffset + offset;
-				}
-			} else if ( overRight > 0 ) {
-				newOverLeft = position.left - data.collisionPosition.marginLeft + myOffset +
-					atOffset + offset - offsetLeft;
-				if ( newOverLeft > 0 || abs( newOverLeft ) < overRight ) {
-					position.left += myOffset + atOffset + offset;
-				}
-			}
-		},
-		top: function( position, data ) {
-			var within = data.within,
-				withinOffset = within.offset.top + within.scrollTop,
-				outerHeight = within.height,
-				offsetTop = within.isWindow ? within.scrollTop : within.offset.top,
-				collisionPosTop = position.top - data.collisionPosition.marginTop,
-				overTop = collisionPosTop - offsetTop,
-				overBottom = collisionPosTop + data.collisionHeight - outerHeight - offsetTop,
-				top = data.my[ 1 ] === "top",
-				myOffset = top ?
-					-data.elemHeight :
-					data.my[ 1 ] === "bottom" ?
-						data.elemHeight :
-						0,
-				atOffset = data.at[ 1 ] === "top" ?
-					data.targetHeight :
-					data.at[ 1 ] === "bottom" ?
-						-data.targetHeight :
-						0,
-				offset = -2 * data.offset[ 1 ],
-				newOverTop,
-				newOverBottom;
-			if ( overTop < 0 ) {
-				newOverBottom = position.top + myOffset + atOffset + offset + data.collisionHeight -
-					outerHeight - withinOffset;
-				if ( newOverBottom < 0 || newOverBottom < abs( overTop ) ) {
-					position.top += myOffset + atOffset + offset;
-				}
-			} else if ( overBottom > 0 ) {
-				newOverTop = position.top - data.collisionPosition.marginTop + myOffset + atOffset +
-					offset - offsetTop;
-				if ( newOverTop > 0 || abs( newOverTop ) < overBottom ) {
-					position.top += myOffset + atOffset + offset;
-				}
-			}
-		}
-	},
-	flipfit: {
-		left: function() {
-			$.ui.position.flip.left.apply( this, arguments );
-			$.ui.position.fit.left.apply( this, arguments );
-		},
-		top: function() {
-			$.ui.position.flip.top.apply( this, arguments );
-			$.ui.position.fit.top.apply( this, arguments );
-		}
-	}
-};
-
-} )();
-
-return $.ui.position;
-
-} );
-
-
-/***/ }),
-
-/***/ 494:
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery UI Scroll Parent 1.13.2
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: scrollParent
-//>>group: Core
-//>>description: Get the closest ancestor element that is scrollable.
-//>>docs: http://api.jqueryui.com/scrollParent/
-
-( function( factory ) {
-	"use strict";
-
-	if ( true ) {
-
-		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(485), __webpack_require__(490) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {}
-} )( function( $ ) {
-"use strict";
-
-return $.fn.scrollParent = function( includeHidden ) {
-	var position = this.css( "position" ),
-		excludeStaticParent = position === "absolute",
-		overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
-		scrollParent = this.parents().filter( function() {
-			var parent = $( this );
-			if ( excludeStaticParent && parent.css( "position" ) === "static" ) {
-				return false;
-			}
-			return overflowRegex.test( parent.css( "overflow" ) + parent.css( "overflow-y" ) +
-				parent.css( "overflow-x" ) );
-		} ).eq( 0 );
-
-	return position === "fixed" || !scrollParent.length ?
-		$( this[ 0 ].ownerDocument || document ) :
-		scrollParent;
-};
-
-} );
-
-
-/***/ }),
-
-/***/ 495:
-/***/ ((module, exports, __webpack_require__) => {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery UI Unique ID 1.13.2
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: uniqueId
-//>>group: Core
-//>>description: Functions to generate and remove uniqueId's
-//>>docs: http://api.jqueryui.com/uniqueId/
-
-( function( factory ) {
-	"use strict";
-
-	if ( true ) {
-
-		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(485), __webpack_require__(490) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {}
-} )( function( $ ) {
-"use strict";
-
-return $.fn.extend( {
-	uniqueId: ( function() {
-		var uuid = 0;
-
-		return function() {
-			return this.each( function() {
-				if ( !this.id ) {
-					this.id = "ui-id-" + ( ++uuid );
-				}
-			} );
-		};
-	} )(),
-
-	removeUniqueId: function() {
-		return this.each( function() {
-			if ( /^ui-id-\d+$/.test( this.id ) ) {
-				$( this ).removeAttr( "id" );
-			}
-		} );
-	}
-} );
-
-} );
-
-
-/***/ }),
-
-/***/ 490:
+/***/ 500:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;( function( factory ) {
@@ -10014,7 +9233,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 	if ( true ) {
 
 		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(485) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(486) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -10031,7 +9250,7 @@ return $.ui.version = "1.13.2";
 
 /***/ }),
 
-/***/ 489:
+/***/ 499:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10055,7 +9274,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 	if ( true ) {
 
 		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(485), __webpack_require__(490) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(486), __webpack_require__(500) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -10793,7 +10012,7 @@ return $.widget;
 
 /***/ }),
 
-/***/ 499:
+/***/ 493:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10814,7 +10033,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 (function (factory) {
 	if (true) {
 		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(485), __webpack_require__(496)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(486), __webpack_require__(490)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -11345,7 +10564,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 500:
+/***/ 494:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -11366,7 +10585,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 (function (factory) {
 	if (true) {
 		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(485), __webpack_require__(496)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(486), __webpack_require__(490)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -11702,7 +10921,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 498:
+/***/ 492:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -11723,7 +10942,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 (function (factory) {
 	if (true) {
 		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(485), __webpack_require__(496)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(486), __webpack_require__(490)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -12719,7 +11938,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 496:
+/***/ 490:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -12742,7 +11961,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 (function (factory) {
 	if (true) {
 		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(485), __webpack_require__(497)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(486), __webpack_require__(491)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -20096,7 +19315,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 501:
+/***/ 495:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -20119,7 +19338,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 (function (factory) {
 	if (true) {
 		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(485), __webpack_require__(496)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(486), __webpack_require__(490)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -20602,7 +19821,1458 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ 485:
+/***/ 491:
+/***/ ((module, exports, __webpack_require__) => {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! jQuery UI - v1.13.0 - 2021-11-09
+* http://jqueryui.com
+* Includes: widget.js, position.js, jquery-patch.js, keycode.js, scroll-parent.js, unique-id.js
+* Copyright jQuery Foundation and other contributors; Licensed MIT */
+
+( function( factory ) {
+	"use strict";
+
+	if ( true ) {
+
+		// AMD. Register as an anonymous module.
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(486) ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+} )( function( $ ) {
+"use strict";
+
+$.ui = $.ui || {};
+
+var version = $.ui.version = "1.13.0";
+
+
+/*!
+ * jQuery UI Widget 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Widget
+//>>group: Core
+//>>description: Provides a factory for creating stateful widgets with a common API.
+//>>docs: http://api.jqueryui.com/jQuery.widget/
+//>>demos: http://jqueryui.com/widget/
+
+
+var widgetUuid = 0;
+var widgetHasOwnProperty = Array.prototype.hasOwnProperty;
+var widgetSlice = Array.prototype.slice;
+
+$.cleanData = $.cleanData || ( function( orig ) {
+	return function( elems ) {
+		var events, elem, i;
+		for ( i = 0; ( elem = elems[ i ] ) != null; i++ ) {
+
+			// Only trigger remove when necessary to save time
+			events = $._data( elem, "events" );
+			if ( events && events.remove ) {
+				$( elem ).triggerHandler( "remove" );
+			}
+		}
+		orig( elems );
+	};
+} )( $.cleanData );
+
+$.widget = $.widget || function( name, base, prototype ) {
+	var existingConstructor, constructor, basePrototype;
+
+	// ProxiedPrototype allows the provided prototype to remain unmodified
+	// so that it can be used as a mixin for multiple widgets (#8876)
+	var proxiedPrototype = {};
+
+	var namespace = name.split( "." )[ 0 ];
+	name = name.split( "." )[ 1 ];
+	var fullName = namespace + "-" + name;
+
+	if ( !prototype ) {
+		prototype = base;
+		base = $.Widget;
+	}
+
+	if ( Array.isArray( prototype ) ) {
+		prototype = $.extend.apply( null, [ {} ].concat( prototype ) );
+	}
+
+	// Create selector for plugin
+	$.expr.pseudos[ fullName.toLowerCase() ] = function( elem ) {
+		return !!$.data( elem, fullName );
+	};
+
+	$[ namespace ] = $[ namespace ] || {};
+	existingConstructor = $[ namespace ][ name ];
+	constructor = $[ namespace ][ name ] = function( options, element ) {
+
+		// Allow instantiation without "new" keyword
+		if ( !this._createWidget ) {
+			return new constructor( options, element );
+		}
+
+		// Allow instantiation without initializing for simple inheritance
+		// must use "new" keyword (the code above always passes args)
+		if ( arguments.length ) {
+			this._createWidget( options, element );
+		}
+	};
+
+	// Extend with the existing constructor to carry over any static properties
+	$.extend( constructor, existingConstructor, {
+		version: prototype.version,
+
+		// Copy the object used to create the prototype in case we need to
+		// redefine the widget later
+		_proto: $.extend( {}, prototype ),
+
+		// Track widgets that inherit from this widget in case this widget is
+		// redefined after a widget inherits from it
+		_childConstructors: []
+	} );
+
+	basePrototype = new base();
+
+	// We need to make the options hash a property directly on the new instance
+	// otherwise we'll modify the options hash on the prototype that we're
+	// inheriting from
+	basePrototype.options = $.widget.extend( {}, basePrototype.options );
+	$.each( prototype, function( prop, value ) {
+		if ( typeof value !== "function" ) {
+			proxiedPrototype[ prop ] = value;
+			return;
+		}
+		proxiedPrototype[ prop ] = ( function() {
+			function _super() {
+				return base.prototype[ prop ].apply( this, arguments );
+			}
+
+			function _superApply( args ) {
+				return base.prototype[ prop ].apply( this, args );
+			}
+
+			return function() {
+				var __super = this._super;
+				var __superApply = this._superApply;
+				var returnValue;
+
+				this._super = _super;
+				this._superApply = _superApply;
+
+				returnValue = value.apply( this, arguments );
+
+				this._super = __super;
+				this._superApply = __superApply;
+
+				return returnValue;
+			};
+		} )();
+	} );
+	constructor.prototype = $.widget.extend( basePrototype, {
+
+		// TODO: remove support for widgetEventPrefix
+		// always use the name + a colon as the prefix, e.g., draggable:start
+		// don't prefix for widgets that aren't DOM-based
+		widgetEventPrefix: existingConstructor ? ( basePrototype.widgetEventPrefix || name ) : name
+	}, proxiedPrototype, {
+		constructor: constructor,
+		namespace: namespace,
+		widgetName: name,
+		widgetFullName: fullName
+	} );
+
+	// If this widget is being redefined then we need to find all widgets that
+	// are inheriting from it and redefine all of them so that they inherit from
+	// the new version of this widget. We're essentially trying to replace one
+	// level in the prototype chain.
+	if ( existingConstructor ) {
+		$.each( existingConstructor._childConstructors, function( i, child ) {
+			var childPrototype = child.prototype;
+
+			// Redefine the child widget using the same prototype that was
+			// originally used, but inherit from the new version of the base
+			$.widget( childPrototype.namespace + "." + childPrototype.widgetName, constructor,
+				child._proto );
+		} );
+
+		// Remove the list of existing child constructors from the old constructor
+		// so the old child constructors can be garbage collected
+		delete existingConstructor._childConstructors;
+	} else {
+		base._childConstructors.push( constructor );
+	}
+
+	$.widget.bridge( name, constructor );
+
+	return constructor;
+};
+
+$.widget.extend = function( target ) {
+	var input = widgetSlice.call( arguments, 1 );
+	var inputIndex = 0;
+	var inputLength = input.length;
+	var key;
+	var value;
+
+	for ( ; inputIndex < inputLength; inputIndex++ ) {
+		for ( key in input[ inputIndex ] ) {
+			value = input[ inputIndex ][ key ];
+			if ( widgetHasOwnProperty.call( input[ inputIndex ], key ) && value !== undefined ) {
+
+				// Clone objects
+				if ( $.isPlainObject( value ) ) {
+					target[ key ] = $.isPlainObject( target[ key ] ) ?
+						$.widget.extend( {}, target[ key ], value ) :
+
+						// Don't extend strings, arrays, etc. with objects
+						$.widget.extend( {}, value );
+
+				// Copy everything else by reference
+				} else {
+					target[ key ] = value;
+				}
+			}
+		}
+	}
+	return target;
+};
+
+$.widget.bridge = function( name, object ) {
+	var fullName = object.prototype.widgetFullName || name;
+	$.fn[ name ] = function( options ) {
+		var isMethodCall = typeof options === "string";
+		var args = widgetSlice.call( arguments, 1 );
+		var returnValue = this;
+
+		if ( isMethodCall ) {
+
+			// If this is an empty collection, we need to have the instance method
+			// return undefined instead of the jQuery instance
+			if ( !this.length && options === "instance" ) {
+				returnValue = undefined;
+			} else {
+				this.each( function() {
+					var methodValue;
+					var instance = $.data( this, fullName );
+
+					if ( options === "instance" ) {
+						returnValue = instance;
+						return false;
+					}
+
+					if ( !instance ) {
+						return $.error( "cannot call methods on " + name +
+							" prior to initialization; " +
+							"attempted to call method '" + options + "'" );
+					}
+
+					if ( typeof instance[ options ] !== "function" ||
+						options.charAt( 0 ) === "_" ) {
+						return $.error( "no such method '" + options + "' for " + name +
+							" widget instance" );
+					}
+
+					methodValue = instance[ options ].apply( instance, args );
+
+					if ( methodValue !== instance && methodValue !== undefined ) {
+						returnValue = methodValue && methodValue.jquery ?
+							returnValue.pushStack( methodValue.get() ) :
+							methodValue;
+						return false;
+					}
+				} );
+			}
+		} else {
+
+			// Allow multiple hashes to be passed on init
+			if ( args.length ) {
+				options = $.widget.extend.apply( null, [ options ].concat( args ) );
+			}
+
+			this.each( function() {
+				var instance = $.data( this, fullName );
+				if ( instance ) {
+					instance.option( options || {} );
+					if ( instance._init ) {
+						instance._init();
+					}
+				} else {
+					$.data( this, fullName, new object( options, this ) );
+				}
+			} );
+		}
+
+		return returnValue;
+	};
+};
+
+$.Widget = $.Widget || function( /* options, element */ ) {};
+$.Widget._childConstructors = [];
+
+$.Widget.prototype = {
+	widgetName: "widget",
+	widgetEventPrefix: "",
+	defaultElement: "<div>",
+
+	options: {
+		classes: {},
+		disabled: false,
+
+		// Callbacks
+		create: null
+	},
+
+	_createWidget: function( options, element ) {
+		element = $( element || this.defaultElement || this )[ 0 ];
+		this.element = $( element );
+		this.uuid = widgetUuid++;
+		this.eventNamespace = "." + this.widgetName + this.uuid;
+
+		this.bindings = $();
+		this.hoverable = $();
+		this.focusable = $();
+		this.classesElementLookup = {};
+
+		if ( element !== this ) {
+			$.data( element, this.widgetFullName, this );
+			this._on( true, this.element, {
+				remove: function( event ) {
+					if ( event.target === element ) {
+						this.destroy();
+					}
+				}
+			} );
+			this.document = $( element.style ?
+
+				// Element within the document
+				element.ownerDocument :
+
+				// Element is window or document
+				element.document || element );
+			this.window = $( this.document[ 0 ].defaultView || this.document[ 0 ].parentWindow );
+		}
+
+		this.options = $.widget.extend( {},
+			this.options,
+			this._getCreateOptions(),
+			options );
+
+		this._create();
+
+		if ( this.options.disabled ) {
+			this._setOptionDisabled( this.options.disabled );
+		}
+
+		this._trigger( "create", null, this._getCreateEventData() );
+		this._init();
+	},
+
+	_getCreateOptions: function() {
+		return {};
+	},
+
+	_getCreateEventData: $.noop,
+
+	_create: $.noop,
+
+	_init: $.noop,
+
+	destroy: function() {
+		var that = this;
+
+		this._destroy();
+		$.each( this.classesElementLookup, function( key, value ) {
+			that._removeClass( value, key );
+		} );
+
+		// We can probably remove the unbind calls in 2.0
+		// all event bindings should go through this._on()
+		this.element
+			.off( this.eventNamespace )
+			.removeData( this.widgetFullName );
+		this.widget()
+			.off( this.eventNamespace )
+			.removeAttr( "aria-disabled" );
+
+		// Clean up events and states
+		this.bindings.off( this.eventNamespace );
+	},
+
+	_destroy: $.noop,
+
+	widget: function() {
+		return this.element;
+	},
+
+	option: function( key, value ) {
+		var options = key;
+		var parts;
+		var curOption;
+		var i;
+
+		if ( arguments.length === 0 ) {
+
+			// Don't return a reference to the internal hash
+			return $.widget.extend( {}, this.options );
+		}
+
+		if ( typeof key === "string" ) {
+
+			// Handle nested keys, e.g., "foo.bar" => { foo: { bar: ___ } }
+			options = {};
+			parts = key.split( "." );
+			key = parts.shift();
+			if ( parts.length ) {
+				curOption = options[ key ] = $.widget.extend( {}, this.options[ key ] );
+				for ( i = 0; i < parts.length - 1; i++ ) {
+					curOption[ parts[ i ] ] = curOption[ parts[ i ] ] || {};
+					curOption = curOption[ parts[ i ] ];
+				}
+				key = parts.pop();
+				if ( arguments.length === 1 ) {
+					return curOption[ key ] === undefined ? null : curOption[ key ];
+				}
+				curOption[ key ] = value;
+			} else {
+				if ( arguments.length === 1 ) {
+					return this.options[ key ] === undefined ? null : this.options[ key ];
+				}
+				options[ key ] = value;
+			}
+		}
+
+		this._setOptions( options );
+
+		return this;
+	},
+
+	_setOptions: function( options ) {
+		var key;
+
+		for ( key in options ) {
+			this._setOption( key, options[ key ] );
+		}
+
+		return this;
+	},
+
+	_setOption: function( key, value ) {
+		if ( key === "classes" ) {
+			this._setOptionClasses( value );
+		}
+
+		this.options[ key ] = value;
+
+		if ( key === "disabled" ) {
+			this._setOptionDisabled( value );
+		}
+
+		return this;
+	},
+
+	_setOptionClasses: function( value ) {
+		var classKey, elements, currentElements;
+
+		for ( classKey in value ) {
+			currentElements = this.classesElementLookup[ classKey ];
+			if ( value[ classKey ] === this.options.classes[ classKey ] ||
+					!currentElements ||
+					!currentElements.length ) {
+				continue;
+			}
+
+			// We are doing this to create a new jQuery object because the _removeClass() call
+			// on the next line is going to destroy the reference to the current elements being
+			// tracked. We need to save a copy of this collection so that we can add the new classes
+			// below.
+			elements = $( currentElements.get() );
+			this._removeClass( currentElements, classKey );
+
+			// We don't use _addClass() here, because that uses this.options.classes
+			// for generating the string of classes. We want to use the value passed in from
+			// _setOption(), this is the new value of the classes option which was passed to
+			// _setOption(). We pass this value directly to _classes().
+			elements.addClass( this._classes( {
+				element: elements,
+				keys: classKey,
+				classes: value,
+				add: true
+			} ) );
+		}
+	},
+
+	_setOptionDisabled: function( value ) {
+		this._toggleClass( this.widget(), this.widgetFullName + "-disabled", null, !!value );
+
+		// If the widget is becoming disabled, then nothing is interactive
+		if ( value ) {
+			this._removeClass( this.hoverable, null, "ui-state-hover" );
+			this._removeClass( this.focusable, null, "ui-state-focus" );
+		}
+	},
+
+	enable: function() {
+		return this._setOptions( { disabled: false } );
+	},
+
+	disable: function() {
+		return this._setOptions( { disabled: true } );
+	},
+
+	_classes: function( options ) {
+		var full = [];
+		var that = this;
+
+		options = $.extend( {
+			element: this.element,
+			classes: this.options.classes || {}
+		}, options );
+
+		function bindRemoveEvent() {
+			options.element.each( function( _, element ) {
+				var isTracked = $.map( that.classesElementLookup, function( elements ) {
+					return elements;
+				} )
+					.some( function( elements ) {
+						return elements.is( element );
+					} );
+
+				if ( !isTracked ) {
+					that._on( $( element ), {
+						remove: "_untrackClassesElement"
+					} );
+				}
+			} );
+		}
+
+		function processClassString( classes, checkOption ) {
+			var current, i;
+			for ( i = 0; i < classes.length; i++ ) {
+				current = that.classesElementLookup[ classes[ i ] ] || $();
+				if ( options.add ) {
+					bindRemoveEvent();
+					current = $( $.uniqueSort( current.get().concat( options.element.get() ) ) );
+				} else {
+					current = $( current.not( options.element ).get() );
+				}
+				that.classesElementLookup[ classes[ i ] ] = current;
+				full.push( classes[ i ] );
+				if ( checkOption && options.classes[ classes[ i ] ] ) {
+					full.push( options.classes[ classes[ i ] ] );
+				}
+			}
+		}
+
+		if ( options.keys ) {
+			processClassString( options.keys.match( /\S+/g ) || [], true );
+		}
+		if ( options.extra ) {
+			processClassString( options.extra.match( /\S+/g ) || [] );
+		}
+
+		return full.join( " " );
+	},
+
+	_untrackClassesElement: function( event ) {
+		var that = this;
+		$.each( that.classesElementLookup, function( key, value ) {
+			if ( $.inArray( event.target, value ) !== -1 ) {
+				that.classesElementLookup[ key ] = $( value.not( event.target ).get() );
+			}
+		} );
+
+		this._off( $( event.target ) );
+	},
+
+	_removeClass: function( element, keys, extra ) {
+		return this._toggleClass( element, keys, extra, false );
+	},
+
+	_addClass: function( element, keys, extra ) {
+		return this._toggleClass( element, keys, extra, true );
+	},
+
+	_toggleClass: function( element, keys, extra, add ) {
+		add = ( typeof add === "boolean" ) ? add : extra;
+		var shift = ( typeof element === "string" || element === null ),
+			options = {
+				extra: shift ? keys : extra,
+				keys: shift ? element : keys,
+				element: shift ? this.element : element,
+				add: add
+			};
+		options.element.toggleClass( this._classes( options ), add );
+		return this;
+	},
+
+	_on: function( suppressDisabledCheck, element, handlers ) {
+		var delegateElement;
+		var instance = this;
+
+		// No suppressDisabledCheck flag, shuffle arguments
+		if ( typeof suppressDisabledCheck !== "boolean" ) {
+			handlers = element;
+			element = suppressDisabledCheck;
+			suppressDisabledCheck = false;
+		}
+
+		// No element argument, shuffle and use this.element
+		if ( !handlers ) {
+			handlers = element;
+			element = this.element;
+			delegateElement = this.widget();
+		} else {
+			element = delegateElement = $( element );
+			this.bindings = this.bindings.add( element );
+		}
+
+		$.each( handlers, function( event, handler ) {
+			function handlerProxy() {
+
+				// Allow widgets to customize the disabled handling
+				// - disabled as an array instead of boolean
+				// - disabled class as method for disabling individual parts
+				if ( !suppressDisabledCheck &&
+						( instance.options.disabled === true ||
+						$( this ).hasClass( "ui-state-disabled" ) ) ) {
+					return;
+				}
+				return ( typeof handler === "string" ? instance[ handler ] : handler )
+					.apply( instance, arguments );
+			}
+
+			// Copy the guid so direct unbinding works
+			if ( typeof handler !== "string" ) {
+				handlerProxy.guid = handler.guid =
+					handler.guid || handlerProxy.guid || $.guid++;
+			}
+
+			var match = event.match( /^([\w:-]*)\s*(.*)$/ );
+			var eventName = match[ 1 ] + instance.eventNamespace;
+			var selector = match[ 2 ];
+
+			if ( selector ) {
+				delegateElement.on( eventName, selector, handlerProxy );
+			} else {
+				element.on( eventName, handlerProxy );
+			}
+		} );
+	},
+
+	_off: function( element, eventName ) {
+		eventName = ( eventName || "" ).split( " " ).join( this.eventNamespace + " " ) +
+			this.eventNamespace;
+		element.off( eventName );
+
+		// Clear the stack to avoid memory leaks (#10056)
+		this.bindings = $( this.bindings.not( element ).get() );
+		this.focusable = $( this.focusable.not( element ).get() );
+		this.hoverable = $( this.hoverable.not( element ).get() );
+	},
+
+	_delay: function( handler, delay ) {
+		function handlerProxy() {
+			return ( typeof handler === "string" ? instance[ handler ] : handler )
+				.apply( instance, arguments );
+		}
+		var instance = this;
+		return setTimeout( handlerProxy, delay || 0 );
+	},
+
+	_hoverable: function( element ) {
+		this.hoverable = this.hoverable.add( element );
+		this._on( element, {
+			mouseenter: function( event ) {
+				this._addClass( $( event.currentTarget ), null, "ui-state-hover" );
+			},
+			mouseleave: function( event ) {
+				this._removeClass( $( event.currentTarget ), null, "ui-state-hover" );
+			}
+		} );
+	},
+
+	_focusable: function( element ) {
+		this.focusable = this.focusable.add( element );
+		this._on( element, {
+			focusin: function( event ) {
+				this._addClass( $( event.currentTarget ), null, "ui-state-focus" );
+			},
+			focusout: function( event ) {
+				this._removeClass( $( event.currentTarget ), null, "ui-state-focus" );
+			}
+		} );
+	},
+
+	_trigger: function( type, event, data ) {
+		var prop, orig;
+		var callback = this.options[ type ];
+
+		data = data || {};
+		event = $.Event( event );
+		event.type = ( type === this.widgetEventPrefix ?
+			type :
+			this.widgetEventPrefix + type ).toLowerCase();
+
+		// The original event may come from any element
+		// so we need to reset the target on the new event
+		event.target = this.element[ 0 ];
+
+		// Copy original event properties over to the new event
+		orig = event.originalEvent;
+		if ( orig ) {
+			for ( prop in orig ) {
+				if ( !( prop in event ) ) {
+					event[ prop ] = orig[ prop ];
+				}
+			}
+		}
+
+		this.element.trigger( event, data );
+		return !( typeof callback === "function" &&
+			callback.apply( this.element[ 0 ], [ event ].concat( data ) ) === false ||
+			event.isDefaultPrevented() );
+	}
+};
+
+$.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
+	$.Widget.prototype[ "_" + method ] = function( element, options, callback ) {
+		if ( typeof options === "string" ) {
+			options = { effect: options };
+		}
+
+		var hasOptions;
+		var effectName = !options ?
+			method :
+			options === true || typeof options === "number" ?
+				defaultEffect :
+				options.effect || defaultEffect;
+
+		options = options || {};
+		if ( typeof options === "number" ) {
+			options = { duration: options };
+		} else if ( options === true ) {
+			options = {};
+		}
+
+		hasOptions = !$.isEmptyObject( options );
+		options.complete = callback;
+
+		if ( options.delay ) {
+			element.delay( options.delay );
+		}
+
+		if ( hasOptions && $.effects && $.effects.effect[ effectName ] ) {
+			element[ method ]( options );
+		} else if ( effectName !== method && element[ effectName ] ) {
+			element[ effectName ]( options.duration, options.easing, callback );
+		} else {
+			element.queue( function( next ) {
+				$( this )[ method ]();
+				if ( callback ) {
+					callback.call( element[ 0 ] );
+				}
+				next();
+			} );
+		}
+	};
+} );
+
+var widget = $.widget;
+
+
+/*!
+ * jQuery UI Position 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/position/
+ */
+
+//>>label: Position
+//>>group: Core
+//>>description: Positions elements relative to other elements.
+//>>docs: http://api.jqueryui.com/position/
+//>>demos: http://jqueryui.com/position/
+
+
+( function() {
+var cachedScrollbarWidth,
+	max = Math.max,
+	abs = Math.abs,
+	rhorizontal = /left|center|right/,
+	rvertical = /top|center|bottom/,
+	roffset = /[\+\-]\d+(\.[\d]+)?%?/,
+	rposition = /^\w+/,
+	rpercent = /%$/,
+	_position = $.fn.position;
+
+function getOffsets( offsets, width, height ) {
+	return [
+		parseFloat( offsets[ 0 ] ) * ( rpercent.test( offsets[ 0 ] ) ? width / 100 : 1 ),
+		parseFloat( offsets[ 1 ] ) * ( rpercent.test( offsets[ 1 ] ) ? height / 100 : 1 )
+	];
+}
+
+function parseCss( element, property ) {
+	return parseInt( $.css( element, property ), 10 ) || 0;
+}
+
+function isWindow( obj ) {
+	return obj != null && obj === obj.window;
+}
+
+function getDimensions( elem ) {
+	var raw = elem[ 0 ];
+	if ( raw.nodeType === 9 ) {
+		return {
+			width: elem.width(),
+			height: elem.height(),
+			offset: { top: 0, left: 0 }
+		};
+	}
+	if ( isWindow( raw ) ) {
+		return {
+			width: elem.width(),
+			height: elem.height(),
+			offset: { top: elem.scrollTop(), left: elem.scrollLeft() }
+		};
+	}
+	if ( raw.preventDefault ) {
+		return {
+			width: 0,
+			height: 0,
+			offset: { top: raw.pageY, left: raw.pageX }
+		};
+	}
+	return {
+		width: elem.outerWidth(),
+		height: elem.outerHeight(),
+		offset: elem.offset()
+	};
+}
+
+$.position = $.position || {
+	scrollbarWidth: function() {
+		if ( cachedScrollbarWidth !== undefined ) {
+			return cachedScrollbarWidth;
+		}
+		var w1, w2,
+			div = $( "<div style=" +
+				"'display:block;position:absolute;width:200px;height:200px;overflow:hidden;'>" +
+				"<div style='height:300px;width:auto;'></div></div>" ),
+			innerDiv = div.children()[ 0 ];
+
+		$( "body" ).append( div );
+		w1 = innerDiv.offsetWidth;
+		div.css( "overflow", "scroll" );
+
+		w2 = innerDiv.offsetWidth;
+
+		if ( w1 === w2 ) {
+			w2 = div[ 0 ].clientWidth;
+		}
+
+		div.remove();
+
+		return ( cachedScrollbarWidth = w1 - w2 );
+	},
+	getScrollInfo: function( within ) {
+		var overflowX = within.isWindow || within.isDocument ? "" :
+				within.element.css( "overflow-x" ),
+			overflowY = within.isWindow || within.isDocument ? "" :
+				within.element.css( "overflow-y" ),
+			hasOverflowX = overflowX === "scroll" ||
+				( overflowX === "auto" && within.width < within.element[ 0 ].scrollWidth ),
+			hasOverflowY = overflowY === "scroll" ||
+				( overflowY === "auto" && within.height < within.element[ 0 ].scrollHeight );
+		return {
+			width: hasOverflowY ? $.position.scrollbarWidth() : 0,
+			height: hasOverflowX ? $.position.scrollbarWidth() : 0
+		};
+	},
+	getWithinInfo: function( element ) {
+		var withinElement = $( element || window ),
+			isElemWindow = isWindow( withinElement[ 0 ] ),
+			isDocument = !!withinElement[ 0 ] && withinElement[ 0 ].nodeType === 9,
+			hasOffset = !isElemWindow && !isDocument;
+		return {
+			element: withinElement,
+			isWindow: isElemWindow,
+			isDocument: isDocument,
+			offset: hasOffset ? $( element ).offset() : { left: 0, top: 0 },
+			scrollLeft: withinElement.scrollLeft(),
+			scrollTop: withinElement.scrollTop(),
+			width: withinElement.outerWidth(),
+			height: withinElement.outerHeight()
+		};
+	}
+};
+
+$.fn.position = function( options ) {
+	if ( !options || !options.of ) {
+		return _position.apply( this, arguments );
+	}
+
+	// Make a copy, we don't want to modify arguments
+	options = $.extend( {}, options );
+
+	var atOffset, targetWidth, targetHeight, targetOffset, basePosition, dimensions,
+
+		// Make sure string options are treated as CSS selectors
+		target = typeof options.of === "string" ?
+			$( document ).find( options.of ) :
+			$( options.of ),
+
+		within = $.position.getWithinInfo( options.within ),
+		scrollInfo = $.position.getScrollInfo( within ),
+		collision = ( options.collision || "flip" ).split( " " ),
+		offsets = {};
+
+	dimensions = getDimensions( target );
+	if ( target[ 0 ].preventDefault ) {
+
+		// Force left top to allow flipping
+		options.at = "left top";
+	}
+	targetWidth = dimensions.width;
+	targetHeight = dimensions.height;
+	targetOffset = dimensions.offset;
+
+	// Clone to reuse original targetOffset later
+	basePosition = $.extend( {}, targetOffset );
+
+	// Force my and at to have valid horizontal and vertical positions
+	// if a value is missing or invalid, it will be converted to center
+	$.each( [ "my", "at" ], function() {
+		var pos = ( options[ this ] || "" ).split( " " ),
+			horizontalOffset,
+			verticalOffset;
+
+		if ( pos.length === 1 ) {
+			pos = rhorizontal.test( pos[ 0 ] ) ?
+				pos.concat( [ "center" ] ) :
+				rvertical.test( pos[ 0 ] ) ?
+					[ "center" ].concat( pos ) :
+					[ "center", "center" ];
+		}
+		pos[ 0 ] = rhorizontal.test( pos[ 0 ] ) ? pos[ 0 ] : "center";
+		pos[ 1 ] = rvertical.test( pos[ 1 ] ) ? pos[ 1 ] : "center";
+
+		// Calculate offsets
+		horizontalOffset = roffset.exec( pos[ 0 ] );
+		verticalOffset = roffset.exec( pos[ 1 ] );
+		offsets[ this ] = [
+			horizontalOffset ? horizontalOffset[ 0 ] : 0,
+			verticalOffset ? verticalOffset[ 0 ] : 0
+		];
+
+		// Reduce to just the positions without the offsets
+		options[ this ] = [
+			rposition.exec( pos[ 0 ] )[ 0 ],
+			rposition.exec( pos[ 1 ] )[ 0 ]
+		];
+	} );
+
+	// Normalize collision option
+	if ( collision.length === 1 ) {
+		collision[ 1 ] = collision[ 0 ];
+	}
+
+	if ( options.at[ 0 ] === "right" ) {
+		basePosition.left += targetWidth;
+	} else if ( options.at[ 0 ] === "center" ) {
+		basePosition.left += targetWidth / 2;
+	}
+
+	if ( options.at[ 1 ] === "bottom" ) {
+		basePosition.top += targetHeight;
+	} else if ( options.at[ 1 ] === "center" ) {
+		basePosition.top += targetHeight / 2;
+	}
+
+	atOffset = getOffsets( offsets.at, targetWidth, targetHeight );
+	basePosition.left += atOffset[ 0 ];
+	basePosition.top += atOffset[ 1 ];
+
+	return this.each( function() {
+		var collisionPosition, using,
+			elem = $( this ),
+			elemWidth = elem.outerWidth(),
+			elemHeight = elem.outerHeight(),
+			marginLeft = parseCss( this, "marginLeft" ),
+			marginTop = parseCss( this, "marginTop" ),
+			collisionWidth = elemWidth + marginLeft + parseCss( this, "marginRight" ) +
+				scrollInfo.width,
+			collisionHeight = elemHeight + marginTop + parseCss( this, "marginBottom" ) +
+				scrollInfo.height,
+			position = $.extend( {}, basePosition ),
+			myOffset = getOffsets( offsets.my, elem.outerWidth(), elem.outerHeight() );
+
+		if ( options.my[ 0 ] === "right" ) {
+			position.left -= elemWidth;
+		} else if ( options.my[ 0 ] === "center" ) {
+			position.left -= elemWidth / 2;
+		}
+
+		if ( options.my[ 1 ] === "bottom" ) {
+			position.top -= elemHeight;
+		} else if ( options.my[ 1 ] === "center" ) {
+			position.top -= elemHeight / 2;
+		}
+
+		position.left += myOffset[ 0 ];
+		position.top += myOffset[ 1 ];
+
+		collisionPosition = {
+			marginLeft: marginLeft,
+			marginTop: marginTop
+		};
+
+		$.each( [ "left", "top" ], function( i, dir ) {
+			if ( $.ui.position[ collision[ i ] ] ) {
+				$.ui.position[ collision[ i ] ][ dir ]( position, {
+					targetWidth: targetWidth,
+					targetHeight: targetHeight,
+					elemWidth: elemWidth,
+					elemHeight: elemHeight,
+					collisionPosition: collisionPosition,
+					collisionWidth: collisionWidth,
+					collisionHeight: collisionHeight,
+					offset: [ atOffset[ 0 ] + myOffset[ 0 ], atOffset [ 1 ] + myOffset[ 1 ] ],
+					my: options.my,
+					at: options.at,
+					within: within,
+					elem: elem
+				} );
+			}
+		} );
+
+		if ( options.using ) {
+
+			// Adds feedback as second argument to using callback, if present
+			using = function( props ) {
+				var left = targetOffset.left - position.left,
+					right = left + targetWidth - elemWidth,
+					top = targetOffset.top - position.top,
+					bottom = top + targetHeight - elemHeight,
+					feedback = {
+						target: {
+							element: target,
+							left: targetOffset.left,
+							top: targetOffset.top,
+							width: targetWidth,
+							height: targetHeight
+						},
+						element: {
+							element: elem,
+							left: position.left,
+							top: position.top,
+							width: elemWidth,
+							height: elemHeight
+						},
+						horizontal: right < 0 ? "left" : left > 0 ? "right" : "center",
+						vertical: bottom < 0 ? "top" : top > 0 ? "bottom" : "middle"
+					};
+				if ( targetWidth < elemWidth && abs( left + right ) < targetWidth ) {
+					feedback.horizontal = "center";
+				}
+				if ( targetHeight < elemHeight && abs( top + bottom ) < targetHeight ) {
+					feedback.vertical = "middle";
+				}
+				if ( max( abs( left ), abs( right ) ) > max( abs( top ), abs( bottom ) ) ) {
+					feedback.important = "horizontal";
+				} else {
+					feedback.important = "vertical";
+				}
+				options.using.call( this, props, feedback );
+			};
+		}
+
+		elem.offset( $.extend( position, { using: using } ) );
+	} );
+};
+
+$.ui.position = {
+	fit: {
+		left: function( position, data ) {
+			var within = data.within,
+				withinOffset = within.isWindow ? within.scrollLeft : within.offset.left,
+				outerWidth = within.width,
+				collisionPosLeft = position.left - data.collisionPosition.marginLeft,
+				overLeft = withinOffset - collisionPosLeft,
+				overRight = collisionPosLeft + data.collisionWidth - outerWidth - withinOffset,
+				newOverRight;
+
+			// Element is wider than within
+			if ( data.collisionWidth > outerWidth ) {
+
+				// Element is initially over the left side of within
+				if ( overLeft > 0 && overRight <= 0 ) {
+					newOverRight = position.left + overLeft + data.collisionWidth - outerWidth -
+						withinOffset;
+					position.left += overLeft - newOverRight;
+
+				// Element is initially over right side of within
+				} else if ( overRight > 0 && overLeft <= 0 ) {
+					position.left = withinOffset;
+
+				// Element is initially over both left and right sides of within
+				} else {
+					if ( overLeft > overRight ) {
+						position.left = withinOffset + outerWidth - data.collisionWidth;
+					} else {
+						position.left = withinOffset;
+					}
+				}
+
+			// Too far left -> align with left edge
+			} else if ( overLeft > 0 ) {
+				position.left += overLeft;
+
+			// Too far right -> align with right edge
+			} else if ( overRight > 0 ) {
+				position.left -= overRight;
+
+			// Adjust based on position and margin
+			} else {
+				position.left = max( position.left - collisionPosLeft, position.left );
+			}
+		},
+		top: function( position, data ) {
+			var within = data.within,
+				withinOffset = within.isWindow ? within.scrollTop : within.offset.top,
+				outerHeight = data.within.height,
+				collisionPosTop = position.top - data.collisionPosition.marginTop,
+				overTop = withinOffset - collisionPosTop,
+				overBottom = collisionPosTop + data.collisionHeight - outerHeight - withinOffset,
+				newOverBottom;
+
+			// Element is taller than within
+			if ( data.collisionHeight > outerHeight ) {
+
+				// Element is initially over the top of within
+				if ( overTop > 0 && overBottom <= 0 ) {
+					newOverBottom = position.top + overTop + data.collisionHeight - outerHeight -
+						withinOffset;
+					position.top += overTop - newOverBottom;
+
+				// Element is initially over bottom of within
+				} else if ( overBottom > 0 && overTop <= 0 ) {
+					position.top = withinOffset;
+
+				// Element is initially over both top and bottom of within
+				} else {
+					if ( overTop > overBottom ) {
+						position.top = withinOffset + outerHeight - data.collisionHeight;
+					} else {
+						position.top = withinOffset;
+					}
+				}
+
+			// Too far up -> align with top
+			} else if ( overTop > 0 ) {
+				position.top += overTop;
+
+			// Too far down -> align with bottom edge
+			} else if ( overBottom > 0 ) {
+				position.top -= overBottom;
+
+			// Adjust based on position and margin
+			} else {
+				position.top = max( position.top - collisionPosTop, position.top );
+			}
+		}
+	},
+	flip: {
+		left: function( position, data ) {
+			var within = data.within,
+				withinOffset = within.offset.left + within.scrollLeft,
+				outerWidth = within.width,
+				offsetLeft = within.isWindow ? within.scrollLeft : within.offset.left,
+				collisionPosLeft = position.left - data.collisionPosition.marginLeft,
+				overLeft = collisionPosLeft - offsetLeft,
+				overRight = collisionPosLeft + data.collisionWidth - outerWidth - offsetLeft,
+				myOffset = data.my[ 0 ] === "left" ?
+					-data.elemWidth :
+					data.my[ 0 ] === "right" ?
+						data.elemWidth :
+						0,
+				atOffset = data.at[ 0 ] === "left" ?
+					data.targetWidth :
+					data.at[ 0 ] === "right" ?
+						-data.targetWidth :
+						0,
+				offset = -2 * data.offset[ 0 ],
+				newOverRight,
+				newOverLeft;
+
+			if ( overLeft < 0 ) {
+				newOverRight = position.left + myOffset + atOffset + offset + data.collisionWidth -
+					outerWidth - withinOffset;
+				if ( newOverRight < 0 || newOverRight < abs( overLeft ) ) {
+					position.left += myOffset + atOffset + offset;
+				}
+			} else if ( overRight > 0 ) {
+				newOverLeft = position.left - data.collisionPosition.marginLeft + myOffset +
+					atOffset + offset - offsetLeft;
+				if ( newOverLeft > 0 || abs( newOverLeft ) < overRight ) {
+					position.left += myOffset + atOffset + offset;
+				}
+			}
+		},
+		top: function( position, data ) {
+			var within = data.within,
+				withinOffset = within.offset.top + within.scrollTop,
+				outerHeight = within.height,
+				offsetTop = within.isWindow ? within.scrollTop : within.offset.top,
+				collisionPosTop = position.top - data.collisionPosition.marginTop,
+				overTop = collisionPosTop - offsetTop,
+				overBottom = collisionPosTop + data.collisionHeight - outerHeight - offsetTop,
+				top = data.my[ 1 ] === "top",
+				myOffset = top ?
+					-data.elemHeight :
+					data.my[ 1 ] === "bottom" ?
+						data.elemHeight :
+						0,
+				atOffset = data.at[ 1 ] === "top" ?
+					data.targetHeight :
+					data.at[ 1 ] === "bottom" ?
+						-data.targetHeight :
+						0,
+				offset = -2 * data.offset[ 1 ],
+				newOverTop,
+				newOverBottom;
+			if ( overTop < 0 ) {
+				newOverBottom = position.top + myOffset + atOffset + offset + data.collisionHeight -
+					outerHeight - withinOffset;
+				if ( newOverBottom < 0 || newOverBottom < abs( overTop ) ) {
+					position.top += myOffset + atOffset + offset;
+				}
+			} else if ( overBottom > 0 ) {
+				newOverTop = position.top - data.collisionPosition.marginTop + myOffset + atOffset +
+					offset - offsetTop;
+				if ( newOverTop > 0 || abs( newOverTop ) < overBottom ) {
+					position.top += myOffset + atOffset + offset;
+				}
+			}
+		}
+	},
+	flipfit: {
+		left: function() {
+			$.ui.position.flip.left.apply( this, arguments );
+			$.ui.position.fit.left.apply( this, arguments );
+		},
+		top: function() {
+			$.ui.position.flip.top.apply( this, arguments );
+			$.ui.position.fit.top.apply( this, arguments );
+		}
+	}
+};
+
+} )();
+
+var position = $.ui.position;
+
+
+/*!
+ * jQuery UI Support for jQuery core 1.8.x and newer 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ */
+
+//>>label: jQuery 1.8+ Support
+//>>group: Core
+//>>description: Support version 1.8.x and newer of jQuery core
+
+
+// Support: jQuery 1.9.x or older
+// $.expr[ ":" ] is deprecated.
+if ( !$.expr.pseudos ) {
+	$.expr.pseudos = $.expr[ ":" ];
+}
+
+// Support: jQuery 1.11.x or older
+// $.unique has been renamed to $.uniqueSort
+if ( !$.uniqueSort ) {
+	$.uniqueSort = $.unique;
+}
+
+// Support: jQuery 2.2.x or older.
+// This method has been defined in jQuery 3.0.0.
+// Code from https://github.com/jquery/jquery/blob/e539bac79e666bba95bba86d690b4e609dca2286/src/selector/escapeSelector.js
+if ( !$.escapeSelector ) {
+
+	// CSS string/identifier serialization
+	// https://drafts.csswg.org/cssom/#common-serializing-idioms
+	var rcssescape = /([\0-\x1f\x7f]|^-?\d)|^-$|[^\x80-\uFFFF\w-]/g;
+
+	var fcssescape = function( ch, asCodePoint ) {
+		if ( asCodePoint ) {
+
+			// U+0000 NULL becomes U+FFFD REPLACEMENT CHARACTER
+			if ( ch === "\0" ) {
+				return "\uFFFD";
+			}
+
+			// Control characters and (dependent upon position) numbers get escaped as code points
+			return ch.slice( 0, -1 ) + "\\" + ch.charCodeAt( ch.length - 1 ).toString( 16 ) + " ";
+		}
+
+		// Other potentially-special ASCII characters get backslash-escaped
+		return "\\" + ch;
+	};
+
+	$.escapeSelector = function( sel ) {
+		return ( sel + "" ).replace( rcssescape, fcssescape );
+	};
+}
+
+// Support: jQuery 3.4.x or older
+// These methods have been defined in jQuery 3.5.0.
+if ( !$.fn.even || !$.fn.odd ) {
+	$.fn.extend( {
+		even: function() {
+			return this.filter( function( i ) {
+				return i % 2 === 0;
+			} );
+		},
+		odd: function() {
+			return this.filter( function( i ) {
+				return i % 2 === 1;
+			} );
+		}
+	} );
+}
+
+;
+/*!
+ * jQuery UI Keycode 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Keycode
+//>>group: Core
+//>>description: Provide keycodes as keynames
+//>>docs: http://api.jqueryui.com/jQuery.ui.keyCode/
+
+
+var keycode = $.ui.keyCode = {
+	BACKSPACE: 8,
+	COMMA: 188,
+	DELETE: 46,
+	DOWN: 40,
+	END: 35,
+	ENTER: 13,
+	ESCAPE: 27,
+	HOME: 36,
+	LEFT: 37,
+	PAGE_DOWN: 34,
+	PAGE_UP: 33,
+	PERIOD: 190,
+	RIGHT: 39,
+	SPACE: 32,
+	TAB: 9,
+	UP: 38
+};
+
+
+/*!
+ * jQuery UI Scroll Parent 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: scrollParent
+//>>group: Core
+//>>description: Get the closest ancestor element that is scrollable.
+//>>docs: http://api.jqueryui.com/scrollParent/
+
+
+var scrollParent = $.fn.scrollParent = function( includeHidden ) {
+	var position = this.css( "position" ),
+		excludeStaticParent = position === "absolute",
+		overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
+		scrollParent = this.parents().filter( function() {
+			var parent = $( this );
+			if ( excludeStaticParent && parent.css( "position" ) === "static" ) {
+				return false;
+			}
+			return overflowRegex.test( parent.css( "overflow" ) + parent.css( "overflow-y" ) +
+				parent.css( "overflow-x" ) );
+		} ).eq( 0 );
+
+	return position === "fixed" || !scrollParent.length ?
+		$( this[ 0 ].ownerDocument || document ) :
+		scrollParent;
+};
+
+
+/*!
+ * jQuery UI Unique ID 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: uniqueId
+//>>group: Core
+//>>description: Functions to generate and remove uniqueId's
+//>>docs: http://api.jqueryui.com/uniqueId/
+
+
+var uniqueId = $.fn.extend( {
+	uniqueId: ( function() {
+		var uuid = 0;
+
+		return function() {
+			return this.each( function() {
+				if ( !this.id ) {
+					this.id = "ui-id-" + ( ++uuid );
+				}
+			} );
+		};
+	} )(),
+
+	removeUniqueId: function() {
+		return this.each( function() {
+			if ( /^ui-id-\d+$/.test( this.id ) ) {
+				$( this ).removeAttr( "id" );
+			}
+		} );
+	}
+} );
+
+
+
+
+} );
+
+
+/***/ }),
+
+/***/ 486:
 /***/ (function(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -31491,7 +32161,7 @@ return jQuery;
 
 /***/ }),
 
-/***/ 511:
+/***/ 507:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* module decorator */ module = __webpack_require__.nmd(module);
@@ -48700,16 +49370,6 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 /***/ }),
 
-/***/ 483:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
 /***/ 484:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -48720,7 +49380,37 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 502:
+/***/ 485:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ 496:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ 498:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ 503:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -48740,34 +49430,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 507:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ 508:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
-/***/ 497:
-/***/ (() => {
-
-
-
-/***/ }),
-
-/***/ 506:
+/***/ 502:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -48791,7 +49454,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 (function( factory ) {
 	"use strict";
 	if(true) {
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(485)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(486)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -52262,7 +52925,7 @@ CHECKS.ie6 = {
 
 /***/ }),
 
-/***/ 487:
+/***/ 488:
 /***/ ((module) => {
 
 module.exports = "/*!\n * jQuery Migrate - v3.4.0 - 2022-03-24T16:30Z\n * Copyright OpenJS Foundation and other contributors\n */\n( function( factory ) {\n\t\"use strict\";\n\n\tif ( typeof define === \"function\" && define.amd ) {\n\n\t\t// AMD. Register as an anonymous module.\n\t\tdefine( [ \"jquery\" ], function( jQuery ) {\n\t\t\treturn factory( jQuery, window );\n\t\t} );\n\t} else if ( typeof module === \"object\" && module.exports ) {\n\n\t\t// Node/CommonJS\n\t\t// eslint-disable-next-line no-undef\n\t\tmodule.exports = factory( require( \"jquery\" ), window );\n\t} else {\n\n\t\t// Browser globals\n\t\tfactory( jQuery, window );\n\t}\n} )( function( jQuery, window ) {\n\"use strict\";\n\njQuery.migrateVersion = \"3.4.0\";\n\n// Returns 0 if v1 == v2, -1 if v1 < v2, 1 if v1 > v2\nfunction compareVersions( v1, v2 ) {\n\tvar i,\n\t\trVersionParts = /^(\\d+)\\.(\\d+)\\.(\\d+)/,\n\t\tv1p = rVersionParts.exec( v1 ) || [ ],\n\t\tv2p = rVersionParts.exec( v2 ) || [ ];\n\n\tfor ( i = 1; i <= 3; i++ ) {\n\t\tif ( +v1p[ i ] > +v2p[ i ] ) {\n\t\t\treturn 1;\n\t\t}\n\t\tif ( +v1p[ i ] < +v2p[ i ] ) {\n\t\t\treturn -1;\n\t\t}\n\t}\n\treturn 0;\n}\n\nfunction jQueryVersionSince( version ) {\n\treturn compareVersions( jQuery.fn.jquery, version ) >= 0;\n}\n\n// A map from disabled patch codes to `true`. This should really\n// be a `Set` but those are unsupported in IE.\nvar disabledPatches = Object.create( null );\n\n// Don't apply patches for specified codes. Helpful for code bases\n// where some Migrate warnings have been addressed and it's desirable\n// to avoid needless patches or false positives.\njQuery.migrateDisablePatches = function() {\n\tvar i;\n\tfor ( i = 0; i < arguments.length; i++ ) {\n\t\tdisabledPatches[ arguments[ i ] ] = true;\n\t}\n};\n\n// Allow enabling patches disabled via `jQuery.migrateDisablePatches`.\n// Helpful if you want to disable a patch only for some code that won't\n// be updated soon to be able to focus on other warnings - and enable it\n// immediately after such a call:\n// ```js\n// jQuery.migrateDisablePatches( \"workaroundA\" );\n// elem.pluginViolatingWarningA( \"pluginMethod\" );\n// jQuery.migrateEnablePatches( \"workaroundA\" );\n// ```\njQuery.migrateEnablePatches = function() {\n\tvar i;\n\tfor ( i = 0; i < arguments.length; i++ ) {\n\t\tdelete disabledPatches[ arguments[ i ] ];\n\t}\n};\n\njQuery.migrateIsPatchEnabled = function( patchCode ) {\n\treturn !disabledPatches[ patchCode ];\n};\n\n( function() {\n\n\t// Support: IE9 only\n\t// IE9 only creates console object when dev tools are first opened\n\t// IE9 console is a host object, callable but doesn't have .apply()\n\tif ( !window.console || !window.console.log ) {\n\t\treturn;\n\t}\n\n\t// Need jQuery 3.0.0+ and no older Migrate loaded\n\tif ( !jQuery || !jQueryVersionSince( \"3.0.0\" ) ) {\n\t\twindow.console.log( \"JQMIGRATE: jQuery 3.0.0+ REQUIRED\" );\n\t}\n\tif ( jQuery.migrateWarnings ) {\n\t\twindow.console.log( \"JQMIGRATE: Migrate plugin loaded multiple times\" );\n\t}\n\n\t// Show a message on the console so devs know we're active\n\twindow.console.log( \"JQMIGRATE: Migrate is installed\" +\n\t\t( jQuery.migrateMute ? \"\" : \" with logging active\" ) +\n\t\t\", version \" + jQuery.migrateVersion );\n\n} )();\n\nvar warnedAbout = {};\n\n// By default each warning is only reported once.\njQuery.migrateDeduplicateWarnings = true;\n\n// List of warnings already given; public read only\njQuery.migrateWarnings = [];\n\n// Set to false to disable traces that appear with warnings\nif ( jQuery.migrateTrace === undefined ) {\n\tjQuery.migrateTrace = true;\n}\n\n// Forget any warnings we've already given; public\njQuery.migrateReset = function() {\n\twarnedAbout = {};\n\tjQuery.migrateWarnings.length = 0;\n};\n\nfunction migrateWarn( code, msg ) {\n\tvar console = window.console;\n\tif ( jQuery.migrateIsPatchEnabled( code ) &&\n\t\t( !jQuery.migrateDeduplicateWarnings || !warnedAbout[ msg ] ) ) {\n\t\twarnedAbout[ msg ] = true;\n\t\tjQuery.migrateWarnings.push( msg + \" [\" + code + \"]\" );\n\t\tif ( console && console.warn && !jQuery.migrateMute ) {\n\t\t\tconsole.warn( \"JQMIGRATE: \" + msg );\n\t\t\tif ( jQuery.migrateTrace && console.trace ) {\n\t\t\t\tconsole.trace();\n\t\t\t}\n\t\t}\n\t}\n}\n\nfunction migrateWarnProp( obj, prop, value, code, msg ) {\n\tObject.defineProperty( obj, prop, {\n\t\tconfigurable: true,\n\t\tenumerable: true,\n\t\tget: function() {\n\t\t\tmigrateWarn( code, msg );\n\t\t\treturn value;\n\t\t},\n\t\tset: function( newValue ) {\n\t\t\tmigrateWarn( code, msg );\n\t\t\tvalue = newValue;\n\t\t}\n\t} );\n}\n\nfunction migrateWarnFuncInternal( obj, prop, newFunc, code, msg ) {\n\tvar finalFunc,\n\t\torigFunc = obj[ prop ];\n\n\tobj[ prop ] = function() {\n\n\t\t// If `msg` not provided, do not warn; more sophisticated warnings\n\t\t// logic is most likely embedded in `newFunc`, in that case here\n\t\t// we just care about the logic choosing the proper implementation\n\t\t// based on whether the patch is disabled or not.\n\t\tif ( msg ) {\n\t\t\tmigrateWarn( code, msg );\n\t\t}\n\n\t\t// Since patches can be disabled & enabled dynamically, we\n\t\t// need to decide which implementation to run on each invocation.\n\t\tfinalFunc = jQuery.migrateIsPatchEnabled( code ) ?\n\t\t\tnewFunc :\n\n\t\t\t// The function may not have existed originally so we need a fallback.\n\t\t\t( origFunc || jQuery.noop );\n\n\t\treturn finalFunc.apply( this, arguments );\n\t};\n}\n\nfunction migratePatchAndWarnFunc( obj, prop, newFunc, code, msg ) {\n\tif ( !msg ) {\n\t\tthrow new Error( \"No warning message provided\" );\n\t}\n\treturn migrateWarnFuncInternal( obj, prop, newFunc, code, msg );\n}\n\nfunction migratePatchFunc( obj, prop, newFunc, code ) {\n\treturn migrateWarnFuncInternal( obj, prop, newFunc, code );\n}\n\nif ( window.document.compatMode === \"BackCompat\" ) {\n\n\t// jQuery has never supported or tested Quirks Mode\n\tmigrateWarn( \"quirks\", \"jQuery is not compatible with Quirks Mode\" );\n}\n\nvar findProp,\n\tclass2type = {},\n\toldInit = jQuery.fn.init,\n\toldFind = jQuery.find,\n\n\trattrHashTest = /\\[(\\s*[-\\w]+\\s*)([~|^$*]?=)\\s*([-\\w#]*?#[-\\w#]*)\\s*\\]/,\n\trattrHashGlob = /\\[(\\s*[-\\w]+\\s*)([~|^$*]?=)\\s*([-\\w#]*?#[-\\w#]*)\\s*\\]/g,\n\n\t// Support: Android <=4.0 only\n\t// Make sure we trim BOM and NBSP\n\trtrim = /^[\\s\\uFEFF\\xA0]+|[\\s\\uFEFF\\xA0]+$/g;\n\nmigratePatchFunc( jQuery.fn, \"init\", function( arg1 ) {\n\tvar args = Array.prototype.slice.call( arguments );\n\n\tif ( jQuery.migrateIsPatchEnabled( \"selector-empty-id\" ) &&\n\t\ttypeof arg1 === \"string\" && arg1 === \"#\" ) {\n\n\t\t// JQuery( \"#\" ) is a bogus ID selector, but it returned an empty set\n\t\t// before jQuery 3.0\n\t\tmigrateWarn( \"selector-empty-id\", \"jQuery( '#' ) is not a valid selector\" );\n\t\targs[ 0 ] = [];\n\t}\n\n\treturn oldInit.apply( this, args );\n}, \"selector-empty-id\" );\n\n// This is already done in Core but the above patch will lose this assignment\n// so we need to redo it. It doesn't matter whether the patch is enabled or not\n// as the method is always going to be a Migrate-created wrapper.\njQuery.fn.init.prototype = jQuery.fn;\n\nmigratePatchFunc( jQuery, \"find\", function( selector ) {\n\tvar args = Array.prototype.slice.call( arguments );\n\n\t// Support: PhantomJS 1.x\n\t// String#match fails to match when used with a //g RegExp, only on some strings\n\tif ( typeof selector === \"string\" && rattrHashTest.test( selector ) ) {\n\n\t\t// The nonstandard and undocumented unquoted-hash was removed in jQuery 1.12.0\n\t\t// First see if qS thinks it's a valid selector, if so avoid a false positive\n\t\ttry {\n\t\t\twindow.document.querySelector( selector );\n\t\t} catch ( err1 ) {\n\n\t\t\t// Didn't *look* valid to qSA, warn and try quoting what we think is the value\n\t\t\tselector = selector.replace( rattrHashGlob, function( _, attr, op, value ) {\n\t\t\t\treturn \"[\" + attr + op + \"\\\"\" + value + \"\\\"]\";\n\t\t\t} );\n\n\t\t\t// If the regexp *may* have created an invalid selector, don't update it\n\t\t\t// Note that there may be false alarms if selector uses jQuery extensions\n\t\t\ttry {\n\t\t\t\twindow.document.querySelector( selector );\n\t\t\t\tmigrateWarn( \"selector-hash\",\n\t\t\t\t\t\"Attribute selector with '#' must be quoted: \" + args[ 0 ] );\n\t\t\t\targs[ 0 ] = selector;\n\t\t\t} catch ( err2 ) {\n\t\t\t\tmigrateWarn( \"selector-hash\",\n\t\t\t\t\t\"Attribute selector with '#' was not fixed: \" + args[ 0 ] );\n\t\t\t}\n\t\t}\n\t}\n\n\treturn oldFind.apply( this, args );\n}, \"selector-hash\" );\n\n// Copy properties attached to original jQuery.find method (e.g. .attr, .isXML)\nfor ( findProp in oldFind ) {\n\tif ( Object.prototype.hasOwnProperty.call( oldFind, findProp ) ) {\n\t\tjQuery.find[ findProp ] = oldFind[ findProp ];\n\t}\n}\n\n// The number of elements contained in the matched element set\nmigratePatchAndWarnFunc( jQuery.fn, \"size\", function() {\n\treturn this.length;\n}, \"size\",\n\"jQuery.fn.size() is deprecated and removed; use the .length property\" );\n\nmigratePatchAndWarnFunc( jQuery, \"parseJSON\", function() {\n\treturn JSON.parse.apply( null, arguments );\n}, \"parseJSON\",\n\"jQuery.parseJSON is deprecated; use JSON.parse\" );\n\nmigratePatchAndWarnFunc( jQuery, \"holdReady\", jQuery.holdReady,\n\t\"holdReady\", \"jQuery.holdReady is deprecated\" );\n\nmigratePatchAndWarnFunc( jQuery, \"unique\", jQuery.uniqueSort,\n\t\"unique\", \"jQuery.unique is deprecated; use jQuery.uniqueSort\" );\n\n// Now jQuery.expr.pseudos is the standard incantation\nmigrateWarnProp( jQuery.expr, \"filters\", jQuery.expr.pseudos, \"expr-pre-pseudos\",\n\t\"jQuery.expr.filters is deprecated; use jQuery.expr.pseudos\" );\nmigrateWarnProp( jQuery.expr, \":\", jQuery.expr.pseudos, \"expr-pre-pseudos\",\n\t\"jQuery.expr[':'] is deprecated; use jQuery.expr.pseudos\" );\n\n// Prior to jQuery 3.1.1 there were internal refs so we don't warn there\nif ( jQueryVersionSince( \"3.1.1\" ) ) {\n\tmigratePatchAndWarnFunc( jQuery, \"trim\", function( text ) {\n\t\treturn text == null ?\n\t\t\t\"\" :\n\t\t\t( text + \"\" ).replace( rtrim, \"\" );\n\t}, \"trim\",\n\t\"jQuery.trim is deprecated; use String.prototype.trim\" );\n}\n\n// Prior to jQuery 3.2 there were internal refs so we don't warn there\nif ( jQueryVersionSince( \"3.2.0\" ) ) {\n\tmigratePatchAndWarnFunc( jQuery, \"nodeName\", function( elem, name ) {\n\t\treturn elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();\n\t}, \"nodeName\",\n\t\"jQuery.nodeName is deprecated\" );\n\n\tmigratePatchAndWarnFunc( jQuery, \"isArray\", Array.isArray, \"isArray\",\n\t\t\"jQuery.isArray is deprecated; use Array.isArray\"\n\t);\n}\n\nif ( jQueryVersionSince( \"3.3.0\" ) ) {\n\n\tmigratePatchAndWarnFunc( jQuery, \"isNumeric\", function( obj ) {\n\n\t\t\t// As of jQuery 3.0, isNumeric is limited to\n\t\t\t// strings and numbers (primitives or objects)\n\t\t\t// that can be coerced to finite numbers (gh-2662)\n\t\t\tvar type = typeof obj;\n\t\t\treturn ( type === \"number\" || type === \"string\" ) &&\n\n\t\t\t\t// parseFloat NaNs numeric-cast false positives (\"\")\n\t\t\t\t// ...but misinterprets leading-number strings, e.g. hex literals (\"0x...\")\n\t\t\t\t// subtraction forces infinities to NaN\n\t\t\t\t!isNaN( obj - parseFloat( obj ) );\n\t\t}, \"isNumeric\",\n\t\t\"jQuery.isNumeric() is deprecated\"\n\t);\n\n\t// Populate the class2type map\n\tjQuery.each( \"Boolean Number String Function Array Date RegExp Object Error Symbol\".\n\t\tsplit( \" \" ),\n\tfunction( _, name ) {\n\t\tclass2type[ \"[object \" + name + \"]\" ] = name.toLowerCase();\n\t} );\n\n\tmigratePatchAndWarnFunc( jQuery, \"type\", function( obj ) {\n\t\tif ( obj == null ) {\n\t\t\treturn obj + \"\";\n\t\t}\n\n\t\t// Support: Android <=2.3 only (functionish RegExp)\n\t\treturn typeof obj === \"object\" || typeof obj === \"function\" ?\n\t\t\tclass2type[ Object.prototype.toString.call( obj ) ] || \"object\" :\n\t\t\ttypeof obj;\n\t}, \"type\",\n\t\"jQuery.type is deprecated\" );\n\n\tmigratePatchAndWarnFunc( jQuery, \"isFunction\",\n\t\tfunction( obj ) {\n\t\t\treturn typeof obj === \"function\";\n\t\t}, \"isFunction\",\n\t\t\"jQuery.isFunction() is deprecated\" );\n\n\tmigratePatchAndWarnFunc( jQuery, \"isWindow\",\n\t\tfunction( obj ) {\n\t\t\treturn obj != null && obj === obj.window;\n\t\t}, \"isWindow\",\n\t\t\"jQuery.isWindow() is deprecated\"\n\t);\n}\n\n// Support jQuery slim which excludes the ajax module\nif ( jQuery.ajax ) {\n\nvar oldAjax = jQuery.ajax,\n\trjsonp = /(=)\\?(?=&|$)|\\?\\?/;\n\nmigratePatchFunc( jQuery, \"ajax\", function() {\n\tvar jQXHR = oldAjax.apply( this, arguments );\n\n\t// Be sure we got a jQXHR (e.g., not sync)\n\tif ( jQXHR.promise ) {\n\t\tmigratePatchAndWarnFunc( jQXHR, \"success\", jQXHR.done, \"jqXHR-methods\",\n\t\t\t\"jQXHR.success is deprecated and removed\" );\n\t\tmigratePatchAndWarnFunc( jQXHR, \"error\", jQXHR.fail, \"jqXHR-methods\",\n\t\t\t\"jQXHR.error is deprecated and removed\" );\n\t\tmigratePatchAndWarnFunc( jQXHR, \"complete\", jQXHR.always, \"jqXHR-methods\",\n\t\t\t\"jQXHR.complete is deprecated and removed\" );\n\t}\n\n\treturn jQXHR;\n}, \"jqXHR-methods\" );\n\n// Only trigger the logic in jQuery <4 as the JSON-to-JSONP auto-promotion\n// behavior is gone in jQuery 4.0 and as it has security implications, we don't\n// want to restore the legacy behavior.\nif ( !jQueryVersionSince( \"4.0.0\" ) ) {\n\n\t// Register this prefilter before the jQuery one. Otherwise, a promoted\n\t// request is transformed into one with the script dataType and we can't\n\t// catch it anymore.\n\tjQuery.ajaxPrefilter( \"+json\", function( s ) {\n\n\t\t// Warn if JSON-to-JSONP auto-promotion happens.\n\t\tif ( s.jsonp !== false && ( rjsonp.test( s.url ) ||\n\t\t\t\ttypeof s.data === \"string\" &&\n\t\t\t\t( s.contentType || \"\" )\n\t\t\t\t\t.indexOf( \"application/x-www-form-urlencoded\" ) === 0 &&\n\t\t\t\trjsonp.test( s.data )\n\t\t) ) {\n\t\t\tmigrateWarn( \"jsonp-promotion\", \"JSON-to-JSONP auto-promotion is deprecated\" );\n\t\t}\n\t} );\n}\n\n}\n\nvar oldRemoveAttr = jQuery.fn.removeAttr,\n\toldToggleClass = jQuery.fn.toggleClass,\n\trmatchNonSpace = /\\S+/g;\n\nmigratePatchFunc( jQuery.fn, \"removeAttr\", function( name ) {\n\tvar self = this;\n\n\tjQuery.each( name.match( rmatchNonSpace ), function( _i, attr ) {\n\t\tif ( jQuery.expr.match.bool.test( attr ) ) {\n\t\t\tmigrateWarn( \"removeAttr-bool\",\n\t\t\t\t\"jQuery.fn.removeAttr no longer sets boolean properties: \" + attr );\n\t\t\tself.prop( attr, false );\n\t\t}\n\t} );\n\n\treturn oldRemoveAttr.apply( this, arguments );\n}, \"removeAttr-bool\" );\n\nmigratePatchFunc( jQuery.fn, \"toggleClass\", function( state ) {\n\n\t// Only deprecating no-args or single boolean arg\n\tif ( state !== undefined && typeof state !== \"boolean\" ) {\n\n\t\treturn oldToggleClass.apply( this, arguments );\n\t}\n\n\tmigrateWarn( \"toggleClass-bool\", \"jQuery.fn.toggleClass( boolean ) is deprecated\" );\n\n\t// Toggle entire class name of each element\n\treturn this.each( function() {\n\t\tvar className = this.getAttribute && this.getAttribute( \"class\" ) || \"\";\n\n\t\tif ( className ) {\n\t\t\tjQuery.data( this, \"__className__\", className );\n\t\t}\n\n\t\t// If the element has a class name or if we're passed `false`,\n\t\t// then remove the whole classname (if there was one, the above saved it).\n\t\t// Otherwise bring back whatever was previously saved (if anything),\n\t\t// falling back to the empty string if nothing was stored.\n\t\tif ( this.setAttribute ) {\n\t\t\tthis.setAttribute( \"class\",\n\t\t\t\tclassName || state === false ?\n\t\t\t\t\"\" :\n\t\t\t\tjQuery.data( this, \"__className__\" ) || \"\"\n\t\t\t);\n\t\t}\n\t} );\n}, \"toggleClass-bool\" );\n\nfunction camelCase( string ) {\n\treturn string.replace( /-([a-z])/g, function( _, letter ) {\n\t\treturn letter.toUpperCase();\n\t} );\n}\n\nvar origFnCss,\n\tinternalSwapCall = false,\n\tralphaStart = /^[a-z]/,\n\n\t// The regex visualized:\n\t//\n\t//                         /----------\\\n\t//                        |            |    /-------\\\n\t//                        |  / Top  \\  |   |         |\n\t//         /--- Border ---+-| Right  |-+---+- Width -+---\\\n\t//        |                 | Bottom |                    |\n\t//        |                  \\ Left /                     |\n\t//        |                                               |\n\t//        |                              /----------\\     |\n\t//        |          /-------------\\    |            |    |- END\n\t//        |         |               |   |  / Top  \\  |    |\n\t//        |         |  / Margin  \\  |   | | Right  | |    |\n\t//        |---------+-|           |-+---+-| Bottom |-+----|\n\t//        |            \\ Padding /         \\ Left /       |\n\t// BEGIN -|                                               |\n\t//        |                /---------\\                    |\n\t//        |               |           |                   |\n\t//        |               |  / Min \\  |    / Width  \\     |\n\t//         \\--------------+-|       |-+---|          |---/\n\t//                           \\ Max /       \\ Height /\n\trautoPx = /^(?:Border(?:Top|Right|Bottom|Left)?(?:Width|)|(?:Margin|Padding)?(?:Top|Right|Bottom|Left)?|(?:Min|Max)?(?:Width|Height))$/;\n\n// If this version of jQuery has .swap(), don't false-alarm on internal uses\nif ( jQuery.swap ) {\n\tjQuery.each( [ \"height\", \"width\", \"reliableMarginRight\" ], function( _, name ) {\n\t\tvar oldHook = jQuery.cssHooks[ name ] && jQuery.cssHooks[ name ].get;\n\n\t\tif ( oldHook ) {\n\t\t\tjQuery.cssHooks[ name ].get = function() {\n\t\t\t\tvar ret;\n\n\t\t\t\tinternalSwapCall = true;\n\t\t\t\tret = oldHook.apply( this, arguments );\n\t\t\t\tinternalSwapCall = false;\n\t\t\t\treturn ret;\n\t\t\t};\n\t\t}\n\t} );\n}\n\nmigratePatchFunc( jQuery, \"swap\", function( elem, options, callback, args ) {\n\tvar ret, name,\n\t\told = {};\n\n\tif ( !internalSwapCall ) {\n\t\tmigrateWarn( \"swap\", \"jQuery.swap() is undocumented and deprecated\" );\n\t}\n\n\t// Remember the old values, and insert the new ones\n\tfor ( name in options ) {\n\t\told[ name ] = elem.style[ name ];\n\t\telem.style[ name ] = options[ name ];\n\t}\n\n\tret = callback.apply( elem, args || [] );\n\n\t// Revert the old values\n\tfor ( name in options ) {\n\t\telem.style[ name ] = old[ name ];\n\t}\n\n\treturn ret;\n}, \"swap\" );\n\nif ( jQueryVersionSince( \"3.4.0\" ) && typeof Proxy !== \"undefined\" ) {\n\tjQuery.cssProps = new Proxy( jQuery.cssProps || {}, {\n\t\tset: function() {\n\t\t\tmigrateWarn( \"cssProps\", \"jQuery.cssProps is deprecated\" );\n\t\t\treturn Reflect.set.apply( this, arguments );\n\t\t}\n\t} );\n}\n\n// In jQuery >=4 where jQuery.cssNumber is missing fill it with the latest 3.x version:\n// https://github.com/jquery/jquery/blob/3.6.0/src/css.js#L212-L233\n// This way, number values for the CSS properties below won't start triggering\n// Migrate warnings when jQuery gets updated to >=4.0.0 (gh-438).\nif ( jQueryVersionSince( \"4.0.0\" ) && typeof Proxy !== \"undefined\" ) {\n\tjQuery.cssNumber = new Proxy( {\n\t\tanimationIterationCount: true,\n\t\tcolumnCount: true,\n\t\tfillOpacity: true,\n\t\tflexGrow: true,\n\t\tflexShrink: true,\n\t\tfontWeight: true,\n\t\tgridArea: true,\n\t\tgridColumn: true,\n\t\tgridColumnEnd: true,\n\t\tgridColumnStart: true,\n\t\tgridRow: true,\n\t\tgridRowEnd: true,\n\t\tgridRowStart: true,\n\t\tlineHeight: true,\n\t\topacity: true,\n\t\torder: true,\n\t\torphans: true,\n\t\twidows: true,\n\t\tzIndex: true,\n\t\tzoom: true\n\t}, {\n\t\tget: function() {\n\t\t\tmigrateWarn( \"css-number\", \"jQuery.cssNumber is deprecated\" );\n\t\t\treturn Reflect.get.apply( this, arguments );\n\t\t},\n\t\tset: function() {\n\t\t\tmigrateWarn( \"css-number\", \"jQuery.cssNumber is deprecated\" );\n\t\t\treturn Reflect.set.apply( this, arguments );\n\t\t}\n\t} );\n}\n\nfunction isAutoPx( prop ) {\n\n\t// The first test is used to ensure that:\n\t// 1. The prop starts with a lowercase letter (as we uppercase it for the second regex).\n\t// 2. The prop is not empty.\n\treturn ralphaStart.test( prop ) &&\n\t\trautoPx.test( prop[ 0 ].toUpperCase() + prop.slice( 1 ) );\n}\n\norigFnCss = jQuery.fn.css;\n\nmigratePatchFunc( jQuery.fn, \"css\", function( name, value ) {\n\tvar camelName,\n\t\torigThis = this;\n\n\tif ( name && typeof name === \"object\" && !Array.isArray( name ) ) {\n\t\tjQuery.each( name, function( n, v ) {\n\t\t\tjQuery.fn.css.call( origThis, n, v );\n\t\t} );\n\t\treturn this;\n\t}\n\n\tif ( typeof value === \"number\" ) {\n\t\tcamelName = camelCase( name );\n\t\tif ( !isAutoPx( camelName ) && !jQuery.cssNumber[ camelName ] ) {\n\t\t\tmigrateWarn( \"css-number\",\n\t\t\t\t\"Number-typed values are deprecated for jQuery.fn.css( \\\"\" +\n\t\t\t\tname + \"\\\", value )\" );\n\t\t}\n\t}\n\n\treturn origFnCss.apply( this, arguments );\n}, \"css-number\" );\n\nvar origData = jQuery.data;\n\nmigratePatchFunc( jQuery, \"data\", function( elem, name, value ) {\n\tvar curData, sameKeys, key;\n\n\t// Name can be an object, and each entry in the object is meant to be set as data\n\tif ( name && typeof name === \"object\" && arguments.length === 2 ) {\n\n\t\tcurData = jQuery.hasData( elem ) && origData.call( this, elem );\n\t\tsameKeys = {};\n\t\tfor ( key in name ) {\n\t\t\tif ( key !== camelCase( key ) ) {\n\t\t\t\tmigrateWarn( \"data-camelCase\",\n\t\t\t\t\t\"jQuery.data() always sets/gets camelCased names: \" + key );\n\t\t\t\tcurData[ key ] = name[ key ];\n\t\t\t} else {\n\t\t\t\tsameKeys[ key ] = name[ key ];\n\t\t\t}\n\t\t}\n\n\t\torigData.call( this, elem, sameKeys );\n\n\t\treturn name;\n\t}\n\n\t// If the name is transformed, look for the un-transformed name in the data object\n\tif ( name && typeof name === \"string\" && name !== camelCase( name ) ) {\n\n\t\tcurData = jQuery.hasData( elem ) && origData.call( this, elem );\n\t\tif ( curData && name in curData ) {\n\t\t\tmigrateWarn( \"data-camelCase\",\n\t\t\t\t\"jQuery.data() always sets/gets camelCased names: \" + name );\n\t\t\tif ( arguments.length > 2 ) {\n\t\t\t\tcurData[ name ] = value;\n\t\t\t}\n\t\t\treturn curData[ name ];\n\t\t}\n\t}\n\n\treturn origData.apply( this, arguments );\n}, \"data-camelCase\" );\n\n// Support jQuery slim which excludes the effects module\nif ( jQuery.fx ) {\n\nvar intervalValue, intervalMsg,\n\toldTweenRun = jQuery.Tween.prototype.run,\n\tlinearEasing = function( pct ) {\n\t\treturn pct;\n\t};\n\nmigratePatchFunc( jQuery.Tween.prototype, \"run\", function( ) {\n\tif ( jQuery.easing[ this.easing ].length > 1 ) {\n\t\tmigrateWarn(\n\t\t\t\"easing-one-arg\",\n\t\t\t\"'jQuery.easing.\" + this.easing.toString() + \"' should use only one argument\"\n\t\t);\n\n\t\tjQuery.easing[ this.easing ] = linearEasing;\n\t}\n\n\toldTweenRun.apply( this, arguments );\n}, \"easing-one-arg\" );\n\nintervalValue = jQuery.fx.interval;\nintervalMsg = \"jQuery.fx.interval is deprecated\";\n\n// Support: IE9, Android <=4.4\n// Avoid false positives on browsers that lack rAF\n// Don't warn if document is hidden, jQuery uses setTimeout (#292)\nif ( window.requestAnimationFrame ) {\n\tObject.defineProperty( jQuery.fx, \"interval\", {\n\t\tconfigurable: true,\n\t\tenumerable: true,\n\t\tget: function() {\n\t\t\tif ( !window.document.hidden ) {\n\t\t\t\tmigrateWarn( \"fx-interval\", intervalMsg );\n\t\t\t}\n\n\t\t\t// Only fallback to the default if patch is enabled\n\t\t\tif ( !jQuery.migrateIsPatchEnabled( \"fx-interval\" ) ) {\n\t\t\t\treturn intervalValue;\n\t\t\t}\n\t\t\treturn intervalValue === undefined ? 13 : intervalValue;\n\t\t},\n\t\tset: function( newValue ) {\n\t\t\tmigrateWarn( \"fx-interval\", intervalMsg );\n\t\t\tintervalValue = newValue;\n\t\t}\n\t} );\n}\n\n}\n\nvar oldLoad = jQuery.fn.load,\n\toldEventAdd = jQuery.event.add,\n\toriginalFix = jQuery.event.fix;\n\njQuery.event.props = [];\njQuery.event.fixHooks = {};\n\nmigrateWarnProp( jQuery.event.props, \"concat\", jQuery.event.props.concat,\n\t\"event-old-patch\",\n\t\"jQuery.event.props.concat() is deprecated and removed\" );\n\nmigratePatchFunc( jQuery.event, \"fix\", function( originalEvent ) {\n\tvar event,\n\t\ttype = originalEvent.type,\n\t\tfixHook = this.fixHooks[ type ],\n\t\tprops = jQuery.event.props;\n\n\tif ( props.length ) {\n\t\tmigrateWarn( \"event-old-patch\",\n\t\t\t\"jQuery.event.props are deprecated and removed: \" + props.join() );\n\t\twhile ( props.length ) {\n\t\t\tjQuery.event.addProp( props.pop() );\n\t\t}\n\t}\n\n\tif ( fixHook && !fixHook._migrated_ ) {\n\t\tfixHook._migrated_ = true;\n\t\tmigrateWarn( \"event-old-patch\",\n\t\t\t\"jQuery.event.fixHooks are deprecated and removed: \" + type );\n\t\tif ( ( props = fixHook.props ) && props.length ) {\n\t\t\twhile ( props.length ) {\n\t\t\t\tjQuery.event.addProp( props.pop() );\n\t\t\t}\n\t\t}\n\t}\n\n\tevent = originalFix.call( this, originalEvent );\n\n\treturn fixHook && fixHook.filter ?\n\t\tfixHook.filter( event, originalEvent ) :\n\t\tevent;\n}, \"event-old-patch\" );\n\nmigratePatchFunc( jQuery.event, \"add\", function( elem, types ) {\n\n\t// This misses the multiple-types case but that seems awfully rare\n\tif ( elem === window && types === \"load\" && window.document.readyState === \"complete\" ) {\n\t\tmigrateWarn( \"load-after-event\",\n\t\t\t\"jQuery(window).on('load'...) called after load event occurred\" );\n\t}\n\treturn oldEventAdd.apply( this, arguments );\n}, \"load-after-event\" );\n\njQuery.each( [ \"load\", \"unload\", \"error\" ], function( _, name ) {\n\n\tmigratePatchFunc( jQuery.fn, name, function() {\n\t\tvar args = Array.prototype.slice.call( arguments, 0 );\n\n\t\t// If this is an ajax load() the first arg should be the string URL;\n\t\t// technically this could also be the \"Anything\" arg of the event .load()\n\t\t// which just goes to show why this dumb signature has been deprecated!\n\t\t// jQuery custom builds that exclude the Ajax module justifiably die here.\n\t\tif ( name === \"load\" && typeof args[ 0 ] === \"string\" ) {\n\t\t\treturn oldLoad.apply( this, args );\n\t\t}\n\n\t\tmigrateWarn( \"shorthand-removed-v3\",\n\t\t\t\"jQuery.fn.\" + name + \"() is deprecated\" );\n\n\t\targs.splice( 0, 0, name );\n\t\tif ( arguments.length ) {\n\t\t\treturn this.on.apply( this, args );\n\t\t}\n\n\t\t// Use .triggerHandler here because:\n\t\t// - load and unload events don't need to bubble, only applied to window or image\n\t\t// - error event should not bubble to window, although it does pre-1.7\n\t\t// See http://bugs.jquery.com/ticket/11820\n\t\tthis.triggerHandler.apply( this, args );\n\t\treturn this;\n\t}, \"shorthand-removed-v3\" );\n\n} );\n\njQuery.each( ( \"blur focus focusin focusout resize scroll click dblclick \" +\n\t\"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave \" +\n\t\"change select submit keydown keypress keyup contextmenu\" ).split( \" \" ),\n\tfunction( _i, name ) {\n\n\t// Handle event binding\n\tmigratePatchAndWarnFunc( jQuery.fn, name, function( data, fn ) {\n\t\treturn arguments.length > 0 ?\n\t\t\tthis.on( name, null, data, fn ) :\n\t\t\tthis.trigger( name );\n\t\t},\n\t\t\"shorthand-deprecated-v3\",\n\t\t\"jQuery.fn.\" + name + \"() event shorthand is deprecated\" );\n} );\n\n// Trigger \"ready\" event only once, on document ready\njQuery( function() {\n\tjQuery( window.document ).triggerHandler( \"ready\" );\n} );\n\njQuery.event.special.ready = {\n\tsetup: function() {\n\t\tif ( this === window.document ) {\n\t\t\tmigrateWarn( \"ready-event\", \"'ready' event is deprecated\" );\n\t\t}\n\t}\n};\n\nmigratePatchAndWarnFunc( jQuery.fn, \"bind\", function( types, data, fn ) {\n\treturn this.on( types, null, data, fn );\n}, \"pre-on-methods\", \"jQuery.fn.bind() is deprecated\" );\nmigratePatchAndWarnFunc( jQuery.fn, \"unbind\", function( types, fn ) {\n\treturn this.off( types, null, fn );\n}, \"pre-on-methods\", \"jQuery.fn.unbind() is deprecated\" );\nmigratePatchAndWarnFunc( jQuery.fn, \"delegate\", function( selector, types, data, fn ) {\n\treturn this.on( types, selector, data, fn );\n}, \"pre-on-methods\", \"jQuery.fn.delegate() is deprecated\" );\nmigratePatchAndWarnFunc( jQuery.fn, \"undelegate\", function( selector, types, fn ) {\n\treturn arguments.length === 1 ?\n\t\tthis.off( selector, \"**\" ) :\n\t\tthis.off( types, selector || \"**\", fn );\n}, \"pre-on-methods\", \"jQuery.fn.undelegate() is deprecated\" );\nmigratePatchAndWarnFunc( jQuery.fn, \"hover\", function( fnOver, fnOut ) {\n\treturn this.on( \"mouseenter\", fnOver ).on( \"mouseleave\", fnOut || fnOver );\n}, \"pre-on-methods\", \"jQuery.fn.hover() is deprecated\" );\n\nvar rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([a-z][^\\/\\0>\\x20\\t\\r\\n\\f]*)[^>]*)\\/>/gi,\n\tmakeMarkup = function( html ) {\n\t\tvar doc = window.document.implementation.createHTMLDocument( \"\" );\n\t\tdoc.body.innerHTML = html;\n\t\treturn doc.body && doc.body.innerHTML;\n\t},\n\twarnIfChanged = function( html ) {\n\t\tvar changed = html.replace( rxhtmlTag, \"<$1></$2>\" );\n\t\tif ( changed !== html && makeMarkup( html ) !== makeMarkup( changed ) ) {\n\t\t\tmigrateWarn( \"self-closed-tags\",\n\t\t\t\t\"HTML tags must be properly nested and closed: \" + html );\n\t\t}\n\t};\n\n/**\n * Deprecated, please use `jQuery.migrateDisablePatches( \"self-closed-tags\" )` instead.\n * @deprecated\n */\njQuery.UNSAFE_restoreLegacyHtmlPrefilter = function() {\n\tjQuery.migrateEnablePatches( \"self-closed-tags\" );\n};\n\nmigratePatchFunc( jQuery, \"htmlPrefilter\", function( html ) {\n\twarnIfChanged( html );\n\treturn html.replace( rxhtmlTag, \"<$1></$2>\" );\n}, \"self-closed-tags\" );\n\n// This patch needs to be disabled by default as it re-introduces\n// security issues (CVE-2020-11022, CVE-2020-11023).\njQuery.migrateDisablePatches( \"self-closed-tags\" );\n\nvar origOffset = jQuery.fn.offset;\n\nmigratePatchFunc( jQuery.fn, \"offset\", function() {\n\tvar elem = this[ 0 ];\n\n\tif ( elem && ( !elem.nodeType || !elem.getBoundingClientRect ) ) {\n\t\tmigrateWarn( \"offset-valid-elem\", \"jQuery.fn.offset() requires a valid DOM element\" );\n\t\treturn arguments.length ? this : undefined;\n\t}\n\n\treturn origOffset.apply( this, arguments );\n}, \"offset-valid-elem\" );\n\n// Support jQuery slim which excludes the ajax module\n// The jQuery.param patch is about respecting `jQuery.ajaxSettings.traditional`\n// so it doesn't make sense for the slim build.\nif ( jQuery.ajax ) {\n\nvar origParam = jQuery.param;\n\nmigratePatchFunc( jQuery, \"param\", function( data, traditional ) {\n\tvar ajaxTraditional = jQuery.ajaxSettings && jQuery.ajaxSettings.traditional;\n\n\tif ( traditional === undefined && ajaxTraditional ) {\n\n\t\tmigrateWarn( \"param-ajax-traditional\",\n\t\t\t\"jQuery.param() no longer uses jQuery.ajaxSettings.traditional\" );\n\t\ttraditional = ajaxTraditional;\n\t}\n\n\treturn origParam.call( this, data, traditional );\n}, \"param-ajax-traditional\" );\n\n}\n\nmigratePatchAndWarnFunc( jQuery.fn, \"andSelf\", jQuery.fn.addBack, \"andSelf\",\n\t\"jQuery.fn.andSelf() is deprecated and removed, use jQuery.fn.addBack()\" );\n\n// Support jQuery slim which excludes the deferred module in jQuery 4.0+\nif ( jQuery.Deferred ) {\n\nvar oldDeferred = jQuery.Deferred,\n\ttuples = [\n\n\t\t// Action, add listener, callbacks, .then handlers, final state\n\t\t[ \"resolve\", \"done\", jQuery.Callbacks( \"once memory\" ),\n\t\t\tjQuery.Callbacks( \"once memory\" ), \"resolved\" ],\n\t\t[ \"reject\", \"fail\", jQuery.Callbacks( \"once memory\" ),\n\t\t\tjQuery.Callbacks( \"once memory\" ), \"rejected\" ],\n\t\t[ \"notify\", \"progress\", jQuery.Callbacks( \"memory\" ),\n\t\t\tjQuery.Callbacks( \"memory\" ) ]\n\t];\n\nmigratePatchFunc( jQuery, \"Deferred\", function( func ) {\n\tvar deferred = oldDeferred(),\n\t\tpromise = deferred.promise();\n\n\tfunction newDeferredPipe( /* fnDone, fnFail, fnProgress */ ) {\n\t\tvar fns = arguments;\n\n\t\treturn jQuery.Deferred( function( newDefer ) {\n\t\t\tjQuery.each( tuples, function( i, tuple ) {\n\t\t\t\tvar fn = typeof fns[ i ] === \"function\" && fns[ i ];\n\n\t\t\t\t// Deferred.done(function() { bind to newDefer or newDefer.resolve })\n\t\t\t\t// deferred.fail(function() { bind to newDefer or newDefer.reject })\n\t\t\t\t// deferred.progress(function() { bind to newDefer or newDefer.notify })\n\t\t\t\tdeferred[ tuple[ 1 ] ]( function() {\n\t\t\t\t\tvar returned = fn && fn.apply( this, arguments );\n\t\t\t\t\tif ( returned && typeof returned.promise === \"function\" ) {\n\t\t\t\t\t\treturned.promise()\n\t\t\t\t\t\t\t.done( newDefer.resolve )\n\t\t\t\t\t\t\t.fail( newDefer.reject )\n\t\t\t\t\t\t\t.progress( newDefer.notify );\n\t\t\t\t\t} else {\n\t\t\t\t\t\tnewDefer[ tuple[ 0 ] + \"With\" ](\n\t\t\t\t\t\t\tthis === promise ? newDefer.promise() : this,\n\t\t\t\t\t\t\tfn ? [ returned ] : arguments\n\t\t\t\t\t\t);\n\t\t\t\t\t}\n\t\t\t\t} );\n\t\t\t} );\n\t\t\tfns = null;\n\t\t} ).promise();\n\t}\n\n\tmigratePatchAndWarnFunc( deferred, \"pipe\", newDeferredPipe, \"deferred-pipe\",\n\t\t\"deferred.pipe() is deprecated\" );\n\tmigratePatchAndWarnFunc( promise, \"pipe\", newDeferredPipe, \"deferred-pipe\",\n\t\t\"deferred.pipe() is deprecated\" );\n\n\tif ( func ) {\n\t\tfunc.call( deferred, deferred );\n\t}\n\n\treturn deferred;\n}, \"deferred-pipe\" );\n\n// Preserve handler of uncaught exceptions in promise chains\njQuery.Deferred.exceptionHook = oldDeferred.exceptionHook;\n\n}\n\nreturn jQuery;\n} );\n"
@@ -52303,14 +52966,14 @@ module.exports = function(src) {
 
 /***/ }),
 
-/***/ 486:
+/***/ 487:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__(41)(__webpack_require__(487))
+__webpack_require__(41)(__webpack_require__(488))
 
 /***/ }),
 
-/***/ 510:
+/***/ 506:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -52323,7 +52986,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 ;(function (factory) {
   if (true) {
     // AMD. Register as an anonymous module.
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(485)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(486)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -59116,14 +59779,14 @@ S2.define('jquery.select2',[
 
 /***/ }),
 
-/***/ 509:
+/***/ 505:
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (factory) {
     "use strict";
 
     if (true) { // AMD
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(485)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(486)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -62110,14 +62773,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery_fancytree_dist_skin_awesome_ui_fancytree_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(502);
-/* harmony import */ var exports_loader_exports_default_PlainScrollbar_plain_scrollbar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(503);
-/* harmony import */ var plain_scrollbar_plain_scrollbar_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(504);
-/* harmony import */ var _tabler_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(505);
+/* harmony import */ var jquery_fancytree_dist_skin_awesome_ui_fancytree_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(496);
+/* harmony import */ var exports_loader_exports_default_PlainScrollbar_plain_scrollbar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(497);
+/* harmony import */ var plain_scrollbar_plain_scrollbar_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(498);
+/* harmony import */ var _tabler_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(501);
 /* harmony import */ var _tabler_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_tabler_core__WEBPACK_IMPORTED_MODULE_3__);
 /**
  * ---------------------------------------------------------------------
@@ -62126,7 +62789,7 @@ __webpack_require__.r(__webpack_exports__);
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -62153,57 +62816,52 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 // Font-Awesome
-__webpack_require__(483);
+__webpack_require__(484);
 
 // Animate.css
-__webpack_require__(484);
+__webpack_require__(485);
 
 // jQuery
 // '$' and 'jQuery' objects have to be declared in global scope
-window.$ = window.jQuery = __webpack_require__(485);
+window.$ = window.jQuery = __webpack_require__(486);
 
-__webpack_require__(486);
+__webpack_require__(487);
 window.$.migrateMute  = true;
 window.$.migrateTrace = false;
 
 // jQuery plugins
-__webpack_require__(488);
-
-// jQuery UI widgets required by
-// - jquery-file-upload (widget)
-// - jquery.fancytree (widget, position, jquery-patch, keycode, scroll-parent, unique-id)
 __webpack_require__(489);
-__webpack_require__(491);
+
+// jQuery fancttree
+__webpack_require__(490);
 __webpack_require__(492);
 __webpack_require__(493);
 __webpack_require__(494);
 __webpack_require__(495);
 
-// jQuery fancttree
-__webpack_require__(496);
-__webpack_require__(498);
-__webpack_require__(499);
-__webpack_require__(500);
-__webpack_require__(501);
-
 
 
 window.PlainScrollbar = exports_loader_exports_default_PlainScrollbar_plain_scrollbar__WEBPACK_IMPORTED_MODULE_1__["default"];
+
+
+// jQuery UI widgets required by
+// - jquery-file-upload (widget)
+__webpack_require__(499);
 
 // Tabler
 
 
 // qTip2
-__webpack_require__(506);
-__webpack_require__(507);
+__webpack_require__(502);
+__webpack_require__(503);
 
 // color input
-__webpack_require__(508);
-__webpack_require__(509);
+__webpack_require__(504);
+__webpack_require__(505);
 
 // Select2
 // use full for compat; see https://select2.org/upgrading/migrating-from-35
-__webpack_require__(510);
+__webpack_require__(506);
 // Apply CSS classes to dropdown based on select tag classes
 $.fn.select2.defaults.set(
    'adaptDropdownCssClass',
@@ -62214,22 +62872,17 @@ $.fn.select2.defaults.set(
 
 //Loadash
 //'_' object has to be declared in global scope
-window._ = __webpack_require__(511);
+window._ = __webpack_require__(507);
 
 // gettext.js
 // add translation function into global scope
 // signature is almost the same as for PHP functions, but accept extra arguments for string variables
-window.i18n = (__webpack_require__(512)["default"])({domain: 'glpi'});
-
-const escape_msgid = function (msgid) {
-    return msgid.replace(/%(\d+)\$/g, '%%$1\$');
-};
-
+window.i18n = (__webpack_require__(508)["default"])({domain: 'glpi'});
 window.__ = function (msgid, domain /* , extra */) {
     domain = typeof(domain) !== 'undefined' ? domain : 'glpi';
     var text = i18n.dcnpgettext.apply(
         i18n,
-        [domain, undefined, escape_msgid(msgid), undefined, undefined].concat(Array.prototype.slice.call(arguments, 2))
+        [domain, undefined, msgid, undefined, undefined].concat(Array.prototype.slice.call(arguments, 2))
     );
     return _.escape(text);
 };
@@ -62238,7 +62891,7 @@ window._n = function (msgid, msgid_plural, n, domain /* , extra */) {
     domain = typeof(domain) !== 'undefined' ? domain : 'glpi';
     var text = i18n.dcnpgettext.apply(
         i18n,
-        [domain, undefined, escape_msgid(msgid), escape_msgid(msgid_plural), n].concat(Array.prototype.slice.call(arguments, 4))
+        [domain, undefined, msgid, msgid_plural, n].concat(Array.prototype.slice.call(arguments, 4))
     );
     return _.escape(text);
 };
@@ -62246,7 +62899,7 @@ window._x = function (msgctxt, msgid, domain /* , extra */) {
     domain = typeof(domain) !== 'undefined' ? domain : 'glpi';
     var text = i18n.dcnpgettext.apply(
         i18n,
-        [domain, msgctxt, escape_msgid(msgid), undefined, undefined].concat(Array.prototype.slice.call(arguments, 3))
+        [domain, msgctxt, msgid, undefined, undefined].concat(Array.prototype.slice.call(arguments, 3))
     );
     return _.escape(text);
 };
@@ -62254,7 +62907,7 @@ window._nx = function (msgctxt, msgid, msgid_plural, n, domain /* , extra */) {
     domain = typeof(domain) !== 'undefined' ? domain : 'glpi';
     var text = i18n.dcnpgettext.apply(
         i18n,
-        [domain, msgctxt, escape_msgid(msgid), escape_msgid(msgid_plural), n].concat(Array.prototype.slice.call(arguments, 5))
+        [domain, msgctxt, msgid, msgid_plural, n].concat(Array.prototype.slice.call(arguments, 5))
     );
     return _.escape(text);
 };

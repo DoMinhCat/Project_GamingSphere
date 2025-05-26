@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -43,12 +43,11 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (isset($_POST['value']) && (strcmp($_POST['value'], '0') == 0)) {
-    $withtime = filter_var($_POST['withtime'], FILTER_VALIDATE_BOOLEAN);
-    if ($withtime) {
+    if ($_POST['withtime']) {
         Html::showDateTimeField($_POST['name'], ['value' => $_POST['specificvalue']]);
     } else {
         Html::showDateField($_POST['name'], ['value' => $_POST['specificvalue']]);
     }
 } else {
-    echo "<input type='hidden' name='" . Html::cleanInputText($_POST['name']) . "' value='" . Html::cleanInputText($_POST['value']) . "'>";
+    echo "<input type='hidden' name='" . $_POST['name'] . "' value='" . $_POST['value'] . "'>";
 }

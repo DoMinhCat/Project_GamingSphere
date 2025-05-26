@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -49,7 +49,6 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
 
     public function replayRulesOnExistingDB($offset = 0, $maxtime = 0, $items = [], $params = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        // Model check : need to check using manufacturer extra data so specific function
@@ -108,7 +107,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
 
                 if ($maxtime) {
                     $crt = explode(" ", microtime());
-                    if (((float)$crt[0] + (float)$crt[1]) > $maxtime) {
+                    if (($crt[0] + $crt[1]) > $maxtime) {
                         break;
                     }
                 }
@@ -130,11 +129,10 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
      * @param $offset    offset used to begin (default 0)
      * @param $maxtime   maximum time of process (reload at the end) (default 0)
      *
-     * @return int|boolean current offset or -1 on completion or false on failure
+     * @return -1 on completion else current offset
      **/
     public function replayRulesOnExistingDBForModel($offset = 0, $maxtime = 0)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         if (isCommandLine()) {
@@ -239,7 +237,7 @@ class RuleDictionnaryDropdownCollection extends RuleCollection
                 $i++;
                 if ($maxtime) {
                     $crt = explode(" ", microtime());
-                    if (((float)$crt[0] + (float)$crt[1]) > $maxtime) {
+                    if (($crt[0] + $crt[1]) > $maxtime) {
                         break;
                     }
                 }

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -75,11 +75,8 @@ if (isset($_POST["add"])) {
     Html::popFooter();
 } else {
     $menus = ["management", "domain", "domainrecord"];
-    $options = [
+    DomainRecord::displayFullPageForItem($_GET["id"], $menus, [
+        'domains_id'   => $_GET['domains_id'] ?? null,
         'withtemplate' => $_GET["withtemplate"]
-    ];
-    if (isset($_GET['domains_id'])) {
-        $options['domains_id'] = $_GET['domains_id'];
-    }
-    DomainRecord::displayFullPageForItem($_GET["id"], $menus, $options);
+    ]);
 }

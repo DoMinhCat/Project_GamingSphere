@@ -5,7 +5,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35,7 +35,7 @@ import SearchInput from "../SearchTokenizer/SearchInput.js";
 
 /* global escapeMarkupText */
 /* global sortable */
-/* global glpi_toast_error, glpi_toast_warning, glpi_toast_info */
+/* global glpi_toast_error */
 
 /**
  * Kanban rights structure
@@ -466,7 +466,7 @@ class GLPIKanbanRights {
             let column_overflow_dropdown = "<ul id='kanban-overflow-dropdown' class='kanban-dropdown  dropdown-menu' style='display: none'>";
             let add_itemtype_bulk_dropdown = "<ul id='kanban-bulk-add-dropdown' class='dropdown-menu' style='display: none'>";
             Object.keys(self.supported_itemtypes).forEach(function(itemtype) {
-                if (self.supported_itemtypes[itemtype]['allow_create'] !== false && self.supported_itemtypes[itemtype]['allow_bulk_add'] !== false) {
+                if (self.supported_itemtypes[itemtype]['allow_create'] !== false) {
                     add_itemtype_bulk_dropdown += "<li id='kanban-bulk-add-" + itemtype + "' class='dropdown-item'><span>" + self.supported_itemtypes[itemtype]['name'] + '</span></li>';
                 }
             });
@@ -1003,29 +1003,6 @@ class GLPIKanbanRights {
                         // Re-open form
                         self.showAddItemForm($(`#${column_el_id}`), itemtype);
                     });
-                }).always(() => {
-                    $.ajax({
-                        method: 'GET',
-                        url: (self.ajax_root + "displayMessageAfterRedirect.php"),
-                        data: {
-                            'get_raw': true
-                        }
-                    }).done((messages) => {
-                        $.each(messages, (level, level_messages) => {
-                            $.each(level_messages, (index, message) => {
-                                switch (parseInt(level)) {
-                                    case 1:
-                                        glpi_toast_error(message);
-                                        break;
-                                    case 2:
-                                        glpi_toast_warning(message);
-                                        break;
-                                    default:
-                                        glpi_toast_info(message);
-                                }
-                            });
-                        });
-                    });
                 });
             });
 
@@ -1040,17 +1017,7 @@ class GLPIKanbanRights {
             const modal = $('#kanban-modal');
             modal.removeData();
             modal.data(data);
-            // Extract script elements from content to be manually inserted later with createElement to ensure they are executed
-            // Issue is noticed when content is injected multiple times. Scripts execute the first time only.
-            const scripts = $(content).find('script');
-            scripts.detach();
             modal.find('.modal-body').html(content);
-            scripts.each(function() {
-                const script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.text = this.innerHTML;
-                modal.find('.modal-body').append(script);
-            });
             modal.modal('show');
         };
 
@@ -1080,33 +1047,13 @@ class GLPIKanbanRights {
                     column_field: self.column_field.id
                 }
             }).done(function(data) {
-                // Data is sent by the server as an associative array using sorted
-                // ids as property names.
-                // This is unreliable as js object keys are not ordered.
-                // To fix this, we'll convert data into an array which can be
-                // reliably sorted.
-                Object.keys(data).forEach(function(key) {
-                    if (data[key].id === undefined) {
-                        data[key].id = key;
-                    }
-                });
-                let sorted_data = Object.values(data); // Cast Object to array
-                const collator = new Intl.Collator(undefined, {
-                    numeric: true,
-                    sensitivity: 'base'
-                });
-                sorted_data.sort((a, b)  => collator.compare(a.name, b.name));
-
                 const form_content = $(self.add_column_form + " .kanban-item-content");
                 form_content.empty();
                 form_content.append("<input type='text' class='form-control' name='column-name-filter' placeholder='" + __('Search') + "'/>");
                 let list = "<ul class='kanban-columns-list'>";
-
-                sorted_data.forEach(function(column) {
-                    let list_item = "<li data-list-id='"+column.id+"'>";
-                    // The `columns_used` array seems to store the ids as strings
-                    // We'll check if the values exist as they are or as strings to cover both formats
-                    if (column.id && (columns_used.includes(column.id) || columns_used.includes(column.id.toString()))) {
+                $.each(data, function(column_id, column) {
+                    let list_item = "<li data-list-id='"+column_id+"'>";
+                    if (columns_used.includes(column_id)) {
                         list_item += "<input type='checkbox' checked='true' class='form-check-input' />";
                     } else {
                         list_item += "<input type='checkbox' class='form-check-input' />";
@@ -1906,29 +1853,6 @@ class GLPIKanbanRights {
                 }).done(function() {
                     $('#'+formID).remove();
                     self.refresh();
-                }).always(() => {
-                    $.ajax({
-                        method: 'GET',
-                        url: (self.ajax_root + "displayMessageAfterRedirect.php"),
-                        data: {
-                            'get_raw': true
-                        }
-                    }).done((messages) => {
-                        $.each(messages, (level, level_messages) => {
-                            $.each(level_messages, (index, message) => {
-                                switch (parseInt(level)) {
-                                    case 1:
-                                        glpi_toast_error(message);
-                                        break;
-                                    case 2:
-                                        glpi_toast_warning(message);
-                                        break;
-                                    default:
-                                        glpi_toast_info(message);
-                                }
-                            });
-                        });
-                    });
                 });
             });
         };
@@ -2605,23 +2529,28 @@ class GLPIKanbanRights {
         this.showTeamModal = (card_el) => {
             const [card_itemtype, card_items_id] = card_el.prop('id').split('-', 2);
             let content = '';
+
+            const teammember_types_dropdown = $(`#kanban-teammember-item-dropdown-${card_itemtype}`).html();
+            content += `
+            ${teammember_types_dropdown}
+            <button type="button" name="add" class="btn btn-primary">${_x('button', 'Add')}</button>
+         `;
             const modal = $('#kanban-modal');
             // Remove old click handlers
             modal.off('click', 'button[name="add"]');
             modal.off('click', 'button[name="delete"]');
 
             modal.on('click', 'button[name="add"]', () => {
-                $('.actor_entry').each(function() {
-                    let itemtype = $(this).data('itemtype');
-                    let items_id = $(this).data('items-id');
-                    let role = $(this).data('actortype');
-                    if (itemtype && items_id) {
-                        addTeamMember(card_itemtype, card_items_id, itemtype, items_id, role).done(() => {
-                            self.showCardPanel($(`#${card_itemtype}-${card_items_id}`));
-                        });
-                    }
-                });
-                hideModal();
+                const itemtype = modal.find('select[name="itemtype"]').val();
+                const items_id = modal.find('select[name="items_id"]').val();
+                const role = modal.find('select[name="role"]').val();
+
+                if (itemtype && items_id) {
+                    addTeamMember(card_itemtype, card_items_id, itemtype, items_id, role).done(() => {
+                        self.showCardPanel($(`#${card_itemtype}-${card_items_id}`));
+                    });
+                    hideModal();
+                }
             });
             modal.on('click', 'button[name="delete"]', (e) => {
                 const list_item = $(e.target).closest('li');
@@ -2636,24 +2565,8 @@ class GLPIKanbanRights {
                     list_item.remove();
                 }
             });
-            $.ajax({
-                method: 'GET',
-                url: (self.ajax_root + "kanban.php"),
-                data: {
-                    itemtype: card_itemtype,
-                    items_id: card_items_id,
-                    action: 'load_teammember_form'
-                }
-            }).done((result) => {
-                const teammember_types_dropdown = $(`#kanban-teammember-item-dropdown-${card_itemtype}`).html();
-                content += `
-                    ${teammember_types_dropdown}
-                    ${result}
-                    <button type="button" name="add" class="btn btn-primary">${_x('button', 'Add')}</button>
-                `;
-                showModal(content, {
-                    card_el: card_el
-                });
+            showModal(content, {
+                card_el: card_el
             });
         };
 

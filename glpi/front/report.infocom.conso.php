@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -32,9 +32,6 @@
  *
  * ---------------------------------------------------------------------
  */
-
-/** @var array $CFG_GLPI */
-global $CFG_GLPI;
 
 include('../inc/includes.php');
 
@@ -94,17 +91,7 @@ $valeurgraphtot      = [];
  **/
 function display_infocoms_report($itemtype, $begin, $end)
 {
-    /**
-     * @var array $CFG_GLPI
-     * @var \DBmysql $DB
-     * @var int $valeurtot
-     * @var int $valeurnettetot
-     * @var array $valeurnettegraphtot
-     * @var array $valeurgraphtot
-     * @var \Stat $stat
-     * @var array $chart_opts
-     */
-    global $CFG_GLPI, $DB, $valeurtot, $valeurnettetot, $valeurnettegraphtot, $valeurgraphtot, $stat, $chart_opts;
+    global $DB, $valeurtot, $valeurnettetot, $valeurnettegraphtot, $valeurgraphtot, $CFG_GLPI, $stat, $chart_opts;
 
     $itemtable = getTableForItemType($itemtype);
     if ($DB->fieldExists($itemtable, "ticket_tco", false)) { // those are in the std infocom report

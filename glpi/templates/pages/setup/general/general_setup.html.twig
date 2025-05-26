@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -256,7 +256,7 @@
         'lock_use_lock_item',
         config['lock_use_lock_item'],
         __('Use locks'),
-        field_options|merge({
+        inline_field_options|merge({
             'id': id_lock_use_lock_item,
         })
     ) }}
@@ -276,9 +276,6 @@
         inline_field_options|merge(lock_options)|merge({
             'width': 'auto',
             'rand': locks_rand,
-            'condition': {
-                'interface': 'central',
-            }
         })
     ) }}
 
@@ -335,14 +332,14 @@
         'login_remember_default',
         config['login_remember_default'],
         __("Default state of checkbox"),
-        field_options
+        inline_field_options
     ) }}
 
     {{ fields.checkboxField(
         'display_login_source',
         config['display_login_source'],
         __('Display source dropdown on login page'),
-        field_options
+        inline_field_options
     ) }}
 </div>
 

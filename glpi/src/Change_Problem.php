@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -73,8 +73,8 @@ class Change_Problem extends CommonDBRelation
 
         if (static::canView()) {
             $nb = 0;
-            switch (get_class($item)) {
-                case Change::class:
+            switch ($item->getType()) {
+                case 'Change':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(
                             'glpi_changes_problems',
@@ -83,7 +83,7 @@ class Change_Problem extends CommonDBRelation
                     }
                     return self::createTabEntry(Problem::getTypeName(Session::getPluralNumber()), $nb);
 
-                case Problem::class:
+                case 'Problem':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable(
                             'glpi_changes_problems',
@@ -120,7 +120,6 @@ class Change_Problem extends CommonDBRelation
      **/
     public static function showForProblem(Problem $problem)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $problem->getField('id');
@@ -232,7 +231,6 @@ class Change_Problem extends CommonDBRelation
      **/
     public static function showForChange(Change $change)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $change->getField('id');
@@ -337,7 +335,6 @@ class Change_Problem extends CommonDBRelation
 
     public function post_addItem()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $donotif = !isset($this->input['_disablenotif']) && $CFG_GLPI["use_notifications"];

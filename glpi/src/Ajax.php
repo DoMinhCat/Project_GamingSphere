@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -276,7 +276,6 @@ JAVASCRIPT;
         $orientation = 'vertical',
         $options = []
     ) {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         if (count($tabs) === 0) {
@@ -358,16 +357,10 @@ JAVASCRIPT;
             echo  "</div>"; // .tab-content
             echo "</div>"; // .container-fluid
             $js = "
-         var url_hash = window.location.hash;
-         var loadTabContents = function (tablink, force_reload = false, update_session_tab = true) {
+         var loadTabContents = function (tablink, force_reload = false) {
             var url = tablink.attr('href');
-            var base_url = CFG_GLPI.url_base;
-            if (base_url === '') {
-                // If base URL is not configured, fallback to current URL domain + GLPI base dir.
-                base_url = window.location.origin + '/' + CFG_GLPI.root_doc;
-            }
-            const href_url_params = new URL(url, base_url).searchParams;
             var target = tablink.attr('data-bs-target');
+            var index = tablink.closest('.nav-item').index();
 
             const updateCurrentTab = () => {
                 $.get(
@@ -375,23 +368,10 @@ JAVASCRIPT;
                   {
                      itemtype: '" . addslashes($type) . "',
                      id: '$ID',
-                     tab_key: href_url_params.get('_glpi_tab'),
+                     tab: index,
                      withtemplate: " . (int)($_GET['withtemplate'] ?? 0) . "
                   }
-               ).done(function() {
-                    // try to restore the scroll on a specific anchor
-                    if (url_hash.length > 0) {
-                        // as we load content by ajax, when full page was ready, the anchor was not present
-                        // se we recall it to force the scroll.
-                        window.location.href = url_hash;
-
-                        // animate item with a flash
-                        $(url_hash).addClass('animate__animated animate__shakeX animate__slower');
-
-                        // unset hash (to avoid scrolling when changing tabs)
-                        url_hash   = '';
-                    }
-               });
+               );
             }
             if ($(target).html() && !force_reload) {
                 updateCurrentTab();
@@ -404,9 +384,7 @@ JAVASCRIPT;
 
                $(target).closest('main').trigger('glpi.tab.loaded');
 
-               if (update_session_tab) {
-                   updateCurrentTab();
-               }
+               updateCurrentTab();
             });
          };
 
@@ -423,20 +401,13 @@ JAVASCRIPT;
          };
 
          $(function() {
-            // Keep track of the first load which will be the tab stored in the
-            // session.
-            // In this case, it is useless to send a request to the
-            // updatecurrenttab endpoint as we already are on this tab
-            let first_load = true;
-
             $('a[data-bs-toggle=\"tab\"]').on('shown.bs.tab', function(e) {
                e.preventDefault();
-               loadTabContents($(this), false, !first_load);
+               loadTabContents($(this));
             });
 
             // load initial tab
             $('a[data-bs-target=\"#{$active_id}\"]').tab('show');
-            first_load = false;
 
             // select events in responsive mode
             $('#$tabdiv_id-select').on('change', function (e) {
@@ -453,15 +424,15 @@ JAVASCRIPT;
     /**
      * Javascript code for update an item when another item changed
      *
-     * @param string|array $toobserve    id (or array of id) of the select to observe
-     * @param string       $toupdate     id of the item to update
-     * @param string       $url          Url to get datas to update the item
-     * @param array        $parameters   of parameters to send to ajax URL
-     * @param array        $events       of the observed events (default 'change')
-     * @param integer      $minsize      minimum size of data to update content (default -1)
-     * @param integer      $buffertime   minimum time to wait before reload (default -1)
-     * @param array        $forceloadfor of content which must force update content
-     * @param boolean      $display      display or get string (default true)
+     * @param string  $toobserve    id (or array of id) of the select to observe
+     * @param string  $toupdate     id of the item to update
+     * @param string  $url          Url to get datas to update the item
+     * @param array   $parameters   of parameters to send to ajax URL
+     * @param array   $events       of the observed events (default 'change')
+     * @param integer $minsize      minimum size of data to update content (default -1)
+     * @param integer $buffertime   minimum time to wait before reload (default -1)
+     * @param array   $forceloadfor of content which must force update content
+     * @param boolean $display      display or get string (default true)
      *
      * @return void|string (see $display)
      */
@@ -502,11 +473,11 @@ JAVASCRIPT;
     /**
      * Javascript code for update an item when a select item changed
      *
-     * @param string|array $toobserve  id of the select to observe
-     * @param string       $toupdate   id of the item to update
-     * @param string       $url        Url to get datas to update the item
-     * @param array        $parameters of parameters to send to ajax URL
-     * @param boolean      $display    display or get string (default true)
+     * @param string  $toobserve  id of the select to observe
+     * @param string  $toupdate   id of the item to update
+     * @param string  $url        Url to get datas to update the item
+     * @param array   $parameters of parameters to send to ajax URL
+     * @param boolean $display    display or get string (default true)
      *
      * @return void|string (see $display)
      */
@@ -535,14 +506,14 @@ JAVASCRIPT;
     /**
      * Javascript code for update an item when a Input text item changed
      *
-     * @param string|array $toobserve    id of the Input text to observe
-     * @param string       $toupdate     id of the item to update
-     * @param string       $url          Url to get datas to update the item
-     * @param array        $parameters   of parameters to send to ajax URL
-     * @param integer      $minsize      minimum size of data to update content (default -1)
-     * @param integer      $buffertime   minimum time to wait before reload (default -1)
-     * @param array        $forceloadfor of content which must force update content
-     * @param boolean      $display      display or get string (default true)
+     * @param string  $toobserve    id of the Input text to observe
+     * @param string  $toupdate     id of the item to update
+     * @param string  $url          Url to get datas to update the item
+     * @param array   $parameters   of parameters to send to ajax URL
+     * @param integer $minsize      minimum size of data to update content (default -1)
+     * @param integer $buffertime   minimum time to wait before reload (default -1)
+     * @param array   $forceloadfor of content which must force update content
+     * @param boolean $display      display or get string (default true)
      *
      * @return void|string (see $display)
      */
@@ -584,15 +555,15 @@ JAVASCRIPT;
     /**
      * Javascript code for update an item when another item changed (Javascript code only)
      *
-     * @param string|array $toobserve    id (or array of id) of the select to observe
-     * @param string       $toupdate     id of the item to update
-     * @param string       $url          Url to get datas to update the item
-     * @param array        $parameters   of parameters to send to ajax URL
-     * @param array        $events       of the observed events (default 'change')
-     * @param integer      $minsize      minimum size of data to update content (default -1)
-     * @param integer      $buffertime   minimum time to wait before reload (default -1)
-     * @param array        $forceloadfor of content which must force update content
-     * @param boolean      $display      display or get string (default true)
+     * @param string  $toobserve    id (or array of id) of the select to observe
+     * @param string  $toupdate     id of the item to update
+     * @param string  $url          Url to get datas to update the item
+     * @param array   $parameters   of parameters to send to ajax URL
+     * @param array   $events       of the observed events (default 'change')
+     * @param integer $minsize      minimum size of data to update content (default -1)
+     * @param integer $buffertime   minimum time to wait before reload (default -1)
+     * @param array   $forceloadfor of content which must force update content
+     * @param boolean $display      display or get string (default true)
      *
      * @return void|string (see $display)
      */
@@ -775,7 +746,7 @@ JAVASCRIPT;
 
                 $out .= $key . ":";
                 $regs = [];
-                if (!is_array($val) && preg_match('/^__VALUE(\d+)__$/', $val ?? '', $regs)) {
+                if (!is_array($val) && preg_match('/^__VALUE(\d+)__$/', $val, $regs)) {
                     $out .=  Html::jsGetElementbyID(Html::cleanId($toobserve[$regs[1]])) . ".val()";
                 } else if (!is_array($val) && $val === "__VALUE__") {
                     $out .=  Html::jsGetElementbyID(Html::cleanId($toobserve)) . ".val()";

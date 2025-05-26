@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -41,15 +41,12 @@
    <tbody>
       {% for requirement in requirements %}
          {% if not requirement.isOutOfContext() %}
-            {% set is_important = not requirement.isOptional() or requirement.isRecommendedForSecurity() %}
             <tr class="tab_bg_1">
                <td class="text-start">
-                  {% if not requirement.isOptional() %}
-                     <span class="badge bg-warning">{{ __('Required') }}</span>
-                  {% elseif requirement.isRecommendedForSecurity() %}
-                     <span class="badge bg-danger">{{ __('Security') }}</span>
-                  {% else %}
+                  {% if requirement.isOptional() %}
                      <span class="badge bg-secondary">{{ __('Suggested') }}</span>
+                  {% else %}
+                     <span class="badge bg-warning">{{ __('Required') }}</span>
                   {% endif %}
                   <strong>{{ requirement.getTitle() }}</strong>
                   {% set description = requirement.getDescription() %}
@@ -60,15 +57,11 @@
                   {% if not requirement.isValidated() %}
                       {% for message in requirement.getValidationMessages() %}
                           <br />
-                          <strong>
-                             <em class="{{ is_important ? 'red' : 'missing' }}">
-                                {{ message }}
-                             </em>
-                          </strong>
+                          <strong><em class="{{ not requirement.isOptional() ? 'red' : 'missing' }}">{{ message }}</em></strong>
                       {% endfor %}
                   {% endif %}
                </td>
-               <td class="{{ requirement.isMissing() ? (is_important ? 'red' : 'missing') : 'green' }}">
+               <td class="{{ requirement.isMissing() and not requirement.isOptional() ? 'red' : '' }}">
                   <span data-bs-toggle="popover"
                         data-bs-placement="right"
                         data-bs-html="true"

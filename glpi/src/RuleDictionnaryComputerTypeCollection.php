@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -35,6 +35,9 @@
 
 class RuleDictionnaryComputerTypeCollection extends RuleDictionnaryDropdownCollection
 {
+   // From RuleCollection
+   //public $rule_class_name = 'RuleDictionnaryComputerType';
+
     public $item_table  = "glpi_computertypes";
     public $menu_option = "type.computer";
 
@@ -43,6 +46,6 @@ class RuleDictionnaryComputerTypeCollection extends RuleDictionnaryDropdownColle
      **/
     public function getTitle()
     {
-        return __('Dictionary of computer types');
+        return __('Dictionnary of computer types');
     }
 }

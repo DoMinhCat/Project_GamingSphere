@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -75,7 +75,7 @@ class Peripheral extends CommonDBTM
      **/
     public static function getTypeName($nb = 0)
     {
-        return _n('Peripheral', 'Peripherals', $nb);
+        return _n('Device', 'Devices', $nb);
     }
 
 
@@ -138,12 +138,11 @@ class Peripheral extends CommonDBTM
     /**
      * Return the linked items (in computers_items)
      *
-     * @return array of linked items  like array('Computer' => array(1,2), 'Printer' => array(5,6))
+     * @return an array of linked items  like array('Computer' => array(1,2), 'Printer' => array(5,6))
      * @since 0.84.4
      **/
     public function getLinkedItems()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $iterator = $DB->request([
@@ -321,7 +320,7 @@ class Peripheral extends CommonDBTM
             'table'              => 'glpi_users',
             'field'              => 'name',
             'linkfield'          => 'users_id_tech',
-            'name'               => __('Technician in charge'),
+            'name'               => __('Technician in charge of the hardware'),
             'datatype'           => 'dropdown',
             'right'              => 'own_ticket'
         ];
@@ -331,7 +330,7 @@ class Peripheral extends CommonDBTM
             'table'              => 'glpi_groups',
             'field'              => 'completename',
             'linkfield'          => 'groups_id_tech',
-            'name'               => __('Group in charge'),
+            'name'               => __('Group in charge of the hardware'),
             'condition'          => ['is_assign' => 1],
             'datatype'           => 'dropdown'
         ];
@@ -372,8 +371,6 @@ class Peripheral extends CommonDBTM
         $tab = array_merge($tab, Rack::rawSearchOptionsToAdd(get_class($this)));
 
         $tab = array_merge($tab, Socket::rawSearchOptionsToAdd());
-
-        $tab = array_merge($tab, DCRoom::rawSearchOptionsToAdd());
         return $tab;
     }
 
@@ -392,7 +389,7 @@ class Peripheral extends CommonDBTM
         ];
 
         $tab[] = [
-            'id'                 => '1430',
+            'id'                 => '130',
             'table'              => 'glpi_computers_items',
             'field'              => 'id',
             'name'               => _x('quantity', 'Number of peripherals'),

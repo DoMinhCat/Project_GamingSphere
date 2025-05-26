@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -65,7 +65,6 @@ abstract class CommonDevice extends CommonDropdown
      **/
     public static function getDeviceTypes()
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         return $CFG_GLPI['device_types'];
@@ -74,15 +73,15 @@ abstract class CommonDevice extends CommonDropdown
 
 
     /**
-     * Get the associated item_device associated with this device
-     * This method can be overridden, for instance by the plugin
+     * Get the assiociated item_device associated with this device
+     * This method can be override, for instance by the plugin
      *
      * @since 0.85
      * @since 9.3 added the $devicetype parameter
      *
      * @param string $devicetype class name of device type, defaults to called class name
      *
-     * @return string
+     * @return array of the types of CommonDevice available
      **/
     public static function getItem_DeviceType($devicetype = null)
     {
@@ -194,7 +193,6 @@ abstract class CommonDevice extends CommonDropdown
      **/
     public function canUnrecurs()
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $ID = $this->fields['id'];
@@ -366,8 +364,8 @@ abstract class CommonDevice extends CommonDropdown
     public static function getHTMLTableHeader(
         $itemtype,
         HTMLTableBase $base,
-        ?HTMLTableSuperHeader $super = null,
-        ?HTMLTableHeader $father = null,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -409,9 +407,9 @@ abstract class CommonDevice extends CommonDropdown
      * @param $options   array
      **/
     public function getHTMLTableCellForItem(
-        ?HTMLTableRow $row = null,
-        ?CommonDBTM $item = null,
-        ?HTMLTableCell $father = null,
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
         array $options = []
     ) {
 
@@ -472,7 +470,6 @@ abstract class CommonDevice extends CommonDropdown
      **/
     public function import(array $input)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $with_history = $input['with_history'] ?? true;
@@ -608,7 +605,7 @@ abstract class CommonDevice extends CommonDropdown
      * @since 0.85
      * @see CommonDBTM::post_updateItem()
      **/
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
 
         $this->post_workOnItem();
@@ -617,7 +614,6 @@ abstract class CommonDevice extends CommonDropdown
 
     public static function getFormURL($full = true)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $dir = ($full ? $CFG_GLPI['root_doc'] : '');
@@ -629,7 +625,6 @@ abstract class CommonDevice extends CommonDropdown
 
     public static function getSearchURL($full = true)
     {
-        /** @var array $CFG_GLPI */
         global $CFG_GLPI;
 
         $dir = ($full ? $CFG_GLPI['root_doc'] : '');

@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -59,7 +59,7 @@ class DeviceMemory extends CommonDevice
                 ],
                 [
                     'name'  => 'frequence',
-                    'label' => sprintf(__('%1$s (%2$s)'), __('Frequency'), __('MHz')),
+                    'label' => __('Frequency'),
                     'type'  => 'integer',
                     'min'   => 0,
                     'unit'  => __('MHz')
@@ -95,7 +95,7 @@ class DeviceMemory extends CommonDevice
             'id'                 => '12',
             'table'              => $this->getTable(),
             'field'              => 'frequence',
-            'name'               => sprintf(__('%1$s (%2$s)'), __('Frequency'), __('MHz')),
+            'name'               => __('Frequency'),
             'datatype'           => 'integer',
         ];
 
@@ -152,8 +152,8 @@ class DeviceMemory extends CommonDevice
     public static function getHTMLTableHeader(
         $itemtype,
         HTMLTableBase $base,
-        ?HTMLTableSuperHeader $super = null,
-        ?HTMLTableHeader $father = null,
+        HTMLTableSuperHeader $super = null,
+        HTMLTableHeader $father = null,
         array $options = []
     ) {
 
@@ -167,16 +167,16 @@ class DeviceMemory extends CommonDevice
             case 'Computer':
                 Manufacturer::getHTMLTableHeader(__CLASS__, $base, $super, $father, $options);
                 $base->addHeader('devicememory_type', _n('Type', 'Types', 1), $super, $father);
-                $base->addHeader('devicememory_frequency', sprintf(__('%1$s (%2$s)'), __('Frequency'), __('MHz')), $super, $father);
+                $base->addHeader('devicememory_frequency', __('Frequency'), $super, $father);
                 break;
         }
     }
 
 
     public function getHTMLTableCellForItem(
-        ?HTMLTableRow $row = null,
-        ?CommonDBTM $item = null,
-        ?HTMLTableCell $father = null,
+        HTMLTableRow $row = null,
+        CommonDBTM $item = null,
+        HTMLTableCell $father = null,
         array $options = []
     ) {
 
@@ -224,7 +224,6 @@ class DeviceMemory extends CommonDevice
 
     public static function rawSearchOptionsToAdd($class, $main_joinparams)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $tab = [];

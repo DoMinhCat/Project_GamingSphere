@@ -224,16 +224,6 @@ div.mce-footnotes li > a.mce-footnotes-backlink {
     display: none;
   }
 }
-/* stylelint-disable selector-type-no-unknown */
-tiny-math-block {
-  display: flex;
-  justify-content: center;
-  margin: 16px 0 16px 0;
-}
-tiny-math-inline {
-  display: inline-block;
-}
-/* stylelint-enable selector-type-no-unknown */
 .mce-content-body figure.align-left {
   float: left;
 }
@@ -262,12 +252,6 @@ tiny-math-inline {
 }
 .mce-preview-object[data-mce-selected="2"] .mce-shim {
   display: none;
-}
-.mce-content-body .mce-mergetag {
-  cursor: default !important;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
 }
 .mce-content-body .mce-mergetag:hover {
   background-color: rgba(0, 108, 231, 0.3);
@@ -349,13 +333,6 @@ tiny-math-inline {
   color: rgba(34, 47, 62, 0.7);
   content: attr(data-mce-placeholder);
   position: absolute;
-}
-@media (forced-colors: active) {
-  .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
-    color: highlight;
-    filter: brightness(30%);
-    z-index: -1;
-  }
 }
 .mce-content-body:not([dir=rtl])[data-mce-placeholder]:not(.mce-visualblocks)::before {
   left: 1px;
@@ -509,8 +486,7 @@ tiny-math-inline {
 .mce-content-body audio[data-mce-selected],
 .mce-content-body object[data-mce-selected],
 .mce-content-body embed[data-mce-selected],
-.mce-content-body table[data-mce-selected],
-.mce-content-body details[data-mce-selected] {
+.mce-content-body table[data-mce-selected] {
   outline: 3px solid #4099ff;
 }
 .mce-content-body hr[data-mce-selected] {
@@ -618,7 +594,7 @@ tiny-math-inline {
 .mce-toc h2 {
   margin: 4px;
 }
-.mce-toc ul > li {
+.mce-toc li {
   list-style-type: none;
 }
 [data-mce-block] {

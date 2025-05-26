@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -97,7 +97,7 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
         parent::post_addItem();
     }
 
-    public function post_updateItem($history = true)
+    public function post_updateItem($history = 1)
     {
 
         $this->alterElementInsideTree("update");
@@ -125,7 +125,6 @@ class CommonImplicitTreeDropdown extends CommonTreeDropdown
    // Key function to manage the children of the node
     private function alterElementInsideTree($step)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $oldParent     = null;

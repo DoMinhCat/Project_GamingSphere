@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -101,7 +101,7 @@ class SoftwareVersion extends CommonDBChild
      *     - target form target
      *     - softwares_id ID of the software for add process
      *
-     * @return boolean true if displayed  false if item not found or not right to display
+     * @return true if displayed  false if item not found or not right to display
      *
      **/
     public function showForm($ID, array $options = [])
@@ -229,7 +229,6 @@ class SoftwareVersion extends CommonDBChild
      **/
     public static function dropdownForOneSoftware($options = [])
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
        //$softwares_id,$value=0
@@ -299,7 +298,6 @@ class SoftwareVersion extends CommonDBChild
      **/
     public static function showForSoftware(Software $soft)
     {
-        /** @var \DBmysql $DB */
         global $DB;
 
         $softwares_id = $soft->getField('id');
@@ -401,8 +399,8 @@ class SoftwareVersion extends CommonDBChild
 
         if (!$withtemplate) {
             $nb = 0;
-            switch (get_class($item)) {
-                case Software::class:
+            switch ($item->getType()) {
+                case 'Software':
                     if ($_SESSION['glpishow_count_on_tabs']) {
                         $nb = countElementsInTable($this->getTable(), ['softwares_id' => $item->getID()]);
                     }

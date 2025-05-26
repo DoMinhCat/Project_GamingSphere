@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -65,7 +65,6 @@ trait ParentStatus
                     'pendingreasons_id'           => $input['pendingreasons_id'] ?? 0,
                     'followup_frequency'          => $input['followup_frequency'] ?? 0,
                     'followups_before_resolution' => $input['followups_before_resolution'] ?? 0,
-                    'previous_status'             => $parentitem->fields['status'],
                 ]);
                 PendingReason_Item::createForItem($this, [
                     'pendingreasons_id'           => $input['pendingreasons_id'] ?? 0,
@@ -131,34 +130,19 @@ trait ParentStatus
             ) {
                //check if lifecycle allowed new status
                 if (
-                    (
-                        Session::isCron()
-                        || Session::getCurrentInterface() == "helpdesk"
-                        || $parentitem::isAllowedStatus($parentitem->fields["status"], CommonITILObject::ASSIGNED)
-                    )
-                    && (!isset($input['_do_not_compute_status']) || !$input['_do_not_compute_status'])
+                    Session::isCron()
+                    || Session::getCurrentInterface() == "helpdesk"
+                    || $parentitem::isAllowedStatus($parentitem->fields["status"], CommonITILObject::ASSIGNED)
                 ) {
                     $needupdateparent = true;
-                    // If begin date is defined, the status must be planned if it exists, rather than assigned.
-                    if (
-                        ($this instanceof \CommonITILTask)
-                        && ($this->countPlannedTasks() > 0)
-                        && $parentitem->isStatusExists(CommonITILObject::PLANNED)
-                    ) {
-                        $update['status'] = CommonITILObject::PLANNED;
-                    } else {
-                        $update['status'] = CommonITILObject::ASSIGNED;
-                    }
+                    $update['status'] = CommonITILObject::ASSIGNED;
                 }
             } else {
                //check if lifecycle allowed new status
                 if (
-                    (
-                        Session::isCron()
-                        || Session::getCurrentInterface() == "helpdesk"
-                        || $parentitem::isAllowedStatus($parentitem->fields["status"], CommonITILObject::INCOMING)
-                    )
-                    && (!isset($input['_do_not_compute_status']) || !$input['_do_not_compute_status'])
+                    Session::isCron()
+                    || Session::getCurrentInterface() == "helpdesk"
+                    || $parentitem::isAllowedStatus($parentitem->fields["status"], CommonITILObject::INCOMING)
                 ) {
                     $needupdateparent = true;
                     $update['status'] = CommonITILObject::INCOMING;
@@ -175,20 +159,16 @@ trait ParentStatus
         }
 
         if (
-            !$is_set_pending
-            && ($this instanceof \CommonITILTask)
-            && ($this->countPlannedTasks() > 0)
+            !empty($this->fields['begin'])
             && $parentitem->isStatusExists(CommonITILObject::PLANNED)
-            && (in_array($parentitem->fields["status"], [
-                CommonITILObject::INCOMING,
-                CommonITILObject::ASSIGNED,
-                CommonITILObject::PLANNED,
-            ]) || $needupdateparent)
+            && (($parentitem->fields["status"] == CommonITILObject::INCOMING)
+              || ($parentitem->fields["status"] == CommonITILObject::ASSIGNED)
+              || $needupdateparent)
         ) {
             $input['_status'] = CommonITILObject::PLANNED;
         }
 
-       //change ITILObject status only if input change
+       //change ITILObject status only if imput change
         if (
             !$reopened
             && $input['_status'] != $parentitem->fields['status']

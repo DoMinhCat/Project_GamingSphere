@@ -7,7 +7,7 @@
  *
  * http://glpi-project.org
  *
- * @copyright 2015-2025 Teclib' and contributors.
+ * @copyright 2015-2023 Teclib' and contributors.
  * @copyright 2003-2014 by the INDEPNET Development Team.
  * @licence   https://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -33,15 +33,14 @@
  * ---------------------------------------------------------------------
  */
 
-/** @var array $CFG_GLPI */
-global $CFG_GLPI;
-
 include('../inc/includes.php');
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkCentralAccess();
+
+/** @global array $CFG_GLPI */
 
 // Make a select box
 if (
@@ -52,7 +51,6 @@ if (
     $rand = mt_rand();
     $withemail = isset($_POST['allow_email']) && filter_var($_POST['allow_email'], FILTER_VALIDATE_BOOLEAN);
 
-    /** @var CommonITILObject $item */
     if ($item = getItemForItemtype($_POST["itemtype"])) {
         switch ($_POST["type"]) {
             case "user":
@@ -66,7 +64,7 @@ if (
                 }
 
                 $options = ['name'        => '_itil_' . $_POST["actortype"] . '[users_id]',
-                    'entity'      => Session::getMatchingActiveEntities($_POST['entity_restrict']),
+                    'entity'      => $_POST['entity_restrict'],
                     'right'       => $right,
                     'rand'        => $rand,
                     'ldap_import' => true
@@ -148,7 +146,7 @@ if (
 
                 $param = [
                     'name'      => '_itil_' . $_POST["actortype"] . '[groups_id]',
-                    'entity'    => Session::getMatchingActiveEntities($_POST['entity_restrict']),
+                    'entity'    => $_POST['entity_restrict'],
                     'condition' => $cond,
                     'rand'      => $rand
                 ];
@@ -180,7 +178,7 @@ if (
 
             case "supplier":
                 $options = ['name'      => '_itil_' . $_POST["actortype"] . '[suppliers_id]',
-                    'entity'    => Session::getMatchingActiveEntities($_POST['entity_restrict']),
+                    'entity'    => $_POST['entity_restrict'],
                     'rand'      => $rand
                 ];
                 if ($CFG_GLPI["notifications_mailing"]) {

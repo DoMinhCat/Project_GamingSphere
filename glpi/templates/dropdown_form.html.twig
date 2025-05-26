@@ -5,7 +5,7 @@
  #
  # http://glpi-project.org
  #
- # @copyright 2015-2025 Teclib' and contributors.
+ # @copyright 2015-2023 Teclib' and contributors.
  # @copyright 2003-2014 by the INDEPNET Development Team.
  # @licence   https://www.gnu.org/licenses/gpl-3.0.html
  #
@@ -63,7 +63,7 @@
 
         {# Dynamically show additional fields unique to certain dropdowns #}
         {% for field in additional_fields %}
-            {% set fields_params = field['form_params'] ?? base_fields_params %}
+            {% set fields_params = base_fields_params %}
             {% set type = field['type']|default('') %}
             {% set show_field = true %}
             {% if field['name'] == 'entities_id' and (type != 'parent' or item.fields['id'] == 0) %}
@@ -87,6 +87,7 @@
                             full_width_adapt_column: false,
                             is_horizontal: false,
                             enable_richtext: field['enable_richtext'] is defined ? field['enable_richtext'] : true,
+                            enable_images: false,
                         }
                     ) }}
                 {% elseif type == 'UserDropdown' %}
@@ -179,7 +180,7 @@
                 {% elseif type == 'password' %}
                     {{ fields.passwordField(field['name'], item.fields[field['name']], field['label'], fields_params) }}
                 {% elseif type == 'tinymce' %}
-                    {% set fields_params = fields_params|merge({'enable_richtext': true, 'full_width': true, 'label_class': 'col-xxl-2', 'input_class': 'col-xxl-10'}) %}
+                    {% set fields_params = fields_params|merge({'enable_richtext': true}) %}
                     {{ fields.textareaField(field['name'], item.fields[field['name']], field['label'], fields_params) }}
                 {% elseif type == 'duration' %}
                     {% set toadd = [] %}
@@ -196,7 +197,7 @@
                     {% set field_value %}
                         {{ item.displaySpecificTypeField(item.fields['id'], field, fields_params) }}
                     {% endset %}
-                    {{ fields.field(field['name'], field_value, field['label'], fields_params) }}
+                    {{ fields.field(field['name'], field_value, field['label']) }}
                 {% endif %}
             {% elseif field['name'] in picture_fields %}
                 {% set has_picture_field = true %}
