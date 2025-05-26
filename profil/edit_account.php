@@ -14,7 +14,7 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
-        echo "Utilisateur introuvable.";
+        header('location:' . index_front . '?error=' . urlencode('Utilisateur introuvable !'));
         exit;
     }
 
@@ -25,12 +25,13 @@ try {
         $ville = $_POST['ville'] ?? '';
         $code_postal = $_POST['code_postal'] ?? '';
         $rue = $_POST['rue'] ?? '';
+        $bio = $_POST['bio'] ?? '';
 
         if (empty($nom) || empty($prenom) || empty($email) || empty($ville) || empty($code_postal) || empty($rue)) {
-            $error = "Tous les champs sont obligatoires.";
+            $error = "Tous les champs sont obligatoires (sauf bio) !";
         } else {
-            $stmt = $bdd->prepare("UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, ville = ?, code_postal = ?, rue = ? WHERE id_utilisateurs = ?");
-            $stmt->execute([$nom, $prenom, $email, $ville, $code_postal, $rue, $userId]);
+            $stmt = $bdd->prepare("UPDATE utilisateurs SET bio=?, nom = ?, prenom = ?, email = ?, ville = ?, code_postal = ?, rue = ? WHERE id_utilisateurs = ?");
+            $stmt->execute([$bio, $nom, $prenom, $email, $ville, $code_postal, $rue, $userId]);
 
             header('Location:' . my_account . '?message=' . urlencode('Modifications enregistrées !'));
             exit;
@@ -78,6 +79,12 @@ include('navbar.php');
                 <div class="col-md-12">
                     <label for="email" class="form-label montserrat-titre32">Email</label>
                     <input type="email" class="form-control form-control-sm" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                </div>
+            </div>
+            <div class="row g-3 mt-3">
+                <div class="col-md-12">
+                    <label for="email" class="form-label montserrat-titre32">Email</label>
+                    <textarea rows="2" max="200" class="form-control form-control-sm" id="bio" name="bio"><?= htmlspecialchars($user['bio']); ?></textarea>
                 </div>
             </div>
             <div class="row g-3 mt-3">

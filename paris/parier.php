@@ -1,5 +1,6 @@
 <?php
 session_start();
+$login_page = '../connexion/login.php';
 require('../include/database.php');
 require('../include/check_session.php');
 require('../include/check_timeout.php');
@@ -29,7 +30,6 @@ if (!$user || $user['credits'] < $montant) {
     exit();
 }
 
-// Débiter
 $stmt = $bdd->prepare("UPDATE credits SET credits = credits - ? WHERE user_id = ?");
 $stmt->execute([$montant, $user_id]);
 
@@ -38,7 +38,6 @@ if ($stmt->rowCount() === 0) {
     exit();
 }
 
-// Enregistrement pari
 $success = false;
 
 if ($type_pari === 'solo') {
@@ -54,7 +53,6 @@ if ($type_pari === 'solo') {
         ) VALUES (?, ?, ?, ?, 'solo', 'en attente', 0, NOW(), ?, NULL)
     ");
     $success = $stmt->execute([$user_id, $id_tournoi, $montant, $id_joueur, $cote]);
-
 } elseif ($type_pari === 'equipe') {
     if (empty($_POST['id_equipe'])) {
         header('Location:' . paris_main . '?message=' . urlencode('Équipe non spécifiée'));
@@ -68,7 +66,6 @@ if ($type_pari === 'solo') {
         ) VALUES (?, ?, ?, ?, 'equipe', 'en attente', 0, NOW(), ?, NULL)
     ");
     $success = $stmt->execute([$user_id, $id_tournoi, $montant, $id_equipe, $cote]);
-
 } else {
     header('Location:' . paris_main . '?message=' . urlencode('Type de pari invalide'));
     exit();

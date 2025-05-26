@@ -218,6 +218,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header text-danger">Zone dangereuse</div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <a href="<?= edit_account ?>" class="btn btn-primary">Modifier mes informations</a>
