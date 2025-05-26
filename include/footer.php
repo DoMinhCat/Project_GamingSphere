@@ -24,7 +24,7 @@
                 <ul class="list-unstyled">
                     <li class="py-2">
                         <a href="tel:+33123456789" class="footer-link">
-                            <i class="bi bi-telephone me-2"></i>03 xx xx xx xx
+                            <i class="bi bi-telephone me-2"></i>06 xx xx xx xx
                         </a>
                     </li>
                     <li class="py-2">

@@ -95,11 +95,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="col-lg-10 col-md-10">
                 <article class="bg-white shadow-sm rounded p-4 mb-5">
                     <header class="text-center mb-4">
-                        <h1 class="display-5 fw-bold text-primary mb-3"><?= htmlspecialchars($article['titre']) ?></h1>
+                        <h1 class="display-5 fw-bold text-dark mb-3"><?= htmlspecialchars($article['titre']) ?></h1>
 
                         <div class="d-flex justify-content-center align-items-center flex-wrap gap-3 text-dark">
                             <span class="badge bg-secondary"><?= htmlspecialchars($category) ?></span>
-                            <span><i class="bi bi-calendar3"></i> <?= $article['date_article'] ?></span>
+                            <span><i class="bi bi-calendar3"></i> <?= date('d/m/Y', strtotime($article['date_article'])) ?></span>
                             <a href="<?= profil . '?user=' . $auteur['pseudo'] ?>">
                                 <span class="text-decoration-none"><i class="bi bi-person-fill"></i> <?= $auteur['pseudo'] ?></span>
                             </a>
@@ -156,12 +156,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                             $contentShow = htmlspecialchars($content);
                                         }
                                         ?>
-                                        <p class="card-text text-muted mb-3"><?= nl2br($contentShow) ?></p>
+                                        <p class="card-text mb-3"><?= nl2br($contentShow) ?></p>
                                     </div>
 
                                     <div class="card-footer bg-transparent border-0 pt-0">
                                         <small class="text-muted d-flex justify-content-between align-items-center">
-                                            <span><i class="bi bi-calendar3"></i> <?= $other['date_article'] ?></span>
+                                            <span><i class="bi bi-calendar3"></i> <?= date('d/m/Y', strtotime($other['date_article'])) ?></span>
                                             <span><i class="bi bi-person"></i> <?= htmlspecialchars($other['pseudo']) ?></span>
                                         </small>
                                     </div>
@@ -170,7 +170,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         <?php } ?>
                     </div>
 
-                    <div class="text-center mt-4">
+                    <div class="text-center mt-5">
                         <a href="<?= actualite_categorie . '?category=' . $origin_category ?>"
                             class="btn btn-primary btn-lg">
                             Voir tous les articles de <?= htmlspecialchars($category) ?>

@@ -224,12 +224,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                             <img src="../back-office/uploads/<?= htmlspecialchars($game['image']) ?>"
                                                 class="card-img-top"
                                                 alt="<?= htmlspecialchars($game['nom']) ?>"
-                                                style="height: 200px; object-fit: cover;">
+                                                style="height: 200px; object-fit: contain;">
                                         <?php else: ?>
                                             <img src="/magasin/img/no_image2.png"
                                                 class="card-img-top"
                                                 alt="<?= htmlspecialchars($game['nom']) ?>"
-                                                style="height: 200px; object-fit: cover;">
+                                                style="height: 200px; object-fit: contain;">
                                         <?php endif; ?>
                                         <div class="position-absolute top-0 end-0 m-2">
                                             <span class="badge bg-primary fs-6"><?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . ' €' : 'Gratuit') ?></span>
