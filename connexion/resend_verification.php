@@ -33,7 +33,7 @@ if (!isset($_POST['email'])) {
 $email = strtolower(trim($_POST['email']));
 $stmt = $bdd->prepare("SELECT id_utilisateurs, pseudo, inscrire_token, inscrire_token_expiry, last_resend_time FROM utilisateurs WHERE email = ? AND email_verifie = 0 LIMIT 1");
 $stmt->execute([$email]);
-$user = $stmt->fetch();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($user) {
     $now = time();
@@ -55,7 +55,7 @@ if ($user) {
     $stmt = $bdd->prepare("UPDATE utilisateurs SET inscrire_token = ?, inscrire_token_expiry = ?, last_resend_time = NOW() WHERE id_utilisateurs = ?");
     $stmt->execute([$token, $expiry, $user['id_utilisateurs']]);
 
-    $verify_link = "https://gamingsphere.duckdns.org/verify_inscrire.php?token=" . $token;
+    $verify_link = "https://gamingsphere.duckdns.org/connexion/verify_inscrire.php?token=" . $token;
     $subject = "Confirmation de votre inscription sur Gaming Sphère";
     $message = "
     <p>Bonjour <strong>{$user['pseudo']}</strong>,</p>

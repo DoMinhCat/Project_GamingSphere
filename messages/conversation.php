@@ -46,7 +46,6 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
     $messageContent = trim($_POST['message']);
     if (!empty($messageContent)) {
-        $messageContent = htmlspecialchars($messageContent, ENT_QUOTES, 'UTF-8');
         try {
             $stmt = $bdd->prepare("
                 INSERT INTO messages (expediteur_id, destinataire_id, contenu, date_envoi)
