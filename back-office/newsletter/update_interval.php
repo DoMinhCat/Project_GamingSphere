@@ -10,10 +10,10 @@ try {
         $interval = $_POST['interval'];
         $stmt = $bdd->prepare("UPDATE newsletter_interval set gap=? WHERE id_interval=1;");
         $stmt->execute([$interval]);
-        header('loccation:' . newsletter_back . '?message=edit_ok');
+        header('location:' . newsletter_back . '?message=edit_ok');
         exit;
     } else {
-        header('loccation:' . newsletter_back . '?error=invalid');
+        header('location:' . newsletter_back . '?error=invalid');
         exit;
     }
 } catch (PDOException $e) {

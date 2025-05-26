@@ -74,13 +74,13 @@ require('../head.php');
         <h2 class="mb-3">Envoyer un newsletter personnalisé</h2>
         <form method="POST" action="send_customize.php">
             <textarea class="form-control" name="message" placeholder="Votre message" required></textarea>
-            <button type="submit" class="btn btn-primary">Envoyer</button>
+            <button type="submit" class="btn btn-primary mt-2">Envoyer</button>
         </form>
 
         <form action="update_interval.php" method="post" class="mt-3">
             <label class="form-label" for="day">Envoyer un email de re-engagement chaque (jours)</label>
             <input class="form-control" required type="number" step="1" id="day" name="interval" value="<?= $interval['gap'] ?>">
-            <button type="submit" class="btn btn-primary">Envoyer</button>
+            <button type="submit" class="btn btn-primary mt-2">Envoyer</button>
         </form>
 
 
