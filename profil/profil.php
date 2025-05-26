@@ -51,7 +51,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
+            <div class="col-md-8">
 
                 <?php if (isset($_GET['error'])): ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -151,7 +151,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </div>
 
                 <div class="text-center mt-4">
-                    <a href="<?= index_front ?>" class="btn btn-outline-secondary">
+                    <a href="<?= index_front ?>" class="btn btn-primary">
                         <i class="bi bi-arrow-left me-2"></i>
                         Retour à l'accueil
                     </a>

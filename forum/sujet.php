@@ -104,9 +104,9 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="border-top pt-3">
                             <div class="d-flex align-items-center justify-content-between small">
                                 <div class="d-flex align-items-center">
-                                    <a href="<?= profil . '?user=' . $sujet['auteur'] ?>">
+                                    <a href="<?= profil . '?user=' . ($sujet['auteur'] != 'Anonyme' ? $sujet['auteur'] : '#') ?>">
                                         <i class="bi bi-person-circle me-1 text-muted"></i>
-                                        <strong><?= htmlspecialchars($sujet['auteur']) ?></strong>
+                                        <strong class="text-decoration-none"><?= htmlspecialchars($sujet['auteur']) ?></strong>
                                     </a>
                                 </div>
                                 <div class="d-flex align-items-center">

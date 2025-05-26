@@ -101,7 +101,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <span class="badge bg-secondary"><?= htmlspecialchars($category) ?></span>
                             <span><i class="bi bi-calendar3"></i> <?= $article['date_article'] ?></span>
                             <a href="<?= profil . '?user=' . $auteur['pseudo'] ?>">
-                                <span><i class="bi bi-person-fill"></i> <?= $auteur['pseudo'] ?></span>
+                                <span class="text-decoration-none"><i class="bi bi-person-fill"></i> <?= $auteur['pseudo'] ?></span>
                             </a>
                         </div>
                     </header>

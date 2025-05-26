@@ -113,7 +113,7 @@ echo "<script>const pageCategory = '$pageCategory';</script>";
             </div>
         </div>
     </main>
-    <?php include('../include/header.php'); ?>
+    <?php include('../include/footer.php'); ?>
 </body>
 
 </html>

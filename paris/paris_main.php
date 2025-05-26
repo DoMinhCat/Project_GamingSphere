@@ -75,10 +75,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <div class="col-md-3 col-6">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="id_equipe" value="<?= $equipe['id_equipe'] ?>" data-cote="<?= htmlspecialchars($equipe['cote'] ?? 1) ?>" required>
-                                        <label class="form-check-label fw-medium">
-                                            <?= htmlspecialchars($equipe['nom']) ?>
-                                            <span class="badge bg-info text-dark">Cote : <?= htmlspecialchars($equipe['cote'] ?? 1) ?></span>
-                                        </label>
+                                        <a href="<?= team_details . '?id_equipe=' . $equipe['id_equipe'] ?>">
+                                            <label class="form-check-label fw-medium">
+                                                <?= htmlspecialchars($equipe['nom']) ?>
+                                                <span class="badge bg-info text-dark">Cote : <?= htmlspecialchars($equipe['cote'] ?? 1) ?></span>
+                                            </label>
+                                        </a>
                                     </div>
                                 </div>
                             <?php endforeach;
@@ -90,10 +92,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <div class="col-md-3 col-6">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="id_joueur" value="<?= $joueur['id_utilisateurs'] ?>" data-cote="<?= htmlspecialchars($joueur['cote'] ?? 1) ?>" required>
-                                        <label class="form-check-label fw-medium">
-                                            <?= htmlspecialchars($joueur['pseudo']) ?>
-                                            <span class="badge bg-info text-dark">Cote : <?= htmlspecialchars($joueur['cote'] ?? 1) ?></span>
-                                        </label>
+                                        <a href="<?= profil . '?user=' . $joueur['pseudo'] ?>">
+                                            <label class="form-check-label fw-medium">
+                                                <?= htmlspecialchars($joueur['pseudo']) ?>
+                                                <span class="badge bg-info text-dark">Cote : <?= htmlspecialchars($joueur['cote'] ?? 1) ?></span>
+                                            </label>
+                                        </a>
                                     </div>
                                 </div>
                         <?php endforeach;

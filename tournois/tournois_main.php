@@ -72,7 +72,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <a href="<?= team_list ?>" class="btn btn-primary mb-2">Voir les équipes</a>
                 <?php else: ?>
                     <a href="<?= create_team ?>" class="btn btn-warning">Créer une équipe</a>
-                    <a href="<?= team_list ?>" class="btn btn-primary mb-2">Voir les équipes</a>
+                    <a href="<?= team_list ?>" class="btn btn-primary">Voir les équipes</a>
             <?php endif;
             }
             ?>
