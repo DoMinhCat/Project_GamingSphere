@@ -64,6 +64,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
         <div class="text-center mt-4">
             <p>Merci pour votre achat ! Vos crédits ont été mis à jour avec succès.</p>
+            <a href="/panier/export.php" class="btn btn-info">Exporter la facture</a>
             <a href="<?= magasin_main ?>" class="btn btn-primary">Voir d'autres jeux</a>
             <a href="<?= my_account ?>" class="btn btn-secondary">Mon profil</a>
         </div>

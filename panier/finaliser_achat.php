@@ -46,3 +46,4 @@ $stmtUpdateCredits = $bdd->prepare("UPDATE credits SET credits = credits - ? WHE
 $stmtUpdateCredits->execute([$total, $id_utilisateur]);
 
 header('Location:' . confirmation_achat);
+exit;
