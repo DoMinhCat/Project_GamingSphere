@@ -6,6 +6,8 @@ require('../include/database.php');
 require('../include/check_timeout.php');
 require_once __DIR__ . '/../path.php';
 
+require_once '../vendor/autoload.php';
+
 use Dompdf\Dompdf;
 
 $dompdf = new Dompdf();
