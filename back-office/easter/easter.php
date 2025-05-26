@@ -10,15 +10,9 @@ try {
     $stmt->execute();
     $currentReward = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['reward'])) {
-        $reward = $_POST['reward'];
-        $stmt = $bdd->prepare("UPDATE easter set reward=? WHERE id_easter=1;");
-        $stmt->execute([$reward]);
-
-        $stmt = $bdd->prepare("SELECT * from utilisateurs WHERE easter_found=1;");
-        $stmt->execute();
-        $finders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    $stmt = $bdd->prepare("SELECT * from utilisateurs WHERE easter_found=1 ORDER BY date_easter DESC;");
+    $stmt->execute();
+    $finders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $_SESSION['error'] = $e->getMessage();
     header('Location:' . index_back . '?error=bdd');
@@ -42,12 +36,14 @@ require('../head.php');
         <?php
         $noti = '';
         $noti_Err = '';
-        if (isset($_GET['message']) && $_GET['message'] === '') //here
-            $noti = '';
+        if (isset($_GET['message']) && $_GET['message'] === 'edit_ok') //here
+            $noti = 'Récompense modifiée avec succès !';
         elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
             $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
             unset($_SESSION['error']);
-        }
+        } elseif (isset($_GET['error']) && $_GET['error'] === 'invalid')
+            $noti_Err = 'Requête invalide';
+
         ?>
         <?php if (!empty($noti_Err)) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -65,7 +61,7 @@ require('../head.php');
 
         <h1 class="text-center my-5">Gestion de Easter egg</h1>
 
-        <form method="post">
+        <form method="post" action="update_reward.php">
             <div class="mb-3">
                 <label for="reward" class="form-label">Credit de récompense</label>
                 <input type="number" value="<?= $currentReward['reward'] ?>" min="0" class="form-control" id="reward" name="reward" required>
@@ -73,7 +69,7 @@ require('../head.php');
             <button type="submit" class="btn btn-primary">Enregistrer</button>
         </form>
 
-        <h2 class="mt-5 mb-4">Liste des Easter egg finders</h2>
+        <h2 class="mt-5 mb-4 text-center">Liste des Easter egg finders</h2>
         <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
             <table class="table table-bordered table-striped">
                 <thead class='table-dark' style="position: sticky; top: 0; z-index: 1;">

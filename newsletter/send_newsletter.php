@@ -14,7 +14,11 @@ use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable('/var/www/PA', null, false);
 $dotenv->load();
-$resend_interval = 14;
+
+$stmt = $bdd->prepare("SELECT * from newsletter_interval LIMIT 1;");
+$stmt->execute();
+$interval = $stmt->fetch(PDO::FETCH_ASSOC);
+$resend_interval = $interval['gap'];
 
 $sql = "SELECT id_utilisateurs, email, pseudo, unsubscribe_token
         FROM utilisateurs

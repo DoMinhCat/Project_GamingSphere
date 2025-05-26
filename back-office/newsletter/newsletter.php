@@ -10,6 +10,10 @@ try {
     $stmt->execute();
     $users_sub = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $stmt = $bdd->prepare("SELECT * from newsletter_interval LIMIT 1;");
+    $stmt->execute();
+    $interval = $stmt->fetch(PDO::FETCH_ASSOC);
+
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['reward'])) {
     }
 } catch (PDOException $e) {
@@ -34,12 +38,22 @@ require('../head.php');
         <?php
         $noti = '';
         $noti_Err = '';
-        if (isset($_GET['message']) && $_GET['message'] === '') //here
-            $noti = '';
+        if (isset($_GET['message']) && $_GET['message'] === 'edit_ok') //here
+            $noti = 'Interval de reenvoie de l\'email modifié !';
         elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
             $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];
             unset($_SESSION['error']);
+        } elseif (isset($_GET['error']) && $_GET['error'] === 'invalid')
+            $noti_Err = 'Requête invalide !';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'no_sub')
+            $noti_Err = 'Aucune abonné !';
+        elseif (isset($_GET['message']) && $_GET['message'] === 'sent')
+            $noti = 'Newsletter envoyé !';
+        elseif (isset($_GET['error']) && $_GET['error'] === 'send_fail') {
+            $noti_Err = 'Erreur de \'envoie : ' . $_SESSION['error'];
+            unset($_SESSION['error']);
         }
+
         ?>
         <?php if (!empty($noti_Err)) : ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -55,9 +69,22 @@ require('../head.php');
             </div>
         <?php endif ?>
 
-        <h1 class="text-center my-5">Gestion des newsletters</h1>
+        <h1 class="text-center mt-5 mb-4">Gestion des newsletters</h1>
 
-        <h2 class="mt-5 mb-4">Liste des abonnés</h2>
+        <h2 class="mb-3">Envoyer un newsletter personnalisé</h2>
+        <form method="POST" action="send_customize.php">
+            <textarea class="form-control" name="message" placeholder="Votre message" required></textarea>
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </form>
+
+        <form action="update_interval.php" method="post" class="mt-3">
+            <label class="form-label" for="day">Envoyer un email de re-engagement chaque (jours)</label>
+            <input class="form-control" required type="number" step="1" id="day" name="interval" value="<?= $interval['gap'] ?>">
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </form>
+
+
+        <h2 class="mt-5 mb-4 text-center">Liste des abonnés</h2>
         <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
             <table class="table table-bordered table-striped">
                 <thead class='table-dark' style="position: sticky; top: 0; z-index: 1;">
