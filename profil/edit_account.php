@@ -57,7 +57,7 @@ include('navbar.php');
 ?>
 
 <body>
-    <div class="container mt-4">
+    <div class="container my-5">
         <div class="row">
             <div class="col-12">
                 <h1 class="text-center mb-4">Modifier mes informations</h1>
@@ -75,7 +75,7 @@ include('navbar.php');
         <?php endif; ?>
 
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-lg-10">
                 <form method="POST">
                     <div class="card mb-4">
                         <div class="card-header">
@@ -138,7 +138,7 @@ include('navbar.php');
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-                                <a href="<?= my_account ?>" class="btn btn-secondary">Annuler</a>
+                                <a href="<?= my_account ?>" class="btn btn-danger">Annuler</a>
                             </div>
                         </div>
                     </div>

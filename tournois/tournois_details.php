@@ -81,13 +81,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php endif; ?>
             </div>
 
-            <div class="card-footer d-flex justify-content-center gap-2">
+            <div class="card-footer p-3 d-flex justify-content-center gap-2">
                 <a href="<?= tournois_main ?>" class="btn btn-secondary">Retour à la liste</a>
-                <?php if ($is_registered): ?>
-                    <button class="btn btn-danger desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Se désinscrire</button>
-                <?php else: ?>
-                    <button class="btn btn-warning participer-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Participer</button>
-                <?php endif; ?>
+                <?php if ($tournoi['status_ENUM'] !== 'Terminé') : ?>
+                    <?php if ($is_registered): ?>
+                        <button class="btn btn-danger desinscrire-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Se désinscrire</button>
+                    <?php else: ?>
+                        <button class="btn btn-warning participer-btn" data-id="<?= $tournoi['id_tournoi'] ?>">Participer</button>
+                <?php endif;
+                endif; ?>
+
             </div>
         </div>
 

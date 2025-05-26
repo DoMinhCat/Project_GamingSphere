@@ -50,7 +50,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include('../include/header.php');
     include('navbar.php');
     ?>
-    <div class="container my-5">
+    <main class="container my-5">
         <h2 class="mb-4 text-center">Mes amis</h2>
         <?php if (count($friends) > 0): ?>
             <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -70,7 +70,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="alert alert-info text-center">Aucun ami ajouté pour le moment.</div>
         <?php endif; ?>
 
-        <h2 class="section-title text-center mt-4">Demandes d'amis en attente</h2>
+        <h2 class="section-title text-center my-5">Demandes d'amis en attente</h2>
         <?php if (count($pendingRequests) > 0): ?>
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <?php foreach ($pendingRequests as $request): ?>
@@ -98,7 +98,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php else: ?>
             <div class="alert alert-info text-center">Aucune demande en attente.</div>
         <?php endif; ?>
-    </div>
+        <div class="text-center mt-5"> <a href="<?php my_account ?>" class="btn btn-secondary">Retour au profil</a>
+        </div>
+    </main>
     <?php include('../include/footer.php'); ?>
 </body>
 
