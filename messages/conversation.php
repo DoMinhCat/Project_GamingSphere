@@ -138,9 +138,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
         .reaction-picker {
             position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
             background: white;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -155,6 +152,16 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             display: none;
         }
 
+        .reaction-picker.left {
+            bottom: 100%;
+            left: 0;
+        }
+
+        .reaction-picker.right {
+            bottom: 100%;
+            right: 0;
+        }
+
         .message-input-container {
             position: relative;
         }
@@ -167,7 +174,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <div class="row justify-content-center">
             <div class="col-12 col-md-10">
                 <div class="card shadow-sm my-4">
-                    <!-- Header -->
                     <div class="card-header bg-sujet border-bottom p-3">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center">
@@ -196,7 +202,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         </div>
                     </div>
 
-                    <!-- Messages -->
                     <div class="card-body p-0" style="height: 500px; overflow-y: auto;">
                         <div class="p-3" id="message-container">
                             <?php if (empty($messages)): ?>
@@ -209,40 +214,38 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                     <?php $isSent = $message['expediteur'] !== $otherUser['pseudo']; ?>
                                     <div class="d-flex mb-3 <?= $isSent ? 'justify-content-end' : 'justify-content-start' ?>">
                                         <div class="<?= $isSent ? 'order-2' : 'order-1' ?>" style="max-width: 75%;">
-                                            <!-- Message Bubble -->
                                             <div class="<?= $isSent ? 'bg-primary text-white' : 'bg-light text-dark' ?> 
                                                         rounded-3 p-3 shadow-sm position-relative">
                                                 <p class="mb-0"><?= nl2br(htmlspecialchars($message['contenu'], ENT_QUOTES, 'UTF-8')) ?></p>
                                             </div>
 
-                                            <!-- Reactions -->
-                                            <div class="d-flex align-items-center mt-1 <?= $isSent ? 'justify-content-end' : 'justify-content-start' ?>">
-                                                <div class="reactions-container d-flex align-items-center position-relative">
-                                                    <div class="reactions me-2" data-message-id="<?= $message['id_messages'] ?>">
-                                                        <?php
-                                                        $stmtReaction = $bdd->prepare("SELECT emoji, COUNT(*) as count 
-                                                                                      FROM reactions 
-                                                                                      WHERE id_message = ? 
-                                                                                      GROUP BY emoji 
-                                                                                      ORDER BY count DESC");
-                                                        $stmtReaction->execute([$message['id_messages']]);
-                                                        $reactions = $stmtReaction->fetchAll(PDO::FETCH_ASSOC);
+                                            <div class="d-flex align-items-center mt-1 gap-2 <?= $isSent ? 'justify-content-end flex-row-reverse' : 'justify-content-start' ?>">
+                                                <div class="reactions" data-message-id="<?= $message['id_messages'] ?>">
+                                                    <?php
+                                                    $stmtReaction = $bdd->prepare("SELECT emoji, COUNT(*) as count 
+                                                                                  FROM reactions 
+                                                                                  WHERE id_message = ? 
+                                                                                  GROUP BY emoji 
+                                                                                  ORDER BY count DESC");
+                                                    $stmtReaction->execute([$message['id_messages']]);
+                                                    $reactions = $stmtReaction->fetchAll(PDO::FETCH_ASSOC);
 
-                                                        foreach ($reactions as $reaction):
-                                                        ?>
-                                                            <span class="badge bg-light text-dark border me-1 reaction-badge"
-                                                                style="font-size: 0.9rem;">
-                                                                <?= $reaction['emoji'] ?>
-                                                                <?php if ($reaction['count'] > 1): ?>
-                                                                    <small class="ms-1"><?= $reaction['count'] ?></small>
-                                                                <?php endif; ?>
-                                                            </span>
-                                                        <?php endforeach; ?>
-                                                    </div>
+                                                    foreach ($reactions as $reaction):
+                                                    ?>
+                                                        <span class="badge bg-light text-dark border me-1 reaction-badge"
+                                                            style="font-size: 0.9rem;">
+                                                            <?= $reaction['emoji'] ?>
+                                                            <?php if ($reaction['count'] > 1): ?>
+                                                                <small class="ms-1"><?= $reaction['count'] ?></small>
+                                                            <?php endif; ?>
+                                                        </span>
+                                                    <?php endforeach; ?>
+                                                </div>
 
-                                                    <!-- React -->
+                                                <div class="position-relative">
                                                     <button class="btn btn-light btn-sm rounded-circle p-1 react-btn border-0 shadow-sm"
                                                         data-message-id="<?= $message['id_messages'] ?>"
+                                                        data-is-sent="<?= $isSent ? 'true' : 'false' ?>"
                                                         style="width: 28px; height: 28px; font-size: 0.8rem;"
                                                         title="Ajouter une réaction">
                                                         <i class="bi bi-emoji-smile"></i>
@@ -260,7 +263,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         </div>
                     </div>
 
-                    <!-- Input -->
                     <div class="card-footer bg-light border-top p-3">
                         <form action="<?= conversation . '?user=' . $otherUserId ?>" method="POST" class="d-flex align-items-end gap-2">
                             <div class="flex-grow-1 message-input-container">
@@ -285,7 +287,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 </div>
                             </div>
                             <button type="submit"
-                                class="btn btn-primary d-flex align-items-center justify-content-center"
+                                class="btn btn-primary d-flex align-items-center justify-content-center mb-2"
                                 style="width: 45px; height: 45px;">
                                 <i class="bi bi-send-fill"></i>
                             </button>
@@ -394,7 +396,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 }
             }
 
-            // scroll to bottom
             scrollToBottom();
 
             if (messageForm) {
@@ -430,12 +431,13 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                         <div class="bg-primary text-white rounded-3 p-3 shadow-sm position-relative">
                                             <p class="mb-0">${message.replace(/\n/g, '<br>')}</p>
                                         </div>
-                                        <div class="d-flex align-items-center mt-1 justify-content-end">
-                                            <div class="reactions-container d-flex align-items-center position-relative">
-                                                <div class="reactions me-2" data-message-id="${messageId}">
-                                                </div>
+                                        <div class="d-flex align-items-center mt-1 gap-2 justify-content-end flex-row-reverse">
+                                            <div class="reactions" data-message-id="${messageId}">
+                                            </div>
+                                            <div class="position-relative">
                                                 <button class="btn btn-light btn-sm rounded-circle p-1 react-btn border-0 shadow-sm" 
                                                         data-message-id="${messageId}"
+                                                        data-is-sent="true"
                                                         style="width: 28px; height: 28px; font-size: 0.8rem;"
                                                         title="Ajouter une réaction">
                                                     <i class="bi bi-emoji-smile"></i>
@@ -469,7 +471,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 document.querySelectorAll('.reaction-picker').forEach(picker => picker.remove());
 
                 const reactionPicker = document.createElement('div');
-                reactionPicker.className = 'reaction-picker';
+                const isSent = targetButton.dataset.isSent === 'true';
+                reactionPicker.className = `reaction-picker ${isSent ? 'right' : 'left'}`;
 
                 quickReactions.forEach(emoji => {
                     const button = document.createElement('button');

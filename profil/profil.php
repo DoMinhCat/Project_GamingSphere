@@ -87,7 +87,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     break;
                 default:
                     $friendPseudo = isset($_GET['user']) ? htmlspecialchars($_GET['user']) : 'votre ami';
-                    echo "Vous êtes amis avec \"" . $friendPseudo . "\"";
+                    echo "Vous êtes ami avec \"" . $friendPseudo . "\"";
                     break;
             }
             ?>

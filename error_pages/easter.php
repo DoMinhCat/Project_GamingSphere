@@ -27,7 +27,8 @@ if (!empty($_SESSION['user_id'])) {
         $easter_status = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($easter_status['easter_found'] == 0) {
-            $stmt = $bdd->prepare("UPDATE credits SET credits=credits+10 WHERE user_id=?;");
+            $creditReward = 10;
+            $stmt = $bdd->prepare("UPDATE credits SET credits=credits+$creditReward WHERE user_id=?;");
             $stmt->execute([$id_user]);
 
             $stmt = $bdd->prepare("UPDATE utilisateurs SET easter_found=1 WHERE id_utilisateurs=?;");
