@@ -80,7 +80,7 @@ require('../head.php');
         <form action="update_interval.php" method="post" class="mt-3">
             <label class="form-label" for="day">Envoyer un email de re-engagement chaque (jours)</label>
             <input class="form-control" required type="number" step="1" id="day" name="interval" value="<?= $interval['gap'] ?>">
-            <button type="submit" class="btn btn-primary mt-2">Envoyer</button>
+            <button type="submit" class="btn btn-primary mt-2">Enregistrer</button>
         </form>
 
 

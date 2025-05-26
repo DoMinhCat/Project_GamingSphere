@@ -219,11 +219,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="col-12">
                 <div class="card">
                     <div class="card-header text-danger">
-                        <h4>Zone dangereuse</h4>
+                        <h4>Actions</h4>
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <a href="<?= edit_account ?>" class="btn btn-primary">Modifier mes informations</a>
+                            <a href="export.php" class="btn btn-primary">Exporter mes informations</a>
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
                                 Supprimer mon compte
                             </button>

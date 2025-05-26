@@ -62,7 +62,7 @@ require('../head.php');
         <h1 class="text-center my-5">Gestion de Easter egg</h1>
 
         <form method="post" action="update_reward.php">
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="reward" class="form-label">Credit de récompense</label>
                 <input type="number" value="<?= $currentReward['reward'] ?>" min="0" class="form-control" id="reward" name="reward" required>
             </div>
