@@ -14,8 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email'])) {
             header('location:' . index_front . '?error=' . urlencode("Vous êtes déjà inscrit(e) à notre newsletter !"));
             exit;
         } else {
-            $stmt = $bdd->prepare("UPDATE utilisateurs SET newsletter_sub = 1, unsubscribe_token = ? WHERE email = ?");
-            $stmt->execute([$token, $email]);
+            $stmt = $bdd->prepare("UPDATE utilisateurs SET newsletter_date=?, newsletter_sub = 1, unsubscribe_token = ? WHERE email = ?");
+            $today = date("d/m/Y");
+            $stmt->execute([$today, $token, $email]);
 
             if ($stmt->rowCount() > 0) {
                 header('location:' . index_front . '?newsletter=' . urlencode("Vous êtes maintenant inscrit(e) à notre newsletter !"));

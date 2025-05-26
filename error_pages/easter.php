@@ -44,7 +44,7 @@ if (!empty($_SESSION['user_id'])) {
             $message = "
             <p>Bonjour et félicitations <strong>$pseudo</strong>,</p>
             <p>Nous sommes ravis de vous annoncer que vous avez trouvé <strong>notre Easter egg caché</strong> ! C'est une excellente découverte ! !<br>
-            Pour vous remercier de votre perspicacité, nous avons ajouté <strong>10 crédits</strong> à votre compte. Vous pouvez les utiliser dès maintenant.</p>
+            Pour vous remercier de votre perspicacité, nous avons ajouté <strong>$reward crédits</strong> à votre compte. Vous pouvez les utiliser dès maintenant.</p>
             <p>Continuez à explorer, il y a peut-être d'autres surprises qui vous attendent !
 
             </p>
@@ -270,9 +270,9 @@ include('../include/head.php');
                         <div class="mb-5">
                             <div class="reward-badge d-inline-block">
                                 <i class="bi bi-coin me-2"></i>
-                                +10 Crédits gagnés ! 🎊
+                                +<?= $reward ?> crédits gagnés ! 🎊
                             </div>
-                            <p class="text-success mt-3 fs-5">Vous avez gagné 10 crédits en récompense. Yay !</p>
+                            <p class="text-success mt-3 fs-5">Vous avez gagné <?= $reward ?> crédits en récompense. Yay !</p>
                         </div>
                     <?php endif; ?>
 

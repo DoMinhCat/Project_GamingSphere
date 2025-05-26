@@ -25,7 +25,6 @@ require('../head.php');
         <?php if (isset($_GET['error']) && $_GET['error'] == "bdd") { ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <?php
-                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
                 echo "Erreur de la base de données : " . $_SESSION['error'];
                 unset($_SESSION['error']);
                 ?>

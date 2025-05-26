@@ -5,7 +5,18 @@ require('../check_session.php');
 require('../../include/check_timeout.php');
 require('../../include/database.php');
 require_once __DIR__ . '/../../path.php';
+try {
+    $stmt = $bdd->prepare("SELECT * from utilisateurs WHERE newsletter_sub=1;");
+    $stmt->execute();
+    $users_sub = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['reward'])) {
+    }
+} catch (PDOException $e) {
+    $_SESSION['error'] = $e->getMessage();
+    header('Location:' . index_back . '?error=bdd');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -46,6 +57,35 @@ require('../head.php');
 
         <h1 class="text-center my-5">Gestion des newsletters</h1>
 
+        <h2 class="mt-5 mb-4">Liste des abonnés</h2>
+        <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
+            <table class="table table-bordered table-striped">
+                <thead class='table-dark' style="position: sticky; top: 0; z-index: 1;">
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Pseudo</th>
+                        <th>Date d'abonnenment</th>
+                    </tr>
+                </thead>
+                <tbody id="results">
+                    <?php if (count($users_sub) > 0): ?>
+                        <?php foreach ($users_sub as $user): ?>
+                            <tr>
+                                <td class="align-middle"><?= htmlspecialchars($user['id_utilisateurs']) ?></td>
+                                <td class="align-middle"><?= htmlspecialchars($user['email']) ?></td>
+                                <td class="align-middle"><?= htmlspecialchars($user['pseudo']) ?></td>
+                                <td class="align-middle"><?= date('d/m/Y', strtotime($user['newsletter_date'])) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="10" class="text-center">Aucun utilisateur abonné aux newsletter :/</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
 
     </main>
 

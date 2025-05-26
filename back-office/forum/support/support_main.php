@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
         } catch (PDOException $e) {
             $_SESSION['error'] = htmlspecialchars($e->getMessage());
-            header('Location:' . forum_support_back . '?error=bdd');
+            header('Location:' . forum_back . '?error=bdd');
             exit();
         }
     }
@@ -41,7 +41,7 @@ if (!empty($_GET['delete_id'])) {
         exit();
     } catch (PDOException $e) {
         $_SESSION['error'] = htmlspecialchars($e->getMessage());
-        header('Location:' . forum_support_back . '?error=bdd');
+        header('Location:' . forum_back . '?error=bdd');
         exit();
     }
 }
@@ -52,7 +52,7 @@ try {
     $annonces = $query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $_SESSION['error'] = htmlspecialchars($e->getMessage());
-    header('Location:' . article_back . '?error=bdd');
+    header('Location:' . forum_back . '?error=bdd');
     exit();
 }
 ?>
