@@ -38,13 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
               <p class="mb-0">${message.replace(/\n/g, "<br>")}</p>
             </div>
             
-            <!-- Reactions Section -->
+            <!-- Reactions -->
             <div class="d-flex align-items-center mt-1 justify-content-end">
               <div class="reactions-container d-flex align-items-center">
                 <div class="reactions me-2" data-message-id="new-${Date.now()}">
                 </div>
                 
-                <!-- React Button -->
+                <!-- React -->
                 <button class="btn btn-light btn-sm rounded-circle p-1 react-btn border-0 shadow-sm" 
                         data-message-id="new-${Date.now()}"
                         style="width: 28px; height: 28px; font-size: 0.8rem;"

@@ -482,11 +482,17 @@ RewriteCond %{THE_REQUEST} \s/back-office/stats/log_display[\s/] [NC]
 RewriteRule ^back-office/stats/log_display/?$ /back-office/stats [R=301,L,QSA]
 RewriteRule ^back-office/stats/?$ back-office/stats/stats_main.php [L]
 
-# back-office stats/log_display/duree_visite.php/
+# back-office stats/log_display/newsletter.php/
 
 RewriteCond %{THE_REQUEST} \s/back-office/stats/duree_visite\.php [NC]
 RewriteRule ^back-office/stats/duree_visite\.php$ /back-office/stats/duree [R=301,L,QSA]
 RewriteRule ^back-office/stats/duree/?$ back-office/stats/duree_visite.php [L]
+
+# back-office newsletter.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/newsletter/newsletter\.php [NC]
+RewriteRule ^back-office/newsletter/newsletter\.php$ /back-office/newsletter [R=301,L,QSA]
+RewriteRule ^back-office/newsletter/?$ back-office/newsletter/newsletter.php [L]
 
 
 # Pages d'erreur

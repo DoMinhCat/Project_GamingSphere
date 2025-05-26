@@ -26,18 +26,23 @@ if (!empty($_SESSION['user_id'])) {
         $stmt->execute([$id_user]);
         $easter_status = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        $stmt = $bdd->prepare("SELECT reward from easter LIMIT 1;");
+        $stmt->execute();
+        $reward = $stmt->fetch(PDO::FETCH_ASSOC);
+
         if ($easter_status['easter_found'] == 0) {
             $creditReward = 10;
-            $stmt = $bdd->prepare("UPDATE credits SET credits=credits+$creditReward WHERE user_id=?;");
-            $stmt->execute([$id_user]);
+            $stmt = $bdd->prepare("UPDATE credits SET credits=credits+? WHERE user_id=?;");
+            $stmt->execute([$reward['reward'], $id_user]);
 
-            $stmt = $bdd->prepare("UPDATE utilisateurs SET easter_found=1 WHERE id_utilisateurs=?;");
-            $stmt->execute([$id_user]);
+            $stmt = $bdd->prepare("UPDATE utilisateurs SET easter_found=1, date_easter=? WHERE id_utilisateurs=?;");
+            $currentDate = date("Y-m-d");
+            $stmt->execute([$currentDate, $id_user]);
             $first_time = 1;
 
             $subject = "Vous avez trouvé notre Easter egg !!";
             $message = "
-            <p>Bonjour et élicitations <strong>$pseudo</strong>,</p>
+            <p>Bonjour et félicitations <strong>$pseudo</strong>,</p>
             <p>Nous sommes ravis de vous annoncer que vous avez trouvé <strong>notre Easter egg caché</strong> ! C'est une excellente découverte ! !<br>
             Pour vous remercier de votre perspicacité, nous avons ajouté <strong>10 crédits</strong> à votre compte. Vous pouvez les utiliser dès maintenant.</p>
             <p>Continuez à explorer, il y a peut-être d'autres surprises qui vous attendent !

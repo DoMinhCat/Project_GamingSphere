@@ -136,3 +136,6 @@ define('log_inscription', '/back-office/stats/log/inscription'); // log_display/
 define('log_login', '/back-office/stats/log/login'); // log_display/login.php
 define('log_transaction', '/back-office/stats/log/transaction'); // log_display/transaction.php
 define('stats_duree', '/back-office/stats/duree'); // log_display/duree.php
+
+//newsletter
+define('newsletter_back', '/back-office/newsletter'); // newsletter.php
