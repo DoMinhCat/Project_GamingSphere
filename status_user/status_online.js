@@ -3,4 +3,4 @@ setInterval(() => {
     method: "POST",
     headers: { "X-Requested-With": "XMLHttpRequest" },
   });
-}, 10000); //10sec
+}, 10000);

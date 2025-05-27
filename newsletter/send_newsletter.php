@@ -1,4 +1,4 @@
-#!/usr/bin/php
+
 <?php
 require_once  __DIR__ . '/../include/database.php';
 date_default_timezone_set('Europe/Paris');

@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
             $updateStmt = $bdd->prepare("UPDATE tournament_results SET position = ?, credits_awarded = ? WHERE result_id = ?");
             $updateStmt->execute([$position, $credits, $result_id]);
 
-            // Ajout crédit pour solo seulement
             if (strtolower($tournoi['type']) === 'solo') {
                 $updateCredits = $bdd->prepare("
                     INSERT INTO credits (user_id, credits)
@@ -46,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
                 ");
                 $updateCredits->execute([$participant_id, $credits]);
             }
-            // Pour les équipes, on crédite les membres seulement si position 1
             elseif (strtolower($tournoi['type']) === 'equipe' && $position == 1) {
                 $membersStmt = $bdd->prepare("SELECT user_id FROM inscription_tournoi WHERE id_tournoi = ? AND id_team = ?");
                 $membersStmt->execute([$id_tournoi, $participant_id]);
@@ -74,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
                 $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, team_id, user_id, position, credits_awarded) VALUES (?, ?, NULL, ?, ?)");
                 $insertStmt->execute([$id_tournoi, $participant_id, $position, $credits]);
 
-                // Attribution des crédits à chaque membre de l'équipe SEULEMENT si position 1
                 if ($position == 1) {
                     $membersStmt = $bdd->prepare("SELECT user_id FROM inscription_tournoi WHERE id_tournoi = ? AND id_team = ?");
                     $membersStmt->execute([$id_tournoi, $participant_id]);

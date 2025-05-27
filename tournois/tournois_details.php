@@ -1,4 +1,3 @@
-<!-- Page dédiée à un tournois -->
 <?php
 session_start();
 include('../include/database.php');

@@ -201,7 +201,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         </div>
 
-        <!-- Magasin -->
         <div id="bande_sepe"></div>
         <div class="container-fluid py-5 bg-index">
             <div class="text-center mb-5">
@@ -265,7 +264,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         </div>
 
-        <!-- actualités -->
         <div id="bande_sepe"></div>
         <div class="container-fluid py-5">
             <div class="text-center mb-5">

@@ -82,7 +82,6 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
 
 <header class="sticky-top">
 
-  <!-- uppper -->
   <div id="upper_header">
     <div class="container">
       <div class=" row d-none d-xl-flex justify-content-end align-items-center py-2 container-fluid px-0 mx-0">
@@ -117,7 +116,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
       </div>
     </div>
   </div>
-  <!-- lower -->
+
   <div id="lower_header">
     <div class="container">
       <div class="row d-none d-xl-flex justify-content-between align-items-center py-3 px-0 mx-0 container-fluid">
@@ -267,7 +266,7 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
       </div>
     </div>
   </div>
-  <!-- single -->
+ 
   <div id="single_header">
     <div class="mx-3 justify-content-between">
       <div class="row d-flex d-xl-none justify-content-between align-items-center p-2">
@@ -373,7 +372,6 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
             </div>
           <?php endif; ?>
 
-          <!-- mobile menu -->
           <button class="btn btn-outline-dark d-flex align-items-center justify-content-center p-2"
             type="button"
             data-bs-toggle="offcanvas"
@@ -396,7 +394,6 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
             <div class="offcanvas-body py-0">
               <div class="d-flex flex-column h-100">
 
-                <!-- profil -->
                 <div class="border-bottom py-3">
                   <div class="dropdown">
                     <button class="btn btn-outline-dark dropdown-toggle w-100 d-flex align-items-center justify-content-between"
@@ -451,7 +448,6 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                   </div>
                 </div>
 
-                <!-- back office -->
                 <?php if (isset($_SESSION['admin']) && $_SESSION['admin'] === true): ?>
                   <div class="py-3 border-bottom">
                     <a href="<?= index_back ?>" class="btn btn-warning w-100 d-flex align-items-center justify-content-center"
@@ -461,7 +457,6 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                   </div>
                 <?php endif; ?>
 
-                <!-- Search -->
                 <div class="py-3 border-bottom">
                   <form id="globalSearchForm_mobile" method="POST" action="<?= search ?>">
                     <div class="input-group">
@@ -484,7 +479,6 @@ $panierCount = isset($_SESSION['panier']) ? count($_SESSION['panier']) : 0;
                   </form>
                 </div>
 
-                <!-- Navigation -->
                 <div class="flex-fill py-3">
                   <nav class="nav flex-column">
                     <a class="nav-link d-flex align-items-center py-3 <?= ($this_page == 'index.php') ? 'active fw-bold' : 'text-dark' ?>"

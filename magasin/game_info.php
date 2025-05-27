@@ -60,14 +60,12 @@ include('../include/head.php');
                                     <?= htmlspecialchars($jeu['nom']) ?>
                                 </h1>
 
-                                <!-- Prix -->
                                 <div class="mb-3">
                                     <span class="badge bg-success fs-5 px-3 py-2">
                                         <?= ($jeu['prix'] != 0 ? htmlspecialchars($jeu['prix']) . '€' : 'Gratuit') ?>
                                     </span>
                                 </div>
 
-                                <!-- Game Info Card -->
                                 <div class="row mb-3">
                                     <div class="col-4">
                                         <div class="text-center p-2 bg-light rounded">
@@ -100,7 +98,6 @@ include('../include/head.php');
                                     </div>
                                 </div>
 
-                                <!-- Note -->
                                 <div class="mb-3">
                                     <p class="mb-1"><strong>Note:</strong></p>
                                     <div class="d-flex align-items-center">
@@ -114,7 +111,6 @@ include('../include/head.php');
                                     </div>
                                 </div>
 
-                                <!-- Ajouter au panier -->
                                 <div class="mt-auto">
                                     <button class="btn btn-primary btn-lg w-100 btn-add-to-cart"
                                         data-id="<?= $jeu['id_jeu'] ?>">
@@ -195,7 +191,6 @@ include('../include/head.php');
                         const alertContainer = document.getElementById("alert-container");
                         alertContainer.appendChild(alertBox);
                     } finally {
-                        // Reset button
                         button.innerHTML = originalText;
                         button.disabled = false;
                     }

@@ -65,7 +65,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include("../include/header.php");
     ?>
     <main class="container my-5">
-        <!-- Navigation -->
         <div class="row">
             <div class="col-12">
                 <nav aria-label="breadcrumb" class="mb-4">
@@ -89,8 +88,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
             </div>
         </div>
-
-        <!-- Article content -->
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-10">
                 <article class="bg-white shadow-sm rounded p-4 mb-5">
@@ -105,15 +102,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             </a>
                         </div>
                     </header>
-
-                    <!-- Image placeholder -->
-                    <!-- TODO: Replace this div with actual image code -->
-                    <!-- Example: <img src="path/to/image.jpg" class="img-fluid rounded mb-4" alt="Article image"> -->
                     <div class="bg-light rounded d-flex align-items-center justify-content-center mb-4" style="height: 300px;">
                         <div class="text-center text-muted">
                             <i class="bi bi-image display-4"></i>
                             <p class="mt-2">Image de l'article</p>
-                            <!-- EDIT IMAGE CODE HERE -->
                         </div>
                     </div>
 
@@ -123,8 +115,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 </article>
             </div>
         </div>
-
-        <!-- D'autres articles meme cate -->
         <div class="row">
             <div class="col-12">
                 <div class="border-top pt-5">

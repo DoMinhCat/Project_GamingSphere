@@ -6,15 +6,11 @@ require('../../include/check_timeout.php');
 require_once __DIR__ . '/../../path.php';
 
 $title = 'Gestion des cotes des tournois';
-
-// Récupérer la liste des tournois
 $tournois = $bdd->query("
     SELECT id_tournoi, nom_tournoi, jeu, type, pari_ouvert, date_debut, date_fin
     FROM tournoi WHERE status_ENUM = 'en cours'
     ORDER BY date_debut DESC
 ")->fetchAll(PDO::FETCH_ASSOC);
-
-// Récupérer les vainqueurs depuis tournament_results
 $vainqueurs = [];
 $tournoi_ids = array_column($tournois, 'id_tournoi');
 if (count($tournoi_ids) > 0) {
@@ -42,7 +38,7 @@ foreach ($tournois as $tournoi) {
         ");
         $stmt->execute([$tournoi['id_tournoi']]);
         $participants_par_tournoi[$tournoi['id_tournoi']] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } else { // solo
+    } else { 
         $stmt = $bdd->prepare("
             SELECT u.id_utilisateurs AS id_team, u.pseudo AS nom_team, cp.cote
             FROM inscription_tournoi it

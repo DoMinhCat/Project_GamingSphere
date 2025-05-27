@@ -6,7 +6,6 @@ require('../include/check_session.php');
 
 $id_utilisateur = $_SESSION['user_id'];
 
-// Récupère l’historique complet des achats
 $stmt = $bdd->prepare("
     SELECT j.id_jeu, j.nom, j.prix, j.image, b.date_achat 
     FROM boutique b

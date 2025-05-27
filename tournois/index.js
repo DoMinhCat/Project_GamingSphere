@@ -1,5 +1,3 @@
-// fluid_index.js - Handles AJAX interactions for index.php page
-
 document.addEventListener("DOMContentLoaded", () => {
   const participerButtons = document.querySelectorAll(".participer-btn");
   const desinscrireButtons = document.querySelectorAll(".desinscrire-btn");

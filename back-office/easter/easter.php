@@ -36,7 +36,7 @@ require('../head.php');
         <?php
         $noti = '';
         $noti_Err = '';
-        if (isset($_GET['message']) && $_GET['message'] === 'edit_ok') //here
+        if (isset($_GET['message']) && $_GET['message'] === 'edit_ok') 
             $noti = 'Récompense modifiée avec succès !';
         elseif (isset($_GET['error']) && $_GET['error'] === 'bdd') {
             $noti_Err = 'Erreur lors de la connection à la base de données : ' . $_SESSION['error'];

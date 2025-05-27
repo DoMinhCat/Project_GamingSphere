@@ -89,9 +89,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php endif; ?>
         <div id="alert-container" class="container mt-3"></div>
-        <!-- Content all categories-->
         <div class="container mt-5">
-            <!-- Random -->
+    
             <div class="d-flex flex-column mb-5">
                 <a href="<?= magasin_category . '?category=random' ?>" class="mb-3 category_news_title">
                     <h1>Découvrir un nouveau jeu</h1>
@@ -134,7 +133,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?php endforeach; ?>
                 </div>
             </div>
-            <!-- Meilleurs -->
+
             <div class="d-flex flex-column mb-5">
                 <a href="<?= magasin_category . '?category=meilleur' ?>" class="mb-3 category_news_title">
                     <h1>Meilleurs jeux</h1>
@@ -177,7 +176,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?php endforeach; ?>
                 </div>
             </div>
-            <!-- Nouveaux -->
+
             <div class="d-flex flex-column mb-5">
                 <a href="<?= magasin_category . '?category=nouveau' ?>" class="mb-3 category_news_title">
                     <h1>Nouveaux jeux</h1>
@@ -220,7 +219,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <?php endforeach; ?>
                 </div>
             </div>
-            <!-- Gratuit -->
+
             <div class="d-flex flex-column mb-5">
                 <a href="<?= magasin_category . '?category=gratuit' ?>" class="mb-3 category_news_title">
                     <h1>Jeux gratuits</h1>

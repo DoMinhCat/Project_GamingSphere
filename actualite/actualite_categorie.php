@@ -125,12 +125,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php endforeach ?>
             <?php endif; ?>
         </div>
-
-        <!-- Pagination -->
         <?php if ($totalPages > 1): ?>
             <nav aria-label="Navigation des pages" class="mt-5">
                 <ul class="pagination justify-content-center flex-wrap">
-                    <!-- Previous -->
                     <li class="page-item <?= $currentPage <= 1 ? 'disabled' : '' ?>">
                         <a class="page-link" href="<?= $currentPage > 1 ? getPaginationUrl($currentPage - 1) : '#' ?>"
                             aria-label="Page précédente" <?= $currentPage <= 1 ? 'tabindex="-1"' : '' ?>>
@@ -184,8 +181,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <a class="page-link" href="<?= getPaginationUrl($totalPages) ?>"><?= $totalPages ?></a>
                         </li>
                     <?php endif; ?>
-
-                    <!-- Next -->
                     <li class="page-item <?= $currentPage >= $totalPages ? 'disabled' : '' ?>">
                         <a class="page-link" href="<?= $currentPage < $totalPages ? getPaginationUrl($currentPage + 1) : '#' ?>"
                             aria-label="Page suivante" <?= $currentPage >= $totalPages ? 'tabindex="-1"' : '' ?>>
@@ -195,8 +190,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     </li>
                 </ul>
             </nav>
-
-            <!-- Pagination -->
             <div class="text-center text-muted mt-3">
                 <small>
                     Page <?= $currentPage ?> sur <?= $totalPages ?>
@@ -241,8 +234,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         searchInput.addEventListener('input', function() {
             fetchArticle();
         });
-
-
         searchInput.addEventListener('input', function() {
             if (this.value.trim() === '') {
                 setTimeout(() => {

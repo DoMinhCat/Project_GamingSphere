@@ -19,8 +19,6 @@ $montant = intval($_POST['montant']);
 $cote = floatval($_POST['cote']);
 $type_pari = $_POST['type_pari'];
 $user_id = $_SESSION['user_id'] ?? null;
-
-// Vérifier solde utilisateur
 $stmt = $bdd->prepare("SELECT credits FROM credits WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);

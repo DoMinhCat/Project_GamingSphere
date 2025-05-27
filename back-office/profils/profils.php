@@ -180,7 +180,7 @@ require('../head.php');
         }
 
         fetchOnlineUsers();
-        setInterval(fetchOnlineUsers, 30000); //30s
+        setInterval(fetchOnlineUsers, 30000); 
     </script>
 
 

@@ -78,7 +78,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php } ?>
 
-        <!-- search box -->
         <div class="col d-flex justify-content-center text-center">
             <div class="d-flex col-md-6 pt-3 pb-2">
                 <input type="text" id="search" class="form-control searchBoxFront" placeholder="Rechercher par nom du jeu">
@@ -112,14 +111,12 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 <?php endif; ?>
                             </div>
 
-                            <!-- Card -->
                             <div class="card-body d-flex flex-column p-3">
                                 <h5 class="card-title mb-2 text-truncate" title="<?= htmlspecialchars($game['nom']) ?>">
                                     <?= htmlspecialchars($game['nom']) ?>
                                 </h5>
                                 <p class="card-text mb-2"><strong>Prix :</strong> <?= ($game['prix'] != 0 ? htmlspecialchars($game['prix']) . '€' : 'Gratuit') ?> </p>
 
-                                <!-- Buttons -->
                                 <div class="mt-auto">
                                     <div class="d-grid gap-2">
                                         <a href="<?= magasin_game ?>?id=<?= $game['id_jeu'] ?>"
@@ -141,7 +138,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php endforeach; ?>
             </div>
 
-            <!-- No game -->
             <?php if (empty($currentPageGames)): ?>
                 <div class="row">
                     <div class="col-12">
@@ -154,11 +150,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <?php endif; ?>
         </div>
 
-        <!-- Pagination -->
         <?php if ($totalPages > 1): ?>
             <nav aria-label="Navigation des pages" class="mt-5">
                 <ul class="pagination justify-content-center flex-wrap">
-                    <!-- Previous -->
                     <li class="page-item <?= $currentPage <= 1 ? 'disabled' : '' ?>">
                         <a class="page-link" href="<?= $currentPage > 1 ? getPaginationUrl($currentPage - 1) : '#' ?>"
                             aria-label="Page précédente" <?= $currentPage <= 1 ? 'tabindex="-1"' : '' ?>>
@@ -213,7 +207,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         </li>
                     <?php endif; ?>
 
-                    <!-- Next  -->
                     <li class="page-item <?= $currentPage >= $totalPages ? 'disabled' : '' ?>">
                         <a class="page-link" href="<?= $currentPage < $totalPages ? getPaginationUrl($currentPage + 1) : '#' ?>"
                             aria-label="Page suivante" <?= $currentPage >= $totalPages ? 'tabindex="-1"' : '' ?>>

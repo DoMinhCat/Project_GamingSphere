@@ -61,8 +61,6 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php include("../include/header.php"); ?>
 
     <div class="container my-5">
-
-        <!-- Navigation -->
         <div class="row">
             <div class="col-12">
                 <nav aria-label="breadcrumb" class="mb-4">
@@ -76,7 +74,6 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <li class="breadcrumb-item active footer-link" aria-current="page"><?= htmlspecialchars($sujet['titre']) ?></li>
                     </ol>
                 </nav>
-
                 <div class="mb-4">
                     <a href="<?= forum_category . '?nom=' . $sujet['categories'] ?>" class="text-decoration-none fs-3 return_arrow d-flex align-items-center gap-2">
                         <i class="bi bi-chevron-left"></i>
@@ -85,8 +82,6 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
         </div>
-
-        <!-- Content -->
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="text-center mb-4">
@@ -117,8 +112,6 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
                 </div>
-
-                <!-- Responses -->
                 <div class="mb-5">
                     <div class="d-flex align-items-center mb-4">
                         <h3 class="h4 mb-0 me-3">
@@ -163,7 +156,6 @@ $reponses = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php endif; ?>
                 </div>
 
-                <!-- Ajouter rep -->
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-success text-white">
                         <h4 class="mb-0 d-flex align-items-center">

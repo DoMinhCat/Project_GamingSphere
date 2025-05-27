@@ -28,8 +28,6 @@ if (isset($_POST['add_article'])) {
         header('Location:' . article_back . '?error=bdd');
         exit();
     }
-
-    // Gestion de l'image
     $imageName = null;
     if (isset($_FILES['img_article']) && $_FILES['img_article']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = __DIR__ . '/../../uploads/';
@@ -124,8 +122,6 @@ require('../head.php');
             </div>
         <?php endif ?>
         <h1 class="my-5 text-center">Gestion des Articles</h1>
-
-        <!-- Formulaire d'ajout d'article -->
         <form method="POST" action="" class="mb-5" enctype="multipart/form-data">
             <h3>Ajouter un nouvel article</h3>
             <div class="my-3">
@@ -160,8 +156,6 @@ require('../head.php');
             </div>
             <button type="submit" name="add_article" class="btn btn-primary">Ajouter l'article</button>
         </form>
-
-        <!-- Affichage des articles -->
         <h3 class="text-center mb-4">Liste des articles</h3>
         <?php
         echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
