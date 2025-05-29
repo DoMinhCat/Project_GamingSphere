@@ -36,7 +36,7 @@ if (isset($_FILES['gameImage']) && $_FILES['gameImage']['error'] === UPLOAD_ERR_
         header('location:' . jeux_add_back);
         exit();
     }
-    $size_accept = 4 * 1024 * 1024; //4MB
+    $size_accept = 4 * 1024 * 1024; 
     if ($_FILES['gameImage']['size'] > $size_accept) {
         $_SESSION['message'] = "La taille de l'image ne doit pas dépasser 4Mo !";
         header('location:' . jeux_add_back);

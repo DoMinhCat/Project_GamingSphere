@@ -18,23 +18,32 @@ if (isset($_POST['add_article'])) {
     $date_article = date('Y-m-d');
     $id_auteur = $_SESSION['user_id'];
     $category = null;
-    //Ajouter verification image upload ici et insert image dans la bdd svp
 
     if (!empty($_POST['category_choose'])) {
-
         $category = trim($_POST['category_choose']);
     } elseif (!empty($_POST['category_new'])) {
-
-        $category = $_POST['category_new'];
+        $category = trim($_POST['category_new']);
     } else {
         $_SESSION['error'] = "Aucune catégorie n'a été sélectionnée ou saisie !";
         header('Location:' . article_back . '?error=bdd');
         exit();
     }
-    try {
-        $query = $bdd->prepare("INSERT INTO news (titre, date_article, contenue, auteur, category) VALUES (?, ?, ?, ?, ?)");
-        $query->execute([$titre, $date_article, $contenu, $id_auteur, $category]);
+    $imageName = null;
+    if (isset($_FILES['img_article']) && $_FILES['img_article']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = __DIR__ . '/../../uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+        $fileName = uniqid() . '_' . basename($_FILES['img_article']['name']);
+        $uploadFile = $uploadDir . $fileName;
+        if (move_uploaded_file($_FILES['img_article']['tmp_name'], $uploadFile)) {
+            $imageName = $fileName;
+        }
+    }
 
+    try {
+        $query = $bdd->prepare("INSERT INTO news (titre, date_article, contenue, auteur, category, image) VALUES (?, ?, ?, ?, ?, ?)");
+        $query->execute([$titre, $date_article, $contenu, $id_auteur, $category, $imageName]);
         header('Location:' . article_back . '?message=add_success');
         exit();
     } catch (PDOException $e) {
@@ -49,7 +58,6 @@ if (!empty($_GET['delete_id'])) {
     try {
         $query = $bdd->prepare("DELETE FROM news WHERE id_news = ?");
         $query->execute([$delete_id]);
-
         header('Location:' . article_back . '?message=delete_success');
         exit();
     } catch (PDOException $e) {
@@ -60,7 +68,7 @@ if (!empty($_GET['delete_id'])) {
 }
 
 try {
-    $query = $bdd->prepare("SELECT n.id_news, n.titre, n.date_article, n.category, u.email
+    $query = $bdd->prepare("SELECT n.id_news, n.titre, n.date_article, n.category, n.image, u.email
 FROM news n JOIN utilisateurs u ON n.auteur = u.id_utilisateurs ORDER BY n.date_article DESC;");
     $query->execute();
     $articles = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -114,8 +122,6 @@ require('../head.php');
             </div>
         <?php endif ?>
         <h1 class="my-5 text-center">Gestion des Articles</h1>
-
-        <!-- Formulaire d'ajout d'article -->
         <form method="POST" action="" class="mb-5" enctype="multipart/form-data">
             <h3>Ajouter un nouvel article</h3>
             <div class="my-3">
@@ -146,12 +152,10 @@ require('../head.php');
                 <textarea class="form-control" id="contenu" name="contenu" rows="4" required></textarea>
             </div>
             <div class="input-group mb-3">
-                <input type="file" class="form-control" name="img_article">
+                <input type="file" class="form-control" name="img_article" accept="image/*">
             </div>
             <button type="submit" name="add_article" class="btn btn-primary">Ajouter l'article</button>
         </form>
-
-        <!-- Affichage des articles -->
         <h3 class="text-center mb-4">Liste des articles</h3>
         <?php
         echo '<div class="form-group my-2 sticky-top pt-3 pb-2">
@@ -167,11 +171,10 @@ require('../head.php');
                     <th>Catégorie</th>
                     <th>Date</th>
                     <th>Auteur</th>
+                    <th>Image</th>
                     <th>Actions</th>
                 </tr></thead>";
             echo '<tbody id="article_results">';
-
-
 
             foreach ($articles as $article) {
                 echo '<tr>
@@ -180,6 +183,13 @@ require('../head.php');
                         <td class="align-middle">' . htmlspecialchars($article['category']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($article['date_article']) . '</td>
                         <td class="align-middle">' . htmlspecialchars($article['email']) . '</td>
+                        <td class="align-middle">';
+                if (!empty($article['image'])) {
+                    echo '<img src="../../uploads/' . htmlspecialchars($article['image']) . '" alt="Image" style="max-width:80px;max-height:80px;">';
+                } else {
+                    echo '-';
+                }
+                echo '</td>
                         <td>
                             <a href=' . article_edit_back . '?id=' . $article['id_news'] . ' class="btn btn-sm btn-warning my-1 me-1">Modifier</a>
                             <button type="button" class="btn btn-sm btn-danger my-1 me-1" data-bs-toggle="modal" data-bs-target="#modal' . $article['id_news'] . '">Supprimer</button>';
@@ -210,7 +220,6 @@ require('../head.php');
         }
         ?>
     </main>
-
 
     <script>
         async function fetchArticle(query = '') {
@@ -271,7 +280,5 @@ require('../head.php');
         }
     </script>
 
-
 </body>
-
 </html>

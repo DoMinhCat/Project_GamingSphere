@@ -1,58 +1,78 @@
 <?php
 session_start();
+$login_page = '../connexion/login.php';
 require('../include/database.php');
 require('../include/check_session.php');
 require('../include/check_timeout.php');
 require_once __DIR__ . '/../path.php';
 
-// Vérification des champs du formulaire
 if (
-    !isset($_POST['id_tournoi'], $_POST['choix'], $_POST['montant'], $_POST['cote']) ||
-    empty($_POST['id_tournoi']) || empty($_POST['choix']) || empty($_POST['montant']) || empty($_POST['cote'])
+    !isset($_POST['id_tournoi'], $_POST['montant'], $_POST['cote'], $_POST['type_pari']) ||
+    empty($_POST['id_tournoi']) || empty($_POST['montant']) || empty($_POST['cote']) || empty($_POST['type_pari'])
 ) {
-    header('Location:' . paris_main . '?message=Veuillez remplir tous les champs !');
+    header('Location:' . paris_main . '?message=' . urlencode('Champs manquants'));
     exit();
 }
 
 $id_tournoi = intval($_POST['id_tournoi']);
-$choix = $_POST['choix'];
 $montant = intval($_POST['montant']);
 $cote = floatval($_POST['cote']);
+$type_pari = $_POST['type_pari'];
 $user_id = $_SESSION['user_id'] ?? null;
-
-if (!$user_id) {
-    header('Location:' . login . '?message=' . urlencode('Connectez-vous pour accéder à cette page !'));
-    exit();
-}
-
-$stmt = $bdd->prepare("SELECT pari_ouvert FROM tournoi WHERE id_tournoi = ?");
-$stmt->execute([$id_tournoi]);
-$tournoi = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$tournoi || !$tournoi['pari_ouvert']) {
-    header('Location:' . paris_main . '?message=' . urlencode('Ce tournoi n\'est pas ouvert aux paris !'));
-    exit();
-}
-
 $stmt = $bdd->prepare("SELECT credits FROM credits WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user || $user['credits'] < $montant) {
-    header('Location:' . paris_main . '?message=' . urlencode('Crédits insuffisants !'));
+    header('Location:' . paris_main . '?message=' . urlencode('Crédits insuffisants'));
     exit();
 }
 
-// Débiter les crédits de l'utilisateur
 $stmt = $bdd->prepare("UPDATE credits SET credits = credits - ? WHERE user_id = ?");
 $stmt->execute([$montant, $user_id]);
 
-// Enregistrer le pari
-$stmt = $bdd->prepare("
-    INSERT INTO paris (id_tournoi, id_utilisateur, choix, montant, cote, statut, date_pari)
-    VALUES (?, ?, ?, ?, ?, 'en attente', NOW())
-");
-$stmt->execute([$id_tournoi, $user_id, $choix, $montant, $cote]);
+if ($stmt->rowCount() === 0) {
+    header('Location:' . paris_main . '?message=' . urlencode('Débit non effectué'));
+    exit();
+}
 
-header('Location:' . paris_main . '?message=' . urlencode('Pari enregistré avec succès !'));
+$success = false;
+
+if ($type_pari === 'solo') {
+    if (empty($_POST['id_joueur'])) {
+        header('Location:' . paris_main . '?message=' . urlencode('Joueur non spécifié'));
+        exit();
+    }
+    $id_joueur = intval($_POST['id_joueur']);
+
+    $stmt = $bdd->prepare("
+        INSERT INTO paris (
+            id_utilisateur, id_tournoi, montant, id_joueur, type_pari, statut, gain, date_pari, cote, id_equipe
+        ) VALUES (?, ?, ?, ?, 'solo', 'en attente', 0, NOW(), ?, NULL)
+    ");
+    $success = $stmt->execute([$user_id, $id_tournoi, $montant, $id_joueur, $cote]);
+} elseif ($type_pari === 'equipe') {
+    if (empty($_POST['id_equipe'])) {
+        header('Location:' . paris_main . '?message=' . urlencode('Équipe non spécifiée'));
+        exit();
+    }
+    $id_equipe = intval($_POST['id_equipe']);
+
+    $stmt = $bdd->prepare("
+        INSERT INTO paris (
+            id_utilisateur, id_tournoi, montant, id_equipe, type_pari, statut, gain, date_pari, cote, id_joueur
+        ) VALUES (?, ?, ?, ?, 'equipe', 'en attente', 0, NOW(), ?, NULL)
+    ");
+    $success = $stmt->execute([$user_id, $id_tournoi, $montant, $id_equipe, $cote]);
+} else {
+    header('Location:' . paris_main . '?message=' . urlencode('Type de pari invalide'));
+    exit();
+}
+
+if (!$success) {
+    header('Location:' . paris_main . '?message=' . urlencode("Erreur lors de l'enregistrement du pari"));
+    exit();
+}
+
+header('Location:' . paris_main . '?message=' . urlencode("Pari enregistré avec succès"));
 exit();

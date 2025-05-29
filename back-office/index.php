@@ -16,7 +16,7 @@ require('head.php');
 
 <body class="pb-4">
     <nav class="navbar navbar-dark bg-dark px-3">
-        <div class="container  d-flex flex-row justify-content-between">
+        <div class="container d-flex flex-row justify-content-between">
             <div class="d-flex align-items-center">
                 <a href="#">
                     <img src="../include/LOGO ENTIER 40px.png" alt="Logo" height="30" class="rounded-circle">
@@ -31,15 +31,17 @@ require('head.php');
         </div>
     </nav>
 
-    <div class="container my-5">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                <div class="h-100">
-                    <a href="<?= event_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
-                        Gestion des évènements
-                    </a>
-                </div>
+    <div class="container mb-5">
+        <?php if (isset($_GET['error']) && $_GET['error'] == "bdd") { ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php
+                echo "Erreur de la base de données : " . $_SESSION['error'];
+                unset($_SESSION['error']);
+                ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        <?php } ?>
+        <div class="row row-cols-1 mt-5 row-cols-md-3 g-4">
             <div class="col">
                 <div class="h-100">
                     <a href="<?= tournois_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
@@ -108,6 +110,20 @@ require('head.php');
                 <div class="h-100">
                     <a href="/glpi/index.php" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
                         GLPI
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100">
+                    <a href="<?= newsletter_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Newsletter
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100">
+                    <a href="<?= easter_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">
+                        Easter egg
                     </a>
                 </div>
             </div>

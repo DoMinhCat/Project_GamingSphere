@@ -50,17 +50,17 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include('../include/header.php');
     include('navbar.php');
     ?>
-    <div class="container my-5">
+    <main class="container my-5">
         <h2 class="mb-4 text-center">Mes amis</h2>
         <?php if (count($friends) > 0): ?>
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <?php foreach ($friends as $friend): ?>
                     <div class="col">
                         <div class="card h-100 shadow-sm">
-                            <img src="/profil<?= (isset($friend['photo_profil']) ? htmlspecialchars($friend['photo_profil']) : 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="Photo de profil" class="card-img-top">
+                            <img src="/profil/<?= (isset($friend['photo_profil']) ? htmlspecialchars($friend['photo_profil']) : 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="Photo de profil" class="card-img-top">
                             <div class="card-body text-center">
                                 <h5 class="card-title"><?= htmlspecialchars($friend['pseudo']) ?></h5>
-                                <a href="profil.php?user=<?= urlencode($friend['pseudo']) ?>" class="btn btn-outline-primary">Voir le profil</a>
+                                <a href="<?= profil . '?user=' . urlencode($friend['pseudo']) ?>" class="btn btn-outline-primary">Voir le profil</a>
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="alert alert-info text-center">Aucun ami ajouté pour le moment.</div>
         <?php endif; ?>
 
-        <h2 class="section-title text-center mt-4">Demandes d'amis en attente</h2>
+        <h2 class="section-title text-center my-5">Demandes d'amis en attente</h2>
         <?php if (count($pendingRequests) > 0): ?>
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <?php foreach ($pendingRequests as $request): ?>
@@ -79,7 +79,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <img src="/profil/<?= (isset($request['photo_profil']) ? htmlspecialchars($request['photo_profil']) : 'uploads/profiles_pictures/default_profile_img.jpg') ?>" alt="Photo de profil" class="card-img-top">
                             <div class="card-body text-center">
                                 <h5 class="card-title"><?= htmlspecialchars($request['pseudo']) ?></h5>
-                                <a href="profil.php?user=<?= urlencode($request['pseudo']) ?>" class="btn btn-outline-primary mb-2">Voir le profil</a>
+                                <a href="profil.php?user=<?= profil . '?user=' . urlencode($request['pseudo']) ?>" class="btn btn-outline-primary mb-2">Voir le profil</a>
                                 <div class="d-flex justify-content-around">
                                     <form method="POST" action="accept_friend.php">
                                         <input type="hidden" name="friend_pseudo" value="<?= htmlspecialchars($request['pseudo']) ?>">
@@ -98,7 +98,9 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php else: ?>
             <div class="alert alert-info text-center">Aucune demande en attente.</div>
         <?php endif; ?>
-    </div>
+        <div class="text-center mt-5"> <a href="<?php my_account ?>" class="btn btn-secondary">Retour au profil</a>
+        </div>
+    </main>
     <?php include('../include/footer.php'); ?>
 </body>
 

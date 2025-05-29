@@ -49,7 +49,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
-        <form method="POST" class="p-4 border rounded shadow-sm bg-light" action="create_team.php">
+        <form method="POST" class="p-4 border rounded shadow-sm bg-light" action="">
             <div class="mb-3">
                 <label for="team_name" class="form-label text-dark">Nom de l'équipe</label>
                 <input type="text" class="form-control" id="team_name" name="team_name" required>

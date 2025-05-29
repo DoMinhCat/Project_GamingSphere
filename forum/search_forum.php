@@ -3,8 +3,6 @@ session_start();
 require_once('../include/database.php');
 require('../include/check_timeout.php');
 require_once __DIR__ . '/../path.php';
-
-// Check if it's an AJAX request
 if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest') {
     exit('Direct access not allowed');
 }
@@ -45,10 +43,8 @@ try {
                 $stmt_reponses->execute([$sujet['id_sujet']]);
                 $nb_reponses = $stmt_reponses->fetchColumn();
             } catch (PDOException) {
-                $nb_reponses = 0; // Default fallback
+                $nb_reponses = 0; 
             }
-
-            // Generate the exact same HTML structure as in the main file
             echo '<a href="' . sujet . '?id=' . $sujet['id_sujet'] . '&category=' . urlencode($category) . '" class="text-decoration-none forumBlockLink">';
             echo '<div class="card mx-0 mb-3">';
             echo '<div class="card-body">';

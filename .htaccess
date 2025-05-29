@@ -278,11 +278,22 @@ RewriteCond %{THE_REQUEST} \s/paris/parier\.php [NC]
 RewriteRule ^paris/parier\.php$ /paris/parier [R=301,L,QSA]
 RewriteRule ^paris/parier/?$ paris/parier.php [L]
 
+# mes_paris.php (paris)
+RewriteCond %{THE_REQUEST} \s/paris/mes_paris\.php [NC]
+RewriteRule ^paris/mes_paris\.php$ /paris/mes_paris [R=301,L,QSA]
+RewriteRule ^paris/mes_paris/?$ paris/mes_paris.php [L]
+
 # easter.php 
 
 RewriteCond %{THE_REQUEST} \s/error_pages/easter\.php [NC]
 RewriteRule ^error_pages/easter\.php$ /easter [R=301,L,QSA]
 RewriteRule ^easter/?$ error_pages/easter.php [L]
+
+# unsubscribe.php (newsletter)
+
+RewriteCond %{THE_REQUEST} \s/newsletter/unsubscribe\.php [NC]
+RewriteRule ^newsletter/easter\.php$ /unsubscribe [R=301,L,QSA]
+RewriteRule ^unsubscribe/?$ newsletter/unsubscribe.php [L]
 
 
 
@@ -471,11 +482,23 @@ RewriteCond %{THE_REQUEST} \s/back-office/stats/log_display[\s/] [NC]
 RewriteRule ^back-office/stats/log_display/?$ /back-office/stats [R=301,L,QSA]
 RewriteRule ^back-office/stats/?$ back-office/stats/stats_main.php [L]
 
-# back-office stats/log_display/duree_visite.php/
+# back-office stats/log_display/newsletter.php/
 
 RewriteCond %{THE_REQUEST} \s/back-office/stats/duree_visite\.php [NC]
 RewriteRule ^back-office/stats/duree_visite\.php$ /back-office/stats/duree [R=301,L,QSA]
 RewriteRule ^back-office/stats/duree/?$ back-office/stats/duree_visite.php [L]
+
+# back-office newsletter.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/newsletter/newsletter\.php [NC]
+RewriteRule ^back-office/newsletter/newsletter\.php$ /back-office/newsletter [R=301,L,QSA]
+RewriteRule ^back-office/newsletter/?$ back-office/newsletter/newsletter.php [L]
+
+# back-office easter.php/
+
+RewriteCond %{THE_REQUEST} \s/back-office/easter/easter\.php [NC]
+RewriteRule ^back-office/easter/easter\.php$ /back-office/easter [R=301,L,QSA]
+RewriteRule ^back-office/easter/?$ back-office/easter/easter.php [L]
 
 
 # Pages d'erreur

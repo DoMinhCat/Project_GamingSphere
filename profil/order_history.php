@@ -6,9 +6,8 @@ require('../include/check_session.php');
 
 $id_utilisateur = $_SESSION['user_id'];
 
-// Récupère l’historique complet des achats
 $stmt = $bdd->prepare("
-    SELECT j.nom, j.prix, j.image, b.date_achat 
+    SELECT j.id_jeu, j.nom, j.prix, j.image, b.date_achat 
     FROM boutique b
     JOIN jeu j ON b.id_jeu = j.id_jeu
     WHERE b.id_utilisateur = ?
@@ -35,7 +34,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include('navbar.php'); ?>
 
     <div class="container my-5">
-        <h1 class="text-center mb-5">🧾 Historique de vos achats</h1>
+        <h1 class="text-center mb-5">Historique de vos achats</h1>
 
         <?php if (count($achats) > 0): ?>
             <div class="row">
@@ -45,12 +44,18 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             <?php if (!empty($jeu['image'])): ?>
                                 <img src="../back-office/uploads/<?= htmlspecialchars($jeu['image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($jeu['nom']) ?>" style="height: 250px; object-fit: cover;">
                             <?php else: ?>
-                                <img src="../../assets/img/no_image.png" class="card-img-top" alt="Jeu" style="height: 250px; object-fit: cover;">
+                                <img src="/magasin/img/no_image2.png" class="card-img-top" alt="Jeu" style="height: 250px; object-fit: cover;">
                             <?php endif; ?>
                             <div class="card-body">
                                 <h5 class="card-title"><?= htmlspecialchars($jeu['nom']) ?></h5>
-                                <p class="card-text"><strong>Prix :</strong> <?= htmlspecialchars($jeu['prix']) ?> €</p>
+                                <p class="card-text mb-1"><strong>Prix :</strong> <?= ($jeu['prix'] != 0 ? htmlspecialchars($jeu['prix']) : 'Gratuit') ?> €</p>
                                 <p class="text-muted"><small>Acheté le : <?= date('d/m/Y à H:i:s', strtotime($jeu['date_achat'])) ?></small></p>
+                                <div class="mt-auto d-flex flex-column flex-sm-row justify-content-center">
+                                    <a href="<?= magasin_game ?>?id=<?= $jeu['id_jeu'] ?>"
+                                        class="btn btn-magasin btn-outline-primary flex-fill mt-3 d-flex align-items-center justify-content-center text-center small">
+                                        Voir détails
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -61,8 +66,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
         <?php endif; ?>
 
         <div class="text-center mt-5">
-            <a href="<?= magasin_main ?>" class="btn btn-primary">🕹️ Parcourir les jeux</a>
-            <a href="../profil.php" class="btn btn-secondary">Retour au profil</a>
+            <a href="<?= magasin_main ?>" class="btn btn-primary">Parcourir les jeux</a>
+            <a href="<?php my_account ?>" class="btn btn-secondary">Retour au profil</a>
         </div>
     </div>
 

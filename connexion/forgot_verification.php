@@ -37,7 +37,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
 
         if ($user['reset_mdp_token'] && strtotime($user['token_expiry']) > time()) {
             writeLogDemandResetMdp($email, false,  "demande déjà éffectuée");
-            header('Location' . forgot_mdp . '?return=already_requested');
+            header('Location:' . forgot_mdp . '?return=already_requested');
             exit();
         }
 
@@ -47,7 +47,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
             $stmt = $bdd->prepare("UPDATE utilisateurs SET reset_mdp_token = :token, token_expiry = :expiry WHERE email = :email");
             $stmt->execute(['token' => $reset_token, 'expiry' => $expires, 'email' => $email]);
 
-            $reset_link = 'http://213.32.90.110/connexion/' . reset_mdp . '?token=' . $reset_token;
+            $reset_link = 'https://gamingsphere.duckdns.org' . reset_mdp . '?token=' . $reset_token;
             $subject = "Demande de réinitialisation de mot de passe";
             $message = "
         <p>Bonjour <strong>$pseudo</strong>,</p>
@@ -63,7 +63,7 @@ if (isset($_POST['email']) && !empty($_POST['email'])) {
             exit();
         }
     } else {
-        writeLogDemandResetMdp("visiteur", false,  "l'adresse de l'email non existe");
+        writeLogDemandResetMdp($email, false,  "l'adresse de l'email non existe");
         header('Location:' . forgot_mdp . '?return=not_found');
         exit();
     }

@@ -1,4 +1,3 @@
-<!-- L'export des infos utilisateurs PDF -->
 <?php
 session_start();
 $login_page = '../../connexion/login.php';

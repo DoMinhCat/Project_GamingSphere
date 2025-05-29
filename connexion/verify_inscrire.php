@@ -29,7 +29,7 @@ if (isset($_GET['token']) && !empty($_GET['token'])) {
     try {
         $stmt = $bdd->prepare("SELECT id_utilisateurs, inscrire_token_expiry, pseudo, email FROM utilisateurs WHERE inscrire_token = ? LIMIT 1");
         $stmt->execute([$token]);
-        $user = $stmt->fetch();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
         if ($user) {
@@ -92,17 +92,17 @@ if (isset($_GET['token']) && !empty($_GET['token'])) {
                 exit();
             }
         } else {
-            writeLogVerifyMail($email, false,  "token expiré");
+            writeLogVerifyMail('unknown', false,  "token expiré");
             header('location: ' . status_verify . '?result=token_expire');
             exit();
         }
     } catch (Exception $e) {
-        writeLogVerifyMail($email, false,  "erreur de la bdd : " . $e->getMessage());
+        writeLogVerifyMail('unknown', false,  "erreur de la bdd : " . $e->getMessage());
         header('Location: ' . status_verify . '?message=' . urlencode("Erreur lors de la vérification de l'email. Veuillez réessayer plus tard."));
         exit();
     }
 } else {
-    writeLogVerifyMail($email, false,  "token manquant");
+    writeLogVerifyMail('unknown', false,  "token manquant");
     header('location: ' . status_verify . '?result=token_invalid');
     exit();
 }

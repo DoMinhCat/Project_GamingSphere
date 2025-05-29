@@ -9,12 +9,12 @@ require_once __DIR__ . '/../path.php';
 $userId = $_SESSION['user_id'];
 
 try {
-    $stmt = $bdd->prepare("SELECT nom, prenom, email, ville, code_postal, rue FROM utilisateurs WHERE id_utilisateurs = ?");
+    $stmt = $bdd->prepare("SELECT nom, prenom, email, ville, code_postal, rue, bio FROM utilisateurs WHERE id_utilisateurs = ?");
     $stmt->execute([$userId]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
-        echo "Utilisateur introuvable.";
+        header('location:' . index_front . '?error=' . urlencode('Utilisateur introuvable !'));
         exit;
     }
 
@@ -25,19 +25,20 @@ try {
         $ville = $_POST['ville'] ?? '';
         $code_postal = $_POST['code_postal'] ?? '';
         $rue = $_POST['rue'] ?? '';
+        $bio = $_POST['bio'] ?? '';
 
         if (empty($nom) || empty($prenom) || empty($email) || empty($ville) || empty($code_postal) || empty($rue)) {
-            $error = "Tous les champs sont obligatoires.";
+            $error = "Tous les champs sont obligatoires (sauf bio) !";
         } else {
-            $stmt = $bdd->prepare("UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, ville = ?, code_postal = ?, rue = ? WHERE id_utilisateurs = ?");
-            $stmt->execute([$nom, $prenom, $email, $ville, $code_postal, $rue, $userId]);
+            $stmt = $bdd->prepare("UPDATE utilisateurs SET bio=?, nom = ?, prenom = ?, email = ?, ville = ?, code_postal = ?, rue = ? WHERE id_utilisateurs = ?");
+            $stmt->execute([$bio, $nom, $prenom, $email, $ville, $code_postal, $rue, $userId]);
 
-            header('Location:' . my_account);
+            header('Location:' . my_account . '?message=' . urlencode('Modifications enregistrées !'));
             exit;
         }
     }
 } catch (PDOException $e) {
-    echo "Erreur : " . htmlspecialchars($e->getMessage());
+    header('location:' . index_front . '?message=bdd');
     exit;
 }
 ?>
@@ -56,51 +57,97 @@ include('navbar.php');
 ?>
 
 <body>
-    <main class="container my-5">
-        <h1 class="montserrat-titre40 text-center mb-4">Modifier mes informations</h1>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mb-4">Modifier mes informations</h1>
+            </div>
+        </div>
+
         <?php if (isset($error)): ?>
-            <div class="alert alert-danger">
-                <?php echo htmlspecialchars($error); ?>
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-danger">
+                        <?php echo htmlspecialchars($error); ?>
+                    </div>
+                </div>
             </div>
         <?php endif; ?>
-        <form method="POST" class="p-4 shadow-sm rounded connexion_box">
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label for="nom" class="form-label montserrat-titre32">Nom</label>
-                    <input type="text" class="form-control form-control-sm" id="nom" name="nom" value="<?php echo htmlspecialchars($user['nom']); ?>" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="prenom" class="form-label montserrat-titre32">Prénom</label>
-                    <input type="text" class="form-control form-control-sm" id="prenom" name="prenom" value="<?php echo htmlspecialchars($user['prenom']); ?>" required>
-                </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <form method="POST">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Informations Personnelles</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="nom" class="form-label">Nom</label>
+                                    <input type="text" class="form-control" id="nom" name="nom" value="<?php echo htmlspecialchars($user['nom']); ?>" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="prenom" class="form-label">Prénom</label>
+                                    <input type="text" class="form-control" id="prenom" name="prenom" value="<?php echo htmlspecialchars($user['prenom']); ?>" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Biographie</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="bio" class="form-label">Biographie</label>
+                                <textarea rows="4" maxlength="200" class="form-control" id="bio" name="bio" placeholder="Parlez-nous de vous..."><?= htmlspecialchars($user['bio']); ?></textarea>
+                                <div class="form-text">Maximum 200 caractères</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Adresse</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-8">
+                                    <label for="ville" class="form-label">Ville</label>
+                                    <input type="text" class="form-control" id="ville" name="ville" value="<?php echo htmlspecialchars($user['ville']); ?>" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="code_postal" class="form-label">Code Postal</label>
+                                    <input type="text" class="form-control" id="code_postal" name="code_postal" value="<?php echo htmlspecialchars($user['code_postal']); ?>" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rue" class="form-label">Rue</label>
+                                <input type="text" class="form-control" id="rue" name="rue" value="<?php echo htmlspecialchars($user['rue']); ?>" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                                <a href="<?= my_account ?>" class="btn btn-danger">Annuler</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="row g-3 mt-3">
-                <div class="col-md-12">
-                    <label for="email" class="form-label montserrat-titre32">Email</label>
-                    <input type="email" class="form-control form-control-sm" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
-                </div>
-            </div>
-            <div class="row g-3 mt-3">
-                <div class="col-md-6">
-                    <label for="ville" class="form-label montserrat-titre32">Ville</label>
-                    <input type="text" class="form-control form-control-sm" id="ville" name="ville" value="<?php echo htmlspecialchars($user['ville']); ?>" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="code_postal" class="form-label montserrat-titre32">Code Postal</label>
-                    <input type="text" class="form-control form-control-sm" id="code_postal" name="code_postal" value="<?php echo htmlspecialchars($user['code_postal']); ?>" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="rue" class="form-label montserrat-titre32">Rue</label>
-                    <input type="text" class="form-control form-control-sm" id="rue" name="rue" value="<?php echo htmlspecialchars($user['rue']); ?>" required>
-                </div>
-            </div>
-            <div class="d-flex justify-content-between mt-4">
-                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-                <a href="<?= my_account ?>" class="btn btn-secondary">Annuler</a>
-            </div>
-        </form>
-    </main>
+        </div>
+    </div>
+
+    <?php include('../include/footer.php'); ?>
 </body>
-<?php include('../include/footer.php'); ?>
 
 </html>

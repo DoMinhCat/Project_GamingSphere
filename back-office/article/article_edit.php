@@ -46,21 +46,22 @@ require('../head.php'); ?>
             exit();
         }
         ?>
-        <form method="POST" action="update_article.php" class="p-4 border rounded shadow-sm bg-light">
+        <form method="POST" action="update_article.php" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light">
             <input type="hidden" name="id_article" value="<?= $id_article ?>">
             <div class="mb-3">
                 <label for="titre" class="form-label">Titre de l'article</label>
-                <input type="text" class="form-control" id="titre" name="titre" value="<?= $article['titre'] ?>" required>
+                <input type="text" class="form-control" id="titre" name="titre" value="<?= htmlspecialchars($article['titre']) ?>" required>
             </div>
             <div class="mb-3">
                 <label for="contenu" class="form-label">Contenu</label>
-                <textarea class="form-control" id="contenu" name="contenu" rows="4" required><?= $article['contenue'] ?></textarea>
+                <textarea class="form-control" id="contenu" name="contenu" rows="4" required><?= htmlspecialchars($article['contenue']) ?></textarea>
             </div>
 
             <div class="mb-3">
                 <div id="choose">
                     <label for="category" class="form-label">Catégorie</label>
                     <select class="form-select" id="category" name="category_choose" required>
+                        <option value="A la une">À la une</option>
                         <option value="Général">Général</option>
                         <option value="Esport">Esport</option>
                         <option value="Évènement">Évènement</option>
@@ -74,6 +75,16 @@ require('../head.php'); ?>
                     <input type="text" class="form-control" id="new_category_input" name="category_new" required>
                     <button onclick="chooseCategory()" class="mt-2 btn btn-primary">Choisir une catégorie predéfinie</button>
                 </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Image de l'article</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                <?php if (!empty($article['image'])): ?>
+                    <div class="mt-2">
+                        <img src="../../uploads/<?= htmlspecialchars($article['image']) ?>" alt="Image actuelle" style="max-width:200px;">
+                    </div>
+                <?php endif; ?>
             </div>
 
             <div class="text-center">
@@ -119,5 +130,4 @@ require('../head.php'); ?>
         });
     </script>
 </body>
-
 </html>

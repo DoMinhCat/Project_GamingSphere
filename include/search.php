@@ -81,7 +81,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     include('header.php')
     ?>
 
-    <div class="container mt-4">
+    <main class="container my-5">
         <h1 class="text-center mb-4">Résultats de recherche pour: <?php echo htmlspecialchars($query); ?></h1>
 
         <?php if (isset($errorMessage)): ?>
@@ -167,7 +167,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 Aucun résultat trouvé pour votre recherche.
             </div>
         <?php endif; ?>
-    </div>
+    </main>
+    <?php
+    include('footer.php')
+    ?>
 </body>
 
 </html>

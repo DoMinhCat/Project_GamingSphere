@@ -20,8 +20,18 @@ require('../head.php');
     $page = index_back;
     include('../navbar.php');
     ?>
-    <main class="container my-5">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+    <main class="container mb-5">
+
+        <?php if (isset($_GET['error']) && $_GET['error'] == "bdd") { ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php
+                echo "Erreur de la base de données : " . $_SESSION['error'];
+                unset($_SESSION['error']);
+                ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php } ?>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-5">
             <div class="col">
                 <div class="h-100">
                     <a href="<?= forum_annonce_back ?>" class="tableau-card h-100 d-flex flex-column justify-content-center text-white text-decoration-none text-center py-4 bg-primary rounded shadow-sm">

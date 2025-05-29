@@ -328,8 +328,16 @@ a {
 }
 .card {
   margin: 0.46875rem;
+  background-color: #f9f7f2 !important;
 }
-
+.reaction-emoji {
+  font-size: 1.2rem;
+  cursor: default;
+}
+.react-btn {
+  padding: 0 6px;
+  font-size: 1rem;
+}
 .img_sell_index {
   object-fit: contain;
   height: 150px;
@@ -724,6 +732,13 @@ body.offcanvas-backdrop {
 .footer-heading {
   color: #ecf0f1;
   font-weight: 600;
+  border-bottom: 2px solid #1e3d59;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+.dark .footer-heading {
+  color: #ecf0f1;
+  font-weight: 600;
   border-bottom: 2px solid #3498db;
   padding-bottom: 8px;
   margin-bottom: 20px;
@@ -742,4 +757,20 @@ body.offcanvas-backdrop {
   );
   height: 1px;
   border: none;
+}
+.dark .breadcrumb-item + .breadcrumb-item::before {
+  color: #fdae95 !important;
+}
+.bg-sujet {
+  background-color: #ff6e40 !important;
+}
+.dark .bg-sujet {
+  background-color: #2f608e !important;
+}
+.bg-index {
+  background-color: #f8f6ef !important;
+}
+
+.dark .bg-index {
+  background-color: #343434 !important;
 }

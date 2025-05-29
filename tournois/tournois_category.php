@@ -135,11 +135,10 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                 <?php endforeach; ?>
             </div>
 
-            <!-- Pagination -->
             <?php if ($total_pages > 1): ?>
                 <nav aria-label="Navigation pagination" class="mt-5">
                     <ul class="pagination justify-content-center">
-                        <!-- Précédent -->
+
                         <?php if ($page > 1): ?>
                             <li class="page-item">
                                 <a class="page-link" href="?category=<?= urlencode($category) ?>&page=<?= $page - 1 ?>">Précédent</a>
@@ -189,7 +188,6 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                             </li>
                         <?php endif; ?>
 
-                        <!-- Suivant -->
                         <?php if ($page < $total_pages): ?>
                             <li class="page-item">
                                 <a class="page-link" href="?category=<?= urlencode($category) ?>&page=<?= $page + 1 ?>">Suivant</a>

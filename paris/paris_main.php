@@ -1,5 +1,6 @@
 <?php
 session_start();
+$login_page = '../connexion/login.php';
 require('../include/database.php');
 require('../include/check_session.php');
 require('../include/check_timeout.php');
@@ -32,88 +33,110 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 
 <body>
     <?php include('../include/header.php'); ?>
-    <div class="container mt-4">
-        <h1 class="mb-4">Matchs e-sport en cours</h1>
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1> Tournois e-sport en cours</h1>
+            <a href="mes_paris.php" class="btn btn-primary">
+                Voir mes paris
+            </a>
+        </div>
+
         <?php if (isset($_GET['message'])): ?>
-            <div class="alert alert-info"><?= htmlspecialchars($_GET['message']) ?></div>
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_GET['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         <?php endif; ?>
 
         <?php if (empty($rencontres)): ?>
-            <p>Aucun match en cours.</p>
+            <div class="alert alert-warning">
+                Aucun match en cours actuellement.
+            </div>
         <?php endif; ?>
 
         <?php foreach ($rencontres as $tournoi): ?>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <?= htmlspecialchars($tournoi['nom_tournoi']) ?> (<?= htmlspecialchars($tournoi['type']) ?>)
-                        <span class="badge bg-warning text-dark ms-2">Cote : <?= htmlspecialchars($tournoi['cote']) ?></span>
+            <div class="card shadow rounded-4 mb-4">
+                <div class="card-header text-white rounded-top-4" style="background-color: #ff6e40 !important;">
+                    <h5 class="mb-0"><?= htmlspecialchars($tournoi['nom_tournoi']) ?>
+                        <span class="badge bg-secondary ms-2"><?= htmlspecialchars($tournoi['type']) ?></span>
                     </h5>
-                    <form class="row g-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="parier.php" class="row gy-3 gx-2 align-items-center form-pari" data-id="<?= $tournoi['id_tournoi'] ?>">
                         <input type="hidden" name="id_tournoi" value="<?= $tournoi['id_tournoi'] ?>">
-                        <input type="hidden" name="cote" value="<?= htmlspecialchars($tournoi['cote']) ?>">
+                        <input type="hidden" name="type_pari" value="<?= ($tournoi['type'] === 'equipe') ? 'equipe' : 'solo' ?>">
+                        <input type="hidden" name="cote" value="">
+
                         <?php
                         if ($tournoi['type'] === 'equipe') {
-                            $stmt = $bdd->prepare("
-                    SELECT e.id_equipe, e.nom 
-                    FROM inscription_tournoi it
-                    JOIN equipe e ON it.id_team = e.id_equipe
-                    WHERE it.id_tournoi = ?
-                ");
+                            $stmt = $bdd->prepare("SELECT e.id_equipe, e.nom, cp.cote FROM inscription_tournoi it JOIN equipe e ON it.id_team = e.id_equipe LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.id_team WHERE it.id_tournoi = ? GROUP BY e.id_equipe, e.nom, cp.cote");
                             $stmt->execute([$tournoi['id_tournoi']]);
-                            $equipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($equipes as $equipe) {
-                        ?>
-                                <div class="col-auto">
-                                    <label>
-                                        <input type="radio" name="choix" value="<?= $equipe['id_equipe'] ?>" required>
-                                        <?= htmlspecialchars($equipe['nom']) ?>
-                                    </label>
+                            $participants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($participants as $equipe): ?>
+                                <div class="col-md-3 col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="id_equipe" value="<?= $equipe['id_equipe'] ?>" data-cote="<?= htmlspecialchars($equipe['cote'] ?? 1) ?>" required>
+                                        <a href="<?= team_details . '?id_equipe=' . $equipe['id_equipe'] ?>">
+                                            <label class="form-check-label fw-medium">
+                                                <?= htmlspecialchars($equipe['nom']) ?>
+                                                <span class="badge bg-info text-dark">Cote : <?= htmlspecialchars($equipe['cote'] ?? 1) ?></span>
+                                            </label>
+                                        </a>
+                                    </div>
                                 </div>
-                            <?php
-                            }
+                            <?php endforeach;
                         } else {
-                            $stmt = $bdd->prepare("
-                    SELECT u.id_utilisateurs, u.pseudo 
-                    FROM inscription_tournoi it
-                    JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
-                    WHERE it.id_tournoi = ?
-                ");
+                            $stmt = $bdd->prepare("SELECT u.id_utilisateurs, u.pseudo, cp.cote FROM inscription_tournoi it JOIN utilisateurs u ON it.user_id = u.id_utilisateurs LEFT JOIN cote_participant cp ON cp.id_tournoi = it.id_tournoi AND cp.id_team = it.user_id WHERE it.id_tournoi = ?");
                             $stmt->execute([$tournoi['id_tournoi']]);
-                            $joueurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($joueurs as $joueur) {
-                            ?>
-                                <div class="col-auto">
-                                    <label>
-                                        <input type="radio" name="choix" value="<?= $joueur['id_utilisateurs'] ?>" required>
-                                        <?= htmlspecialchars($joueur['pseudo']) ?>
-                                    </label>
+                            $participants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($participants as $joueur): ?>
+                                <div class="col-md-3 col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="id_joueur" value="<?= $joueur['id_utilisateurs'] ?>" data-cote="<?= htmlspecialchars($joueur['cote'] ?? 1) ?>" required>
+                                        <a href="<?= profil . '?user=' . $joueur['pseudo'] ?>">
+                                            <label class="form-check-label fw-medium">
+                                                <?= htmlspecialchars($joueur['pseudo']) ?>
+                                                <span class="badge bg-info text-dark">Cote : <?= htmlspecialchars($joueur['cote'] ?? 1) ?></span>
+                                            </label>
+                                        </a>
+                                    </div>
                                 </div>
-                        <?php
-                            }
-                        }
-                        ?>
-                        <div class="col-auto">
-                            <input type="number" name="montant" min="1" class="form-control" placeholder="Coins" required>
+                        <?php endforeach;
+                        } ?>
+
+                        <div class="col-md-3 col-6">
+                            <input type="number" name="montant" min="1" class="form-control" placeholder=" Montant" required>
                         </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary">Parier</button>
+                        <div class="col-md-3 col-6">
+                            <button type="submit" class="btn btn-success w-100">Parier</button>
                         </div>
-                        <div class="col-12 mt-2">
-                            <div class="alert d-none" role="alert"></div>
+                        <div class="col-12">
+                            <div class="alert d-none mt-2" role="alert"></div>
                         </div>
                     </form>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
+    <?php include('../include/footer.php'); ?>
+
     <script>
         document.querySelectorAll('.form-pari').forEach(form => {
+            const radios = form.querySelectorAll('input[type="radio"]');
+            const hiddenCote = form.querySelector('input[name="cote"]');
+
+            radios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    hiddenCote.value = this.dataset.cote || 1;
+                });
+            });
+
+            const checked = form.querySelector('input[type="radio"]:checked');
+            if (checked) hiddenCote.value = checked.dataset.cote || 1;
+
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const alertBox = form.querySelector('.alert');
-                alertBox.classList.add('d-none');
-                alertBox.classList.remove('alert-success', 'alert-danger', 'fade-out', 'hide');
                 const btn = form.querySelector('button[type="submit"]');
                 btn.disabled = true;
 
@@ -124,21 +147,19 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     })
                     .then(resp => resp.text())
                     .then(html => {
-                        // On attend une redirection, donc on va parser le message dans l'URL
-                        let msg = '';
-                        try {
-                            const parser = new DOMParser();
-                            const doc = parser.parseFromString(html, 'text/html');
-                            const redirect = doc.querySelector('meta[http-equiv="refresh"]');
-                            if (redirect) {
-                                const content = redirect.getAttribute('content');
-                                const url = content.split('url=')[1];
-                                const params = new URLSearchParams(url.split('?')[1]);
-                                msg = params.get('message');
-                            }
-                        } catch (e) {}
-                        if (!msg) msg = "Pari enregistré avec succès !";
-                        alertBox.textContent = decodeURIComponent(msg.replace(/\+/g, ' '));
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const redirect = doc.querySelector('meta[http-equiv="refresh"]');
+                        let msg = 'Pari enregistré avec succès !';
+
+                        if (redirect) {
+                            const content = redirect.getAttribute('content');
+                            const url = content.split('url=')[1];
+                            const params = new URLSearchParams(url.split('?')[1]);
+                            msg = decodeURIComponent(params.get('message').replace(/\+/g, ' '));
+                        }
+
+                        alertBox.textContent = msg;
                         alertBox.classList.remove('d-none', 'alert-danger');
                         alertBox.classList.add('alert-success', 'fade-out');
                         setTimeout(() => alertBox.classList.add('hide'), 2000);

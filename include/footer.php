@@ -24,7 +24,7 @@
                 <ul class="list-unstyled">
                     <li class="py-2">
                         <a href="tel:+33123456789" class="footer-link">
-                            <i class="bi bi-telephone me-2"></i>03 xx xx xx xx
+                            <i class="bi bi-telephone me-2"></i>06 xx xx xx xx
                         </a>
                     </li>
                     <li class="py-2">
@@ -91,12 +91,14 @@
                     <p class="text-light mb-0">Recevez nos dernières nouveautés et offres spéciales</p>
                 </div>
                 <div class="col-md-6">
-                    <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Votre email...">
-                        <button class="btn btn-primary" type="button">
-                            <i class="bi bi-send"></i>
-                        </button>
-                    </div>
+                    <form action="/newsletter/subscribe.php" method="post">
+                        <div class="input-group">
+                            <input type="email" name='email' class="form-control" placeholder="Votre email...">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-send"></i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

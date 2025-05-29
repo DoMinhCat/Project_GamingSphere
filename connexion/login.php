@@ -30,9 +30,9 @@ include('../include/head.php')
 
                 <form method="post" action="login_verification.php">
                     <div class="d-flex flex-column pt-2 py-3 row-gap-1">
-                        <label for="email" class="form-label d-block text-start mb-1">Identifiant/Email</label>
+                        <label for="email" class="form-label d-block text-start mb-1">Identifiant/Email *</label>
                         <input type="email" name="email" id="email" placeholder="exemple@gmail.com" required aria-describedby="emailHelp" class="form-control input_field" value="<?php echo isset($_COOKIE['email']) ? htmlspecialchars($_COOKIE['email']) : ''; ?>">
-                        <label for="email" class="form-label d-block text-start mt-2 mb-1">Mot de passe</label>
+                        <label for="email" class="form-label d-block text-start mt-2 mb-1">Mot de passe *</label>
                         <input type="password" id="mdp" name="mdp" placeholder="Votre mot de passe" class="form-control input_field" required>
 
                         <div class="d-flex flex-column pt-3 mt-3">

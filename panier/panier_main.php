@@ -44,7 +44,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
 <body>
     <?php include('../include/header.php'); ?>
 
-    <div class="container my-5">
+    <main class="container my-5">
         <h1 class="text-center mb-5">Mon Panier</h1>
 
         <?php if (count($panier) > 0): ?>
@@ -98,7 +98,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-success" data-bs-dismiss="modal">Annuler</button>
-                                    <button type="button" class="btn btn-danger">Confirmer</button>
+                                    <a href="finaliser_achat.php" class="btn btn-danger">Confirmer</a>
                                 </div>
                             </div>
                         </div>
@@ -109,9 +109,11 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
             </div>
         <?php else: ?>
             <p class="text-center mb-2">Votre panier est vide.</p>
-            <a href="<?= magasin_main ?>" class="btn btn-primary text-center">Voir nos jeux</a>
+            <div class="text-center d-flex flex-row justify-content-center mt-3">
+                <a href="<?= magasin_main ?>" class="btn btn-primary text-center">Voir nos jeux</a>
+            </div>
         <?php endif; ?>
-    </div>
+    </main>
 </body>
 <?php include('../include/footer.php'); ?>
 

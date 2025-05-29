@@ -25,6 +25,7 @@ if (isset($_GET['id_tournoi'])) {
     header('Location:' . tournois_back . '?error=no_id');
     exit();
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['credits'], $_POST['result_id'])) {
     foreach ($_POST['position'] as $participant_id => $position) {
         $position = intval($position);
@@ -44,11 +45,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
                 ");
                 $updateCredits->execute([$participant_id, $credits]);
             }
+            elseif (strtolower($tournoi['type']) === 'equipe' && $position == 1) {
+                $membersStmt = $bdd->prepare("SELECT user_id FROM inscription_tournoi WHERE id_tournoi = ? AND id_team = ?");
+                $membersStmt->execute([$id_tournoi, $participant_id]);
+                $members = $membersStmt->fetchAll(PDO::FETCH_COLUMN);
+                foreach ($members as $user_id) {
+                    $updateCredits = $bdd->prepare("
+                        INSERT INTO credits (user_id, credits)
+                        VALUES (?, ?)
+                        ON DUPLICATE KEY UPDATE credits = credits + VALUES(credits)
+                    ");
+                    $updateCredits->execute([$user_id, $credits]);
+                }
+            }
         } else {
             if (strtolower($tournoi['type']) === 'solo') {
-                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, user_id, position, credits_awarded, team_id) VALUES (?, ?, ?, ?, NULL)");
+                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, user_id, team_id, position, credits_awarded) VALUES (?, ?, NULL, ?, ?)");
                 $insertStmt->execute([$id_tournoi, $participant_id, $position, $credits]);
-
                 $updateCredits = $bdd->prepare("
                     INSERT INTO credits (user_id, credits)
                     VALUES (?, ?)
@@ -56,8 +69,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['position'], $_POST['c
                 ");
                 $updateCredits->execute([$participant_id, $credits]);
             } else {
-                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, team_id, position, credits_awarded, user_id) VALUES (?, ?, ?, ?, NULL)");
+                $insertStmt = $bdd->prepare("INSERT INTO tournament_results (tournament_id, team_id, user_id, position, credits_awarded) VALUES (?, ?, NULL, ?, ?)");
                 $insertStmt->execute([$id_tournoi, $participant_id, $position, $credits]);
+
+                if ($position == 1) {
+                    $membersStmt = $bdd->prepare("SELECT user_id FROM inscription_tournoi WHERE id_tournoi = ? AND id_team = ?");
+                    $membersStmt->execute([$id_tournoi, $participant_id]);
+                    $members = $membersStmt->fetchAll(PDO::FETCH_COLUMN);
+
+                    foreach ($members as $user_id) {
+                        $updateCredits = $bdd->prepare("
+                            INSERT INTO credits (user_id, credits)
+                            VALUES (?, ?)
+                            ON DUPLICATE KEY UPDATE credits = credits + VALUES(credits)
+                        ");
+                        $updateCredits->execute([$user_id, $credits]);
+                    }
+                }
             }
         }
     }
@@ -118,29 +146,29 @@ require('../head.php');
                         try {
                             if (strtolower($tournoi['type']) === 'solo') {
                                 $stmt = $bdd->prepare("
-                                SELECT u.id_utilisateurs AS participant_id, u.pseudo, 
-                                       COALESCE(r.result_id, 0) AS result_id,
-                                       COALESCE(r.position, '') AS position,
-                                       COALESCE(r.credits_awarded, 0) AS credits_awarded
-                                FROM inscription_tournoi it
-                                JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
-                                LEFT JOIN tournament_results r ON r.tournament_id = ? AND r.user_id = u.id_utilisateurs
-                                WHERE it.id_tournoi = ?
-                                ORDER BY r.position ASC, u.pseudo ASC
-                            ");
+                                    SELECT u.id_utilisateurs AS participant_id, u.pseudo, 
+                                           COALESCE(r.result_id, 0) AS result_id,
+                                           COALESCE(r.position, '') AS position,
+                                           COALESCE(r.credits_awarded, 0) AS credits_awarded
+                                    FROM inscription_tournoi it
+                                    JOIN utilisateurs u ON it.user_id = u.id_utilisateurs
+                                    LEFT JOIN tournament_results r ON r.tournament_id = ? AND r.user_id = u.id_utilisateurs
+                                    WHERE it.id_tournoi = ?
+                                    ORDER BY r.position ASC, u.pseudo ASC
+                                ");
                                 $stmt->execute([$id_tournoi, $id_tournoi]);
                             } else {
                                 $stmt = $bdd->prepare("
-                                SELECT e.id_equipe AS participant_id, e.nom AS nom_equipe, 
-                                       COALESCE(r.result_id, 0) AS result_id,
-                                       COALESCE(r.position, '') AS position,
-                                       COALESCE(r.credits_awarded, 0) AS credits_awarded
-                                FROM equipes_tournois et
-                                JOIN equipe e ON et.id_equipe = e.id_equipe
-                                LEFT JOIN tournament_results r ON r.tournament_id = ? AND r.team_id = e.id_equipe
-                                WHERE et.id_tournoi = ?
-                                ORDER BY r.position ASC, e.nom ASC
-                            ");
+                                    SELECT e.id_equipe AS participant_id, e.nom AS nom_equipe, 
+                                           COALESCE(r.result_id, 0) AS result_id,
+                                           COALESCE(r.position, '') AS position,
+                                           COALESCE(r.credits_awarded, 0) AS credits_awarded
+                                    FROM inscription_tournoi it
+                                    JOIN equipe e ON it.id_team = e.id_equipe
+                                    LEFT JOIN tournament_results r ON r.tournament_id = ? AND r.team_id = e.id_equipe
+                                    WHERE it.id_tournoi = ?
+                                    ORDER BY r.position ASC, e.nom ASC
+                                ");
                                 $stmt->execute([$id_tournoi, $id_tournoi]);
                             }
                             $participants = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -198,8 +226,7 @@ require('../head.php');
         }
 
         document.getElementById('search_results').addEventListener('input', fetchFilteredUsers);
-        document.addEventListener('DOMContentLoaded', fetchfetchFilteredUsersStats);
+        document.addEventListener('DOMContentLoaded', fetchFilteredUsers);
     </script>
 </body>
-
 </html>

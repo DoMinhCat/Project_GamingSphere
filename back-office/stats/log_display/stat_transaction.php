@@ -35,7 +35,7 @@ foreach ($lines as $line) {
             } elseif (str_contains($status, 'annulé')) {
                 $cancel++;
             }
-            if ($match[6]) $revenue += $match[6];
+            if (isset($match[6])) $revenue += $match[6];
         }
     }
 }

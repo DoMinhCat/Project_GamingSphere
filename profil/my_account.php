@@ -9,12 +9,12 @@ require_once __DIR__ . '/../path.php';
 $userId = $_SESSION['user_id'];
 
 try {
-    $stmt = $bdd->prepare("SELECT pseudo, email, date_inscription, nom, prenom, ville, rue, code_postal, photo_profil FROM utilisateurs WHERE id_utilisateurs = ?");
+    $stmt = $bdd->prepare("SELECT pseudo, email, date_inscription, nom, prenom, ville, rue, code_postal, photo_profil, bio FROM utilisateurs WHERE id_utilisateurs = ?");
     $stmt->execute([$userId]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
-        echo "Utilisateur introuvable.";
+        header('location:' . index_front . '?error=' . urlencode('Utilisateur introuvable !'));
         exit;
     }
 
@@ -27,19 +27,19 @@ try {
         fputs($stream, $line);
         fclose($stream);
         session_destroy();
-        header('Location:' . index_front);
+        header('Location:' . index_front . '?acc_del=' . urlencode('Votre compte a été supprimé. Nous espérons vous revoir bientôt !'));
         exit;
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_picture'])) {
         if ($_FILES['profile_picture']['error'] !== UPLOAD_ERR_OK) {
             error_log("Erreur d'upload : " . $_FILES['profile_picture']['error']);
-            echo "Erreur lors du téléchargement : " . $_FILES['profile_picture']['error'];
+            header('location:' . my_account . '?error=' . urlencode('Erreur lors du téléchargement de l\'image !'));
             exit;
         }
 
         $uploadDir = __DIR__ . '/uploads/profiles_pictures/';
-        $filename = uniqid() . '_' . str_replace(' ', '_', $_FILES['profile_picture']['name']); // Nom unique pour éviter les conflits
+        $filename = uniqid() . '_' . str_replace(' ', '_', $_FILES['profile_picture']['name']);
         $uploadFile = $uploadDir . basename($filename);
         $relativePath = 'uploads/profiles_pictures/' . basename($filename);
         $imageFileType = strtolower(pathinfo($uploadFile, PATHINFO_EXTENSION));
@@ -49,19 +49,19 @@ try {
         }
 
         if (!file_exists($_FILES['profile_picture']['tmp_name'])) {
-            echo "Le fichier temporaire n'existe pas.";
+            header('location:' . my_account . '?error=' . urlencode('Erreur lors du téléchargement de l\'image !'));
             exit;
         }
 
         $check = getimagesize($_FILES['profile_picture']['tmp_name']);
         if ($check === false) {
-            echo "Le fichier n'est pas une image.";
+            header('location:' . my_account . '?error=' . urlencode('Le fichier téléchargé doit être une image !'));
             exit;
         }
 
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
         if (!in_array($imageFileType, $allowedExtensions)) {
-            echo "Seuls les fichiers JPG, JPEG, PNG et GIF sont autorisés.";
+            header('location:' . my_account . '?error=' . urlencode('Le fichier téléchargé doit être une image !'));
             exit;
         }
 
@@ -71,12 +71,12 @@ try {
             $user['photo_profil'] = $relativePath;
         } else {
             error_log("Erreur lors du déplacement du fichier : " . $_FILES['profile_picture']['tmp_name'] . " vers " . $uploadFile);
-            echo "Erreur lors du téléchargement de l'image.";
+            header('location:' . my_account . '?error=' . urlencode('Erreur lors du téléchargement de l\'image !'));
             exit;
         }
     }
 } catch (PDOException $e) {
-    echo "Erreur : " . htmlspecialchars($e->getMessage());
+    header('location:' . index_front . '?message=bdd');
     exit;
 }
 ?>
@@ -96,57 +96,141 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
     <?php
     include('../include/header.php');
     include('navbar.php');
+    if (!empty($_GET['message'])) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+        echo htmlspecialchars($_GET['message']);
+        echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    }
+    if (!empty($_GET['error'])) {
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+        echo htmlspecialchars($_GET['error']);
+        echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    }
     ?>
 
-    <div class="container my-5">
-        <div class="card shadow-sm p-4 connexion_box my-5">
-            <h3 class="card-title montserrat-titre40 text-center">Mon compte</h3>
-            <hr>
-            <div class="text-center mb-4">
-                <h4>Photo de profil</h4>
-                <?php if (!empty($user['photo_profil'])): ?>
-                    <img src="/profil/<?= htmlspecialchars($user['photo_profil']) ?>" alt="Photo de profil" style="width: 150px; height: 150px; border-radius: 50%;">
-                <?php else: ?>
-                    <p>Aucune photo de profil disponible.</p>
-                <?php endif; ?>
-                <form method="POST" enctype="multipart/form-data" class="mt-3">
-                    <button type="button" class="btn btn-dark" onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
-                        Modifier la photo de profil
-                    </button>
-                </form>
-                <form id="profile_picture_form" method="POST" enctype="multipart/form-data" style="display: none;" class="mt-3">
-                    <div class="mb-3">
-                        <label for="profile_picture" class="form-label">Changer votre photo de profil :</label>
-                        <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mb-4">Mon Compte</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Photo de Profil</h4>
                     </div>
-                    <button type="submit" class="btn btn-primary">Télécharger</button>
-                </form>
+                    <div class="card-body text-center">
+                        <?php if (!empty($user['photo_profil'])): ?>
+                            <img src="/profil/<?= htmlspecialchars($user['photo_profil']) ?>"
+                                alt="Photo de profil"
+                                class="rounded-circle mb-3"
+                                width="150"
+                                height="150">
+                        <?php else: ?>
+                            <div class="bg-light rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                                style="width: 150px; height: 150px;">
+                                <span class="text-muted">Aucune photo</span>
+                            </div>
+                        <?php endif; ?>
+
+                        <button type="button"
+                            class="btn btn-primary btn-sm"
+                            onclick="document.getElementById('profile_picture_form').style.display = 'block'; this.style.display = 'none';">
+                            Modifier la photo
+                        </button>
+
+                        <form id="profile_picture_form" method="POST" enctype="multipart/form-data" style="display: none;" class="mt-3">
+                            <div class="mb-3">
+                                <input type="file" class="form-control form-control-sm" name="profile_picture" required>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-sm">Télécharger</button>
+                        </form>
+                    </div>
+                </div>
             </div>
 
-            <div class="card shadow-sm p-3 mb-4 mon_compte_card">
-                <h4 class="card-title montserrat-titre40">Informations personnelles</h4>
-                <hr>
-                <p class="montserrat-titre32"><strong>Pseudo :</strong> <?= htmlspecialchars($user['pseudo']); ?></p>
-                <p class="montserrat-titre32"><strong>Email :</strong> <?= htmlspecialchars($user['email']); ?></p>
-                <p class="montserrat-titre32"><strong>Nom :</strong> <?= htmlspecialchars($user['nom']); ?></p>
-                <p class="montserrat-titre32"><strong>Prénom :</strong> <?= htmlspecialchars($user['prenom']); ?></p>
-                <p class="montserrat-titre32"><strong>Date d'inscription :</strong> <?= htmlspecialchars($user['date_inscription']); ?></p>
-            </div>
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Informations Personnelles</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-4"><strong>Pseudo:</strong></div>
+                            <div class="col-sm-8"><?= htmlspecialchars($user['pseudo']); ?></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4"><strong>Email:</strong></div>
+                            <div class="col-sm-8"><?= htmlspecialchars($user['email']); ?></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4"><strong>Nom:</strong></div>
+                            <div class="col-sm-8"><?= htmlspecialchars($user['nom']); ?></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4"><strong>Prénom:</strong></div>
+                            <div class="col-sm-8"><?= htmlspecialchars($user['prenom']); ?></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4"><strong>Date d'inscription:</strong></div>
+                            <div class="col-sm-8"><?= htmlspecialchars($user['date_inscription']); ?></div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="card shadow-sm p-3 mon_compte_card">
-                <h4 class="card-title montserrat-titre40">Adresse</h4>
-                <hr>
-                <p class="montserrat-titre32"><strong>Ville :</strong> <?= htmlspecialchars($user['ville']); ?></p>
-                <p class="montserrat-titre32"><strong>Code Postal :</strong> <?= htmlspecialchars($user['code_postal']); ?></p>
-                <p class="montserrat-titre32"><strong>Rue :</strong> <?= htmlspecialchars($user['rue']); ?></p>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Adresse</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-4"><strong>Ville:</strong></div>
+                            <div class="col-sm-8"><?= htmlspecialchars($user['ville']); ?></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4"><strong>Code Postal:</strong></div>
+                            <div class="col-sm-8"><?= htmlspecialchars($user['code_postal']); ?></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-4"><strong>Rue:</strong></div>
+                            <div class="col-sm-8"><?= htmlspecialchars($user['rue']); ?></div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <hr>
-            <div class="d-flex justify-content-between mt-4 px-3">
-                <a href="<?= edit_account ?>" class="btn btn-primary">Modifier mes informations</a>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
-                    Supprimer mon compte
-                </button>
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Biographie</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><?= nl2br(htmlspecialchars($user['bio'])); ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header text-danger">
+                        <h4 class="m-0">Actions</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <a href="<?= edit_account ?>" class="btn btn-primary">Modifier mes informations</a>
+                            <a href="/profil/export.php" class="btn btn-primary">Exporter mes informations</a>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                                Supprimer mon compte
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -159,7 +243,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
+                    Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible !
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

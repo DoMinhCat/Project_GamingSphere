@@ -2,22 +2,75 @@
 require_once __DIR__ . '/../path.php';
 require('../include/database.php');
 session_start();
+date_default_timezone_set('Europe/Paris');
+
+require '/var/www/PA/PHPMailer/src/PHPMailer.php';
+require '/var/www/PA/PHPMailer/src/SMTP.php';
+require '/var/www/PA/PHPMailer/src/Exception.php';
+require '../vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable('/var/www/PA', null, false);
+$dotenv->load();
 
 $first_time = 0;
 if (!empty($_SESSION['user_id'])) {
     $id_user = $_SESSION['user_id'];
+    $email = $_SESSION['user_email'];
+    $pseudo = $_SESSION['user_pseudo'];
     try {
         $stmt = $bdd->prepare("SELECT easter_found from utilisateurs WHERE id_utilisateurs=?;");
         $stmt->execute([$id_user]);
         $easter_status = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($easter_status['easter_found'] == 0) {
-            $stmt = $bdd->prepare("UPDATE credits SET credits=credits+10 WHERE user_id=?;");
-            $stmt->execute([$id_user]);
+        $stmt = $bdd->prepare("SELECT reward from easter LIMIT 1;");
+        $stmt->execute();
+        $reward = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $stmt = $bdd->prepare("UPDATE utilisateurs SET easter_found=1 WHERE id_utilisateurs=?;");
-            $stmt->execute([$id_user]);
+        if ($easter_status['easter_found'] == 0) {
+            $creditReward = 10;
+            $stmt = $bdd->prepare("UPDATE credits SET credits=credits+? WHERE user_id=?;");
+            $stmt->execute([$reward['reward'], $id_user]);
+
+            $stmt = $bdd->prepare("UPDATE utilisateurs SET easter_found=1, date_easter=? WHERE id_utilisateurs=?;");
+            $currentDate = date("Y-m-d");
+            $stmt->execute([$currentDate, $id_user]);
             $first_time = 1;
+
+            $subject = "Vous avez trouvé notre Easter egg !!";
+            $message = "
+            <p>Bonjour et félicitations <strong>$pseudo</strong>,</p>
+            <p>Nous sommes ravis de vous annoncer que vous avez trouvé <strong>notre Easter egg caché</strong> ! C'est une excellente découverte ! !<br>
+            Pour vous remercier de votre perspicacité, nous avons ajouté <strong>$reward crédits</strong> à votre compte. Vous pouvez les utiliser dès maintenant.</p>
+            <p>Continuez à explorer, il y a peut-être d'autres surprises qui vous attendent !
+
+            </p>
+            <p>Cordialement,</p>
+            <p>L'équipe de Gaming Sphère</p>";
+            $mail = new PHPMailer(true);
+
+
+
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = $_ENV['SMTP_USER'];
+            $mail->Password = $_ENV['SMTP_PASS'];
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+
+            $mail->CharSet = 'UTF-8';
+            $mail->Encoding = 'base64';
+
+            $mail->setFrom($_ENV['SMTP_USER'], 'Gaming Sphère');
+            $mail->addAddress($email);
+            $mail->Subject = $subject;
+            $mail->isHTML(true);
+            $mail->Body = $message;
+            $mail->send();
         }
     } catch (PDOException) {
         header('location:' . index_front . '?message=bdd');
@@ -217,9 +270,9 @@ include('../include/head.php');
                         <div class="mb-5">
                             <div class="reward-badge d-inline-block">
                                 <i class="bi bi-coin me-2"></i>
-                                +10 Crédits gagnés ! 🎊
+                                +<?= $reward ?> crédits gagnés ! 🎊
                             </div>
-                            <p class="text-success mt-3 fs-5">Vous avez gagné 10 crédits en récompense. Yay !</p>
+                            <p class="text-success mt-3 fs-5">Vous avez gagné <?= $reward ?> crédits en récompense. Yay !</p>
                         </div>
                     <?php endif; ?>
 
@@ -227,7 +280,7 @@ include('../include/head.php');
                         <h3 class="text-dark mb-4">
                             Bienvenue, hacker curieux !
                         </h3>
-                        <p class="lead text-muted">Voici quelques stats du projet :</p>
+                        <p class="lead text-dark">Voici quelques stats du projet :</p>
                     </div>
 
                     <!-- Stats -->

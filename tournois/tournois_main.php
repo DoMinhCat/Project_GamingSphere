@@ -71,9 +71,8 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                     <a href="<?= create_team ?>" class="btn btn-warning mb-2">Créer une autre équipe</a>
                     <a href="<?= team_list ?>" class="btn btn-primary mb-2">Voir les équipes</a>
                 <?php else: ?>
-                    <a href="../team/join_team.php" class="btn btn-success">Rejoindre une équipe</a>
                     <a href="<?= create_team ?>" class="btn btn-warning">Créer une équipe</a>
-                    <a href="<?= team_list ?>" class="btn btn-primary mb-2">Voir les équipes</a>
+                    <a href="<?= team_list ?>" class="btn btn-primary">Voir les équipes</a>
             <?php endif;
             }
             ?>
@@ -108,7 +107,7 @@ if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         echo "<div class='col'>
                             <div class='card h-100 shadow-sm'>
                                 <div class='card-body'>
-                                    <h5 class='card-title'>" . htmlspecialchars($tournoi['nom_tournoi']) . "</h5>
+                                    <h5 class='card-title fw-bold text-center mb-3'>" . htmlspecialchars($tournoi['nom_tournoi']) . "</h5>
                                     <p class='card-text'><strong>Jeu :</strong> " . htmlspecialchars($tournoi['jeu']) . "</p>
                                     <p class='card-text'><strong>Date de Début :</strong> " . htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_debut']))) . "</p>
                                     <p class='card-text'><strong>Date de Fin :</strong> " . htmlspecialchars(date('d/m/Y', strtotime($tournoi['date_fin']))) . "</p>

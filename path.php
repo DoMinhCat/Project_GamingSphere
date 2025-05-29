@@ -45,7 +45,7 @@ define('actualite_categorie', '/actualite/categorie'); // actualite_categorie.ph
 //forum
 define('forum_main', '/forum'); // forum_main.php
 define('forum_category', '/forum/category'); // categorie.php
-define('nouveau_sujet', '/forum/new'); // nouveau_sujet.php
+define('nouveau_sujet', '/forum/nouveau_sujet.php'); // nouveau_sujet.php
 define('sujet', '/forum/sujet'); // sujet.php
 
 //panier
@@ -72,9 +72,14 @@ define('search', '/include/search'); // search.php
 //paris
 define('paris_main', '/paris'); // paris_main.php
 define('parier', '/paris/parier'); // parier.php
+define('mes_paris', '/paris/mes paris'); // paris_details.php
+
 
 //easter
 define('easter', '/easter'); // easter.php
+
+//newsletter
+define('unsubscribe', '/unsubscribe'); // unsubscribe.php
 
 
 
@@ -131,3 +136,9 @@ define('log_inscription', '/back-office/stats/log/inscription'); // log_display/
 define('log_login', '/back-office/stats/log/login'); // log_display/login.php
 define('log_transaction', '/back-office/stats/log/transaction'); // log_display/transaction.php
 define('stats_duree', '/back-office/stats/duree'); // log_display/duree.php
+
+//newsletter
+define('newsletter_back', '/back-office/newsletter'); // newsletter.php
+
+//easter back
+define('easter_back', '/back-office/easter'); // easter.php
