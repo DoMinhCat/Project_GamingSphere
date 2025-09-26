@@ -47,5 +47,5 @@ Gaming Sphere aims to provide an intuitive user experience for gamers. Users wil
 * Paul SAINCTAVIT
 * Maxime OLIVEIRA
 
-  <br>
-  1st year students at ESGI Paris, 2024-2025.
+<br>
+1st year students at ESGI Paris, 2024-2025.
